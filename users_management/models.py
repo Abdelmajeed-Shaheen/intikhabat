@@ -1,9 +1,9 @@
 from django.db import models
 from django.contrib.auth.models import User
 from common.models import Address
-from adminstration.models import (Comittee,ElectionList
+# from adminstration.models import (Comittee,ElectionList
                                 
-                                )
+#                                 )
 
 
 GENDER_CHOICES=[
@@ -54,11 +54,11 @@ class Voter(models.Model):
 class Candidate(models.Model):
     
     profile=models.OneToOneField(UserProfile, on_delete=models.CASCADE)
-    comittees=models.OneToManyField(Comittee,on_delete=models.CASCADE)
+    comittees=models.ForeignKey(to='adminstration.Comittee',on_delete=models.CASCADE,related_name='comittees_list')
     timestamp=models.DateTimeField(auto_now=True,auto_now_add=False)
     updated=models.DateTimeField(auto_now=False,auto_now_add=True)
-    election_list=models.OneToOneField(ElectionList,on_delete=models.CASCADE,null=True)
-    profile_picture=models.ImageField(upload_to="path")
+    election_list=models.OneToOneField(to='adminstration.ElectionList',on_delete=models.CASCADE,null=True)
+    # profile_picture=models.ImageField(upload_to="path")
 
     def __str__(self):
         return self.profile
@@ -66,7 +66,7 @@ class Candidate(models.Model):
 class CampaignAdminstrator(models.Model):
 
     profile=models.OneToOneField(UserProfile, on_delete=models.CASCADE)
-    candidate=models.ForeignKey(Candidate,on_delete=models.CASCADE)
+    candidate=models.ForeignKey('Candidate',on_delete=models.CASCADE)
     timestamp=models.DateTimeField(auto_now=True,auto_now_add=False)
     updated=models.DateTimeField(auto_now=False,auto_now_add=True)
 
@@ -76,13 +76,13 @@ class CampaignAdminstrator(models.Model):
 class ComitteeMember(models.Model):
 
     profile=models.OneToOneField(UserProfile, on_delete=models.CASCADE)    
-    candidate=models.ForeignKey(Candidate,on_delete=models.CASCADE)
+    candidate=models.ForeignKey('Candidate',on_delete=models.CASCADE)
     timestamp=models.DateTimeField(auto_now=True,auto_now_add=False)
     updated=models.DateTimeField(auto_now=False,auto_now_add=True)
     description=models.TextField()
     notes=models.TextField()
     is_manager=models.BooleanField(default=False)
-    comittee=models.OneToOneField(Comittee,on_delete=models.CASCADE)
+    comittee=models.OneToOneField(to='adminstration.Comittee',on_delete=models.CASCADE)
 
     def __str__(self):
         return self.profile
@@ -90,7 +90,7 @@ class ComitteeMember(models.Model):
     
 class CommunicationOfficer(models.Model):
     profile=models.OneToOneField(UserProfile,on_delete=models.CASCADE)
-    comittee=models.OneToOneField(Comittee,on_delete=models.CASCADE)
+    comittee=models.OneToOneField(to='adminstration.Comittee',on_delete=models.CASCADE)
 
     def __str__(self):
         self.profile

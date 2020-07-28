@@ -1,17 +1,17 @@
 from django.db import models
 from common.models import Address
-from users_management.models import (ComitteeMember,Candidate,
-                                     Voter,CommunicationOfficer
+# from users_management.models import (ComitteeMember,Candidate,
+#                                      Voter,CommunicationOfficer
 
-                                     )
+#                                      )
 
 
 
 class Comittee(models.Model):
 
     name=models.CharField(max_length=255)
-    manager=models.OneToOneField(ComitteeMember,on_delete=models.CASCADE)
-    candidate=models.OneToOneField(Candidate,on_delete=models.CASCADE)
+    manager=models.OneToOneField(to='users_management.ComitteeMember',on_delete=models.CASCADE,related_name='comittee_manager')
+    candidate=models.OneToOneField(to='users_management.Candidate',on_delete=models.CASCADE,related_name='comittee_candidate')
     description=models.TextField()
     address=models.ForeignKey(Address,on_delete=models.CASCADE)
     is_active=models.BooleanField(default=False)
@@ -33,9 +33,9 @@ class ElectionList(models.Model):
         return self.name
 
 class ElectionCard(models.Model):
-    voter=models.OneToOneField(Voter,on_delete=models.CASCADE)
-    candidate=models.OneToOneField(Candidate, on_delete=models.CASCADE)
-    communication_officer=models.OneToOneField(CommunicationOfficer, on_delete=models.CASCADE)
+    voter=models.OneToOneField(to='users_management.Voter',on_delete=models.CASCADE)
+    candidate=models.OneToOneField(to='users_management.Candidate', on_delete=models.CASCADE)
+    communication_officer=models.OneToOneField(to='users_management.CommunicationOfficer', on_delete=models.CASCADE)
 
     def __str__(self):
         return (self.voter.profile.user.first_name +" "+self.voter.profile.user.last_name)
