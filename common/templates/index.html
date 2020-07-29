@@ -1,0 +1,40 @@
+{% extends "common_base.html" %}
+{% load staticfiles %}
+
+
+{% block extra_content %}
+  <!-- ======= Hero Section ======= -->
+  <section id="hero">
+    <div class="hero-container">
+      <div class="wow fadeIn">
+        <h1>انتخابات مجلس النواب الاردني</h1>
+        <div class="actions">
+          <a href="#about" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">مرشح</a>
+          <a href="/" class="btn btn-success" >ناخب</a>
+        </div>
+      </div>
+    </div>
+  </section><!-- End Hero -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header"> 
+        <h5 class="modal-title" id="exampleModalLabel">مرحبا بك </h5>
+
+        </button>
+      </div>
+      <div class="modal-body ">
+       <button type="button" class="btn btn-success btn-lg btn-block" >تسجيل دخول</button>
+       <button type="button" class="btn btn-primary btn-lg btn-block">مستخدم جديد</button>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">اغلاق</button>
+        
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock  %}
+
+{% block main %}
+{% endblock %}
