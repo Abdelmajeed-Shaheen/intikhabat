@@ -24,7 +24,7 @@
         </button>
       </div>
       <div class="modal-body ">
-       <button type="button" class="btn btn-success btn-lg btn-block" >تسجيل دخول</button>
+       <button type="button" class="btn btn-success btn-lg btn-block" data-toggle="modal" data-target="#loginform">تسجيل دخول</button>
        <button type="button" class="btn btn-primary btn-lg btn-block">مستخدم جديد</button>
       </div>
       <div class="modal-footer">
@@ -34,7 +34,70 @@
     </div>
   </div>
 </div>
+
+<div class="modal fade" id="loginform" tabindex="-1" role="dialog" aria-labelledby="loginformlabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header"> 
+        <h5 class="modal-title" id="loginformlabel">تسجيل دخول</h5>
+
+        </button>
+      </div>
+      
+        <div class="modal-body">
+          <form id="loginform" method="POST" action="{% url 'userlogin' %}">
+          {% csrf_token %} 
+            <div class="form-group text-aligner">
+              <label for="recipient-name" class="col-form-label">رقم الهاتف / اسم المستخدم</label>
+              {{login_form.username}}
+            </div>
+            <div class="form-group text-aligner">
+              <label for="message-text" class="col-form-label">كلمة السر</label>
+              {{login_form.password}}
+            </div>
+             <div class="form-group ">
+              
+              
+            </div>
+          </form>
+        </div>
+      
+      <div class="modal-footer">
+        <button id="submit-form" class="btn btn-primary btn-block">تسجيل دخول</button>
+        <button type="button" class="btn btn-danger btn-block" data-dismiss="modal">اغلاق</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
 {% endblock  %}
 
 {% block main %}
+{% endblock %}
+
+{% block js %}
+<script>
+  $("#submit-form").on('click',function(){
+    pwd=$("#id_password").val()
+    user=$("#id_username").val()
+    $.ajax({
+      url:"{% url 'userlogin' %}",
+      type:'POST',
+      dataType:'JSON',
+      data:{
+        username:user,
+        password:pwd,
+        csrfmiddlewaretoken: '{{ csrf_token }}' 
+      },
+      
+
+      success:function (result) {
+        console.log(result)
+      },
+    })
+
+  })
+</script>
 {% endblock %}
