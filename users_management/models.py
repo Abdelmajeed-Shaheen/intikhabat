@@ -54,14 +54,19 @@ class Voter(models.Model):
 class Candidate(models.Model):
     
     profile=models.OneToOneField(UserProfile, on_delete=models.CASCADE)
-    comittees=models.ForeignKey(to='adminstration.Comittee',on_delete=models.CASCADE,related_name='comittees_list')
     timestamp=models.DateTimeField(auto_now=True,auto_now_add=False)
     updated=models.DateTimeField(auto_now=False,auto_now_add=True)
     election_list=models.OneToOneField(to='adminstration.ElectionList',on_delete=models.CASCADE,null=True)
+    
+    class Meta:
+        permissions = [
+            ("create_commitee", "Can create commitee"),
+            ("add_committee_member", "can add commitee member"),
+        ]
     # profile_picture=models.ImageField(upload_to="path")
 
     def __str__(self):
-        return self.profile
+        return self.profile.user.username
 
 class CampaignAdminstrator(models.Model):
 

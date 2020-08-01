@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.views.generic import View
+from django.views.generic import View,DetailView
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
 from django.http import HttpResponseRedirect,HttpResponse,JsonResponse
@@ -20,27 +20,33 @@ class LoginView(View):
         response={}
         username=request.POST.get('username')
         password=request.POST.get('password')
-        print(username)
+
         if UserProfile.objects.filter(mobile_number=username).exists():
             username=UserProfile.objects.get(mobile_number=username).user.username
 
         user = authenticate(request, username=username, password=password)
         
         if user is not None:
+            
             if user.is_active:
                 if hasattr(user.userprofile, 'candidate'):
-                    print("success")
-                    # login(request, user)
-
-                    return HttpResponse("hello user")
+                    login(request, user)
+                    return HttpResponse("hello user: %s" %request.user)
 
             else:
-                messages.error(request,'Your profile is not activated yet.')
+                response["error"]="unauthorized access"
+                return JsonResponse(response)
         else:
-            print("fail")
+            
             response["error"]="invalid username or password"
             return JsonResponse(response)
+
+        
     
                 
+class UserProfileView(DetailView):
+    model=UserProfile
+    template_name='candidate_profile.html'
+   
 
         
