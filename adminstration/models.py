@@ -10,7 +10,7 @@ from common.models import Address
 class Comittee(models.Model):
 
     name=models.CharField(max_length=255)
-    manager=models.OneToOneField(to='users_management.ComitteeMember',on_delete=models.CASCADE,related_name='comittee_manager')
+    manager=models.OneToOneField(to='users_management.ComitteeMember',on_delete=models.CASCADE,related_name='comittee_manager',null=True,blank=True)
     candidate=models.OneToOneField(to='users_management.Candidate',on_delete=models.CASCADE,related_name='comittee_candidate')
     description=models.TextField()
     address=models.ForeignKey(Address,on_delete=models.CASCADE)

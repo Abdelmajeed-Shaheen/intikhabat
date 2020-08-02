@@ -47,6 +47,25 @@ class LoginView(View):
 class UserProfileView(DetailView):
     model=UserProfile
     template_name='candidate_profile.html'
+    context_object_name="candidate"
+    def get(self,request,pk):
+        candidate=self.get_object()
+        print(candidate.user.id)
+        print(str(self.request.user.id))
+        context={
+            "candidate":candidate
+        }
+        if str(self.request.user.id) == str(candidate.user.id):
+            return render(request,"candidate_profile.html",context)
+        
+        return HttpResponse("not found")
+      
+
+        
+
+
+
+
    
 
         

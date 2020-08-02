@@ -1,0 +1,123 @@
+{% extends 'candidate_base.html' %}
+
+
+{% block extra_content %}
+  <header id="header">
+    <div class="container-ar d-flex align-items-center" >
+
+      {% comment %} <a href="index.html" class="logo mr-auto"><img src="assets/img/logo.png" alt=""></a> {% endcomment %}
+      <!-- Uncomment below if you prefer to use a text logo -->
+      
+
+      <nav class="nav-menu d-none d-lg-block">
+        <ul>
+          <li><a href="#about">تسحيل خروج</a></li>
+          <li><a href="#services">اتصل بنا</a></li>
+
+
+        </ul>
+      </nav><!-- .nav-menu -->
+
+    </div>
+  </header>
+{% endblock %}
+{% block main %}
+
+<ul class="nav nav-tabs" id="myTab" role="tablist">
+  <li class="nav-item">
+    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#createcomittee" role="tab" aria-controls="home" aria-selected="true">ادارة اللجان</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">ادارة المستخدمين</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">التقارير</a>
+  </li>
+</ul>
+<div class="tab-content" id= "myTabContent">
+    
+  <div class="tab-pane fade show active" id="createcomittee" role="tabpanel" aria-labelledby="home-tab">
+  <div class="container mt-5">
+    
+    <h2 class="about-title text-aligner">انشاء لجنة</h2>
+      <form>
+        {% csrf_token %}
+        <input type="hidden" value="{{request.user.userprofile.candidate.id}}" id="candidate_id" name="candidate">
+        <div class="row">
+          <div class="col-sm-4">
+            <div class='form-group text-aligner'>
+              <label for="formGroupExampleInput">اسم اللجنة</label>
+              {{form.name}}
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-4">
+            <div class='form-group text-aligner'>
+              <label for="formGroupExampleInput">عن اللجنة:</label>
+               {{form.description}}
+            </div>
+          </div>
+        </div>
+        <div class='row'>
+          <div class="col-sm-4">
+            <div class='form-check text-aligner'>
+              <label class="form-check-label " for="id_is_active">
+                 نشط؟
+              </label>
+              {{form.is_active}}           
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-4">
+            <div class='form-group text-aligner'>
+              <label for="formGroupExampleInput">عنوان موقع اللجنة:</label>
+              {{form.address}}
+              
+            </div>
+          </div>
+        </div>
+      </form>
+      <div class="row">
+        <div class="col-sm-4">
+          <div class='form-group text-aligner'>
+            <button  class="btn btn-success mb-2" id="comitteform">انشاء</button>
+          </div>
+        </div>
+      </div>
+  </div>
+  </div>
+
+  <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+    <h1>TEST</h1>
+  </div>
+  <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">...</div>
+</div>
+
+
+{% endblock %}
+
+{% block js %}
+<script>
+  $('#comitteform').on("click",function(){
+    
+    $.ajax({
+      url:"{% url 'create-comittee' %}",
+      type:"POST",
+      data:{
+        name:$("#id_name").val(),
+        candidate:$('#candidate_id').val(),
+        description:$("#id_description").val(),
+        is_active:$("#id_is_active").val(),
+        address:$("#id_address").val(),
+        csrfmiddlewaretoken: '{{ csrf_token }}' 
+        
+      },
+      success:function(result){
+        console.log(result)
+      }
+    })
+  })
+</script>
+{% endblock %}
