@@ -12,10 +12,14 @@ class CampaignManagementMainView(View):
     model=Comittee
 
     def get(self,request):
+        comittees_list=Comittee.objects.filter(is_active=True)
         context={
-            "form":CreateComitteeForm
+            "form":CreateComitteeForm,
+            "comittees_list":comittees_list
         }
         return render(request,"adminstration.html",context)
+
+
 
 class CreateComitteeView(View):
 
