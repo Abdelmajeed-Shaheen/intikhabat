@@ -13,11 +13,16 @@ class CampaignManagementMainView(View):
     model=Comittee
 
     def get(self,request):
+        candidate=request.user.userprofile.candidate
         comittees_list=Comittee.objects.filter(is_active=True)
+        campaign_manager=candidate.campaignadminstrator_set.first()
+        comittees_members=candidate.comitteemember_set.all()
         context={
             "form":CreateComitteeForm,
             "comittee_member_form":SignUpForm,
-            "comittees_list":comittees_list
+            "comittees_list":comittees_list,
+            "campaign_manager":campaign_manager,
+            "comittees_members":comittees_members
         }
         return render(request,"adminstration.html",context)
 

@@ -76,7 +76,7 @@ class CampaignAdminstrator(models.Model):
     updated=models.DateTimeField(auto_now=False,auto_now_add=True)
 
     def __str__(self):
-        return self.profile
+        return (self.profile.user.first_name +" "+ self.profile.user.last_name)
 
 class ComitteeMember(models.Model):
 
@@ -105,14 +105,22 @@ class CustomComitteePermission(models.Model):
     can_update_comittee=models.BooleanField()
     can_create_comittee=models.BooleanField()
     can_remove_comittee=models.BooleanField()
+    name='manage comittee'
+    user=models.ForeignKey(UserProfile,on_delete=models.CASCADE)
 
+    def __str__(self):
+        return self.name
     
 class CustomMembersPermissions(models.Model):
-    
     can_view_member=models.BooleanField()
     can_update_member=models.BooleanField()
     can_create_member=models.BooleanField()
     can_remove_member=models.BooleanField()
+    name='manage members'
+    user=models.ForeignKey(UserProfile,on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.name
 
 
 class CustomReportsPermissions(models.Model):
@@ -120,13 +128,22 @@ class CustomReportsPermissions(models.Model):
     can_update_report=models.BooleanField()
     can_create_report=models.BooleanField()
     can_remove_report=models.BooleanField()
+    name='manage reports'
+    user=models.ForeignKey(UserProfile,on_delete=models.CASCADE)
 
+    def __str__(self):
+        return self.name
     
 class CustomVoterssPermissions(models.Model):
     can_view_voter=models.BooleanField()
     can_update_voter=models.BooleanField()
     can_create_voter=models.BooleanField()
     can_remove_voter=models.BooleanField()
+    name='manage voters'
+    user=models.ForeignKey(UserProfile,on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.name
 
 
 

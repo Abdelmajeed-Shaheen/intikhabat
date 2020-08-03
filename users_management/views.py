@@ -1,4 +1,5 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
+from django.urls import reverse
 from django.views.generic import View,DetailView
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
@@ -36,7 +37,7 @@ class LoginView(View):
             if user.is_active:
                 if hasattr(user.userprofile, 'candidate'):
                     login(request, user)
-                    return HttpResponse("hello user: %s" %request.user)
+                    return redirect(reverse('main'))
 
             else:
                 response["error"]="unauthorized access"

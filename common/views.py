@@ -3,7 +3,7 @@ from users_management.forms import LoginForm
 # Create your views here.
 def home(request):
     login_form=LoginForm
-    user=request.user
+    # user=request.user
     # for value in user.first_name:
     #     print(value)
     # if hasattr(user, 'userprofile'):
