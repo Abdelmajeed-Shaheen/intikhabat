@@ -6,7 +6,8 @@ from django.contrib import messages
 from django.http import HttpResponseRedirect,HttpResponse,JsonResponse
 from django.db.utils import IntegrityError
 from django.urls import reverse
-from users_management.models import UserProfile,ComitteeMember
+from users_management.models import (UserProfile,ComitteeMember, 
+                                     CampaignAdminstrator,CommunicationOfficer)
 from users_management.forms import SignUpForm
 from adminstration.models import Comittee
 import json
@@ -101,14 +102,21 @@ class CreateUser(View):
             user_profile.save()
         except (IntegrityError):
             return JsonResponse({'error':'رقم هاتف مكرر'})
-
+        candidate=request.user.userprofile.candidate
+        comittee=Comittee.objects.get(candidate=candidate)
         if user_type == "cm":
-            candidate=request.user.userprofile.candidate
-            comittee=Comittee.objects.get(candidate=candidate)
             comittee_member=ComitteeMember(profile=user_profile,candidate=request.user.userprofile.candidate,comittee=comittee)
             comittee_member.save()
 
-            print(comittee_member)
+        elif user_type =="camp":
+            campaign_manager=CampaignAdminstrator(profile=user_profile,candidate=candidate)
+            campaign_manager.save()
+        
+        elif user_type =="cmo":
+            communication_officer=CommunicationOfficer(profile=user_profile,comittee=comittee)
+            communication_officer.save()
+
+
         return JsonResponse({'message':'تم التسجيل بنجاح'})
 
 

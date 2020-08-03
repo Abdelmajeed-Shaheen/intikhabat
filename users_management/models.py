@@ -98,5 +98,35 @@ class CommunicationOfficer(models.Model):
     comittee=models.OneToOneField(to='adminstration.Comittee',on_delete=models.CASCADE)
 
     def __str__(self):
-        self.profile.mobile_number
+        return self.profile.user.username
+
+class CustomComitteePermission(models.Model):
+    can_view_comittee=models.BooleanField()
+    can_update_comittee=models.BooleanField()
+    can_create_comittee=models.BooleanField()
+    can_remove_comittee=models.BooleanField()
+
+    
+class CustomMembersPermissions(models.Model):
+    
+    can_view_member=models.BooleanField()
+    can_update_member=models.BooleanField()
+    can_create_member=models.BooleanField()
+    can_remove_member=models.BooleanField()
+
+
+class CustomReportsPermissions(models.Model):
+    can_view_report=models.BooleanField()
+    can_update_report=models.BooleanField()
+    can_create_report=models.BooleanField()
+    can_remove_report=models.BooleanField()
+
+    
+class CustomVoterssPermissions(models.Model):
+    can_view_voter=models.BooleanField()
+    can_update_voter=models.BooleanField()
+    can_create_voter=models.BooleanField()
+    can_remove_voter=models.BooleanField()
+
+
 
