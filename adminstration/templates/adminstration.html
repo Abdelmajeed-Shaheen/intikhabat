@@ -186,7 +186,9 @@
               <th scope="col">رقم الهاتف</th>
               <th scope="col">البريد الالكتروني</th>
               <th scope="col">اللجنة</th>
+              <th scope="col">الحالة الادارية</th>
               <th scope="col">تعديل</th>
+              <th scope="col">صلاحيات</th>
               
             </tr>
           </thead>
@@ -194,11 +196,62 @@
             {% for comittee_member in comittees_members %}
             <tr>
               <th scope="row">{{comittee_member.profile.user.first_name}}  {{comittee_member.profile.user.last_name}}</th>
-              <td>{{campaign_manager.profile.user.username}}</td>
-              <td>{{campaign_manager.profile.mobile_number}}</td>
-              <td>{{campaign_manager.profile.user.email}}</td>
-              <td><button class="btn btn-danger">تعديل</button></td>
+              <td>{{comittee_member.profile.mobile_number}}</td>
+              <td>{{comittee_member.profile.user.email}}</td>            
+              <td>{{comittee_member.comittee}}</td>
+              <td>{{comittee_member.is_manager}}</td>
+              <td><button class="btn btn-success">تعديل</button></td>
+              <td><button class="btn btn-danger" data-toggle="modal" data-target="#exampleModal">صلاحيات</button></td>
             </tr>
+            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">صلاحيات المستخدم</h5>
+
+                    </button>
+                  </div>
+                  <div class="modal-body text-aligner">
+                    <form>
+                      <div class="form-check">
+                        <label class="form-check-label" for="defaultCheck1"></label>
+                        الناخبين
+                      </label>
+                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+
+                      </div>
+
+                      <div class="form-check">
+                        <label class="form-check-label" for="defaultCheck1">
+                          المستخدمين
+                        </label>
+                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+
+                      </div>
+                      <div class="form-check">
+                        <label class="form-check-label" for="defaultCheck1">
+                          التقارير
+                        </label>
+                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+
+                      </div>
+                      <div class="form-check">
+                        <label class="form-check-label" for="defaultCheck1">
+                          اللجان
+                        </label>
+                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+ 
+                      </div>
+                    </form>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">اغلاق</button>
+                    <button type="button" class="btn btn-success">حفظ</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
             {% endfor %}
   
           </tbody>

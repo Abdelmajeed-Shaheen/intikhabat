@@ -17,6 +17,7 @@ class CampaignManagementMainView(View):
         comittees_list=Comittee.objects.filter(is_active=True)
         campaign_manager=candidate.campaignadminstrator_set.first()
         comittees_members=candidate.comitteemember_set.all()
+
         context={
             "form":CreateComitteeForm,
             "comittee_member_form":SignUpForm,
@@ -54,4 +55,6 @@ class CreateComitteeView(View):
 
         return JsonResponse({"message":"success"})
 
-
+class GrantPermissions(View):
+    def post(self,request):
+        return JsonResponse({"message":"success"})
