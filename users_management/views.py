@@ -4,11 +4,13 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.http import HttpResponseRedirect,HttpResponse,JsonResponse
+from django.db.utils import IntegrityError
 from django.urls import reverse
 from users_management.models import UserProfile,ComitteeMember
 from users_management.forms import SignUpForm
+from adminstration.models import Comittee
 import json
-
+from datetime import date
 
 class LoginView(View):
     """
@@ -43,8 +45,6 @@ class LoginView(View):
             response["error"]="invalid username or password"
             return JsonResponse(response)
 
-        
-    
                 
 class UserProfileView(DetailView):
     model=UserProfile
@@ -66,18 +66,50 @@ class CreateUser(View):
     def post(self,request):
         form=SignUpForm(request.POST)
         first_name=form.data.get('first_name')
-        third_name=form.data.get('first_name')
-        middle_name=form.data.get('first_name')
-        last_name=form.data.get('first_name')
-        mobile_number=form.data.get('first_name')
-        whatsapp_number=form.data.get('first_name')
-        email=form.data.get('first_name')
+        third_name=form.data.get('third_name')
+        middle_name=form.data.get('middle_name')
+        last_name=form.data.get('last_name')
+        mobile_number=form.data.get('mobile_number')
+        whatsapp_number=form.data.get('whatsapp_number')
+        email=form.data.get('email')
         is_manager=form.data.get('first_name')
         password='changeme12'
-        
-        
+        user_type=request.POST.get('usertype')
+      
+        user_instance={
+            'username':mobile_number,
+            'first_name':first_name,
+            'last_name':last_name,
+            'email':email
+        }
+        # try:
+        user=User(**user_instance)
+        user.set_password(password)
+        user.save()
+        # except (IntegrityError):
+        #     return JsonResponse({'error':'اسم مكرر'})
+        profile_instance={
+            'middle_name':middle_name,
+            'user':user,
+            'mobile_number':mobile_number,
+            'whatsapp_number':whatsapp_number,
+            'date_of_birth':date.today()
+            
+        }
+        try:
+            user_profile=UserProfile(**profile_instance)
+            user_profile.save()
+        except (IntegrityError):
+            return JsonResponse({'error':'رقم هاتف مكرر'})
 
-        return JsonResponse({'message':'success'})
+        if user_type == "cm":
+            candidate=request.user.userprofile.candidate
+            comittee=Comittee.objects.get(candidate=candidate)
+            comittee_member=ComitteeMember(profile=user_profile,candidate=request.user.userprofile.candidate,comittee=comittee)
+            comittee_member.save()
+
+            print(comittee_member)
+        return JsonResponse({'message':'تم التسجيل بنجاح'})
 
 
       

@@ -130,14 +130,14 @@
           <div class="row">
             <div class="col-sm-4">
               <div class='form-group text-aligner'>
-                <button  class="btn btn-danger mb-2" >انشاء مدير حملة</button>
+                <button id='camp' class="btn btn-danger mb-2" data-toggle="modal" data-target="#createComitteeMember">انشاء مدير حملة</button>
               </div>
             </div>
           </div>
           <div class="row">
             <div class="col-sm-4">
               <div class='form-group text-aligner'>
-                <button  class="btn btn-danger mb-2"  data-toggle="modal" data-target="#createComitteeMember">انشاء عضو لجنة </button>
+                <button  id='cm' class="btn btn-danger mb-2"  data-toggle="modal" data-target="#createComitteeMember">انشاء عضو لجنة </button>
               </div>
             </div>
           </div>
@@ -178,19 +178,36 @@
 
 {% block js %}
 <script>
+
+  function getFormData(){
+    data={
+      first_name:$('#id_first_name').val(),
+      mobile_number:$('#id_mobile_number').val(),
+      email:$('#id_email').val(),
+      last_name:$('#id_last_name').val(),
+      third_name:$('#id_last_name').val(),
+      usertype:$('#usertype').val(),
+      middle_name:$('#id_middle_name').val(),
+      csrfmiddlewaretoken: '{{ csrf_token }}' 
+    }
+    return data
+  }
 $('#createmember').on('click',function(){
+  data=getFormData()
   $.ajax({
     url:"{% url 'create-user' %}",
     type:"POST",
-    data:{
-      first_name:$('#id_first_name').val(),
-      mobile_number:$('#id_mobile_number').val(),
-      csrfmiddlewaretoken: '{{ csrf_token }}' 
-    },
+    data:data,
     success:function(result){
       console.log(result)
     }
   })
+})
+$('#cm').on('click',function(){
+  $('#usertype').val('cm')
+})
+$('#camp').on('click',function(){
+  $('#usertype').val('camp')
 })
 </script>
 {% endblock %}

@@ -87,10 +87,10 @@ class ComitteeMember(models.Model):
     description=models.TextField(null=True,blank=True)
     notes=models.TextField(null=True,blank=True)
     is_manager=models.BooleanField(default=False)
-    comittee=models.OneToOneField(to='adminstration.Comittee',on_delete=models.CASCADE)
+    comittee=models.ForeignKey(to='adminstration.Comittee',on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.profile
+        return self.profile.user.username
 
     
 class CommunicationOfficer(models.Model):
@@ -98,5 +98,5 @@ class CommunicationOfficer(models.Model):
     comittee=models.OneToOneField(to='adminstration.Comittee',on_delete=models.CASCADE)
 
     def __str__(self):
-        self.profile
+        self.profile.mobile_number
 
