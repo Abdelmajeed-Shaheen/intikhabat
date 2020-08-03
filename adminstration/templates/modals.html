@@ -1,0 +1,103 @@
+<!-- create committe member modal -->
+
+<!-- Modal -->
+<div class="modal fade" id="createComitteeMember" tabindex="-1" role="dialog" aria-labelledby="createComitteeMemberTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="createComitteeMemberTitle">انشاء عضو لجنة</h5>
+
+      </div>
+      <div class="modal-body">
+      <form>
+      <div class="row text-aligner">
+ 
+      <div class="col-sm-3">
+        <div class="form-group">
+          <label >الاسم الاول:</label>
+          {{comittee_member_form.first_name}}
+        </div>
+      </div>
+      <div class="col-sm-3">
+        <div class="form-group">
+          <label >اسم الاب:</label>
+          {{comittee_member_form.middle_name}}
+        </div>
+      </div>
+      <div class="col-sm-3">
+        <div class="form-group">
+          <label >اسم الجد:</label>
+          {{comittee_member_form.third_name}}
+        </div>
+      </div>
+      <div class="col-sm-3">
+        <div class="form-group">
+          <label >اسم العائلة:</label>
+          {{comittee_member_form.last_name}}
+        </div>
+      </div>
+      </div>
+      <div class="row text-aligner">
+ 
+        <div class="col-sm-6">
+          <div class="form-group">
+            <label >رقم الهاتف:</label>
+            {{comittee_member_form.mobile_number}}
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <div class="form-group">
+            <label > الواتساب:</label>
+            {{comittee_member_form.whatsapp_number}}
+          </div>
+        </div>
+        <div class="col">
+          <div class="form-group">
+            <label > البريد الالكتروني:</label>
+            {{comittee_member_form.email}}
+          </div>
+        </div>
+      </div>
+      <div class="row text-aligner">
+ 
+        <div class="col-sm-6">
+          <div class="form-group">
+            <label >تعيين مدير لجنة:</label>
+            {{comittee_member_form.is_manager}}
+          </div>
+        </div>
+
+        </div>
+      </form>
+        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-success" id="createmember">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- ========================================= -->
+<!-- create campaign manager modal -->
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>

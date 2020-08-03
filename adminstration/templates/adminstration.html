@@ -38,8 +38,6 @@
     
   <div class="tab-pane fade show active" id="createcomittee" role="tabpanel" aria-labelledby="home-tab">
  
-    
- 
     <div class="container mt-5">
     <div class="row">
       <div class='col-sm-6'>
@@ -53,6 +51,7 @@
                 <label for="formGroupExampleInput">اسم اللجنة</label>
                 {{form.name}}
               </div>
+
             </div>
           </div>
           <div class="row">
@@ -80,6 +79,7 @@
                 {{form.address}}
                 
               </div>
+              
             </div>
           </div>
         </form>
@@ -122,34 +122,75 @@
   </div>
 
   <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-    <h1>TEST</h1>
+   
+    <div class="container mt-5">
+      <div class="row">
+        <div class='col-sm-6'>
+          <h2 class="about-title text-aligner">ادارة الاعضاء</h2>
+          <div class="row">
+            <div class="col-sm-4">
+              <div class='form-group text-aligner'>
+                <button  class="btn btn-danger mb-2" >انشاء مدير حملة</button>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-4">
+              <div class='form-group text-aligner'>
+                <button  class="btn btn-danger mb-2"  data-toggle="modal" data-target="#createComitteeMember">انشاء عضو لجنة </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      <div class="col-sm-6">
+        <h2 class="about-title text-aligner">قائمة اللجان</h2>
+        <table class="table table-striped table-dark">
+          <thead>
+            <tr>
+              <th scope="col">اسم اللجنة</th>
+              <th scope="col">الحالة</th>
+              <th scope="col">مدير اللجنة</th>
+              <th scope="col">تعديل</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for comittee in comittees_list %}
+            <tr>
+              <th scope="row">{{comittee.name}}</th>
+              <td>{{comittee.is_active}}</td>
+              <td>{{comittee.manager}}</td>
+              <td><button class="btn btn-danger">تعديل</button></td>
+            </tr>
+            {% endfor %}
+  
+          </tbody>
+        </table>
+      </div>
+      </div>
+  
+    </div>
   </div>
   <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">...</div>
 </div>
 
-
+{% include 'modals.html' %}
 {% endblock %}
 
 {% block js %}
 <script>
-  $('#comitteform').on("click",function(){
-    
-    $.ajax({
-      url:"{% url 'create-comittee' %}",
-      type:"POST",
-      data:{
-        name:$("#id_name").val(),
-        candidate:$('#candidate_id').val(),
-        description:$("#id_description").val(),
-        is_active:$("#id_is_active").val(),
-        address:$("#id_address").val(),
-        csrfmiddlewaretoken: '{{ csrf_token }}' 
-        
-      },
-      success:function(result){
-        console.log(result)
-      }
-    })
+$('#createmember').on('click',function(){
+  $.ajax({
+    url:"{% url 'create-user' %}",
+    type:"POST",
+    data:{
+      first_name:$('#id_first_name').val(),
+      mobile_number:$('#id_mobile_number').val(),
+      csrfmiddlewaretoken: '{{ csrf_token }}' 
+    },
+    success:function(result){
+      console.log(result)
+    }
   })
+})
 </script>
 {% endblock %}

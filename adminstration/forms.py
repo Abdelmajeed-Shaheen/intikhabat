@@ -5,7 +5,7 @@ class CreateComitteeForm(forms.ModelForm):
     class Meta:
         model=Comittee
        
-        fields=['name','description','is_active','address','manager','candidate']
+        fields=['name','description','is_active','address','candidate']
 
     name = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control','placeholder':'اسم اللجنة'}))
     description=forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control','placeholder':'شرح مبسط عن اللجنة','rows':5}))

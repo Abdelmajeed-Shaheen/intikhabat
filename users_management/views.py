@@ -1,10 +1,12 @@
 from django.shortcuts import render
 from django.views.generic import View,DetailView
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.models import User
 from django.contrib import messages
 from django.http import HttpResponseRedirect,HttpResponse,JsonResponse
 from django.urls import reverse
-from users_management.models import UserProfile
+from users_management.models import UserProfile,ComitteeMember
+from users_management.forms import SignUpForm
 import json
 
 
@@ -50,8 +52,7 @@ class UserProfileView(DetailView):
     context_object_name="candidate"
     def get(self,request,pk):
         candidate=self.get_object()
-        print(candidate.user.id)
-        print(str(self.request.user.id))
+
         context={
             "candidate":candidate
         }
@@ -59,6 +60,26 @@ class UserProfileView(DetailView):
             return render(request,"candidate_profile.html",context)
         
         return HttpResponse("not found")
+
+class CreateUser(View):
+
+    def post(self,request):
+        form=SignUpForm(request.POST)
+        first_name=form.data.get('first_name')
+        third_name=form.data.get('first_name')
+        middle_name=form.data.get('first_name')
+        last_name=form.data.get('first_name')
+        mobile_number=form.data.get('first_name')
+        whatsapp_number=form.data.get('first_name')
+        email=form.data.get('first_name')
+        is_manager=form.data.get('first_name')
+        password='changeme12'
+        
+        
+
+        return JsonResponse({'message':'success'})
+
+
       
 
         

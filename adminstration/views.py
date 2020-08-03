@@ -5,6 +5,7 @@ from .models import Comittee
 from users_management.models import Candidate
 from common.models import Address
 from .forms import CreateComitteeForm
+from users_management.forms import SignUpForm
 
 
 
@@ -15,6 +16,7 @@ class CampaignManagementMainView(View):
         comittees_list=Comittee.objects.filter(is_active=True)
         context={
             "form":CreateComitteeForm,
+            "comittee_member_form":SignUpForm,
             "comittees_list":comittees_list
         }
         return render(request,"adminstration.html",context)

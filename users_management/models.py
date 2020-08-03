@@ -30,7 +30,7 @@ class UserProfile(models.Model):
     date_of_birth=models.DateField()
     timestamp=models.DateTimeField(auto_now=True,auto_now_add=False)
     updated=models.DateTimeField(auto_now=False,auto_now_add=True)
-    address=models.ForeignKey(Address,on_delete=models.CASCADE)
+    address=models.ForeignKey(Address,on_delete=models.CASCADE,null=True,blank=True)
 
     def __str__(self):
         return self.user.username
@@ -84,8 +84,8 @@ class ComitteeMember(models.Model):
     candidate=models.ForeignKey('Candidate',on_delete=models.CASCADE)
     timestamp=models.DateTimeField(auto_now=True,auto_now_add=False)
     updated=models.DateTimeField(auto_now=False,auto_now_add=True)
-    description=models.TextField()
-    notes=models.TextField()
+    description=models.TextField(null=True,blank=True)
+    notes=models.TextField(null=True,blank=True)
     is_manager=models.BooleanField(default=False)
     comittee=models.OneToOneField(to='adminstration.Comittee',on_delete=models.CASCADE)
 
