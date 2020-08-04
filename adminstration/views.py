@@ -2,10 +2,14 @@ from django.shortcuts import render
 from django.http import HttpResponse,JsonResponse
 from django.views.generic import CreateView,View
 from .models import Comittee
-from users_management.models import Candidate
+from users_management.models import ( 
+                                        Candidate,CustomComitteePermission,
+                                        CustomMembersPermissions,ComitteeMember
+                                    )
 from common.models import Address
 from .forms import CreateComitteeForm
 from users_management.forms import SignUpForm
+import json
 
 
 
@@ -57,4 +61,26 @@ class CreateComitteeView(View):
 
 class GrantPermissions(View):
     def post(self,request):
+        user=request.POST.get('userId')
+        if request.POST.get('userPerm'):
+            user_perm=json.loads(request.POST.get('userPerm'))
+            print(user_perm)
+
+            comittee_member=ComitteeMember.objects.get(id=int(user))
+
+            cmp_data={
+                'user':comittee_member.profile,
+                'can_view_member':user_perm['show'],
+                'can_update_member':user_perm['edit'],
+                'can_create_member':user_perm['create'],
+                'can_remove_member':user_perm['delete']
+            }
+            custom_member_permission=CustomMembersPermissions(**cmp_data)
+            custom_member_permission.save()
+            print(custom_member_permission)
+            
+        if  request.POST.get('commPerm'):
+            comm_perm=request.POST.get('commPerm')
+            
+
         return JsonResponse({"message":"success"})
