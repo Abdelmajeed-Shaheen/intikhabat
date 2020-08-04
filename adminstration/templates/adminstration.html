@@ -176,7 +176,7 @@
 
       </div>
     <div class="row">
-      <div class="col-sm-8">
+      <div class="col-md-8">
         <h2 class="about-title text-aligner">اعضاء اللجان</h2>
         <table class="table table-striped table-dark">
           <thead>
@@ -457,12 +457,11 @@ $(document).on("click", ".grant", function () {
        'create':createComm,
      }
 
-     userPerm={
-       'show':showUser,
-       'edit':editUser,
-       'delete':deleteUser,
-       'create':createUser,
-     }
+      var comitteePerm=new Object();
+      comitteePerm.show=showComm
+      comitteePerm.edit=editComm
+      comitteePerm.delete=deleteComm
+      comitteePerm.create=createComm
 
       var userPerm = new Object();
       userPerm.show = showUser;
@@ -470,15 +469,17 @@ $(document).on("click", ".grant", function () {
       userPerm.delete = deleteUser;
       userPerm.create=createUser;
       userJson=JSON.stringify(userPerm)
-     console.log(userJson)
-     console.log(commPerm)
+      comitteeJson=JSON.stringify(comitteePerm)
+      
+      console.log(userJson)
+      console.log(comitteeJson)
      
      $.ajax({
        url:"{% url 'grant-permession' %}",
        type:"POST",
        data:{
          userPerm:userJson,
-         commPerm:commPerm,
+         commPerm:comitteeJson,
          userId:user,
          csrfmiddlewaretoken: '{{ csrf_token }}' 
        },

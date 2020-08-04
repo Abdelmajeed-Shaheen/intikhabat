@@ -62,11 +62,10 @@ class CreateComitteeView(View):
 class GrantPermissions(View):
     def post(self,request):
         user=request.POST.get('userId')
+        comittee_member=ComitteeMember.objects.get(id=int(user))
         if request.POST.get('userPerm'):
             user_perm=json.loads(request.POST.get('userPerm'))
-            print(user_perm)
-
-            comittee_member=ComitteeMember.objects.get(id=int(user))
+            
 
             cmp_data={
                 'user':comittee_member.profile,
@@ -77,10 +76,18 @@ class GrantPermissions(View):
             }
             custom_member_permission=CustomMembersPermissions(**cmp_data)
             custom_member_permission.save()
-            print(custom_member_permission)
+            
             
         if  request.POST.get('commPerm'):
-            comm_perm=request.POST.get('commPerm')
-            
+            comm_perm=json.loads(request.POST.get('commPerm'))
+            ccp_data={
+                'user':comittee_member.profile,
+                'can_view_comittee':comm_perm['show'],
+                'can_update_comittee':comm_perm['edit'],
+                'can_create_comittee':comm_perm['create'],
+                'can_remove_comittee':comm_perm['delete']               
+            }
+            comittee_permissions=CustomComitteePermission(**ccp_data)
+            comittee_permissions.save()
 
         return JsonResponse({"message":"success"})
