@@ -201,52 +201,173 @@
               <td>{{comittee_member.comittee}}</td>
               <td>{{comittee_member.is_manager}}</td>
               <td><button class="btn btn-success">تعديل</button></td>
-              <td><button class="btn btn-danger" data-toggle="modal" data-target="#exampleModal">صلاحيات</button></td>
+              <td><button class="btn btn-danger" data-toggle="modal" data-target="#modal_{{comittee_member.id}}">صلاحيات</button></td>
             </tr>
-            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal fade" id="modal_{{comittee_member.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
               <div class="modal-dialog" role="document">
                 <div class="modal-content">
                   <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">صلاحيات المستخدم</h5>
+                    <h5 class="modal-title" id="exampleModalLabel"> صلاحيات المستخدم: {{comittee_member.profile.user.first_name}}  {{comittee_member.profile.user.last_name}}</h5>
 
                     </button>
                   </div>
                   <div class="modal-body text-aligner">
                     <form>
-                      <div class="form-check">
-                        <label class="form-check-label" for="defaultCheck1"></label>
-                        الناخبين
-                      </label>
-                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-
+                      <h4> المستخدمين:</h4>
+                      <div class="row mt-2">
+                        
+                       
+                      <div class="col-sm-3">
+                        <div class="form-check"> 
+                          <label class="form-check-label" for="defaultCheck1"></label>
+                          عرض
+                        </label>                       
+                          <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">  
+                        </div>
                       </div>
-
-                      <div class="form-check">
-                        <label class="form-check-label" for="defaultCheck1">
-                          المستخدمين
-                        </label>
-                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-
+                      <div class="col-sm-3">
+                        <div class="form-check"> 
+                          <label class="form-check-label" for="defaultCheck1"></label>
+                          تعديل
+                        </label>                       
+                          <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">  
+                        </div>
                       </div>
-                      <div class="form-check">
-                        <label class="form-check-label" for="defaultCheck1">
-                          التقارير
-                        </label>
-                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                      <div class="col-sm-3">
+                        <div class="form-check"> 
+                          <label class="form-check-label" for="defaultCheck1"></label>
+                          حذف
+                        </label>                       
+                          <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">  
+                        </div>
+                      </div>
+                      <div class="col-sm-3">
+                        <div class="form-check"> 
+                          <label class="form-check-label" for="defaultCheck1"></label>
+                          انشاء
+                        </label>                       
+                          <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">  
+                        </div>
+                      </div>
+                      </div> 
+                      <h4> اللجان:</h4>
+                      <div class="row mt-2">
+                        
+                       
+                      <div class="col-sm-3">
+                        <div class="form-check"> 
+                          <label class="form-check-label" for="defaultCheck1"></label>
+                          عرض
+                        </label>                       
+                          <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">  
+                        </div>
+                      </div>
+                      <div class="col-sm-3">
+                        <div class="form-check"> 
+                          <label class="form-check-label" for="defaultCheck1"></label>
+                          تعديل
+                        </label>                       
+                          <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">  
+                        </div>
+                      </div>
+                      <div class="col-sm-3">
+                        <div class="form-check"> 
+                          <label class="form-check-label" for="defaultCheck1"></label>
+                          حذف
+                        </label>                       
+                          <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">  
+                        </div>
+                      </div>
+                      <div class="col-sm-3">
+                        <div class="form-check"> 
+                          <label class="form-check-label" for="defaultCheck1"></label>
+                          انشاء
+                        </label>                       
+                          <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">  
+                        </div>
+                      </div>
+                      </div> 
 
+                      <h4> التقارير:</h4>
+                      <div class="row mt-2">
+                        
+                       
+                      <div class="col-sm-3">
+                        <div class="form-check"> 
+                          <label class="form-check-label" for="defaultCheck1"></label>
+                          عرض
+                        </label>                       
+                          <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">  
+                        </div>
                       </div>
-                      <div class="form-check">
-                        <label class="form-check-label" for="defaultCheck1">
-                          اللجان
-                        </label>
-                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
- 
+                      <div class="col-sm-3">
+                        <div class="form-check"> 
+                          <label class="form-check-label" for="defaultCheck1"></label>
+                          تعديل
+                        </label>                       
+                          <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">  
+                        </div>
                       </div>
+                      <div class="col-sm-3">
+                        <div class="form-check"> 
+                          <label class="form-check-label" for="defaultCheck1"></label>
+                          حذف
+                        </label>                       
+                          <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">  
+                        </div>
+                      </div>
+                      <div class="col-sm-3">
+                        <div class="form-check"> 
+                          <label class="form-check-label" for="defaultCheck1"></label>
+                          انشاء
+                        </label>                       
+                          <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">  
+                        </div>
+                      </div>
+                      </div> 
+                     
+                      <h4> الناخبين:</h4>
+                      <div class="row mt-2">
+                        
+                       
+                      <div class="col-sm-3">
+                        <div class="form-check"> 
+                          <label class="form-check-label" for="defaultCheck1"></label>
+                          عرض
+                        </label>                       
+                          <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">  
+                        </div>
+                      </div>
+                      <div class="col-sm-3">
+                        <div class="form-check"> 
+                          <label class="form-check-label" for="defaultCheck1"></label>
+                          تعديل
+                        </label>                       
+                          <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">  
+                        </div>
+                      </div>
+                      <div class="col-sm-3">
+                        <div class="form-check"> 
+                          <label class="form-check-label" for="defaultCheck1"></label>
+                          حذف
+                        </label>                       
+                          <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">  
+                        </div>
+                      </div>
+                      <div class="col-sm-3">
+                        <div class="form-check"> 
+                          <label class="form-check-label" for="defaultCheck1"></label>
+                          انشاء
+                        </label>                       
+                          <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">  
+                        </div>
+                      </div>
+                      </div>    
                     </form>
                   </div>
                   <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-dismiss="modal">اغلاق</button>
-                    <button type="button" class="btn btn-success">حفظ</button>
+                    <button type="button" class="btn btn-success" id='grantPermit' data-user="{{comittee_member.id}}">حفظ</button>
                   </div>
                 </div>
               </div>
