@@ -95,11 +95,69 @@
     <div class="modal-content">
       <div class="modal-header"> 
         <h5 class="modal-title" id="regLable">مرحبا بك </h5>
-
-        </button>
       </div>
       <div class="modal-body ">
-        {{voter_reg_form.as_p}}
+        <form>
+          <div class="form-row">
+            <div class="col-sm-3">
+              <label >الاسم الاول</label>
+              {{voter_reg_form.first_name}}
+            </div>
+            <div class="col-sm-3">
+              <label >اسم الاب</label>
+              {{voter_reg_form.second_name}}
+            </div>
+            <div class="col-sm-3">
+              <label >اسم الجد</label>
+              {{voter_reg_form.third_name}}
+            </div>
+            <div class="col-sm-3">
+              <label >اسم العائلة</label>
+              {{voter_reg_form.last_name}}
+            </div>            
+          </div>
+          
+          <div class="form-row">
+            <div class="col-sm-3">
+              <label >رقم الهاتف</label>
+              {{voter_reg_form.mobile_number}}
+            </div>
+            <div class="col-sm-4">
+              <label >رقم الواتساب</label>
+              {{voter_reg_form.whatsapp_number}}
+            </div>
+
+            <div class="col-sm-4">
+              <label >البريد الالكتروني</label>
+              {{voter_reg_form.email}}
+            </div>
+          </div>
+          
+          <div class="form-row mt-2">
+            <div class="col-md-8">
+              <label >تاريخ الميلاد</label>
+              {{voter_reg_form.dob}}
+            </div>
+            <div class="col-md-4">
+              <label >الجنس</label>
+              {{voter_reg_form.gender}}
+            </div>
+          </div>
+
+          <div class="form-row mb-5">
+            <div class="col-sm-4">
+              <label >العنوان</label>
+              {{voter_reg_form.address}}
+            </div>
+          </div>
+          <div class="form-row mb-5">
+            <div class="col-sm-4">
+              <label >الرقم السري</label>
+              <input type="password" id="pwd" required>
+            </div>
+          </div>         
+        </form>
+        <button class="btn btn-success btn-block" id="register">تسجيل</button>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-danger" data-dismiss="modal">اغلاق</button>
@@ -136,5 +194,38 @@
     })
 
   })
+
+$('#register').on('click',function(){
+  userprofile= new Object()
+  userprofile.pwd=$('#pwd').val()
+  userprofile.first_name=$("#id_first_name").val()
+  userprofile.second_name=$("#id_second_name").val()
+  userprofile.third_name=$("#id_third_name").val()
+  userprofile.last_name=$("#id_last_name").val()
+  userprofile.mobile_number=$("#id_mobile_number").val()
+  userprofile.whatsapp_number=$("#id_whatsapp_number").val()
+  userprofile.address=$("#id_address option:selected").val()
+  userprofile.gender=$("#id_gender option:selected").val()
+  day=$('#id_dob_day').val()
+  month=$('#id_dob_month').val()
+  year=$('#id_dob_year').val()
+  userprofile.dob=(year+"-"+month+"-"+day)
+  userprofile.email=$("#id_email").val()
+  userjson=JSON.stringify(userprofile)
+  console.log(userjson)
+
+  $.ajax({
+    url:"{% url 'create-voter' %}",
+    type:"POST",
+    data:{
+      csrfmiddlewaretoken:'{{csrf_token}}',
+      voter:userjson
+    },
+    success:function(result){
+      console.log(result)
+    }
+  })
+
+})
 </script>
 {% endblock %}

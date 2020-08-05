@@ -20,5 +20,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path("",home,name='home'),
     path("user-management/",include('users_management.urls')),
-    path("campaign-management/",include('adminstration.urls'))
+    path("campaign-management/",include('adminstration.urls')),
+    path("voter-management/",include("voters_management.urls"))
 ]

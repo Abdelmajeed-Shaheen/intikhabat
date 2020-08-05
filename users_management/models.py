@@ -47,6 +47,7 @@ class Voter(models.Model):
     updated=models.DateTimeField(auto_now=False,auto_now_add=True)
     identiefier=models.OneToOneField('Voter',on_delete=models.CASCADE,null=True)
     voting_id=models.CharField(max_length=50,null=True)
+    candidate=models.ForeignKey("Candidate",on_delete=models.CASCADE,null=True)
 
     def __str__(self):
         return self.profile
