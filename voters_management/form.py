@@ -1,5 +1,7 @@
 from django import forms 
 from common.models import Address
+from users_management.models import Candidate
+
 class VoterRegForm(forms.Form):
     first_name=forms.CharField(max_length=16,widget=forms.TextInput(
                                                     attrs={
@@ -51,3 +53,15 @@ class VoterRegForm(forms.Form):
     gender=forms.ChoiceField(choices=GENDER_CHOICES)
 
     address=forms.ModelChoiceField(queryset=Address.objects.all())
+
+
+
+class VoterUpdateForm(forms.Form):
+
+    candidate=forms.ModelChoiceField(queryset=Candidate.objects.all())
+    VOTE_STATUS_CHOICES=[
+                ('Voting','مؤيد'),
+                ('Not_sure','متردد'),
+                ('Not_voting','ممتنع')
+                ]
+    gender=forms.ChoiceField(choices=VOTE_STATUS_CHOICES)

@@ -25,16 +25,29 @@
 
 <ul class="nav nav-tabs" id="myTab" role="tablist">
   <li class="nav-item">
-    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#account" role="tab" aria-controls="account" aria-selected="true">الصفحة الشخصية</a>
+    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#details" role="tab" aria-controls="details" aria-selected="true">الصفحة الشخصية</a>
   </li>
 
   <li class="nav-item">
-    <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">المرشحين</a>
+    <a class="nav-link" id="contact-tab" data-toggle="tab" href="#vote" role="tab" aria-controls="vote" aria-selected="false">المرشحين</a>
   </li>
 </ul>
   <div class="tab-content" id= "myTabContent">
-    <div class="tab-pane fade show active" id="account" role="tabpanel" aria-labelledby="account-tab">
+    <div class="tab-pane fade show active" id="details" role="tabpanel" aria-labelledby="details-tab">
       <div class="container mt-5">
+          <div class="row">
+            <div class="col-sm-6">
+                <h2 class="about-title text-aligner">تفاصيل الانتخاب</h2>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-sm-6">
+            <form>
+
+            </form>
+            </div>
+          </div>
         <div class="row">
           <div class="col-sm-6">
             <h2 class="about-title text-aligner">تفاصيل الحساب</h2>
@@ -134,7 +147,20 @@
         </div>
       </div>
     </div>
-  
+    <div class="tab-pane fade show active" id="vote" role="tabpanel" aria-labelledby="vote-tab">
+        <div class="container mt-5">
+          <div class="row">
+            <div class="col-sm-6">
+              <h2 class="about-title text-aligner">اختيار المرشح\قائمة المرشحين</h2>
+            </div>
+          </div>
+          <div class="row text-aligner">
+        
+          </div>
+
+        </div>
+      </div>
+  </div>
 
 {% endblock %}
 
