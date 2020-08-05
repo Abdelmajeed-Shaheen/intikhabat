@@ -64,4 +64,6 @@ class VoterUpdateForm(forms.Form):
                 ('Not_sure','متردد'),
                 ('Not_voting','ممتنع')
                 ]
-    gender=forms.ChoiceField(choices=VOTE_STATUS_CHOICES)
+    vote_status=forms.ChoiceField(choices=VOTE_STATUS_CHOICES,widget=forms.Select(attrs={'class':'form-control'}))
+
+    

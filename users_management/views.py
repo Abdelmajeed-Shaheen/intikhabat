@@ -154,15 +154,7 @@ class UpdateProfile(View):
         
         if userprofile['address'] not in empty:
             user_object['address']=Address.objects.get(id=int(userprofile['address']))
-        # user_object['gender']
-        # userobject={
-        #     'middle_name':userprofile['second_name']  ,
-        #     'last_name':userprofile['third_name'],
-        #     'mobile_number':userprofile['mobile_number'],
-        #     'whatsapp_number':userprofile['whatsapp_number'],
-        #     'address':Address.objects.get(id=int(userprofile['address']))
-        # }
-        
+
         profile.update(**user_object)
         
         return JsonResponse({"user":"success"})
