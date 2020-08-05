@@ -9,6 +9,7 @@ from django.db.utils import IntegrityError
 from django.urls import reverse
 from users_management.models import (UserProfile,ComitteeMember, 
                                      CampaignAdminstrator,CommunicationOfficer)
+from common.models import Address
 from users_management.forms import SignUpForm
 from adminstration.models import Comittee
 import json
@@ -37,7 +38,10 @@ class LoginView(View):
             if user.is_active:
                 if hasattr(user.userprofile, 'candidate'):
                     login(request, user)
-                    return redirect(reverse('main'))
+                
+                    response['redirect_to']=reverse('main')
+
+                    return JsonResponse(response)
 
             else:
                 response["error"]="unauthorized access"
@@ -122,7 +126,27 @@ class CreateUser(View):
 
 
       
+class UpdateProfile(View):
 
+    def post(self,request):
+        userprofile=request.POST.get("user")
+        userprofile=json.loads(userprofile)
+        profile=UserProfile.objects.filter(id=int(userprofile['id']))
+        User.objects.filter(id=request.user.id).update(first_name=userprofile["first_name"],last_name=userprofile["last_name"])
+        
+        userobject={
+            'middle_name':userprofile['second_name'],
+            'last_name':userprofile['third_name'],
+            'mobile_number':userprofile['mobile_number'],
+            'whatsapp_number':userprofile['whatsapp_number'],
+            # 'address':Address.objects.get(id=int(userprofile['address']))
+        }
+        
+        profile.update(**userobject)
+        print(request.user.first_name)
+
+
+        return JsonResponse({"user":"success"})
         
 
 

@@ -1,6 +1,7 @@
 from django import forms
 # from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
+from users_management.models import UserProfile
 
 GENDER_CHOICES=[
                 ('ذكر','ذكر'),
@@ -88,5 +89,4 @@ class SignUpForm(forms.Form):
     date_of_birth=forms.DateField()
     is_manager=forms.BooleanField(widget=forms.CheckboxInput(attrs={'class':'form-check-input'}))
 
-
- 
+    
