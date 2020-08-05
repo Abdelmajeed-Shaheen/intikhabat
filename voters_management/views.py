@@ -1,8 +1,9 @@
 from django.shortcuts import render 
-from django.views.generic import View
-from django.http import JsonResponse
+from django.views.generic import View,DetailView
+from django.http import JsonResponse,HttpResponse
 from django.contrib.auth.models import User
 from users_management.models import Voter,UserProfile
+
 from common.models import Address
 import json
 
@@ -10,6 +11,7 @@ class CreateVoter(View):
 
     def post(self,request):
         voter=json.loads(request.POST.get("voter"))
+
         user_object={
             "first_name":voter['first_name'],
             "last_name":voter['last_name'],
@@ -33,8 +35,9 @@ class CreateVoter(View):
         }
         profile=UserProfile(**profile_object)
         profile.save()
-
-        print(profile)
+        voter=Voter(profile=profile)
+        voter.save()
+        print(voter)
         return JsonResponse({"message":"succes"})    
 
 
@@ -43,6 +46,25 @@ class UpdateVoterProfile(View):
 
     def post(self,request):
         return JsonResponse({"message":"success"})
+
+
+class VoterProfile(DetailView):
+
+    model=UserProfile
+    template_name='voter_profile.html'
+    context_object_name="voter"
+    
+    def get(self,request,pk):
+        voter=self.get_object()
+        addresses_list=Address.objects.all()
+        context={
+            "voter":voter,
+            "addresses_list":addresses_list
+        }
+        if str(self.request.user.id) == str(voter.user.id):
+            return render(request,"voter_profile.html",context)
+        
+        return HttpResponse("not found")
 
 
     

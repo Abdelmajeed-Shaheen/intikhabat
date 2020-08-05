@@ -37,11 +37,15 @@ class LoginView(View):
             
             if user.is_active:
                 if hasattr(user.userprofile, 'candidate'):
-                    login(request, user)
-                
+
                     response['redirect_to']=reverse('main')
 
-                    return JsonResponse(response)
+                elif hasattr(user.userprofile, 'voter'):
+                    response['redirect_to']=reverse('voter-profile',kwargs={'pk':user.userprofile.id})
+
+
+                login(request, user)
+                return JsonResponse(response)
 
             else:
                 response["error"]="unauthorized access"

@@ -40,7 +40,7 @@ class UserProfile(models.Model):
 class Voter(models.Model):
 
     profile=models.OneToOneField(UserProfile, on_delete=models.CASCADE)
-    vote_status=models.CharField(choices=VOTE_STATUS_CHOICES,max_length=50)
+    vote_status=models.CharField(choices=VOTE_STATUS_CHOICES,max_length=50,null=True)
     is_identifier=models.BooleanField(default=False)
     followed_up=models.BooleanField(default=False)
     timestamp=models.DateTimeField(auto_now=True,auto_now_add=False)
@@ -50,8 +50,9 @@ class Voter(models.Model):
     candidate=models.ForeignKey("Candidate",on_delete=models.CASCADE,null=True)
 
     def __str__(self):
-        return self.profile
+        return (self.profile.user.first_name +" "+self.profile.user.last_name)
 
+        
 class Candidate(models.Model):
     
     profile=models.OneToOneField(UserProfile, on_delete=models.CASCADE)
