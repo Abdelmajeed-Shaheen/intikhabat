@@ -10,7 +10,7 @@
         <h1>انتخابات مجلس النواب الاردني</h1>
         <div class="actions">
           <a href="#about" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">مرشح</a>
-          <a href="/" class="btn btn-success" >ناخب</a>
+          <a href="/" class="btn btn-success" data-toggle="modal" data-target="#voterModal">ناخب</a>
         </div>
       </div>
     </div>
@@ -69,8 +69,45 @@
     </div>
   </div>
 </div>
+{% comment %} voter modal {% endcomment %}
+ <div class="modal fade" id="voterModal" tabindex="-1" role="dialog" aria-labelledby="voterLable" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header"> 
+        <h5 class="modal-title" id="voterLable">مرحبا بك </h5>
 
+        </button>
+      </div>
+      <div class="modal-body ">
+       <button type="button" class="btn btn-success btn-lg btn-block" data-toggle="modal" data-target="#loginform">تسجيل دخول</button>
+       <button type="button" class="btn btn-primary btn-lg btn-block" data-toggle="modal" data-target="#regModal">مستخدم جديد</button>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">اغلاق</button>
+        
+      </div>
+    </div>
+  </div>
+</div>
+{% comment %} regform modal {% endcomment %}
+ <div class="modal fade text-aligner" id="regModal" tabindex="-1" role="dialog" aria-labelledby="regLable" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header"> 
+        <h5 class="modal-title" id="regLable">مرحبا بك </h5>
 
+        </button>
+      </div>
+      <div class="modal-body ">
+        {{voter_reg_form.as_p}}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">اغلاق</button>
+        
+      </div>
+    </div>
+  </div>
+</div>
 
 {% endblock  %}
 

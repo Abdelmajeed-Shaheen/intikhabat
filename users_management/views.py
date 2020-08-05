@@ -143,9 +143,7 @@ class UpdateProfile(View):
         }
         
         profile.update(**userobject)
-        print(request.user.first_name)
-
-
+        
         return JsonResponse({"user":"success"})
         
 
