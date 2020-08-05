@@ -137,16 +137,33 @@ class UpdateProfile(View):
         userprofile=json.loads(userprofile)
         profile=UserProfile.objects.filter(id=int(userprofile['id']))
         User.objects.filter(id=request.user.id).update(first_name=userprofile["first_name"],last_name=userprofile["last_name"])
+        user_object={}
+        empty=[None,""]
+
+        if userprofile['second_name'] not in empty:
+            user_object['middle_name']=userprofile['second_name']
+
+        if userprofile['third_name'] not in empty:
+            user_object['last_name']=userprofile['third_name']
         
-        userobject={
-            'middle_name':userprofile['second_name'],
-            'last_name':userprofile['third_name'],
-            'mobile_number':userprofile['mobile_number'],
-            'whatsapp_number':userprofile['whatsapp_number'],
-            # 'address':Address.objects.get(id=int(userprofile['address']))
-        }
+        if userprofile['mobile_number'] not in empty:
+            user_object['mobile_number']=userprofile['mobile_number']
+
+        if userprofile['whatsapp_number'] not in empty:
+            user_object['whatsapp_number']=userprofile['whatsapp_number']
         
-        profile.update(**userobject)
+        if userprofile['address'] not in empty:
+            user_object['address']=Address.objects.get(id=int(userprofile['address']))
+        # user_object['gender']
+        # userobject={
+        #     'middle_name':userprofile['second_name']  ,
+        #     'last_name':userprofile['third_name'],
+        #     'mobile_number':userprofile['mobile_number'],
+        #     'whatsapp_number':userprofile['whatsapp_number'],
+        #     'address':Address.objects.get(id=int(userprofile['address']))
+        # }
+        
+        profile.update(**user_object)
         
         return JsonResponse({"user":"success"})
         

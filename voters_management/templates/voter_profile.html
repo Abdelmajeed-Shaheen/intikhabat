@@ -141,5 +141,41 @@
 {% block js %}
 <script>
 
+$("#updateprofile").on('click',function(){
+  
+  userprofile= new Object()
+  userprofile.first_name=$("#fname").val()
+  userprofile.second_name=$("#sname").val()
+  userprofile.third_name=$("#tname").val()
+  userprofile.last_name=$("#foname").val()
+  userprofile.mobile_number=$("#phno").val()
+  userprofile.whatsapp_number=$("#wano").val()
+  $('#addresses option').each(function() {
+    if (this.selected)
+       userprofile.address=$('#addresses option:selected').val()
+     else
+     userprofile.address="";
+});
+  
+  userprofile.gender=$("#gender option:selected").val()
+  userprofile.dob=$("#dob").val()
+  userprofile.id="{{user.id}}"
+  userjson=JSON.stringify(userprofile)
+  
+  $.ajax({
+    url:"{% url 'update-profile' %}",
+    type:"POST",
+    
+    data:{
+      user:userjson,
+      csrfmiddlewaretoken: "{{csrf_token}}" 
+      },
+    success:function(result){
+      console.log(result)
+      location.reload()
+    }
+  })
+
+})
 </script>
 {% endblock %}
