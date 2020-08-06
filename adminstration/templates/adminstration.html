@@ -25,7 +25,10 @@
 
 <ul class="nav nav-tabs" id="myTab" role="tablist">
   <li class="nav-item">
-    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#account" role="tab" aria-controls="account" aria-selected="true">الصفحة الشخصية</a>
+    <a class="nav-link active" id="stats-tab" data-toggle="tab" href="#stats" role="tab" aria-controls="stats" aria-selected="true">احصائيات الحملة</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link " id="home-tab" data-toggle="tab" href="#account" role="tab" aria-controls="account" aria-selected="false">الصفحة الشخصية</a>
   </li>
   <li class="nav-item">
     <a class="nav-link" id="members-tab" data-toggle="tab" href="#createcomittee" role="tab" aria-controls="home" aria-selected="false">ادارة اللجان</a>
@@ -38,7 +41,120 @@
   </li>
 </ul>
   <div class="tab-content" id= "myTabContent">
-    <div class="tab-pane fade show active" id="account" role="tabpanel" aria-labelledby="account-tab">
+      <div class="tab-pane fade show active" id="stats" role="tabpanel" aria-labelledby="account-tab">
+      <div class="container mt-5">
+       
+          <h2 class="about-title text-aligner">عدد الناخبين المؤيدين للمرشح</h2>
+        
+        <div class="row text-aligner">
+          <div class="col-md-3">
+            <div class="card text-white bg-primary mb-3" style="max-width: 18rem;">
+              <div class="card-header">منطقة ١</div>
+              <div class="card-body">
+                <h5 class="card-title">٥٠</h5>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="card text-white bg-secondary mb-3" style="max-width: 18rem;">
+              <div class="card-header">منطقة ٢</div>
+              <div class="card-body">
+                <h5 class="card-title">١٠٠٠</h5>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="card text-white bg-success mb-3" style="max-width: 18rem;">
+              <div class="card-header">منطقة ٣</div>
+              <div class="card-body">
+                <h5 class="card-title">٦٨٣٢</h5>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="card text-white bg-dark mb-3" style="max-width: 18rem;">
+              <div class="card-header">العدد الكلي</div>
+              <div class="card-body">
+                <h5 class="card-title">٢٠٠٠٠</h5>
+              </div>
+            </div>
+          </div>
+        </div>
+        <h2 class="about-title text-aligner">عدد الناخبين حسب القائمة</h2>
+        <div class="row text-aligner">
+          <div class="col-md-3">
+            <div class="card text-white bg-primary mb-3" style="max-width: 18rem;">
+              <div class="card-header">منطقة ١</div>
+              <div class="card-body">
+                <h5 class="card-title">٦٠٠٠</h5>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="card text-white bg-secondary mb-3" style="max-width: 18rem;">
+              <div class="card-header">منطقة ٢</div>
+              <div class="card-body">
+                <h5 class="card-title">٨١٠٠</h5>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="card text-white bg-success mb-3" style="max-width: 18rem;">
+              <div class="card-header">منطقة ٣</div>
+              <div class="card-body">
+                <h5 class="card-title">٦٨٣٢</h5>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="card text-white bg-dark mb-3" style="max-width: 18rem;">
+              <div class="card-header">العدد الكلي</div>
+              <div class="card-body">
+                <h5 class="card-title">٢٠٠٠٠</h5>
+              </div>
+            </div>
+          </div>
+        </div>
+        <h2 class="about-title text-aligner">عدد الناخبين حسب المنطقة</h2>
+        <div class="row text-aligner">
+          <div class="col-md-3">
+            <div class="card text-white bg-primary mb-3" style="max-width: 18rem;">
+              <div class="card-header">مرشح ١</div>
+              <div class="card-body">
+                <h5 class="card-title">٦٠٠٠</h5>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="card text-white bg-secondary mb-3" style="max-width: 18rem;">
+              <div class="card-header">مرشح ٢</div>
+              <div class="card-body">
+                <h5 class="card-title">٨١٠٠</h5>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="card text-white bg-success mb-3" style="max-width: 18rem;">
+              <div class="card-header">مرشح ٣</div>
+              <div class="card-body">
+                <h5 class="card-title">٦٨٣٢</h5>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="card text-white bg-dark mb-3" style="max-width: 18rem;">
+              <div class="card-header">مجموع الناخبين المسجلين بقوائم مرشحين القائمة </div>
+              <div class="card-body">
+                <h5 class="card-title">٢٠٠٠٠</h5>
+              </div>
+            </div>
+          </div>
+        </div>
+
+    </div>
+      </div>
+
+    <div class="tab-pane fade " id="account" role="tabpanel" aria-labelledby="account-tab">
       <div class="container mt-5">
         <div class="row">
           <div class="col-sm-6">
@@ -134,7 +250,7 @@
         
         </div>
         <div class="row">
-          <button id="updateprofile" class="btn btn-danger">تعديل</button>
+          <button id="updateprofile" class="btn btn-danger" >تعديل</button>
         </div>
       </div>
     </div>
@@ -515,7 +631,7 @@ $('#createmember').on('click',function(){
     type:"POST",
     data:data,
     success:function(result){
-      console.log(result)
+      $("#succesModal").modal('show')
     }
   })
 })
@@ -532,18 +648,7 @@ $('#cmo').on('click',function(){
 
 
 $(document).on("click", ".grant", function () {
-     var user=$(this).attr('data-user')
-
-    //  var showVoter=$('#showVoter_'+user).is(":checked")
-    //  var editVoter=$('#editVoter_'+user).is(":checked")
-    //  var deleteVoter=$('#editVoter_'+user).is(":checked")
-    //  var createVoter=$('#editVoter_'+user).is(":checked")
-
-    //  var showRep=$('#showRep_'+user).is(":checked")
-    //  var editRep=$('#editRep_'+user).is(":checked")
-    //  var deleteRep=$('#deleteRep_'+user).is(":checked")
-    //  var createRep=$('#createRep_'+user).is(":checked")
-     
+     var user=$(this).attr('data-user')     
      var showComm=$('#showComm_'+user).is(":checked")
      var editComm=$('#editComm_'+user).is(":checked")
      var deleteComm=$('#deleteComm_'+user).is(":checked")
@@ -588,7 +693,7 @@ $(document).on("click", ".grant", function () {
          csrfmiddlewaretoken: csrftoken 
        },
        success:function(result){
-        console.log(result)
+        $("#succesModal").modal('show')
        }
      })
      
@@ -603,7 +708,12 @@ $("#updateprofile").on('click',function(){
   userprofile.last_name=$("#foname").val()
   userprofile.mobile_number=$("#phno").val()
   userprofile.whatsapp_number=$("#wano").val()
-  userprofile.address=$("#addresses option:selected").val()
+    $('#addresses option').each(function() {
+    if (this.selected)
+       userprofile.address=$('#addresses option:selected').val()
+     else
+     userprofile.address="";
+});
   userprofile.gender=$("#gender option:selected").val()
   userprofile.dob=$("#dob").val()
   userprofile.id="{{user.id}}"
@@ -619,10 +729,14 @@ $("#updateprofile").on('click',function(){
       csrfmiddlewaretoken: csrftoken 
       },
     success:function(result){
-      console.log(result)
-      location.reload()
+      
+      $("#succesModal").modal('show')
     }
   })
+})
+
+$("#reload").on("click",function(){
+  location.reload()
 })
 </script>
 {% endblock %}
