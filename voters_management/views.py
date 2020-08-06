@@ -49,6 +49,7 @@ class VoterProfile(DetailView):
     
     def get(self,request,pk):
         voter=self.get_object()
+        
         addresses_list=Address.objects.all()
         candidates_list=Candidate.objects.all()
         context={
@@ -68,8 +69,15 @@ class UpdateVoter(View):
         if request.POST.get('voter_id'):
             voter_id=request.POST.get('voter_id')
             voter=Voter.objects.filter(id=int(voter_id))
-            if request.POST.get("status"):
-                voter.update(vote_status=request.POST.get("status"))
+        if request.POST.get("status"):
+            voter.update(vote_status=request.POST.get("status"))
+
+        if request.POST.get('candidate'):
+            candidate=Candidate.objects.get(id=request.POST.get('candidate'))
+            voting_id=(str(candidate.id)+"/"+str(candidate.profile.address.governorate.id)
+                        +"/" +str(candidate.profile.address.district.id)+"/"+voter_id)
+            voter.update(candidate=candidate,voting_id=voting_id)
+
 
         return JsonResponse({"message":"success"})
 

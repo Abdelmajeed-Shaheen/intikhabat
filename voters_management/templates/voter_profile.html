@@ -36,7 +36,7 @@
     <div class="tab-pane fade show active" id="details" role="tabpanel" aria-labelledby="details-tab">
       <div class="container mt-5">
           <div class="row">
-            <div class="col-sm-6">
+            <div class="col-sm-4">
                 <h2 class="about-title text-aligner"> 
                     الحالة الانتخابية:
                     
@@ -52,6 +52,32 @@
                 </h2>
 
             </div>
+            {% if voter.voter.candidate %}
+            <div class="col-sm-3">
+              <h2 class="about-title text-aligner"> 
+                  المرشح:
+                  
+                  
+                   <a href="#" class="btn btn-info">{{voter.voter.candidate.profile.user.first_name}} {{voter.voter.candidate.profile.user.last_name}}</a>
+
+                    
+              </h2>
+
+          </div>
+          {% endif %}
+          {% if voter.voter.voting_id %}
+          <div class="col-sm-4">
+            <h2 class="about-title text-aligner"> 
+                الرقم الانتخابي:
+                
+                
+                 <a href="#" class="btn btn-primary">{{voter.voter.voting_id}}</a>
+
+                  
+            </h2>
+
+        </div>
+        {% endif %}
           </div>
 
 
@@ -163,7 +189,7 @@
           </div>
           <div class="row text-aligner">
             <h5 class="about-title text-aligner">تعديل الحالة الانتخابية:</h5>
-        <form class="form-inline">
+        <form class="form-inline" id="voteStatusForm">
          
               <div class="form-check form-check-inline">
                 <label class="form-check-label" >مؤيد</label>
@@ -184,23 +210,51 @@
         </form>
           </div>
           <div class="row text-aligner">
-          <form method="GET">
-            <div class="form-group">
+          <form method="GET" class="form-inline mb-5">
+            <div class="form-group ml-2 mr-2">
               <input class="form-control" type="text" placeholder="البحث بواسطة اسم المرشح">
               
             </div>
-           <div class="form-group">
+            <div class="form-group ml-2 mr-2">
+              <label for="exampleFormControlSelect1">المنطقة:</label>
+              <select class="form-control mr-2" id="adressList">
+                {% for item in addresses_list %}
+                <option value="{{item.id}}">{{item.governorate}}</option>
+                {% endfor %}
+              </select>
+            </div>
+
+
+
+           <div class="form-group ml-2 mr-2">
             <button  class="btn btn-info"  type="submit">ابحث</button>
            </div>
           </form>
           </div>
           <div class="row text-aligner">
             {% for item in candidates_list %}
-            <div class="card" style="width: 18rem;">
+            <div class="card mb-2 mt-2" style="width: 18rem;">
               <img class="card-img-top" src="{% static 'common/img/candidate.jpg' %}" alt="Card image cap">
               <div class="card-body">
                 <h5 class="card-title">{{item.profile.user.first_name}} {{item.profile.user.last_name}}</h5>
-                <button  class="btn btn-danger" data-toggle="modal" data-target="#selectCandidate">اختيار المرشح</button>
+                <button  class="btn btn-danger" data-toggle="modal" data-target="#candidate_{{item.id}}">اختيار المرشح</button>
+              </div>
+            </div>
+            <div class="modal fade" id="candidate_{{item.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">{{item.profile.user.first_name}} {{item.profile.user.last_name}}</h5>
+          
+                  </div>
+                  <div class="modal-body">
+                     تأكيد اختيار المرشح؟ 
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">الغاء</button>
+                    <button type="button" class="btn btn-success select-candidate" data-candidate="{{item.id}}" data-voter="{{voter.voter.id}}">اختيار</button>
+                  </div>
+                </div>
               </div>
             </div>
             {% endfor %}
@@ -209,27 +263,28 @@
       </div>
   </div>
 
-  
-  <!-- select candidate Modal -->
-  <div class="modal fade" id="selectCandidate" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal fade" id="succesModal" tabindex="-1" role="dialog" aria-labelledby="successModalTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
+         
+  
         </div>
         <div class="modal-body">
-          ...
+          <div class="alert alert-success" role="alert">
+            <h4 class="alert-heading">تمت العملية بنجاح</h4>
+           
+          </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save changes</button>
+          <button type="button" class="btn btn-danger" id="reload" >اغلاق</button>
+         
         </div>
       </div>
     </div>
-  </div>
+    </div>
+  <!-- select candidate Modal -->
+
 {% endblock %}
 
 {% block js %}
@@ -293,7 +348,7 @@ $("#v").prop("checked", false);
 
 $("#changeStatus").on('click',function(event){
   event.preventDefault()
-  status=$(".form-inline").find('input:radio:checked').val()
+  status=$("#voteStatusForm").find('input:radio:checked').val()
   voter_id=$("#voterId").val()
   
   $.ajax({
@@ -304,10 +359,35 @@ $("#changeStatus").on('click',function(event){
       voter_id:voter_id,
       csrfmiddlewaretoken:"{{csrf_token}}",
       success:function(reslut){
-        location.reload()
+        
+        $("#succesModal").modal('show')
       }
     }
   })
+})
+$(".select-candidate").on("click",function(){
+  candidate=$(this).attr('data-candidate')
+  voter=$(this).attr('data-voter')
+  $.ajax({
+    url:"{% url 'edit-voting-status' %}",
+    type:"POST",
+    data:{
+      csrfmiddlewaretoken:"{{csrf_token}}",
+      candidate:candidate,
+      voter_id:voter
+    },
+    success:function(){
+      $("#candidate_"+candidate).modal("hide")
+      $("#succesModal").modal('show')
+    }
+  })
+
+
+})
+
+
+$("#reload").on("click",function(){
+  location.reload()
 })
 </script>
 {% endblock %}
