@@ -3,7 +3,7 @@ from django.views.generic import View,DetailView
 from django.http import JsonResponse,HttpResponse
 from django.contrib.auth.models import User
 from users_management.models import Voter,UserProfile
-from voters_management.form import VoterUpdateForm
+# from voters_management.form import VoterUpdateForm
 from common.models import Address
 import json
 
@@ -50,16 +50,21 @@ class VoterProfile(DetailView):
     def get(self,request,pk):
         voter=self.get_object()
         addresses_list=Address.objects.all()
-        voting_info_form=VoterUpdateForm
         context={
             "voter":voter,
             "addresses_list":addresses_list,
-            "voting_info_form":voting_info_form
+           
         }
         if str(self.request.user.id) == str(voter.user.id):
             return render(request,"voter_profile.html",context)
         
         return HttpResponse("not found")
 
+class UpdateVoter(View):
+
+    def post(self,request):
+        voter=Voter.objects.filter(id=int(request.POST.get('voter_id')))
+        voter.update(vote_status=request.POST.get("status"))
+        return JsonResponse({"message":"success"})
 
     

@@ -38,19 +38,22 @@
           <div class="row">
             <div class="col-sm-6">
                 <h2 class="about-title text-aligner"> 
-                    الحالة الانتخابية:{% if voter.voter.vote_status == "Not_sure" or voter.voter.vote_status == "not_voting" or not voter.voter.vote_status  %}
-                     <a class="btn btn-warning">{{voter.voter.vote_status}}</a>
+                    الحالة الانتخابية:
+                    
+                    {% if voter.voter.vote_status == "Not_sure" %}
+                     <a class="btn btn-warning">متردد</a>
+                      {% elif voter.voter.vote_status == "Not_voting"%}
+                      <a class="btn btn-danger">ممتنع</a>
+                      {% elif not voter.voter.vote_status %}
+                      <a class="btn btn-secnodary">غير محدد</a>
                       {% else %}
-                      <a class="btn btn-success">{{voter.voter.vote_status}}</a>
+                      <a class="btn btn-success">مؤيد</a>
                       {% endif %}
                 </h2>
 
             </div>
           </div>
 
-          <div class="row">
-
-          </div>
 
         <div class="row">
           <div class="col-sm-6">
@@ -159,7 +162,26 @@
             </div>
           </div>
           <div class="row text-aligner">
-        
+            <h5 class="about-title text-aligner">تعديل الحالة الانتخابية:</h5>
+        <form class="form-inline">
+         
+              <div class="form-check form-check-inline">
+                <label class="form-check-label" >مؤيد</label>
+                <input class="form-check-input" type="radio" id="v" value="Voting">
+                
+              </div>
+              <div class="form-check form-check-inline">
+                <label class="form-check-label" >متردد</label>
+                <input class="form-check-input" type="radio" id="ns" value="Not_sure">
+                
+              </div>
+              <div class="form-check form-check-inline ">
+                <label class="form-check-label" >ممتنع</label>
+                <input class="form-check-input" type="radio" id="nv" value="Not_voting">
+              </div>
+              <input type="hidden" id="voterId" value="{{voter.voter.id}}">
+          <button id="changeStatus" class="btn btn-danger mb-2 mr-sm-2">تعديل</button>
+        </form>
           </div>
 
         </div>
@@ -206,6 +228,44 @@ $("#updateprofile").on('click',function(){
     }
   })
 
+})
+
+$("#v").change(function(){
+
+$("#ns").prop("checked", false);
+$("#nv").prop("checked", false);
+
+});
+
+$("#ns").change(function(){
+
+$("#nv").prop("checked", false);
+$("#v").prop("checked", false);
+});
+
+$("#nv").change(function(){
+
+$("#ns").prop("checked", false);
+$("#v").prop("checked", false);
+});
+
+$("#changeStatus").on('click',function(event){
+  event.preventDefault()
+  status=$(".form-inline").find('input:radio:checked').val()
+  voter_id=$("#voterId").val()
+  
+  $.ajax({
+    url:"{% url 'edit-voting-status' %}",
+    type:"POST",
+    data:{
+      status:status,
+      voter_id:voter_id,
+      csrfmiddlewaretoken:"{{csrf_token}}",
+      success:function(reslut){
+        location.reload()
+      }
+    }
+  })
 })
 </script>
 {% endblock %}
