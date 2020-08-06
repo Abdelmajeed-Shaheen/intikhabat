@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.views.generic import View,DetailView
 from django.http import JsonResponse,HttpResponse
 from django.contrib.auth.models import User
-from users_management.models import Voter,UserProfile
+from users_management.models import Voter,UserProfile,Candidate
 # from voters_management.form import VoterUpdateForm
 from common.models import Address
 import json
@@ -50,9 +50,11 @@ class VoterProfile(DetailView):
     def get(self,request,pk):
         voter=self.get_object()
         addresses_list=Address.objects.all()
+        candidates_list=Candidate.objects.all()
         context={
             "voter":voter,
             "addresses_list":addresses_list,
+            "candidates_list":candidates_list
            
         }
         if str(self.request.user.id) == str(voter.user.id):
@@ -63,8 +65,12 @@ class VoterProfile(DetailView):
 class UpdateVoter(View):
 
     def post(self,request):
-        voter=Voter.objects.filter(id=int(request.POST.get('voter_id')))
-        voter.update(vote_status=request.POST.get("status"))
+        if request.POST.get('voter_id'):
+            voter_id=request.POST.get('voter_id')
+            voter=Voter.objects.filter(id=int(voter_id))
+            if request.POST.get("status"):
+                voter.update(vote_status=request.POST.get("status"))
+
         return JsonResponse({"message":"success"})
 
     
