@@ -31,7 +31,7 @@ class UserProfile(models.Model):
     timestamp=models.DateTimeField(auto_now=True,auto_now_add=False)
     updated=models.DateTimeField(auto_now=False,auto_now_add=True)
     address=models.ForeignKey(Address,on_delete=models.CASCADE,null=True,blank=True)
-
+    work_field=models.ForeignKey('WorkField',on_delete=models.CASCADE,null=True,blank=True)
     def __str__(self):
         return self.user.username
 
@@ -148,4 +148,9 @@ class CustomVoterssPermissions(models.Model):
         return self.name
 
 
+class WorkField(models.Model):
+    name=models.CharField(max_length=255)
+    description=models.TextField(null=True,blank=True)
 
+    def __str__(self):
+        return self.name

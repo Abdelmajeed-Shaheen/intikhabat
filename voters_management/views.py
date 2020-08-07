@@ -71,10 +71,15 @@ class UpdateVoter(View):
             voter=Voter.objects.filter(id=int(voter_id))
         if request.POST.get("status"):
             voter.update(vote_status=request.POST.get("status"))
-
+        if request.POST.get("status") == "Not_voting":
+            status_id="0"
+        elif request.POST.get("status") == "Not_sure":
+            status_id="1"
+        else:
+            status_id="3"
         if request.POST.get('candidate'):
             candidate=Candidate.objects.get(id=request.POST.get('candidate'))
-            voting_id=(str(candidate.id)+"/"+str(candidate.profile.address.governorate.id)
+            voting_id=(status_id+"/"+str(candidate.id)+"/"+str(candidate.profile.address.governorate.id)
                         +"/" +str(candidate.profile.address.district.id)+"/"+voter_id)
             voter.update(candidate=candidate,voting_id=voting_id)
 

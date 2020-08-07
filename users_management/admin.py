@@ -7,7 +7,8 @@ from .models import (
                      CustomComitteePermission,
                      CustomMembersPermissions,
                      CustomReportsPermissions,
-                     CustomVoterssPermissions
+                     CustomVoterssPermissions,
+                     WorkField
                      )
 
 @admin.register(UserProfile)
@@ -55,4 +56,6 @@ class AdminCustomVoterssPermissions(admin.ModelAdmin):
 
 
 
-
+@admin.register(WorkField)
+class AdminWorkField(admin.ModelAdmin):
+    list_display=['name']
