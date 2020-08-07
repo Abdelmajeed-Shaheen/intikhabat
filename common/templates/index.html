@@ -146,7 +146,12 @@
               <label >العنوان</label>
               {{voter_reg_form.address}}
             </div>
+               <div class="col-sm-4">
+              <label >طبيعة العمل</label>
+              {{voter_reg_form.work}}
+            </div>
           </div>
+
           <div class="form-row mb-5">
             <div class="col-sm-4">
               <label >الرقم السري</label>
@@ -206,6 +211,7 @@
       
 
       success:function (result) {
+        
         window.location.replace(result.redirect_to);
       },
     })
@@ -222,6 +228,7 @@ $('#register').on('click',function(){
   userprofile.mobile_number=$("#id_mobile_number").val()
   userprofile.whatsapp_number=$("#id_whatsapp_number").val()
   userprofile.address=$("#id_address option:selected").val()
+  userprofile.work=$("#id_work option:selected").val()
   userprofile.gender=$("#id_gender option:selected").val()
   day=$('#id_dob_day').val()
   month=$('#id_dob_month').val()
@@ -229,7 +236,7 @@ $('#register').on('click',function(){
   userprofile.dob=(year+"-"+month+"-"+day)
   userprofile.email=$("#id_email").val()
   userjson=JSON.stringify(userprofile)
-  console.log(userjson)
+  
 
   $.ajax({
     url:"{% url 'create-voter' %}",
