@@ -128,9 +128,9 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT=os.path.join(BASE_DIR,'static')
-STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'static'),
-)
+# STATICFILES_DIRS = (
+#     os.path.join(BASE_DIR, 'static'),
+# )
 # LOCAL_STATIC_CDN=os.path.join(os.path.dirname(BASE_DIR),'static_cdn')
 # STATIC_ROOT=os.path.join(LOCAL_STATIC_CDN,'static')
 # STATICFILES_DIRS=[
