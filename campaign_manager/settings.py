@@ -25,7 +25,7 @@ SECRET_KEY = 'ixac3+_w+xx26vpz$jdvq89g!5@lavg+*94v9k)1s+wqo!lqwa'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['0.0.0.0','127.0.0.1']
+ALLOWED_HOSTS = ['0.0.0.0','127.0.0.1','blooming-fortress-61534.herokuapp.com']
 
 
 # Application definition
