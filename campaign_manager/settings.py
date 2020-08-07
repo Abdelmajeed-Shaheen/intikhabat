@@ -84,7 +84,7 @@ DATABASES = {
         'NAME': 'jpems',
         'USER': 'postgres',
         'PASSWORD': 'postgres',
-        'HOST': '',
+        'HOST': '*',
         'PORT': '5432',
     }
 }
