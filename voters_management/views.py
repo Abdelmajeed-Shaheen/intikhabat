@@ -2,7 +2,8 @@ from django.shortcuts import render
 from django.views.generic import View,DetailView
 from django.http import JsonResponse,HttpResponse
 from django.contrib.auth.models import User
-from users_management.models import Voter,UserProfile,Candidate
+from django.contrib.auth.hashers import make_password
+from users_management.models import Voter,UserProfile,Candidate,WorkField
 # from voters_management.form import VoterUpdateForm
 from common.models import Address
 import json
@@ -17,11 +18,12 @@ class CreateVoter(View):
             "last_name":voter['last_name'],
             "username":(voter['first_name']+voter['last_name']),
             "email":voter['email'],
-            "password":voter['pwd']
+            "password":make_password(voter['pwd'])
         }
         
         user=User(**user_object)
         user.save()
+        voter_work=WorkField.objects.get(id=int(voter['work']))
         profile_object={
             "mobile_number":voter['mobile_number'],
             "whatsapp_number":voter['whatsapp_number'],
@@ -30,6 +32,7 @@ class CreateVoter(View):
             "date_of_birth":voter['dob'],
             "gender":voter["gender"],
             "address":Address.objects.get(id=int(voter['address'])),
+            "work_field":voter_work,
             "user":user
             
         }

@@ -1,6 +1,6 @@
 from django import forms 
 from common.models import Address
-from users_management.models import Candidate
+from users_management.models import Candidate,WorkField
 
 class VoterRegForm(forms.Form):
     first_name=forms.CharField(max_length=16,widget=forms.TextInput(
@@ -53,6 +53,7 @@ class VoterRegForm(forms.Form):
     gender=forms.ChoiceField(choices=GENDER_CHOICES)
 
     address=forms.ModelChoiceField(queryset=Address.objects.all())
+    work=forms.ModelChoiceField(queryset=WorkField.objects.all())
 
 
 
