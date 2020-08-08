@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
+import dj_database_url
+import dotenv
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -25,7 +27,7 @@ SECRET_KEY = 'ixac3+_w+xx26vpz$jdvq89g!5@lavg+*94v9k)1s+wqo!lqwa'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['0.0.0.0','127.0.0.1','blooming-fortress-61534.herokuapp.com']
 
 
 # Application definition
@@ -51,6 +53,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'campaign_manager.urls'
@@ -77,17 +80,18 @@ WSGI_APPLICATION = 'campaign_manager.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
-DATABASES = {
-      'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'jpems',
-        'USER': 'postgres',
-        'PASSWORD': 'postgres',
-        'HOST': '*',
-        'PORT': '5432',
-    }
-}
-
+# DATABASES = {
+#       'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'jpems',
+#         'USER': 'postgres',
+#         'PASSWORD': 'postgres',
+#         'HOST': '*',
+#         'PORT': '5432',
+#     }
+# }
+DATABASES = {}
+DATABASES['default'] = dj_database_url.config(conn_max_age=600)
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
@@ -126,11 +130,15 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
-LOCAL_STATIC_CDN=os.path.join(os.path.dirname(BASE_DIR),'static_cdn')
-STATIC_ROOT=os.path.join(LOCAL_STATIC_CDN,'static')
-STATICFILES_DIRS=[
-    os.path.join(BASE_DIR,'staticfiles')
-]
+STATIC_ROOT=os.path.join(BASE_DIR,'static')
+# STATICFILES_DIRS = (
+#     os.path.join(BASE_DIR, 'static'),
+# )
+# LOCAL_STATIC_CDN=os.path.join(os.path.dirname(BASE_DIR),'static_cdn')
+# STATIC_ROOT=os.path.join(LOCAL_STATIC_CDN,'static')
+# STATICFILES_DIRS=[
+#     os.path.join(BASE_DIR,'staticfiles')
+# ]
 
-MEDIA_ROOT=os.path.join(LOCAL_STATIC_CDN,'media')
+MEDIA_ROOT=os.path.join(BASE_DIR,'media')
 MEDIA_URL='/media/'

@@ -1,0 +1,535 @@
+{% extends 'candidate_base.html' %}
+
+
+{% block extra_content %}
+  <header id="header">
+    <div class="container-ar d-flex align-items-center" >
+
+      {% comment %} <a href="index.html" class="logo mr-auto"><img src="assets/img/logo.png" alt=""></a> {% endcomment %}
+      <!-- Uncomment below if you prefer to use a text logo -->
+      
+
+      <nav class="nav-menu d-none d-lg-block">
+        <ul>
+          <li><a href="#about">تسحيل خروج</a></li>
+          <li><a href="#services">اتصل بنا</a></li>
+
+
+        </ul>
+      </nav><!-- .nav-menu -->
+
+    </div>
+  </header>
+{% endblock %}
+{% block main %}
+
+<ul class="nav nav-tabs" id="myTab" role="tablist">
+
+  <li class="nav-item">
+    <a class="nav-link " id="home-tab" data-toggle="tab" href="#account" role="tab" aria-controls="account" aria-selected="false">الصفحة الشخصية</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="members-tab" data-toggle="tab" href="#createcomittee" role="tab" aria-controls="home" aria-selected="false">ادارة اللجان</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false"> الاعضاء</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">التقارير</a>
+  </li>
+</ul>
+  <div class="tab-content" id= "myTabContent">
+
+
+    <div class="tab-pane fade show active " id="account" role="tabpanel" aria-labelledby="account-tab">
+      <div class="container mt-5">
+        <div class="row">
+          <div class="col-sm-6">
+            <h2 class="about-title text-aligner">تفاصيل الحساب</h2>
+          </div>
+        </div>
+        <div class="row text-aligner">
+          <form>
+            
+          <div class="form-row">
+            <div class="col-sm-3">
+              
+                <div class="form-group">
+                  <label> الاسم الاول</label>
+                  <input type="text" class="form-control" id="fname" placeholder="الاسم الاول" value="{{user.user.first_name}}">
+                </div>
+             
+            </div>
+            <div class="col-sm-3">
+              
+                <div class="form-group">
+                  <label>اسم الاب</label>
+                  <input type="text" class="form-control" id="sname" placeholder="اسم الاب" value="{{user.middle_name}}">
+                </div>
+              
+            </div>
+            <div class="col-sm-3">
+              
+              <div class="form-group">
+                <label>اسم الجد</label>
+                <input type="text" class="form-control" id="tname" placeholder="الاسم الجد" value="{{user.last_name}}">
+              </div>
+            
+          </div>
+          
+          <div class="col-sm-3">
+              
+            <div class="form-group">
+              <label>اسم العائلة</label>
+              <input type="text" class="form-control" id="foname" placeholder="اسم العائلة" value="{{user.user.last_name}}">
+            </div>
+          
+        </div>           
+          </div>
+          <div class="form-row">
+            <div class="col-sm-3">             
+              <div class="form-group">
+                <label>رقم الهاتف</label>
+                <input type="text" class="form-control" id="phno" placeholder="رقم الهاتف" value="{{user.mobile_number}}">
+              </div>
+            </div>
+            <div class="col-sm-3">             
+              <div class="form-group">
+                <label>رقم الواتساب</label>
+                <input type="text" class="form-control" id="wano" placeholder="رقم الواتساب" value="{{user.mobile_number}}">
+              </div>
+            </div>
+
+            <div class="col-sm-3">
+              <div class="form-group">
+                <label >العنوان</label>
+                <select multiple class="form-control" id="addresses">
+                  {% for address in addresses_list %}
+                  <option value="{{address.id}}">{{address.governorate}}/{{address.district}}</option>
+                  {% endfor %}
+ 
+                </select>
+              </div>
+            </div>
+            
+
+
+          </div>
+          
+        </form>
+        
+        </div>
+        <div class="row">
+          <button id="updateprofile" class="btn btn-danger" >تعديل</button>
+        </div>
+      </div>
+    </div>
+  
+  <div class="tab-pane fade " id="createcomittee" role="tabpanel" aria-labelledby="home-tab">
+ 
+    <div class="container mt-5">
+      <div class="row">
+        
+          <div class="row">
+            <div class="col-sm-6">
+              <div class='form-group text-aligner'>
+                <button  id='cm' class="btn btn-danger mb-2"  data-toggle="modal" data-target="#createComitteeMember">انشاء عضو لجنة </button>
+              </div>
+            </div>
+          </div>
+
+        
+      </div>
+    <div class="row">      
+    <div class="col-sm-6">
+      
+      <h2 class="about-title text-aligner">{{comittee.name}}</h2>
+      <table class="table table-striped table-dark">
+        <thead>
+          <tr>
+            <th scope="col">الحالة</th>
+            <th scope="col">مدير اللجنة</th>
+            
+          </tr>
+        </thead>
+        <tbody>
+          
+          <tr>
+           
+            {% if comittee.is_active %}
+            <td>فعالة</td>
+            {% else %}
+            <td>غير فعالة</td>
+            {% endif %}
+            <td>{{comittee.candidate.campaignadminstrator_set.first}}</td>
+            <td><button class="btn btn-danger">تعديل</button></td>
+          </tr>
+          
+
+        </tbody>
+      </table>
+    </div>
+    </div>
+
+  </div>
+
+  </div>
+
+  <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+   
+    <div class="container mt-5">
+      <div class="row">
+ 
+      <div class="col-sm-8">
+        <h2 class="about-title text-aligner">مدير الحملة</h2>
+        <table class="table table-striped table-dark">
+          <thead>
+            <tr>
+              <th scope="col">اسم المدير</th>
+              <th scope="col">رقم الهاتف</th>
+              <th scope="col">البريد الالكتروني</th>
+              
+            </tr>
+          </thead>
+          <tbody>
+            
+            <tr>
+              <th scope="row">{{campaign_manager.profile.user.first_name}}  {{campaign_manager.profile.user.last_name}}</th>
+              <td>{{campaign_manager.profile.mobile_number}}</td>
+              <td>{{campaign_manager.profile.user.email}}</td>
+              
+            </tr>
+            
+  
+          </tbody>
+        </table>
+      </div>
+
+      </div>
+    <div class="row">
+      <div class="col-md-8">
+        <h2 class="about-title text-aligner">اعضاء اللجنة</h2>
+        <table class="table table-striped table-dark">
+          <thead>
+            <tr>
+              <th scope="col">اسم العضو</th>
+              
+              <th scope="col">رقم الهاتف</th>
+              <th scope="col">البريد الالكتروني</th>
+              <th scope="col">اللجنة</th>
+              <th scope="col">الحالة الادارية</th>
+              <th scope="col">تعديل</th>
+              <th scope="col">صلاحيات</th>
+              
+            </tr>
+          </thead>
+          <tbody>
+            {% for comittee_member in comittees_members %}
+            <tr>
+              <th scope="row">{{comittee_member.profile.user.first_name}}  {{comittee_member.profile.user.last_name}}</th>
+              <td>{{comittee_member.profile.mobile_number}}</td>
+              <td>{{comittee_member.profile.user.email}}</td>            
+              <td>{{comittee_member.comittee}}</td>
+              {% if comittee_member.is_manager %}
+              <td>مدير</td>
+              {% else %}
+              <td>عضو</td>
+              {% endif %}
+              <td><button class="btn btn-success">تعديل</button></td>
+              <td><button class="btn btn-danger" data-toggle="modal" data-target="#modal_{{comittee_member.id}}">صلاحيات</button></td>
+            </tr>
+            <div class="modal fade" id="modal_{{comittee_member.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel"> صلاحيات المستخدم: {{comittee_member.profile.user.first_name}}  {{comittee_member.profile.user.last_name}}</h5>
+
+                    </button>
+                  </div>
+                  <div class="modal-body text-aligner">
+                    <form>
+                      <h4> المستخدمين:</h4>
+                      <div class="row mt-2">
+                        
+                       
+                      <div class="col-sm-3">
+                        <div class="form-check"> 
+                          <label class="form-check-label" for="defaultCheck1"></label>
+                          عرض
+                        </label>                       
+                          <input class="form-check-input" type="checkbox" value="" id="showUser_{{comittee_member.id}}">  
+                        </div>
+                      </div>
+                      <div class="col-sm-3">
+                        <div class="form-check"> 
+                          <label class="form-check-label" for="defaultCheck1"></label>
+                          تعديل
+                        </label>                       
+                          <input class="form-check-input" type="checkbox" id="editUser_{{comittee_member.id}}">  
+                        </div>
+                      </div>
+                      <div class="col-sm-3">
+                        <div class="form-check"> 
+                          <label class="form-check-label" for="defaultCheck1"></label>
+                          حذف
+                        </label>                       
+                          <input class="form-check-input" type="checkbox"id="deleteUser_{{comittee_member.id}}">  
+                        </div>
+                      </div>
+                      <div class="col-sm-3">
+                        <div class="form-check"> 
+                          <label class="form-check-label" for="defaultCheck1"></label>
+                          انشاء
+                        </label>                       
+                          <input class="form-check-input" type="checkbox"  id="createUser_{{comittee_member.id}}">  
+                        </div>
+                      </div>
+                      </div> 
+                      <h4> اللجان:</h4>
+                      <div class="row mt-2">
+                        
+                       
+                      <div class="col-sm-3">
+                        <div class="form-check"> 
+                          <label class="form-check-label" for="defaultCheck1"></label>
+                          عرض
+                        </label>                       
+                          <input class="form-check-input" type="checkbox" value="" id="createComm_{{comittee_member.id}}">  
+                        </div>
+                      </div>
+                      <div class="col-sm-3">
+                        <div class="form-check"> 
+                          <label class="form-check-label" for="defaultCheck1"></label>
+                          تعديل
+                        </label>                       
+                          <input class="form-check-input" type="checkbox" value="" id="editComm_{{comittee_member.id}}">  
+                        </div>
+                      </div>
+                      <div class="col-sm-3">
+                        <div class="form-check"> 
+                          <label class="form-check-label" for="defaultCheck1"></label>
+                          حذف
+                        </label>                       
+                          <input class="form-check-input" type="checkbox" value="" id="deleteComm_{{comittee_member.id}}">  
+                        </div>
+                      </div>
+                      <div class="col-sm-3">
+                        <div class="form-check"> 
+                          <label class="form-check-label" for="defaultCheck1"></label>
+                          انشاء
+                        </label>                       
+                          <input class="form-check-input" type="checkbox" value="" id="createComm_{{comittee_member.id}}">  
+                        </div>
+                      </div>
+                      </div> 
+
+                      <h4> التقارير:</h4>
+                      <div class="row mt-2">
+                        
+                       
+                      <div class="col-sm-3">
+                        <div class="form-check"> 
+                          <label class="form-check-label" for="defaultCheck1"></label>
+                          عرض
+                        </label>                       
+                          <input class="form-check-input" type="checkbox" value="" id="showRep_{{comittee_member.id}}">  
+                        </div>
+                      </div>
+                      <div class="col-sm-3">
+                        <div class="form-check"> 
+                          <label class="form-check-label" for="defaultCheck1"></label>
+                          تعديل
+                        </label>                       
+                          <input class="form-check-input" type="checkbox" value="" id="editRep_{{comittee_member.id}}">  
+                        </div>
+                      </div>
+                      <div class="col-sm-3">
+                        <div class="form-check"> 
+                          <label class="form-check-label" for="defaultCheck1"></label>
+                          حذف
+                        </label>                       
+                          <input class="form-check-input" type="checkbox" value="" id="deleteRep_{{comittee_member.id}}">  
+                        </div>
+                      </div>
+                      <div class="col-sm-3">
+                        <div class="form-check"> 
+                          <label class="form-check-label" for="defaultCheck1"></label>
+                          انشاء
+                        </label>                       
+                          <input class="form-check-input" type="checkbox" value="" id="createRep_{{comittee_member.id}}">  
+                        </div>
+                      </div>
+                      </div> 
+                     
+                      <h4> الناخبين:</h4>
+                      <div class="row mt-2">
+                        
+                       
+                      <div class="col-sm-3">
+                        <div class="form-check"> 
+                          <label class="form-check-label" for="defaultCheck1"></label>
+                          عرض
+                        </label>                       
+                          <input class="form-check-input" type="checkbox" value="" id="showVoter_{{comittee_member.id}}">  
+                        </div>
+                      </div>
+                      <div class="col-sm-3">
+                        <div class="form-check"> 
+                          <label class="form-check-label" for="defaultCheck1"></label>
+                          تعديل
+                        </label>                       
+                          <input class="form-check-input" type="checkbox" value="" id="editVoter_{{comittee_member.id}}">  
+                        </div>
+                      </div>
+                      <div class="col-sm-3">
+                        <div class="form-check"> 
+                          <label class="form-check-label" for="defaultCheck1"></label>
+                          حذف
+                        </label>                       
+                          <input class="form-check-input" type="checkbox" value="" id="deleteVoter_{{comittee_member.id}}">  
+                        </div>
+                      </div>
+                      <div class="col-sm-3">
+                        <div class="form-check"> 
+                          <label class="form-check-label" for="defaultCheck1"></label>
+                          انشاء
+                        </label>                       
+                          <input class="form-check-input" type="checkbox" value="" id="createVoter{{comittee_member.id}}">  
+                        </div>
+                      </div>
+                      </div>    
+                    </form>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">اغلاق</button>
+                    <button type="button" class="btn btn-success grant" id='grantPermit' data-user="{{comittee_member.id}}">حفظ</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            {% endfor %}
+  
+          </tbody>
+        </table>
+      </div>
+    </div>
+  
+    </div>
+  </div>
+
+  <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">...</div>
+</div>
+
+{% include 'modals.html' %}
+{% endblock %}
+
+{% block js %}
+<script>
+  var csrftoken='{{ csrf_token }}'
+  function getFormData(){
+    data={
+      first_name:$('#id_first_name').val(),
+      mobile_number:$('#id_mobile_number').val(),
+      email:$('#id_email').val(),
+      last_name:$('#id_last_name').val(),
+      third_name:$('#id_last_name').val(),
+      usertype:$('#usertype').val(),
+      middle_name:$('#id_middle_name').val(),
+      csrfmiddlewaretoken:csrftoken  
+    }
+    return data
+  }
+
+
+$(document).on("click", ".grant", function () {
+     var user=$(this).attr('data-user')     
+     var showComm=$('#showComm_'+user).is(":checked")
+     var editComm=$('#editComm_'+user).is(":checked")
+     var deleteComm=$('#deleteComm_'+user).is(":checked")
+     var createComm=$('#createComm_'+user).is(":checked")
+
+     var showUser=$('#showUser_'+user).is(":checked")
+     var editUser=$('#editUser_'+user).is(":checked")
+     var deleteUser=$('#deleteUser_'+user).is(":checked")
+     var createUser=$('#createUser_'+user).is(":checked")
+     
+     commPerm={
+       'show':showComm,
+       'edit':editComm,
+       'delete':deleteComm,
+       'create':createComm,
+     }
+
+      var comitteePerm=new Object();
+      comitteePerm.show=showComm
+      comitteePerm.edit=editComm
+      comitteePerm.delete=deleteComm
+      comitteePerm.create=createComm
+
+      var userPerm = new Object();
+      userPerm.show = showUser;
+      userPerm.edit = editUser;
+      userPerm.delete = deleteUser;
+      userPerm.create=createUser;
+      userJson=JSON.stringify(userPerm)
+      comitteeJson=JSON.stringify(comitteePerm)
+      
+      console.log(userJson)
+      console.log(comitteeJson)
+     
+     $.ajax({
+       url:"{% url 'grant-permession' %}",
+       type:"POST",
+       data:{
+         userPerm:userJson,
+         commPerm:comitteeJson,
+         userId:user,
+         csrfmiddlewaretoken: csrftoken 
+       },
+       success:function(result){
+        $("#succesModal").modal('show')
+       }
+     })
+     
+});
+
+$("#updateprofile").on('click',function(){
+  
+  userprofile= new Object()
+  userprofile.first_name=$("#fname").val()
+  userprofile.second_name=$("#sname").val()
+  userprofile.third_name=$("#tname").val()
+  userprofile.last_name=$("#foname").val()
+  userprofile.mobile_number=$("#phno").val()
+  userprofile.whatsapp_number=$("#wano").val()
+    $('#addresses option').each(function() {
+    if (this.selected)
+       userprofile.address=$('#addresses option:selected').val()
+     else
+     userprofile.address="";
+});
+  userprofile.id="{{user.id}}"
+  userjson=JSON.stringify(userprofile)
+  console.log(userprofile)
+
+  $.ajax({
+    url:"{% url 'update-profile' %}",
+    type:"POST",
+    
+    data:{
+      user:userjson,
+      csrfmiddlewaretoken: csrftoken 
+      },
+    success:function(result){
+      
+      $("#succesModal").modal('show')
+    }
+  })
+})
+
+$("#reload").on("click",function(){
+  location.reload()
+})
+</script>
+{% endblock %}

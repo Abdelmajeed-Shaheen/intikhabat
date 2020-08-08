@@ -30,8 +30,9 @@ class UserProfile(models.Model):
     date_of_birth=models.DateField()
     timestamp=models.DateTimeField(auto_now=True,auto_now_add=False)
     updated=models.DateTimeField(auto_now=False,auto_now_add=True)
-    address=models.ForeignKey(Address,on_delete=models.CASCADE)
-
+    address=models.ForeignKey(Address,on_delete=models.CASCADE,null=True,blank=True)
+    work_field=models.ForeignKey('WorkField',on_delete=models.CASCADE,null=True,blank=True)
+    name_string=models.CharField(max_length=255,null=True,unique=True)
     def __str__(self):
         return self.user.username
 
@@ -40,28 +41,35 @@ class UserProfile(models.Model):
 class Voter(models.Model):
 
     profile=models.OneToOneField(UserProfile, on_delete=models.CASCADE)
-    vote_status=models.CharField(choices=VOTE_STATUS_CHOICES,max_length=50)
+    vote_status=models.CharField(choices=VOTE_STATUS_CHOICES,max_length=50,null=True)
     is_identifier=models.BooleanField(default=False)
     followed_up=models.BooleanField(default=False)
     timestamp=models.DateTimeField(auto_now=True,auto_now_add=False)
     updated=models.DateTimeField(auto_now=False,auto_now_add=True)
-    identiefier=models.OneToOneField('Voter',on_delete=models.CASCADE,null=True)
-    voting_id=models.CharField(max_length=50,null=True)
+    identiefier=models.OneToOneField('Voter',on_delete=models.CASCADE,null=True,blank=True)
+    voting_id=models.CharField(max_length=50,null=True,blank=True)
+    candidate=models.ForeignKey("Candidate",on_delete=models.CASCADE,null=True,blank=True)
 
     def __str__(self):
-        return self.profile
+        return (self.profile.user.first_name +" "+self.profile.user.last_name)
 
+        
 class Candidate(models.Model):
     
     profile=models.OneToOneField(UserProfile, on_delete=models.CASCADE)
-    comittees=models.ForeignKey(to='adminstration.Comittee',on_delete=models.CASCADE,related_name='comittees_list')
     timestamp=models.DateTimeField(auto_now=True,auto_now_add=False)
     updated=models.DateTimeField(auto_now=False,auto_now_add=True)
     election_list=models.OneToOneField(to='adminstration.ElectionList',on_delete=models.CASCADE,null=True)
+    
+    class Meta:
+        permissions = [
+            ("create_commitee", "Can create commitee"),
+            ("add_committee_member", "can add commitee member"),
+        ]
     # profile_picture=models.ImageField(upload_to="path")
 
     def __str__(self):
-        return self.profile
+        return self.profile.user.username
 
 class CampaignAdminstrator(models.Model):
 
@@ -71,7 +79,7 @@ class CampaignAdminstrator(models.Model):
     updated=models.DateTimeField(auto_now=False,auto_now_add=True)
 
     def __str__(self):
-        return self.profile
+        return (self.profile.user.first_name +" "+ self.profile.user.last_name)
 
 class ComitteeMember(models.Model):
 
@@ -79,13 +87,13 @@ class ComitteeMember(models.Model):
     candidate=models.ForeignKey('Candidate',on_delete=models.CASCADE)
     timestamp=models.DateTimeField(auto_now=True,auto_now_add=False)
     updated=models.DateTimeField(auto_now=False,auto_now_add=True)
-    description=models.TextField()
-    notes=models.TextField()
+    description=models.TextField(null=True,blank=True)
+    notes=models.TextField(null=True,blank=True)
     is_manager=models.BooleanField(default=False)
-    comittee=models.OneToOneField(to='adminstration.Comittee',on_delete=models.CASCADE)
+    comittee=models.ForeignKey(to='adminstration.Comittee',on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.profile
+        return self.profile.user.username
 
     
 class CommunicationOfficer(models.Model):
@@ -93,5 +101,57 @@ class CommunicationOfficer(models.Model):
     comittee=models.OneToOneField(to='adminstration.Comittee',on_delete=models.CASCADE)
 
     def __str__(self):
-        self.profile
+        return self.profile.user.username
 
+class CustomComitteePermission(models.Model):
+    can_view_comittee=models.BooleanField()
+    can_update_comittee=models.BooleanField()
+    can_create_comittee=models.BooleanField()
+    can_remove_comittee=models.BooleanField()
+    name='manage comittee'
+    user=models.ForeignKey(UserProfile,on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.name
+    
+class CustomMembersPermissions(models.Model):
+    can_view_member=models.BooleanField()
+    can_update_member=models.BooleanField()
+    can_create_member=models.BooleanField()
+    can_remove_member=models.BooleanField()
+    name='manage members'
+    user=models.ForeignKey(UserProfile,on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.name
+
+
+class CustomReportsPermissions(models.Model):
+    can_view_report=models.BooleanField()
+    can_update_report=models.BooleanField()
+    can_create_report=models.BooleanField()
+    can_remove_report=models.BooleanField()
+    name='manage reports'
+    user=models.ForeignKey(UserProfile,on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.name
+    
+class CustomVoterssPermissions(models.Model):
+    can_view_voter=models.BooleanField()
+    can_update_voter=models.BooleanField()
+    can_create_voter=models.BooleanField()
+    can_remove_voter=models.BooleanField()
+    name='manage voters'
+    user=models.ForeignKey(UserProfile,on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.name
+
+
+class WorkField(models.Model):
+    name=models.CharField(max_length=255)
+    description=models.TextField(null=True,blank=True)
+
+    def __str__(self):
+        return self.name

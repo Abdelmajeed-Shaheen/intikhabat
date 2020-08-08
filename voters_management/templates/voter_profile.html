@@ -1,0 +1,393 @@
+{% extends 'candidate_base.html' %}
+{% load staticfiles %}
+
+{% block extra_content %}
+  <header id="header">
+    <div class="container-ar d-flex align-items-center" >
+
+      {% comment %} <a href="index.html" class="logo mr-auto"><img src="assets/img/logo.png" alt=""></a> {% endcomment %}
+      <!-- Uncomment below if you prefer to use a text logo -->
+      
+
+      <nav class="nav-menu d-none d-lg-block">
+        <ul>
+          <li><a href="#about">تسحيل خروج</a></li>
+          <li><a href="#services">اتصل بنا</a></li>
+
+
+        </ul>
+      </nav><!-- .nav-menu -->
+
+    </div>
+  </header>
+{% endblock %}
+{% block main %}
+
+<ul class="nav nav-tabs" id="myTab" role="tablist">
+  <li class="nav-item">
+    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#details" role="tab" aria-controls="details" aria-selected="true">الصفحة الشخصية</a>
+  </li>
+
+  <li class="nav-item">
+    <a class="nav-link" id="contact-tab" data-toggle="tab" href="#vote" role="tab" aria-controls="vote" aria-selected="false">المرشحين</a>
+  </li>
+</ul>
+  <div class="tab-content" id= "myTabContent">
+    <div class="tab-pane fade show active" id="details" role="tabpanel" aria-labelledby="details-tab">
+      <div class="container mt-5">
+          <div class="row">
+            <div class="col-sm-4">
+                <h2 class="about-title text-aligner"> 
+                    الحالة الانتخابية:
+                    
+                    {% if voter.voter.vote_status == "Not_sure" %}
+                     <a href="#" class="btn btn-warning">متردد</a>
+                      {% elif voter.voter.vote_status == "Not_voting"%}
+                      <a href="#" class="btn btn-danger">ممتنع</a>
+                      {% elif not voter.voter.vote_status %}
+                      <a href="#" class="btn btn-secondary">غير محدد</a>
+                      {% else %}
+                      <a href="#" class="btn btn-success">مؤيد</a>
+                      {% endif %}
+                </h2>
+
+            </div>
+            {% if voter.voter.candidate %}
+            <div class="col-sm-3">
+              <h2 class="about-title text-aligner"> 
+                  المرشح:
+                  
+                  
+                   <a href="#" class="btn btn-info">{{voter.voter.candidate.profile.user.first_name}} {{voter.voter.candidate.profile.user.last_name}}</a>
+
+                    
+              </h2>
+
+          </div>
+          {% endif %}
+          {% if voter.voter.voting_id %}
+          <div class="col-sm-4">
+            <h2 class="about-title text-aligner"> 
+                الرقم الانتخابي:
+                
+                
+                 <a href="#" class="btn btn-primary">{{voter.voter.voting_id}}</a>
+
+                  
+            </h2>
+
+        </div>
+        {% endif %}
+          </div>
+
+
+        <div class="row">
+          <div class="col-sm-6">
+            <h2 class="about-title text-aligner">تفاصيل الحساب</h2>
+          </div>
+        </div>
+        <div class="row text-aligner">
+        
+            <form>
+            
+                <div class="form-row">
+                  <div class="col-sm-3">
+                    
+                      <div class="form-group">
+                        <label> الاسم الاول</label>
+                        <input type="text" class="form-control" id="fname" placeholder="الاسم الاول" value="{{voter.user.first_name}}">
+                      </div>
+                   
+                  </div>
+                  <div class="col-sm-3">
+                    
+                      <div class="form-group">
+                        <label>اسم الاب</label>
+                        <input type="text" class="form-control" id="sname" placeholder="اسم الاب" value="{{voter.middle_name}}">
+                      </div>
+                    
+                  </div>
+                  <div class="col-sm-3">
+                    
+                    <div class="form-group">
+                      <label>اسم الجد</label>
+                      <input type="text" class="form-control" id="tname" placeholder="الاسم الجد" value="{{voter.last_name}}">
+                    </div>
+                  
+                </div>
+                
+                <div class="col-sm-3">
+                    
+                  <div class="form-group">
+                    <label>اسم العائلة</label>
+                    <input type="text" class="form-control" id="foname" placeholder="اسم العائلة" value="{{voter.user.last_name}}">
+                  </div>
+                
+              </div>           
+                </div>
+                <div class="form-row">
+                  <div class="col-sm-3">             
+                    <div class="form-group">
+                      <label>رقم الهاتف</label>
+                      <input type="text" class="form-control" id="phno" placeholder="رقم الهاتف" value="{{voter.mobile_number}}">
+                    </div>
+                  </div>
+                  <div class="col-sm-3">             
+                    <div class="form-group">
+                      <label>رقم الواتساب</label>
+                      <input type="text" class="form-control" id="wano" placeholder="رقم الواتساب" value="{{voter.mobile_number}}">
+                    </div>
+                  </div>
+      
+                  <div class="col-sm-3">
+                    <div class="form-group">
+                      <label >العنوان</label>
+                      <select multiple class="form-control" id="addresses">
+                          <option value="">{{voter.address.governorate}}/{{voter.address.district}}</option>
+                        {% for address in addresses_list %}
+                        <option value="{{address.id}}">{{address.governorate}}/{{address.district}}</option>
+                        {% endfor %}
+       
+                      </select>
+                    </div>
+                  </div>
+                  
+                  <div class="form-row">
+                    <div class="col-sm-4">
+                      <div class="form-group">
+                        <label>الجنس</label>
+                        <select multiple class="form-control" id="gender">
+                          <option value="male">ذكر</option>
+                          <option value="female">انثى</option>
+                        </select>
+                      </div>
+                    </div> 
+                    <div class="col-sm-3">
+                      <div class="form-group">
+                        <label >تاريخ الميلاد</label>
+                        <input type="date" name="dob" id="dob" >
+                      </div>
+                    </div>
+      
+                  </div>
+      
+                </div>
+                
+              </form>
+        </div>
+        <div class="row ">
+          <button id="updateprofile" class="btn btn-danger">تعديل</button>
+        </div>
+      </div>
+    </div>
+    <div class="tab-pane fade " id="vote" role="tabpanel" aria-labelledby="vote-tab">
+        <div class="container mt-5">
+          <div class="row">
+            <div class="col-sm-6">
+              <h2 class="about-title text-aligner">اختيار المرشح\قائمة المرشحين</h2>
+            </div>
+          </div>
+          <div class="row text-aligner">
+            <h5 class="about-title text-aligner">تعديل الحالة الانتخابية:</h5>
+        <form class="form-inline" id="voteStatusForm">
+         
+              <div class="form-check form-check-inline">
+                <label class="form-check-label" >مؤيد</label>
+                <input class="form-check-input" type="radio" id="v" value="Voting">
+                
+              </div>
+              <div class="form-check form-check-inline">
+                <label class="form-check-label" >متردد</label>
+                <input class="form-check-input" type="radio" id="ns" value="Not_sure">
+                
+              </div>
+              <div class="form-check form-check-inline ">
+                <label class="form-check-label" >ممتنع</label>
+                <input class="form-check-input" type="radio" id="nv" value="Not_voting">
+              </div>
+              <input type="hidden" id="voterId" value="{{voter.voter.id}}">
+          <button id="changeStatus" class="btn btn-danger mb-2 mr-sm-2">تعديل</button>
+        </form>
+          </div>
+          <div class="row text-aligner">
+          <form method="GET" class="form-inline mb-5">
+            <div class="form-group ml-2 mr-2">
+              <input class="form-control" type="text" placeholder="البحث بواسطة اسم المرشح">
+              
+            </div>
+            <div class="form-group ml-2 mr-2">
+              <label for="exampleFormControlSelect1">المنطقة:</label>
+              <select class="form-control mr-2" id="adressList">
+                {% for item in addresses_list %}
+                <option value="{{item.id}}">{{item.governorate}}</option>
+                {% endfor %}
+              </select>
+            </div>
+
+
+
+           <div class="form-group ml-2 mr-2">
+            <button  class="btn btn-info"  type="submit">ابحث</button>
+           </div>
+          </form>
+          </div>
+          <div class="row text-aligner">
+            {% for item in candidates_list %}
+            <div class="card mb-2 mt-2" style="width: 18rem;">
+              <img class="card-img-top" src="{% static 'common/img/candidate.jpg' %}" alt="Card image cap">
+              <div class="card-body">
+                <h5 class="card-title">{{item.profile.user.first_name}} {{item.profile.user.last_name}}</h5>
+                <button  class="btn btn-danger" data-toggle="modal" data-target="#candidate_{{item.id}}">اختيار المرشح</button>
+              </div>
+            </div>
+            <div class="modal fade" id="candidate_{{item.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">{{item.profile.user.first_name}} {{item.profile.user.last_name}}</h5>
+          
+                  </div>
+                  <div class="modal-body">
+                     تأكيد اختيار المرشح؟ 
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">الغاء</button>
+                    <button type="button" class="btn btn-success select-candidate" data-candidate="{{item.id}}" data-voter="{{voter.voter.id}}">اختيار</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+  </div>
+
+  <div class="modal fade" id="succesModal" tabindex="-1" role="dialog" aria-labelledby="successModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+         
+  
+        </div>
+        <div class="modal-body">
+          <div class="alert alert-success" role="alert">
+            <h4 class="alert-heading">تمت العملية بنجاح</h4>
+           
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" id="reload" >اغلاق</button>
+         
+        </div>
+      </div>
+    </div>
+    </div>
+  <!-- select candidate Modal -->
+
+{% endblock %}
+
+{% block js %}
+<script>
+
+$("#updateprofile").on('click',function(){
+  
+  userprofile= new Object()
+  userprofile.first_name=$("#fname").val()
+  userprofile.second_name=$("#sname").val()
+  userprofile.third_name=$("#tname").val()
+  userprofile.last_name=$("#foname").val()
+  userprofile.mobile_number=$("#phno").val()
+  userprofile.whatsapp_number=$("#wano").val()
+  $('#addresses option').each(function() {
+    if (this.selected)
+       userprofile.address=$('#addresses option:selected').val()
+     else
+     userprofile.address="";
+});
+  
+  userprofile.gender=$("#gender option:selected").val()
+  userprofile.dob=$("#dob").val()
+  userprofile.id="{{user.id}}"
+  userjson=JSON.stringify(userprofile)
+  
+  $.ajax({
+    url:"{% url 'update-profile' %}",
+    type:"POST",
+    
+    data:{
+      user:userjson,
+      csrfmiddlewaretoken: "{{csrf_token}}" 
+      },
+    success:function(result){
+      console.log(result)
+      location.reload()
+    }
+  })
+
+})
+
+$("#v").change(function(){
+
+$("#ns").prop("checked", false);
+$("#nv").prop("checked", false);
+
+});
+
+$("#ns").change(function(){
+
+$("#nv").prop("checked", false);
+$("#v").prop("checked", false);
+});
+
+$("#nv").change(function(){
+
+$("#ns").prop("checked", false);
+$("#v").prop("checked", false);
+});
+
+$("#changeStatus").on('click',function(event){
+  event.preventDefault()
+  status=$("#voteStatusForm").find('input:radio:checked').val()
+  voter_id=$("#voterId").val()
+  
+  $.ajax({
+    url:"{% url 'edit-voting-status' %}",
+    type:"POST",
+    data:{
+      status:status,
+      voter_id:voter_id,
+      csrfmiddlewaretoken:"{{csrf_token}}",
+      success:function(reslut){
+        
+        $("#succesModal").modal('show')
+      }
+    }
+  })
+})
+$(".select-candidate").on("click",function(){
+  candidate=$(this).attr('data-candidate')
+  voter=$(this).attr('data-voter')
+  $.ajax({
+    url:"{% url 'edit-voting-status' %}",
+    type:"POST",
+    data:{
+      csrfmiddlewaretoken:"{{csrf_token}}",
+      candidate:candidate,
+      voter_id:voter
+    },
+    success:function(){
+      $("#candidate_"+candidate).modal("hide")
+      $("#succesModal").modal('show')
+    }
+  })
+
+
+})
+
+
+$("#reload").on("click",function(){
+  location.reload()
+})
+</script>
+{% endblock %}

@@ -8,7 +8,7 @@ from .models import (
 
 @admin.register(Comittee)
 class AdminComittee(admin.ModelAdmin):
-    list_display=['name','manager','is_active','timestamp','updated']
+    list_display=['name','is_active','timestamp','updated']
 
 
 @admin.register(ElectionList)

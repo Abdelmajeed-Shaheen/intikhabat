@@ -3,7 +3,12 @@ from .models import (
                      UserProfile,Voter,
                      Candidate,ComitteeMember,
                      CommunicationOfficer,
-                     CampaignAdminstrator
+                     CampaignAdminstrator,
+                     CustomComitteePermission,
+                     CustomMembersPermissions,
+                     CustomReportsPermissions,
+                     CustomVoterssPermissions,
+                     WorkField
                      )
 
 @admin.register(UserProfile)
@@ -26,12 +31,31 @@ class AdminComitteeMember(admin.ModelAdmin):
 
 
 
-@admin.register(CommunicationOfficer)
-class AdminCommunicationOfficer(admin.ModelAdmin):
-    list_display=['profile','comittee']
-
 @admin.register(CampaignAdminstrator)
 class AdminCampaignAdminstrator(admin.ModelAdmin):
     list_display=['profile','candidate']
 
 
+@admin.register(CustomComitteePermission)
+class AdminCustomComitteePermission(admin.ModelAdmin):
+    list_display=['name','user']
+
+
+@admin.register(CustomMembersPermissions)
+class AdminCustomMembersPermissions(admin.ModelAdmin):
+    list_display=['name','user']
+
+
+@admin.register(CustomReportsPermissions)
+class AdminCustomReportsPermissions(admin.ModelAdmin):
+    list_display=['name','user']
+
+@admin.register(CustomVoterssPermissions)
+class AdminCustomVoterssPermissions(admin.ModelAdmin):
+    list_display=['name','user']
+
+
+
+@admin.register(WorkField)
+class AdminWorkField(admin.ModelAdmin):
+    list_display=['name']
