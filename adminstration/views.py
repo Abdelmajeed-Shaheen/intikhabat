@@ -17,7 +17,10 @@ class CampaignManagementMainView(View):
     model=Comittee
 
     def get(self,request):
-        candidate=request.user.userprofile.candidate
+        if hasattr(request.user.userprofile,'campaignadminstrator'):
+            candidate=request.user.userprofile.campaignadminstrator.candidate
+        else:
+            candidate=request.user.userprofile.candidate
         user=request.user.userprofile
         comittees_list=Comittee.objects.filter(is_active=True)
         campaign_manager=candidate.campaignadminstrator_set.first()
@@ -36,7 +39,26 @@ class CampaignManagementMainView(View):
         }
         return render(request,"adminstration.html",context)
 
+class ComitteeMemberView(View):    
 
+    def get(self,request):
+        
+        comittee=request.user.userprofile.comitteemember.comittee
+        candidate=request.user.userprofile.comitteemember.candidate
+        user=request.user.userprofile
+        campaign_manager=candidate.campaignadminstrator_set.first()
+        comittees_members=comittee.comitteemember_set.all()
+        addresses_list=Address.objects.all()
+            
+        context={
+            "comittee_member_form":SignUpForm,
+            "campaign_manager":campaign_manager,
+            "comittees_members":comittees_members,
+            "user":user,
+            "comittee":comittee,
+            "addresses_list":addresses_list
+        }
+        return render(request,"adminstration_cm.html",context)
 
 class CreateComitteeView(View):
 
