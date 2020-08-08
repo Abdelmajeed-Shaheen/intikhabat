@@ -32,14 +32,17 @@ class LoginView(View):
             username=UserProfile.objects.get(mobile_number=username).user.username
 
         user = authenticate(request, username=username, password=password)
-        
+
         if user is not None:
             
             if user.is_active:
-                if hasattr(user.userprofile, 'candidate'):
+                if hasattr(user.userprofile, 'candidate') or hasattr(user.userprofile, 'campaignadminstrator'):
 
                     response['redirect_to']=reverse('main')
-
+                
+                elif hasattr(user.userprofile,'comitteemember'):
+                    response['redirect_to']=reverse('comittee-member')
+ 
                 elif hasattr(user.userprofile, 'voter'):
                     response['redirect_to']=reverse('voter-profile',kwargs={'pk':user.userprofile.id})
 
@@ -120,10 +123,6 @@ class CreateUser(View):
         elif user_type =="camp":
             campaign_manager=CampaignAdminstrator(profile=user_profile,candidate=candidate)
             campaign_manager.save()
-        
-        elif user_type =="cmo":
-            communication_officer=CommunicationOfficer(profile=user_profile,comittee=comittee)
-            communication_officer.save()
 
 
         return JsonResponse({'message':'تم التسجيل بنجاح'})

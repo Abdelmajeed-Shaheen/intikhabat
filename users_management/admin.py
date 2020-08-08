@@ -31,9 +31,9 @@ class AdminComitteeMember(admin.ModelAdmin):
 
 
 
-@admin.register(CommunicationOfficer)
-class AdminCommunicationOfficer(admin.ModelAdmin):
-    list_display=['profile','comittee']
+@admin.register(CampaignAdminstrator)
+class AdminCampaignAdminstrator(admin.ModelAdmin):
+    list_display=['profile','candidate']
 
 
 @admin.register(CustomComitteePermission)

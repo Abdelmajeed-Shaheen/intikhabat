@@ -32,6 +32,7 @@ class UserProfile(models.Model):
     updated=models.DateTimeField(auto_now=False,auto_now_add=True)
     address=models.ForeignKey(Address,on_delete=models.CASCADE,null=True,blank=True)
     work_field=models.ForeignKey('WorkField',on_delete=models.CASCADE,null=True,blank=True)
+    name_string=models.CharField(max_length=255,null=True,unique=True)
     def __str__(self):
         return self.user.username
 
