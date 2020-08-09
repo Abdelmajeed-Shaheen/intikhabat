@@ -79,7 +79,28 @@
         </div>
         {% endif %}
           </div>
-
+          <div class="row text-aligner">
+            <h5 class="about-title text-aligner">تعديل الحالة الانتخابية:</h5>
+        <form class="form-inline" id="voteStatusForm">
+         
+              <div class="form-check form-check-inline">
+                <label class="form-check-label" >مؤيد</label>
+                <input class="form-check-input" type="radio" id="v" value="Voting">
+                
+              </div>
+              <div class="form-check form-check-inline">
+                <label class="form-check-label" >متردد</label>
+                <input class="form-check-input" type="radio" id="ns" value="Not_sure">
+                
+              </div>
+              <div class="form-check form-check-inline ">
+                <label class="form-check-label" >ممتنع</label>
+                <input class="form-check-input" type="radio" id="nv" value="Not_voting">
+              </div>
+              <input type="hidden" id="voterId" value="{{voter.voter.id}}">
+          <button id="changeStatus" class="btn btn-danger mb-2 mr-sm-2">تعديل</button>
+        </form>
+          </div>
 
         <div class="row">
           <div class="col-sm-6">
@@ -187,28 +208,8 @@
               <h2 class="about-title text-aligner">اختيار المرشح\قائمة المرشحين</h2>
             </div>
           </div>
-          <div class="row text-aligner">
-            <h5 class="about-title text-aligner">تعديل الحالة الانتخابية:</h5>
-        <form class="form-inline" id="voteStatusForm">
-         
-              <div class="form-check form-check-inline">
-                <label class="form-check-label" >مؤيد</label>
-                <input class="form-check-input" type="radio" id="v" value="Voting">
-                
-              </div>
-              <div class="form-check form-check-inline">
-                <label class="form-check-label" >متردد</label>
-                <input class="form-check-input" type="radio" id="ns" value="Not_sure">
-                
-              </div>
-              <div class="form-check form-check-inline ">
-                <label class="form-check-label" >ممتنع</label>
-                <input class="form-check-input" type="radio" id="nv" value="Not_voting">
-              </div>
-              <input type="hidden" id="voterId" value="{{voter.voter.id}}">
-          <button id="changeStatus" class="btn btn-danger mb-2 mr-sm-2">تعديل</button>
-        </form>
-          </div>
+
+          {% if voter.voter.vote_status != "Not_voting" %}
           <div class="row text-aligner">
           <form method="GET" class="form-inline mb-5">
             <div class="form-group ml-2 mr-2">
@@ -259,6 +260,7 @@
             </div>
             {% endfor %}
           </div>
+          {% endif %}
         </div>
       </div>
   </div>
@@ -266,10 +268,7 @@
   <div class="modal fade" id="succesModal" tabindex="-1" role="dialog" aria-labelledby="successModalTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
-        <div class="modal-header">
-         
-  
-        </div>
+
         <div class="modal-body">
           <div class="alert alert-success" role="alert">
             <h4 class="alert-heading">تمت العملية بنجاح</h4>
