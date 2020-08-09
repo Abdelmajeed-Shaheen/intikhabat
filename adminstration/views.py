@@ -35,7 +35,8 @@ class CampaignManagementMainView(View):
             "campaign_manager":campaign_manager,
             "comittees_members":comittees_members,
             "user":user,
-            "addresses_list":addresses_list
+            "addresses_list":addresses_list,
+            "candidate":candidate
         }
         return render(request,"adminstration.html",context)
 
@@ -116,5 +117,14 @@ class GrantPermissions(View):
             }
             comittee_permissions=CustomComitteePermission(**ccp_data)
             comittee_permissions.save()
+
+        return JsonResponse({"message":"success"})
+
+
+class SearchComitteeView(View):
+
+    def get(self,request):
+        query=request.GET.get('query')
+        print(query)
 
         return JsonResponse({"message":"success"})

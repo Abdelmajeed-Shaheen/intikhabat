@@ -1,6 +1,8 @@
 from django.shortcuts import render 
 from django.views.generic import View,DetailView
-from django.http import JsonResponse,HttpResponse
+from django.http import JsonResponse,HttpResponse,HttpResponseRedirect
+from django.urls import reverse
+from django.contrib.auth import login,authenticate
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
 from users_management.models import Voter,UserProfile,Candidate,WorkField
@@ -18,10 +20,10 @@ class CreateVoter(View):
             "last_name":voter['last_name'],
             "username":(voter['first_name']+voter['last_name']),
             "email":voter['email'],
-            "password":make_password(voter['pwd'])
         }
-        
+        response={}
         user=User(**user_object)
+        user.set_password(voter['pwd'])
         user.save()
         voter_work=WorkField.objects.get(id=int(voter['work']))
         profile_object={
@@ -40,8 +42,9 @@ class CreateVoter(View):
         profile.save()
         voter=Voter(profile=profile)
         voter.save()
-        print(voter)
-        return JsonResponse({"message":"succes"})    
+        login(request,user)
+        response['redirect_to']=reverse('voter-profile',kwargs={'pk':user.userprofile.id})
+        return JsonResponse(response)   
 
 
 class VoterProfile(DetailView):

@@ -247,7 +247,7 @@ $('#register').on('click',function(){
     },
     success:function(result){
       $("#regModal").modal('hide')
-      $("#succesModal").modal('show')
+      window.location.replace(result.redirect_to)
     }
   })
 
