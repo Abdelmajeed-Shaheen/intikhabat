@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect
 from django.urls import reverse
 from django.views.generic import View,DetailView
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login,logout
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.http import HttpResponseRedirect,HttpResponse,JsonResponse
@@ -57,6 +57,18 @@ class LoginView(View):
             
             response["error"]="invalid username or password"
             return JsonResponse(response)
+
+class LogoutView(View):
+    """
+    Class responsible for logout
+    """
+
+    def get(self, request):
+        """
+
+        """
+        logout(request)
+        return HttpResponseRedirect(reverse('home'))
 
                 
 class UserProfileView(DetailView):
