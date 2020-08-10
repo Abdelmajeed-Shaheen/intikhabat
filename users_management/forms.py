@@ -26,6 +26,24 @@ class LoginForm(forms.Form):
                     )
     	)
 
+class CandidateLoginForm(forms.Form):
+    candidate_username = forms.CharField(
+    				widget=forms.TextInput(
+                    attrs={
+                        "class": "form-control",
+                        "placeholder": "رقم الهاتف / اسم المستخدم"
+                    	}
+                    )
+    	)
+    candidate_password = forms.CharField(
+    				widget=forms.PasswordInput(
+                    attrs={
+                        "class": "form-control", 
+                        "placeholder": "كلمة السر"
+                    	}
+                    )
+    	)
+
 
 
 class SignUpForm(forms.Form):
