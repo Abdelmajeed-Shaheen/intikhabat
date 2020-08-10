@@ -5,13 +5,9 @@
   <header id="header">
     <div class="container-ar d-flex align-items-center" >
 
-      {% comment %} <a href="index.html" class="logo mr-auto"><img src="assets/img/logo.png" alt=""></a> {% endcomment %}
-      <!-- Uncomment below if you prefer to use a text logo -->
-      
-
       <nav class="nav-menu d-none d-lg-block">
         <ul>
-          <li><a href="#about">تسحيل خروج</a></li>
+          <li><a href="{% url 'logout' %}">تسحيل خروج</a></li>
           <li><a href="#services">اتصل بنا</a></li>
 
 
@@ -79,28 +75,7 @@
         </div>
         {% endif %}
           </div>
-          <div class="row text-aligner">
-            <h5 class="about-title text-aligner">تعديل الحالة الانتخابية:</h5>
-        <form class="form-inline" id="voteStatusForm">
-         
-              <div class="form-check form-check-inline">
-                <label class="form-check-label" >مؤيد</label>
-                <input class="form-check-input" type="radio" id="v" value="Voting">
-                
-              </div>
-              <div class="form-check form-check-inline">
-                <label class="form-check-label" >متردد</label>
-                <input class="form-check-input" type="radio" id="ns" value="Not_sure">
-                
-              </div>
-              <div class="form-check form-check-inline ">
-                <label class="form-check-label" >ممتنع</label>
-                <input class="form-check-input" type="radio" id="nv" value="Not_voting">
-              </div>
-              <input type="hidden" id="voterId" value="{{voter.voter.id}}">
-          <button id="changeStatus" class="btn btn-danger mb-2 mr-sm-2">تعديل</button>
-        </form>
-          </div>
+
 
         <div class="row">
           <div class="col-sm-6">
@@ -208,7 +183,28 @@
               <h2 class="about-title text-aligner">اختيار المرشح\قائمة المرشحين</h2>
             </div>
           </div>
-
+          <div class="row text-aligner">
+            <h5 class="about-title text-aligner">تعديل الحالة الانتخابية:</h5>
+        <form class="form-inline" id="voteStatusForm">
+         
+              <div class="form-check form-check-inline">
+                <label class="form-check-label" >مؤيد</label>
+                <input class="form-check-input" type="radio" id="v" value="Voting">
+                
+              </div>
+              <div class="form-check form-check-inline">
+                <label class="form-check-label" >متردد</label>
+                <input class="form-check-input" type="radio" id="ns" value="Not_sure">
+                
+              </div>
+              <div class="form-check form-check-inline ">
+                <label class="form-check-label" >ممتنع</label>
+                <input class="form-check-input" type="radio" id="nv" value="Not_voting">
+              </div>
+              <input type="hidden" id="voterId" value="{{voter.voter.id}}">
+          <button id="changeStatus" class="btn btn-danger mb-2 mr-sm-2">تعديل</button>
+        </form>
+          </div>
           {% if voter.voter.vote_status != "Not_voting" %}
           <div class="row text-aligner">
           <form method="GET" class="form-inline mb-5">
