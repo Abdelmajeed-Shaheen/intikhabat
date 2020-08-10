@@ -6,7 +6,7 @@ from django.contrib.auth import login,authenticate
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
 from users_management.models import Voter,UserProfile,Candidate,WorkField
-# from voters_management.form import VoterUpdateForm
+from adminstration.models import ElectionCard
 from common.models import Address
 import json
 
@@ -55,7 +55,6 @@ class VoterProfile(DetailView):
     
     def get(self,request,pk):
         voter=self.get_object()
-        
         addresses_list=Address.objects.all()
         candidates_list=Candidate.objects.all()
         context={
@@ -72,24 +71,49 @@ class VoterProfile(DetailView):
 class UpdateVoter(View):
 
     def post(self,request):
+        
+        voter_object={}
+        voting_id_string=list("0/0/0/0")
         if request.POST.get('voter_id'):
             voter_id=request.POST.get('voter_id')
             voter=Voter.objects.filter(id=int(voter_id))
-        if request.POST.get("status"):
-            voter.update(vote_status=request.POST.get("status"))
-        if request.POST.get("status") == "Not_voting":
-            status_id="0"
-        elif request.POST.get("status") == "Not_sure":
-            status_id="1"
-        else:
-            status_id="3"
+
+        if voter.values('voting_id')[0]['voting_id'] is not None:
+            voting_id=voter.values('voting_id')
+            voting_id_string=list(voting_id[0]['voting_id'])
+          
+
+            
         if request.POST.get('candidate'):
             candidate=Candidate.objects.get(id=request.POST.get('candidate'))
-            voting_id=(status_id+"/"+str(candidate.id)+"/"+str(candidate.profile.address.governorate.id)
-                        +"/" +str(candidate.profile.address.district.id)+"/"+voter_id)
-            voter.update(candidate=candidate,voting_id=voting_id)
+            voter_object['candidate']=candidate
+            candidate_id_string=str(candidate.id)
+            candidate_address_id_string=str(candidate.profile.address.governorate.id)
+            candidate_dept_id_string=str(candidate.profile.address.district.id)
+            voting_id_string[2]=candidate_id_string
+            voting_id_string[4]=candidate_address_id_string
+            voting_id_string[6]=candidate_dept_id_string
+            new_id="".join(voting_id_string)
+            voter_object['voting_id']=new_id
+      
+        if request.POST.get("status"):
+            voter_object['vote_status']=request.POST.get("status")
 
+            if request.POST.get("status") == "Not_voting":
+                status_id="0"
+
+            elif request.POST.get("status") == "Not_sure":
+                status_id="1"
+
+            else:
+                status_id="3"
+            
+            voting_id_string[0]=status_id
+            new_id="".join(voting_id_string)
+            voter_object['voting_id']=new_id
+
+        voter.update(**voter_object)
 
         return JsonResponse({"message":"success"})
 
-    
+
