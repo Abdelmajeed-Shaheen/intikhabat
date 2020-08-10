@@ -172,7 +172,7 @@
               </form>
         </div>
         <div class="row ">
-          <button id="updateprofile" class="btn btn-danger">تعديل</button>
+          <button id="updateprofile" class="btn btn-danger m-5">تعديل</button>
         </div>
       </div>
     </div>
@@ -202,12 +202,23 @@
                 <input class="form-check-input" type="radio" id="nv" value="Not_voting">
               </div>
               <input type="hidden" id="voterId" value="{{voter.voter.id}}">
+              <input type="hidden" name="" id="candidate_choice">
           <button id="changeStatus" class="btn btn-danger mb-2 mr-sm-2">تعديل</button>
         </form>
+          </div>
+          <div class="row text-aligner">
+            <h5 class="about-title text-aligner">خيارك للمرشح الحالي: </h5>
+            {% if voter.voter.candidate %}
+            <a href="#" id="selectedCandidate"> {{voter.voter.candidate.profile.user.first_name}} {{voter.voter.candidate.profile.user.last_name}} </a>
+            {% else %}
+            <a href="#" id="selectedCandidate"> لا يوجد اختيار </a>
+
+            {% endif %}
           </div>
           {% if voter.voter.vote_status != "Not_voting" %}
           <div class="row text-aligner">
           <form method="GET" class="form-inline mb-5">
+            
             <div class="form-group ml-2 mr-2">
               <input class="form-control" type="text" placeholder="البحث بواسطة اسم المرشح">
               
@@ -249,7 +260,7 @@
                   </div>
                   <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-dismiss="modal">الغاء</button>
-                    <button type="button" class="btn btn-success select-candidate" data-candidate="{{item.id}}" data-voter="{{voter.voter.id}}">اختيار</button>
+                    <button type="button" class="btn btn-success select-candidate" data-candidate-id="{{item.id}}" data-candidate-name="{{item.profile.user.first_name}} {{item.profile.user.last_name}}" data-voter="{{voter.voter.id}}">اختيار</button>
                   </div>
                 </div>
               </div>
@@ -344,14 +355,15 @@ $("#v").prop("checked", false);
 $("#changeStatus").on('click',function(event){
   event.preventDefault()
   status=$("#voteStatusForm").find('input:radio:checked').val()
+  candidate=$("#candidate_choice").val()
   voter_id=$("#voterId").val()
-  
   $.ajax({
     url:"{% url 'edit-voting-status' %}",
     type:"POST",
     data:{
       status:status,
       voter_id:voter_id,
+      candidate:candidate,
       csrfmiddlewaretoken:"{{csrf_token}}",
       success:function(reslut){
         
@@ -360,24 +372,15 @@ $("#changeStatus").on('click',function(event){
     }
   })
 })
+
 $(".select-candidate").on("click",function(){
-  candidate=$(this).attr('data-candidate')
-  voter=$(this).attr('data-voter')
-  $.ajax({
-    url:"{% url 'edit-voting-status' %}",
-    type:"POST",
-    data:{
-      csrfmiddlewaretoken:"{{csrf_token}}",
-      candidate:candidate,
-      voter_id:voter
-    },
-    success:function(){
-      $("#candidate_"+candidate).modal("hide")
-      $("#succesModal").modal('show')
-    }
-  })
+  candidate_id=$(this).attr('data-candidate-id')
+  
+  candidate_name=$(this).attr('data-candidate-name')
 
-
+  cid=$("#candidate_choice").val(candidate_id)
+  $("#selectedCandidate").text(candidate_name)
+  $("#candidate_"+candidate_id).modal("hide")
 })
 
 

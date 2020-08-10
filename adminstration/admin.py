@@ -18,4 +18,4 @@ class AdminElectionList(admin.ModelAdmin):
 
 @admin.register(ElectionCard)
 class AdminElectionCard(admin.ModelAdmin):
-    list_display=['voter','communication_officer']
+    list_display=['voter','communication_officer','candidate']

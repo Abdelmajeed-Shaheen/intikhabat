@@ -12,6 +12,7 @@ from users_management.models import (UserProfile,ComitteeMember,
 from common.models import Address
 from users_management.forms import SignUpForm
 from adminstration.models import Comittee
+from voters_management.views import UpdateVoter
 import json
 from datetime import date
 
@@ -151,7 +152,6 @@ class UpdateProfile(View):
         User.objects.filter(id=request.user.id).update(first_name=userprofile["first_name"],last_name=userprofile["last_name"])
         user_object={}
         empty=[None,""]
-
         if userprofile['second_name'] not in empty:
             user_object['middle_name']=userprofile['second_name']
 
