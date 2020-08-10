@@ -5,13 +5,9 @@
   <header id="header">
     <div class="container-ar d-flex align-items-center" >
 
-      {% comment %} <a href="index.html" class="logo mr-auto"><img src="assets/img/logo.png" alt=""></a> {% endcomment %}
-      <!-- Uncomment below if you prefer to use a text logo -->
-      
-
       <nav class="nav-menu d-none d-lg-block">
         <ul>
-          <li><a href="#about">تسحيل خروج</a></li>
+          <li><a href="{% url 'logout' %}">تسحيل خروج</a></li>
           <li><a href="#services">اتصل بنا</a></li>
 
 
@@ -209,6 +205,7 @@
           <button id="changeStatus" class="btn btn-danger mb-2 mr-sm-2">تعديل</button>
         </form>
           </div>
+          {% if voter.voter.vote_status != "Not_voting" %}
           <div class="row text-aligner">
           <form method="GET" class="form-inline mb-5">
             <div class="form-group ml-2 mr-2">
@@ -259,6 +256,7 @@
             </div>
             {% endfor %}
           </div>
+          {% endif %}
         </div>
       </div>
   </div>
@@ -266,10 +264,7 @@
   <div class="modal fade" id="succesModal" tabindex="-1" role="dialog" aria-labelledby="successModalTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
-        <div class="modal-header">
-         
-  
-        </div>
+
         <div class="modal-body">
           <div class="alert alert-success" role="alert">
             <h4 class="alert-heading">تمت العملية بنجاح</h4>
