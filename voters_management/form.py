@@ -2,6 +2,13 @@ from django import forms
 from common.models import Address
 from users_management.models import Candidate,WorkField
 
+
+
+MONTHS = {
+    1:('1'), 2:('2'), 3:('3'), 4:('4'),
+    5:('5'), 6:('6'), 7:('7'), 8:('8'),
+    9:('9'), 10:('10'), 11:('11'), 12:('12')
+}
 class VoterRegForm(forms.Form):
     first_name=forms.CharField(max_length=16,widget=forms.TextInput(
                                                     attrs={
@@ -47,6 +54,7 @@ class VoterRegForm(forms.Form):
                                                     ))                                                
     dob=forms.DateField(input_formats='%Y,%m,%d',widget=forms.SelectDateWidget(
                                                                             years=range(1940, 2003,),
+                                                                            months=MONTHS,
                                                                             empty_label=("السنة", "الشهر", "اليوم")
                                                                             ))
     GENDER_CHOICES=(('male', 'ذكر'),('female', 'انثى'),)
