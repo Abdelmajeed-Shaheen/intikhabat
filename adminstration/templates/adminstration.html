@@ -225,10 +225,13 @@
 
             <div class="col-sm-3">
               <div class="form-group">
-                <label >العنوان</label>
-                <select multiple class="form-control" id="addresses">
-                  {% for address in addresses_list %}
-                  <option value="{{address.id}}">{{address.governorate}}/{{address.district}}</option>
+                <label >المحافظة</label>
+                <select  class="form-control" id="gov">
+                {% if candidate.profile.address.governorate %}
+                <option selected value="{{candidate.profile.address.governorate.id}}">{{candidate.profile.address.governorate.name}}</option>
+                {% endif %}
+                  {% for gover in govenorate_list %}
+                  <option value="{{gover.id}}">{{gover.name}}</option>
                   {% endfor %}
  
                 </select>
@@ -236,6 +239,21 @@
             </div>
             
 
+            <div class="col-sm-3">
+              <div class="form-group">
+                <label >الدائرة</label>
+                <select  class="form-control" id="dept">
+                {% if candidate.profile.address.department %}
+                <option selected value="{{candidate.profile.address.department.id}}">{{candidate.profile.address.department.name}}</option>
+                {% endif %}
+                  {% for dept in departments_list %}
+                  <option value="{{dept.id}}">{{dept.name}}</option>
+                  {% endfor %}
+ 
+                </select>
+              </div>
+            </div>
+            
 
           </div>
           
@@ -708,12 +726,23 @@ $("#updateprofile").on('click',function(){
   userprofile.last_name=$("#foname").val()
   userprofile.mobile_number=$("#phno").val()
   userprofile.whatsapp_number=$("#wano").val()
-    $('#addresses option').each(function() {
+
+    $('#gov option').each(function() {
     if (this.selected)
-       userprofile.address=$('#addresses option:selected').val()
+       userprofile.governorate=$('#gov option:selected').val()
      else
-     userprofile.address="";
-});
+     userprofile.governorate="";
+
+    });
+
+    $('#dept option').each(function() {
+    if (this.selected)
+       userprofile.dept=$('#dept option:selected').val()
+     else
+     userprofile.dept="";
+
+    });
+
   userprofile.id="{{user.id}}"
   userjson=JSON.stringify(userprofile)
   console.log(userprofile)

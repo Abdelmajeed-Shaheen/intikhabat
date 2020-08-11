@@ -6,7 +6,7 @@ from users_management.models import (
                                         Candidate,CustomComitteePermission,
                                         CustomMembersPermissions,ComitteeMember
                                     )
-from common.models import Address
+from common.models import Address,Department,Governorate
 from .forms import CreateComitteeForm
 from users_management.forms import SignUpForm
 import json
@@ -25,7 +25,8 @@ class CampaignManagementMainView(View):
         comittees_list=Comittee.objects.filter(is_active=True)
         campaign_manager=candidate.campaignadminstrator_set.first()
         comittees_members=candidate.comitteemember_set.all()
-        addresses_list=Address.objects.all()
+        govenorate_list=Governorate.objects.all()
+        departments_list=Department.objects.all()
             
 
         context={
@@ -35,8 +36,9 @@ class CampaignManagementMainView(View):
             "campaign_manager":campaign_manager,
             "comittees_members":comittees_members,
             "user":user,
-            "addresses_list":addresses_list,
-            "candidate":candidate
+            "govenorate_list":govenorate_list,
+            "candidate":candidate,
+            "departments_list":departments_list
         }
         return render(request,"adminstration.html",context)
 
