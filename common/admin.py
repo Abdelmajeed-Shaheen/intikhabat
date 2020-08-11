@@ -3,13 +3,25 @@ from .models import (
                         Address,
                         Street,
                         District,
-                        Governorate
+                        Governorate,
+                        Department,
+                        Area
                     )
 # Register your models here.
 
 @admin.register(Address)
 class AdminAdress(admin.ModelAdmin):
     list_display=['governorate','street']
+
+
+@admin.register(Department)
+class AdminDepartment(admin.ModelAdmin):
+    list_display=['name','governorate']
+
+
+@admin.register(Area)
+class AdminArea(admin.ModelAdmin):
+    list_display=['name','department']
 
 @admin.register(Street)
 class AdminStreet(admin.ModelAdmin):
