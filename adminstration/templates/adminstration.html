@@ -244,7 +244,7 @@
                 <label >الدائرة</label>
                 <select  class="form-control" id="dept">
                 {% if candidate.profile.address.department %}
-                <option selected value="{{candidate.profile.address.department.id}}">{{candidate.profile.address.department.name}}</option>
+                <option value="{{candidate.profile.address.department.id}}">{{candidate.profile.address.department.name}}</option>
                 {% endif %}
                   {% for dept in departments_list %}
                   <option value="{{dept.id}}">{{dept.name}}</option>
