@@ -4,19 +4,13 @@
 {% block extra_content %}
   <header id="header">
     <div class="container-ar d-flex align-items-center" >
-
-      
-      <!-- Uncomment below if you prefer to use a text logo -->
-      
-
       <nav class="nav-menu d-none d-lg-block">
         <ul>
           <li><a href="{% url 'logout' %}">تسحيل خروج</a></li>
           <li><a href="#services">اتصل بنا</a></li>
-
-
         </ul>
-      </nav><!-- .nav-menu -->
+      </nav>
+      <!-- .nav-menu -->
 
     </div>
   </header>
@@ -237,8 +231,6 @@
                 </select>
               </div>
             </div>
-            
-
             <div class="col-sm-3">
               <div class="form-group">
                 <label >الدائرة</label>
@@ -253,16 +245,46 @@
                 </select>
               </div>
             </div>
-            
-
           </div>
-          
-        </form>
-        
-        </div>
+            <div class="form-row">
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <a class="btn btn-info btn-sm" data-toggle="modal" data-target="#addArea"> اضافة منطقة +</a>
+
+                 / <label > اختيار منطقة</label>
+                  <select  class="form-control" id="area">
+                  {% if candidate.profile.address.area %}
+                  <option value="{{candidate.profile.address.area.id}}">{{candidate.profile.address.area.name}}</option>
+                  {% endif %}
+                    {% for area in areas_list %}
+                    <option value="{{area.id}}">{{area.name}}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <a class="btn btn-info btn-sm" data-toggle="modal" data-target="#addDist"> اضافة حي +</a>
+
+                 / <label > اختيار الحي</label>
+                  <select  class="form-control" id="district">
+                  {% if candidate.profile.address.district %}
+                  <option value="{{candidate.profile.address.district.id}}">{{candidate.profile.address.district.name}}</option>
+                  {% endif %}
+                    {% for district in districts_list %}
+                    <option value="{{district.id}}">{{district.name}}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
+              </div>
+            </div>
+        </form> 
         <div class="row">
           <button id="updateprofile" class="btn btn-danger" >تعديل</button>
         </div>
+        </div>
+
       </div>
     </div>
   
@@ -730,7 +752,9 @@ $("#updateprofile").on('click',function(){
   userprofile.governorate=$('#gov').find("option:selected").val()
   userprofile.dept=$('#dept').find("option:selected").val()
   userprofile.id="{{user.id}}"
+  userprofile.area=$("#area").find("option:selected").val()
   userjson=JSON.stringify(userprofile)
+  console.log(userprofile.area)
 
 
   $.ajax({
@@ -766,6 +790,51 @@ $.ajax({
   }
 })
 })
+
+$("#creatArea").on('click',function(){
+  area_name=$("#areaName").val()
+  dept=$("#deptArea option:selected").val()
+  $.ajax({
+    url:"{% url 'create-area' %}",
+    type:"POST",
+    data:{
+      area_name:area_name,
+      dept:dept,
+      csrfmiddlewaretoken:"{{csrf_token}}"
+    },
+    success:function(){
+      
+      location.reload()
+
+    }
+  })
+})
+
+$("#creatDist").on('click',function(){
+  dist_name=$("#distName").val()
+  area=$("#areaDist option:selected").val()
+  $.ajax({
+    url:"{% url 'create-district' %}",
+    type:"POST",
+    data:{
+      dist_name:dist_name,
+      area:area,
+      csrfmiddlewaretoken:"{{csrf_token}}"
+    },
+    success:function(){
+      location.reload()
+    }
+  })
+})
+
+$("ul.nav-tabs > li > a").on("shown.bs.tab", function(e) {
+  var id = $(e.target).attr("href").substr(1);
+  window.location.hash = id;
+});
+
+// on load of the page: switch to the currently selected tab
+var hash = window.location.hash;
+$('#myTab a[href="' + hash + '"]').tab('show');
 </script>
 
 

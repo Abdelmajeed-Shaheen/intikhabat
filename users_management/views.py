@@ -9,7 +9,11 @@ from django.db.utils import IntegrityError
 from django.urls import reverse
 from users_management.models import (UserProfile,ComitteeMember, 
                                      CampaignAdminstrator,CommunicationOfficer)
-from common.models import Address,Governorate,Department
+from common.models import (Address,
+                           Governorate,
+                           Department,
+                           Area
+                           )
 from users_management.forms import SignUpForm
 from adminstration.models import Comittee
 from voters_management.views import UpdateVoter
@@ -171,6 +175,9 @@ class UpdateProfile(View):
 
         if userprofile['dept'] not in empty:
             address.department=Department.objects.get(id=int(userprofile['dept']))
+            address.save()
+        if userprofile['area'] not in empty:
+            address.area=Area.objects.get(id=int(userprofile['area']))
             address.save()
         
         profile.update(**user_object)
