@@ -6,7 +6,12 @@ from users_management.models import (
                                         Candidate,CustomComitteePermission,
                                         CustomMembersPermissions,ComitteeMember
                                     )
-from common.models import Address,Department,Governorate
+from common.models import ( Address,
+                            Department,
+                            Governorate,
+                            District, 
+                            Area)
+
 from .forms import CreateComitteeForm
 from users_management.forms import SignUpForm
 import json
@@ -27,6 +32,8 @@ class CampaignManagementMainView(View):
         comittees_members=candidate.comitteemember_set.all()
         govenorate_list=Governorate.objects.all()
         departments_list=Department.objects.all()
+        areas_list=Area.objects.all()
+        districts_list=District.objects.all()
             
 
         context={
@@ -38,7 +45,9 @@ class CampaignManagementMainView(View):
             "user":user,
             "govenorate_list":govenorate_list,
             "candidate":candidate,
-            "departments_list":departments_list
+            "departments_list":departments_list,
+            "areas_list":areas_list,
+            "districts_list":districts_list
         }
         return render(request,"adminstration.html",context)
 
@@ -130,3 +139,38 @@ class SearchComitteeView(View):
         print(query)
 
         return JsonResponse({"message":"success"})
+
+class CreateAreaView(View):
+
+    def post(self,request):
+        address=request.user.userprofile.address
+        area_object={}
+        area_name=request.POST.get("area_name")
+        dept_id=int(request.POST.get("dept"))
+        dept=Department.objects.get(id=dept_id)
+        area_object['name']=area_name
+        area_object['department']=dept
+        area=Area(**area_object)
+        area.save()
+        address.area=area
+        address.save()
+
+        return JsonResponse({"message":"success"})
+
+class CreateDistrictView(View):
+
+    def post(self,request):
+        address=request.user.userprofile.address
+        dist_object={}
+        dist_name=request.POST.get("dist_name")
+        area_id=int(request.POST.get("area"))
+        area=Area.objects.get(id=area_id)
+        dist_object['name']=dist_name
+        dist_object['area']=area
+        dist=District(**dist_object)
+        dist.save()
+        address.district=dist
+        address.save()
+
+        return JsonResponse({"message":"success"})
+        
