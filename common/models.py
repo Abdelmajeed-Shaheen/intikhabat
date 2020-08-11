@@ -58,4 +58,4 @@ class Address(models.Model):
     district=models.ForeignKey(District,on_delete=models.CASCADE)
     street=models.ForeignKey(Street,on_delete=models.CASCADE)
     def __str__(self):
-        return (self.governorate.name)
+        return (self.governorate.name+"/"+self.department.name)
