@@ -151,6 +151,7 @@ class UpdateProfile(View):
         profile=UserProfile.objects.filter(id=int(userprofile['id']))
         User.objects.filter(id=request.user.id).update(first_name=userprofile["first_name"],last_name=userprofile["last_name"])
         user_object={}
+        address=request.user.userprofile.address
         empty=[None,""]
         if userprofile['second_name'] not in empty:
             user_object['middle_name']=userprofile['second_name']
@@ -165,11 +166,13 @@ class UpdateProfile(View):
             user_object['whatsapp_number']=userprofile['whatsapp_number']
         
         if userprofile['governorate'] not in empty:
-            user_object['address__governorate']=Governorate.objects.get(id=int(userprofile['gov']))
-        
-        if userprofile['dept'] not in empty:
-            user_object['address__deptpartment']=Department.objects.get(id=int(userprofile['dept']))
+            address.governorate=Governorate.objects.get(id=int(userprofile['governorate']))
+            address.save()
 
+        if userprofile['dept'] not in empty:
+            address.department=Department.objects.get(id=int(userprofile['dept']))
+            address.save()
+        
         profile.update(**user_object)
         
         return JsonResponse({"user":"success"})

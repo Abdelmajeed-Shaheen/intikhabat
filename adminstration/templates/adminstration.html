@@ -228,7 +228,7 @@
                 <label >المحافظة</label>
                 <select  class="form-control" id="gov">
                 {% if candidate.profile.address.governorate %}
-                <option selected value="{{candidate.profile.address.governorate.id}}">{{candidate.profile.address.governorate.name}}</option>
+                <option  value="{{candidate.profile.address.governorate.id}}">{{candidate.profile.address.governorate.name}}</option>
                 {% endif %}
                   {% for gover in govenorate_list %}
                   <option value="{{gover.id}}">{{gover.name}}</option>
@@ -726,26 +726,12 @@ $("#updateprofile").on('click',function(){
   userprofile.last_name=$("#foname").val()
   userprofile.mobile_number=$("#phno").val()
   userprofile.whatsapp_number=$("#wano").val()
-
-    $('#gov option').each(function() {
-    if (this.selected)
-       userprofile.governorate=$('#gov option:selected').val()
-     else
-     userprofile.governorate="";
-
-    });
-
-    $('#dept option').each(function() {
-    if (this.selected)
-       userprofile.dept=$('#dept option:selected').val()
-     else
-     userprofile.dept="";
-
-    });
-
+  console.log($('#gov').find("option:selected").val())
+  userprofile.governorate=$('#gov').find("option:selected").val()
+  userprofile.dept=$('#dept').find("option:selected").val()
   userprofile.id="{{user.id}}"
   userjson=JSON.stringify(userprofile)
-  console.log(userprofile)
+
 
   $.ajax({
     url:"{% url 'update-profile' %}",
