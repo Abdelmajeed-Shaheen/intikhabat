@@ -1,0 +1,57 @@
+{% load staticfiles %}
+<html>
+<head>
+  <title>Test</title>
+  <link href="https://fonts.googleapis.com/css2?family=Almarai&display=swap" rel="stylesheet">
+
+  <!-- CSS only -->
+<style>
+    body{
+        text-align: right;
+    }
+    img{
+        width:150px;
+        height:150px;
+    }
+    h3{
+        text-align: center;
+        background-color: dimgrey;
+        color: white;
+    }
+</style>
+</head>
+<body dir="rtl">
+   
+
+    <div class="container mt-5">
+        <h3>تقرير ناخبين حسب المعرف </h3>
+        <h5>{{display_idn_name.profile.user.first_name}} {{display_idn_name.profile.middle_name}} {{display_idn_name.profile.last_name}} {{display_idn_name.profile.user.last_name}}</h5>
+        <h5>{{display_idn_name.profile.mobile_number}}</h5>
+        <table class="table table-sm">
+            <thead>
+                <tr>
+                    <th scope="col">هل حصل على بطاقة?</th>
+                    <th scope="col">هاتف الناخب</th>
+                    <th scope="col">الاسم كامل </th>
+                    <th scope="col">رقم الناخب</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for voter in voters_list %}
+                <tr>
+                    {% if voter.has_elc_card %}
+                    <td>نعم</td>
+                    {% else %}
+                    <td>لا</td>
+                    {% endif %}
+                    <td>{{voter.profile.mobile_number}}</td>
+                    <td>{{voter.profile.user.first_name}} {{ voter.profile.middle_name}} {{voter.profile.last_name}} {{voter.profile.user.last_name}}</td>
+                    <td>{{voter.id}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+            </table>
+    </div>
+
+</body>
+</html>
