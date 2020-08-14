@@ -59,9 +59,7 @@ class VoterRegForm(forms.Form):
                                                                             ))
     GENDER_CHOICES=(('male', 'ذكر'),('female', 'انثى'),)
     gender=forms.ChoiceField(choices=GENDER_CHOICES)
-
-    address=forms.ModelChoiceField(queryset=Address.objects.all())
-    work=forms.ModelChoiceField(queryset=WorkField.objects.all())
+    work=forms.ModelChoiceField(queryset=WorkField.objects.all(),widget=forms.Select(attrs={'class':'form-control'}))
 
 
 
