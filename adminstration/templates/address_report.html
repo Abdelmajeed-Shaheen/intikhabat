@@ -29,29 +29,9 @@
     </div>
     <div class="row">
         <form >
-            <div class="form-row">
-                <div class="col-lg-4">
-                    
-                    <select  id="cm" name="cm" class="form-control">
-                        <option value="">اختر عضو لجنة</option>
-                        {% for member in cm_members_list %}
-                        <option value="{{member.id}}">{{member.profile.user.first_name}} {{member.profile.user.last_name}}/{{member.committee}}</option>
-                        {% endfor %}
-                    </select>
-                </div>
 
-                <div class="col-lg-4">
-                    <input type="text" class="form-control"  id="p_no" placeholder="رقم هاتف١" >
-                    
-                </div>
-
-
-                <div class="col-lg-4">
-                    <input type="text"  class="form-control" id="w_no" placeholder="رقم هاتف٣" >                   
-                </div>
-            </div>
             <div class="form-row mt-3">
-                <div class="col-lg-3">
+                <div class="col-lg-4">
                     <select  id="governorate" name="governorate" class="form-control">
                         <option value="">اختر المحافظة</option>
                         {% for gover in gover_list %}
@@ -59,17 +39,17 @@
                         {% endfor %}
                     </select>
                 </div>
-                <div class="col-lg-3">
+                <div class="col-lg-4">
                     <select id="dept" name="dept" class="form-control">
                         <option value="">اختر الدائرة</option>
                     </select>
                 </div>
-                <div class="col-lg-3">
+                <div class="col-lg-4">
                     <select id="area" name="area" class="form-control">
                         <option value="">اختر المنطقة</option>
                     </select>
                 </div>
-                <div class="col-lg-3">
+                <div class="col-lg-3 mt-2">
                     <button id="search" type="submit" class="btn btn-info">ابحث</button>
                 </div>
             </div>
@@ -153,7 +133,6 @@ $('#search').on('click',function(e){
     dept_id=$('#dept option:selected').val();
     gover_id = $('#governorate option:selected').val();
     area_id=element = $('#area option:selected').val();
-    cm_id=$('#cm option:selected').val()
     phone_number=$('#p_no').val()
     whatsapp_number=$('#w_no').val()
 
@@ -161,15 +140,11 @@ $('#search').on('click',function(e){
     $('#gover_report').val(gover_id)
     $('#dept_report').val(dept_id)
 
-
-
     query=new Object()
     query.dept_id=dept_id
     query.gover_id=gover_id
     query.area_id=area_id
-    query.phone_number=phone_number
-    query.whatsapp_number=whatsapp_number
-    query.cm_id=cm_id
+
 
     $.ajax({
         url:"{% url 'get_voters' %}",
@@ -193,7 +168,7 @@ $('#search').on('click',function(e){
             election_card=document.createElement('td')
 
             id.innerHTML=value.id
-            fullname.innerHTML=value.full_name+value.full_name+value.full_name+value.full_name
+            fullname.innerHTML=value.full_name
             mobile.innerHTML=value.mobile_no
             identifier.innerHTML=value.identifier
             identifier_mob.innerHTML=value.identifier_phone_no
@@ -218,7 +193,7 @@ $("#print").on("click",function(){
     area_id=$('#area_report').val()
     gover_id=$('#gover_report').val()
     dept_id=$('#dept_report').val()
-    cm_name=$('#cm option:selected').val()
+    cm_name=""
     phone_number=$('#p_no').val()
     whatsapp_number=$('#w_no').val()
     query=new Object()
@@ -229,9 +204,8 @@ $("#print").on("click",function(){
     query.whatsapp_number=whatsapp_number
     query.cm_id=cm_name
     
-    window.location.replace("{% url 'by-cm-report' %}?query="+JSON.stringify(query))
+    window.open("{% url 'by-address-report' %}?query="+JSON.stringify(query))
     
-
 
 })
 </script>

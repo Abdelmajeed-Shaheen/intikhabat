@@ -262,15 +262,16 @@ class GetVotersList(View):
         
         response=[]
         query=request.GET.get('query')
+        print(query)
         query=json.loads(query)
         search_object={}
-  
-        if query['cm_id'] not in [None,""]:
+        data={}
+        if 'cm_id' in query and query['cm_id'] not in [None,""]:
             cm=ComitteeMember.objects.get(id=int(query['cm_id']))
             search_object['profile__address__district']=cm.profile.address.district
             search_object['candidate']=cm.candidate
 
-        if query['is_identifier']:
+        if 'is_identifier' in query and query['is_identifier'] not in [None,""]:
                 identifier_object={
                     'is_identifier':True
                 }
@@ -287,8 +288,12 @@ class GetVotersList(View):
                 search_object["identiefier"]=identifier
                 
                 if  query['identifier_mobile'] not in [None,""]:
-                    identifier_object['profile__mobile_number']=query['identifier_mobile']            
+                    identifier_object['profile__mobile_number']=query['identifier_mobile']
 
+                identifier_response={}
+                identifier_response['idn_name']=(identifier.profile.user.first_name+" "+identifier.profile.middle_name+" "+identifier.profile.last_name+" "+identifier.profile.user.last_name)
+                data["identifier"]=identifier_response 
+                
 
         if query['area_id'] not in [None,""]:
             area=Area.objects.get(id=int(query['area_id']))
@@ -301,12 +306,12 @@ class GetVotersList(View):
         if query['dept_id'] not in [None,""]:
             dept=Department.objects.get(id=int(query['dept_id']))
             search_object['profile__address__department']=dept
-
-        voters_list=Voter.objects.filter(**search_object)        
+        print(search_object)
+        voters_list=Voter.objects.filter(**search_object)       
         for voter in voters_list:
             obj={}
             obj['id']=voter.id
-            obj['full_name']=voter.profile.user.first_name
+            obj['full_name']=(voter.profile.user.first_name+" "+voter.profile.user.last_name)
             obj['mobile_no']=voter.profile.mobile_number
             if voter.identiefier:
                 obj['identifier']=(voter.identiefier.profile.user.first_name+" "+voter.identiefier.profile.user.last_name)
@@ -324,14 +329,9 @@ class GetVotersList(View):
            
                 
             response.append(obj)
-        if identifier is not None:
-            identifier_response={}
-            identifier_response['idn_name']=(identifier.profile.user.first_name+" "+identifier.profile.middle_name+" "+identifier.profile.last_name+" "+identifier.profile.user.last_name)
-            
-        data={
-            'data':response,
-            "identifier":identifier_response
-        }
+
+ 
+        data['data']=response
         return JsonResponse(data,safe=False)
 
 
@@ -450,3 +450,133 @@ def by_identifier_report(request):
         response = HttpResponse(pdf, content_type='application/pdf')
     response['Content-Disposition'] = 'attachment; filename="by_identifier_report.pdf"'
     return response
+
+
+class GetVotersByAddressReport(View):
+    template_name="address_report.html"
+    def get(self,request):
+        governorates_list=Governorate.objects.all()
+
+        if hasattr(request.user.userprofile,'campaignadminstrator'):
+            candidate=request.user.userprofile.campaignadminstrator.candidate
+        
+        elif hasattr(request.user.userprofile,'comitteemember'):
+            candidate=request.user.userprofile.comitteemember.candidate
+
+        else :
+            candidate=request.user.userprofile.candidate
+
+        
+        comittee_members_list=ComitteeMember.objects.filter(candidate=candidate)
+        context={
+            'gover_list':governorates_list,
+            'cm_members_list':comittee_members_list
+            
+        }
+        
+        return render(request,self.template_name,context)
+
+
+
+def by_address_report(request):
+
+    query=request.GET.get('query')
+    query=json.loads(query)
+    search_object={}
+
+    if 'cm_id' in query and query['cm_id'] not in [None,""]:
+        cm=ComitteeMember.objects.get(id=int(query['cm_id']))
+        search_object['profile__address__district']=cm.profile.address.district
+        search_object['candidate']=cm.candidate
+    else:
+        if hasattr(request.user.userprofile,'candidate') or hasattr(request.user.userprofile,'campaignadminstrator'):
+            search_object['candidate']=request.user.userprofile.candidate
+        
+        else:
+            search_object['candidate']=request.user.userprofile.comitteemanager.candidate
+        
+
+        
+    if query['area_id'] not in [None,""]:
+        area=Area.objects.get(id=int(query['area_id']))
+        search_object['profile__address__area']=area
+
+    if query['gover_id'] not in [None,""]:
+        governorate=Governorate.objects.get(id=int(query['gover_id']))
+        search_object['profile__address__governorate']=governorate
+
+    if query['dept_id'] not in [None,""]:
+        dept=Department.objects.get(id=int(query['dept_id']))
+        search_object['profile__address__department']=dept
+    
+    voters_list=Voter.objects.filter(**search_object)
+    
+    html_string = render_to_string('by_cm_report.html', {'voters_list': voters_list})
+    html = HTML(string=html_string,base_url=request.build_absolute_uri())
+    css=CSS('/home/yahya/Dev/dev_jpems/intikhabat/common/static/common/vendor/bootstrap/css/bootstrap.css')
+    html.write_pdf(target='/tmp/mypdf.pdf',stylesheets=[css])
+    fs = FileSystemStorage('/tmp')
+    with fs.open('mypdf.pdf') as pdf:
+        response = HttpResponse(pdf, content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="mypdf.pdf"'
+    return response
+
+def by_status_report(request):
+
+    query=request.GET.get('query')
+    query=json.loads(query)
+    search_object={}
+    if query['cm_id'] not in [None,""]:
+        cm=ComitteeMember.objects.get(id=int(query['cm_id']))
+        search_object['profile__address__district']=cm.profile.address.district
+        search_object['candidate']=cm.candidate
+        
+    if query['area_id'] not in [None,""]:
+        area=Area.objects.get(id=int(query['area_id']))
+        search_object['profile__address__area']=area
+
+    if query['gover_id'] not in [None,""]:
+        governorate=Governorate.objects.get(id=int(query['gover_id']))
+        search_object['profile__address__governorate']=governorate
+
+    if query['dept_id'] not in [None,""]:
+        dept=Department.objects.get(id=int(query['dept_id']))
+        search_object['profile__address__department']=dept
+    
+    voters_list=Voter.objects.filter(**search_object)
+    
+    html_string = render_to_string('by_status_report.html', {'voters_list': voters_list})
+    html = HTML(string=html_string,base_url=request.build_absolute_uri())
+    css=CSS('/home/yahya/Dev/dev_jpems/intikhabat/common/static/common/vendor/bootstrap/css/bootstrap.css')
+    html.write_pdf(target='/tmp/by_status_report.pdf',stylesheets=[css])
+    fs = FileSystemStorage('/tmp')
+    with fs.open('by_status_report.pdf') as pdf:
+        response = HttpResponse(pdf, content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="by_status_report.pdf"'
+    return response
+
+
+
+class GetVotersByStatusReport(View):
+    template_name="status_report.html"
+    def get(self,request):
+        governorates_list=Governorate.objects.all()
+
+        if hasattr(request.user.userprofile,'campaignadminstrator'):
+            candidate=request.user.userprofile.campaignadminstrator.candidate
+        
+        elif hasattr(request.user.userprofile,'comitteemember'):
+            candidate=request.user.userprofile.comitteemember.candidate
+
+        else :
+            candidate=request.user.userprofile.candidate
+
+        
+        comittee_members_list=ComitteeMember.objects.filter(candidate=candidate)
+        context={
+            'gover_list':governorates_list,
+            'cm_members_list':comittee_members_list
+            
+        }
+        
+        return render(request,self.template_name,context)

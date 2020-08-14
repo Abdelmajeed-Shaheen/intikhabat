@@ -18,7 +18,7 @@
 {% block main %}
 <div class="container text-aligner">
     <div class="row">
-    <h1 class="about-title">تقرير اعضاء اللجان</h1>
+    <h1 class="about-title">تقرير حسب الحالة الانتخابية</h1>
     
     <input id="area_report" hidden>
     <input id="gover_report" hidden>
@@ -84,10 +84,6 @@
                   <th scope="col">رقم الناخب</th>
                   <th scope="col">الاسم كامل </th>
                   <th scope="col">هاتف الناخب</th>
-                  <th scope="col">اسم المعرف</th>
-                  <th scope="col">هاتف المعرف 1</th>
-                  <th scope="col">هاتف المعرف 2</th>
-                  <th scope="col">هل حصل على بطاقة?</th>
                   </tr>
               </thead>
               <tbody>
@@ -187,25 +183,12 @@ $('#search').on('click',function(e){
             id=document.createElement('td')
             fullname=document.createElement('td')
             mobile=document.createElement('td')
-            identifier=document.createElement('td')
-            identifier_mob=document.createElement('td')
-            identifier_wa=document.createElement('td')
-            election_card=document.createElement('td')
-
             id.innerHTML=value.id
             fullname.innerHTML=value.full_name+value.full_name+value.full_name+value.full_name
             mobile.innerHTML=value.mobile_no
-            identifier.innerHTML=value.identifier
-            identifier_mob.innerHTML=value.identifier_phone_no
-            identifier_wa.innerHTML=value.identifier_whats_no
-            election_card.innerHTML=value.has_elc_card
             row.append(id)
             row.append(fullname)
             row.append(mobile)
-            row.append(identifier)
-            row.append(identifier_mob)
-            row.append(identifier_wa)
-            row.append(election_card)
             table.append(row)
             
         })
@@ -229,7 +212,7 @@ $("#print").on("click",function(){
     query.whatsapp_number=whatsapp_number
     query.cm_id=cm_name
     
-    window.location.replace("{% url 'by-cm-report' %}?query="+JSON.stringify(query))
+    window.open("{% url 'by-status-report' %}?query="+JSON.stringify(query))
     
 
 
