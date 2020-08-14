@@ -5,7 +5,8 @@ from .views import (
                     CreateAreaView,CreateDistrictView,html_to_pdf_view,
                     GetReportByCommitteeMember,GetGovernorateDepartment ,
                     GetDepartmentArea,GetVotersList,by_committee_member_report,
-                    GetReportByIdentifier,by_identifier_report                                                                                                                                                 
+                    GetReportByIdentifier,by_identifier_report,GetVotersByAddressReport,
+                    by_address_report,GetVotersByStatusReport,by_status_report                                                                                                                                                 
                     )
 urlpatterns = [
     path("main",CampaignManagementMainView.as_view(),name="main"),
@@ -23,6 +24,13 @@ urlpatterns = [
     path("by-cm-report",by_committee_member_report,name="by-cm-report"),
     path("identifier-report",GetReportByIdentifier.as_view(),name="identifier-report"),
     path("by-idn-report",by_identifier_report,name="by-idn-report"),
+    path("address-report",GetVotersByAddressReport.as_view(),name="address-report"),
+    path("by-address-report",by_address_report,name="by-address-report"),
+    path("status-report",GetVotersByStatusReport.as_view(),name="status-report"),
+    path("by-astatus-report",by_status_report,name="by-status-report"),
+
+
+
 
 
 

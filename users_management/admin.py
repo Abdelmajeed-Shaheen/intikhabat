@@ -18,7 +18,7 @@ class AdminUserProfile(admin.ModelAdmin):
 
 @admin.register(Voter)
 class AdminVoter(admin.ModelAdmin):
-    list_display=['profile','vote_status','followed_up','identiefier']
+    list_display=['profile','vote_status','followed_up','identiefier',]
 
 
 @admin.register(Candidate)
