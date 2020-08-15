@@ -1,21 +1,22 @@
 from django.db import models
 from common.models import Address
-# from users_management.models import (ComitteeMember,Candidate,
-#                                      Voter,CommunicationOfficer
+from users_management.models import (ComitteeMember,Candidate,
+                                      Voter,CommunicationOfficer
 
-#                                      )
+                                     )
 
 
 
 class Comittee(models.Model):
 
     name=models.CharField(max_length=255)
-    candidate=models.OneToOneField(to='users_management.Candidate',on_delete=models.CASCADE,related_name='comittee_candidate')
+    candidate=models.ForeignKey(to='users_management.Candidate',on_delete=models.CASCADE,related_name='comittee_candidate')
     description=models.TextField()
     address=models.ForeignKey(Address,on_delete=models.CASCADE)
     is_active=models.BooleanField(default=False)
     timestamp=models.DateTimeField(auto_now=True, auto_now_add=False)
     updated=models.DateTimeField(auto_now=False, auto_now_add=True)
+    manager=models.ForeignKey(ComitteeMember,on_delete=models.CASCADE,null=True,blank=True,related_name='comittee_manager')
 
     def __str__(self):
         return self.name

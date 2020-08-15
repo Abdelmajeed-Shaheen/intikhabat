@@ -65,6 +65,13 @@
             {{comittee_member_form.is_manager}}
           </div>
         </div>
+        <div class="col-sm-6">
+        <select name="" id="assign_comittee" class="form-control">
+          {% for comittee in comittees_list%}
+          <option value="{{comittee.id}}">{{comittee.name}}</option>
+          {% endfor %}
+        </select>
+        </div>
 
         </div>
         <input type="hidden" value="cm" name="member_type" id='usertype'>
@@ -177,3 +184,7 @@
     </div>
   </div>
 </div>
+
+
+<!-- update comittee -->
+
