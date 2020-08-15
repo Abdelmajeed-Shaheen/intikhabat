@@ -35,7 +35,7 @@
                     <select  id="cm" name="cm" class="form-control">
                         <option value="">اختر عضو لجنة</option>
                         {% for member in cm_members_list %}
-                        <option value="{{member.id}}">{{member.profile.user.first_name}} {{member.profile.user.last_name}}/{{member.committee}}</option>
+                        <option value="{{member.id}}">{{member.profile.user.first_name}} {{member.profile.user.last_name}}/{{member.comittee_manager.all.first}}</option>
                         {% endfor %}
                     </select>
                 </div>
@@ -166,6 +166,7 @@ $('#search').on('click',function(e){
     query.phone_number=phone_number
     query.whatsapp_number=whatsapp_number
     query.cm_id=cm_id
+    query.status="Not_sure"
 
     $.ajax({
         url:"{% url 'get_voters' %}",
