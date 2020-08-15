@@ -258,7 +258,7 @@
         <div class="container mt-5">
           <div class="row">
             <form class="form-inline">
-              <input type="text" class="form-control mb-2 mr-sm-2" id="comitteeQuery" placeholder="ابحث بواسطة اسم اللجنة">
+              <input type="text" class="form-control mb-2 mr-sm-2" id="comittee" placeholder="ابحث بواسطة اسم اللجنة">
               <button  id="searchCommittee" class="btn btn-primary m-2">ابحث</button>
             </form>
           </div>
@@ -336,8 +336,8 @@
         <div class="col-sm-6">
           
           <h2 class="about-title text-aligner">قائمة اللجان</h2>
-          <table class="table table-striped table-dark" id="#comittee_table">
-            <thead>
+          <table class="table table-striped table-dark">
+            <thead id="comittee_table">
               <tr>
                 <th scope="col">اسم اللجنة</th>
                 <th scope="col">الحالة</th>
@@ -345,7 +345,7 @@
                 <th scope="col">تعديل</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody id="comittee_table_tbody">
               {% for comittee in comittees_list %}
               <tr>
                 <th scope="row">{{comittee.name}}</th>
@@ -769,21 +769,6 @@ $("#updateprofile").on('click',function(){
 $("#reload").on("click",function(){
   location.reload()
 })
-$('#searchCommittee').on('click',function(event){
-event.preventDefault()
-query=$('#comitteeQuery').val()
-console.log(query)
-$.ajax({
-  url:"{% url 'search-comittee' %}",
-  type:"GET",
-  data:{
-    query:query
-  },
-  success:function(result){
-    console.log(result)
-  }
-})
-})
 
 $("#creatArea").on('click',function(){
   area_name=$("#areaName").val()
@@ -835,12 +820,7 @@ $('#comitteform').on('click',function(){
   comittee_discription=$('#id_description').val()
   comittee_status=$('#id_is_active').val()
   comittee_address=$('#id_address option:selected').val()
-  // comittee=new Object()
-  // comittee.comittee_name=comittee_name
-  // comittee.comittee_status=comittee_status
-  // comittee.comittee_discription=comittee_discription
-  // comittee.comittee_address=comittee_address
-  // console.log(comittee)
+
   $.ajax({
     url:"{% url 'create-comittee' %}",
     type:'POST',
@@ -855,6 +835,38 @@ $('#comitteform').on('click',function(){
       }
     }
   })
+})
+
+$('#searchCommittee').on('click',function(e){
+  e.preventDefault()
+    comittee_name=$('#comittee').val()
+    $.ajax({
+      url:'{% url "search-comittee" %}',
+      type:'GET',
+      dataType:"JSON",
+      data:{
+        query:comittee_name
+      },
+
+      success:function(result){
+        console.log(result.comittee.comittee_name)
+        table=$('#comittee_table_tbody')
+        table.empty()
+        row=$("<tr></tr>");
+        name=("<td>"+result.comittee.comittee_name+"</td>");
+        status=("<td>"+result.comittee.status+"</td>");
+        editdata=$("<td></td>")
+        manager=$("<td>"+result.comittee.manager+"</td>");
+        edit=$("<a>", { "class": "btn btn-danger","href":'/campaign-management/update-committee/'+result.comittee.id });
+        edit.text("تعديل")
+        editdata.append(edit)
+        row.append(name)
+        row.append(status)
+        row.append(manager)
+        row.append(editdata)
+        table.append(row)     
+      }
+    })
 })
 </script>
 
