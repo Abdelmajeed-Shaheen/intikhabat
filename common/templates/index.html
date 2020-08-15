@@ -139,6 +139,10 @@
               <label >الجنس</label>
               {{voter_reg_form.gender}}
             </div>
+            <div class="col-md-4">
+              <label >العمل</label>
+              {{voter_reg_form.work}}
+            </div>
           </div>
           <div class="form-row">
             <label >العنوان</label>
@@ -257,7 +261,9 @@ $('#register').on('click',function(){
   userprofile.last_name=$("#id_last_name").val()
   userprofile.mobile_number=$("#id_mobile_number").val()
   userprofile.whatsapp_number=$("#id_whatsapp_number").val()
-  userprofile.address=$("#id_address option:selected").val()
+  userprofile.governorate=$("#governorate option:selected").val()
+  userprofile.dept=$("#dept option:selected").val()
+  userprofile.area=$("#area option:selected").val()
   userprofile.work=$("#id_work option:selected").val()
   userprofile.gender=$("#id_gender option:selected").val()
   day=$('#id_dob_day').val()
@@ -266,7 +272,7 @@ $('#register').on('click',function(){
   userprofile.dob=(year+"-"+month+"-"+day)
   userprofile.email=$("#id_email").val()
   userjson=JSON.stringify(userprofile)
-  
+  console.log(userprofile.governorate)
 
   $.ajax({
     url:"{% url 'create-voter' %}",

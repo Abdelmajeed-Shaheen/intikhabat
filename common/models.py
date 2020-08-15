@@ -55,7 +55,7 @@ class Address(models.Model):
     governorate=models.ForeignKey(Governorate,on_delete=models.CASCADE)
     department=models.ForeignKey(Department,on_delete=models.CASCADE,null=True,blank=True)
     area=models.ForeignKey(Area,on_delete=models.CASCADE,null=True,blank=True)
-    district=models.ForeignKey(District,on_delete=models.CASCADE)
-    street=models.ForeignKey(Street,on_delete=models.CASCADE)
+    district=models.ForeignKey(District,on_delete=models.CASCADE,null=True,blank=True)
+    street=models.ForeignKey(Street,on_delete=models.CASCADE,null=True,blank=True)
     def __str__(self):
         return (self.governorate.name+"/"+self.department.name)
