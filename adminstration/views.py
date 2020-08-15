@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import HttpResponse,JsonResponse
+from django.http import HttpResponse,JsonResponse,HttpResponseRedirect
 from django.views.generic import CreateView,View,ListView
 from django.db.models import Q
 from .models import Comittee
@@ -19,7 +19,7 @@ from users_management.forms import SignUpForm
 import json
 # testing purpose
 from django.core.files.storage import FileSystemStorage
-from django.http import HttpResponse
+from django.urls import reverse
 from django.template.loader import render_to_string
 from weasyprint import HTML,CSS
 
@@ -35,7 +35,7 @@ class CampaignManagementMainView(View):
         else:
             candidate=request.user.userprofile.candidate
         user=request.user.userprofile
-        comittees_list=Comittee.objects.filter(is_active=True)
+        comittees_list=Comittee.objects.filter(is_active=True,candidate=candidate)
         campaign_manager=candidate.campaignadminstrator_set.first()
         comittees_members=candidate.comitteemember_set.all()
         govenorate_list=Governorate.objects.all()
@@ -82,11 +82,15 @@ class ComitteeMemberView(View):
 class CreateComitteeView(View):
 
     def post(self,request):
-        candidate=request.POST.get('candidate')
-        candidate=Candidate.objects.get(pk=int(candidate))
+        
+        if hasattr(request.user.userprofile,'candidate'):
+            candidate=Candidate.objects.get(pk=request.user.userprofile.candidate.id)
+        elif hasattr(request.user.userprofile,'campaignadminstrator'):
+            candidate=request.user.userprofile.campaignadminstrator.candidate    
         name=request.POST.get('name')
         description=request.POST.get('description')
-        is_active=request.POST.get('is_active')
+        is_active=request.POST.get('status')
+        print(is_active)
         if is_active == "on":
             is_active=True
         else:
@@ -580,3 +584,32 @@ class GetVotersByStatusReport(View):
         }
         
         return render(request,self.template_name,context)
+
+
+
+def update_comittee(request,id):
+    comittee=Comittee.objects.get(id=id)
+    update_form=CreateComitteeForm(instance=comittee)
+    print(request.POST)
+    if request.POST:
+        name=request.POST.get('name')
+        description=request.POST.get('description')
+        if request.POST.get('is_active') == "on":
+            is_active=True
+        else:
+            is_active=False
+        address=Address.objects.get(id=int(request.POST.get('address')))
+
+        comittee.name=name
+        comittee.is_active=is_active
+        comittee.description=description
+        comittee.address=address
+        comittee.save()
+
+        return HttpResponseRedirect(reverse('update-committee',kwargs={'id':comittee.id}))
+
+    context={
+        'comittee':comittee,
+        'update_form':update_form
+    }
+    return render(request,"update_comittee.html",context)

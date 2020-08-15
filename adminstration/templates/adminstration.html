@@ -354,8 +354,13 @@
                 {% else %}
                 <td>غير فعالة</td>
                 {% endif %}
-                <td>{{comittee.candidate.campaign_manager}}</td>
-                <td><button class="btn btn-danger">تعديل</button></td>
+               
+                <td>
+                  {{comittee.manager}} 
+                </td>
+                
+                <td><a class="btn btn-danger" href="{% url 'update-committee' comittee.id %}">تعديل</a></td>
+
               </tr>
               {% endfor %}
     
@@ -638,9 +643,16 @@
       last_name:$('#id_last_name').val(),
       third_name:$('#id_last_name').val(),
       usertype:$('#usertype').val(),
+      
       middle_name:$('#id_middle_name').val(),
       csrfmiddlewaretoken:csrftoken  
     }
+    usertype=$('#usertype').val()
+    if (data.usertype=='cm'){
+      data['comittee']=$('#assign_comittee option:selected').val()
+      data['is_manager']=$('#id_is_manager').val()
+    }
+
     return data
   }
 $('#createmember').on('click',function(){
@@ -814,6 +826,33 @@ $("ul.nav-tabs > li > a").on("shown.bs.tab", function(e) {
 // on load of the page: switch to the currently selected tab
 var hash = window.location.hash;
 $('#myTab a[href="' + hash + '"]').tab('show');
+
+$('#comitteform').on('click',function(){
+  comittee_name=$('#id_name').val()
+  comittee_discription=$('#id_description').val()
+  comittee_status=$('#id_is_active').val()
+  comittee_address=$('#id_address option:selected').val()
+  // comittee=new Object()
+  // comittee.comittee_name=comittee_name
+  // comittee.comittee_status=comittee_status
+  // comittee.comittee_discription=comittee_discription
+  // comittee.comittee_address=comittee_address
+  // console.log(comittee)
+  $.ajax({
+    url:"{% url 'create-comittee' %}",
+    type:'POST',
+    data:{
+      name:comittee_name,
+      description:comittee_discription,
+      status:comittee_status,
+      address:comittee_address,
+      csrfmiddlewaretoken:"{{csrf_token}}",
+      success:function(){
+        location.reload()
+      }
+    }
+  })
+})
 </script>
 
 
