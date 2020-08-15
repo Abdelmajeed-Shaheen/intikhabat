@@ -14,7 +14,7 @@ from common.models import ( Address,
                             District, 
                             Area)
 
-from .forms import CreateComitteeForm
+from .forms import CreateComitteeForm,UpdateCmForm
 from users_management.forms import SignUpForm
 import json
 # testing purpose
@@ -613,3 +613,32 @@ def update_comittee(request,id):
         'update_form':update_form
     }
     return render(request,"update_comittee.html",context)
+
+
+
+def update_comittee_member(request,id):
+    cm=ComitteeMember.objects.get(id=id)
+    candidate=cm.candidate
+    comittees_list=candidate.comittee_candidate.all()
+    if request.POST:
+        print(request.POST)
+        comittee=request.POST.get('comittee')
+
+        if request.POST.get('is_manager') == "on":
+            is_manager=True
+        else:
+            is_manager=False
+        
+        comittee=Comittee.objects.get(id=int(comittee))
+        cm.comittee=comittee
+        cm.is_manager=is_manager
+        comittee.manager=cm
+        comittee.save()
+        cm.save()
+
+    context={
+        'cm':cm,
+        'comittees_list':comittees_list
+        
+    }
+    return render(request,"update_cm.html",context)

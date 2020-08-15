@@ -1,0 +1,72 @@
+{% extends 'candidate_base.html' %}
+
+
+{% block extra_content %}
+  <header id="header">
+    <div class="container-ar d-flex align-items-center" >
+      <nav class="nav-menu d-none d-lg-block">
+        <ul>
+          <li><a href="{% url 'logout' %}">تسحيل خروج</a></li>
+          <li><a href="{% url 'main' %}">عودة</a></li>
+        </ul>
+      </nav>
+      <!-- .nav-menu -->
+
+    </div>
+  </header>
+{% endblock %}
+{% block main %}
+<div class="container mt-5 text-aligner">
+<div class="row">
+    <div class="col-sm-4">
+        <h5 class="about-title">
+            تعديل عضو لجنة
+            {{cm.profile.first_name}} {{cm.profile.last_name}}
+        </h5>
+    </div>
+    <div class="col-sm-6">
+        <h5 class="about-title">اللجنة: {{cm.comittee.name}}</h5>
+    </div>
+
+</div>
+
+<div class="row">
+    <div class="col-sm-4">
+        <h5>رقم الهاتف:{{cm.profile.mobile_number}}</h5>
+        <h5>رقم واتساب:{{cm.profile.whatsapp_number}}</h5>
+    </div>
+
+    <div class="col-sm-4"> 
+        <h5>العنوان:</h5>
+      
+        <h5>{{cm.profile.address.governorate}}/{{cm.profile.address.department}}/{{cm.profile.address.area}}</h5>
+    </div>
+</div>
+
+<div class="row">
+    <form method="POST">
+        {% csrf_token %}
+        <div class="form-row">
+                <label for="">اللجنة</label>
+                <select class="form-control" name="comittee">
+                    <option value="{{cm.comittee.id}}">{{cm.comittee}}</option>
+                    {% for comittee in comittees_list %}
+                    <option value="{{comittee.id}}">{{comittee.name}}</option>
+                    {% endfor %}
+                  </select>
+            
+        </div>
+
+        <div class="form-row mt-3">
+            <input type="checkbox" name="is_manager">
+            <label for="">تعيين كمدير للجنة </label>
+            
+        </div>
+        <div class="form-row">
+            <input type="submit" class="btn btn-danger" value="تعديل">
+        </div>
+    </form>
+
+</div>
+</div>
+{% endblock %}
