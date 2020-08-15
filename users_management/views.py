@@ -9,7 +9,11 @@ from django.db.utils import IntegrityError
 from django.urls import reverse
 from users_management.models import (UserProfile,ComitteeMember, 
                                      CampaignAdminstrator,CommunicationOfficer)
-from common.models import Address
+from common.models import (Address,
+                           Governorate,
+                           Department,
+                           Area
+                           )
 from users_management.forms import SignUpForm
 from adminstration.models import Comittee
 from voters_management.views import UpdateVoter
@@ -151,6 +155,7 @@ class UpdateProfile(View):
         profile=UserProfile.objects.filter(id=int(userprofile['id']))
         User.objects.filter(id=request.user.id).update(first_name=userprofile["first_name"],last_name=userprofile["last_name"])
         user_object={}
+        address=request.user.userprofile.address
         empty=[None,""]
         if userprofile['second_name'] not in empty:
             user_object['middle_name']=userprofile['second_name']
@@ -164,9 +169,17 @@ class UpdateProfile(View):
         if userprofile['whatsapp_number'] not in empty:
             user_object['whatsapp_number']=userprofile['whatsapp_number']
         
-        if userprofile['address'] not in empty:
-            user_object['address']=Address.objects.get(id=int(userprofile['address']))
+        if userprofile['governorate'] not in empty:
+            address.governorate=Governorate.objects.get(id=int(userprofile['governorate']))
+            address.save()
 
+        if userprofile['dept'] not in empty:
+            address.department=Department.objects.get(id=int(userprofile['dept']))
+            address.save()
+        if userprofile['area'] not in empty:
+            address.area=Area.objects.get(id=int(userprofile['area']))
+            address.save()
+        
         profile.update(**user_object)
         
         return JsonResponse({"user":"success"})

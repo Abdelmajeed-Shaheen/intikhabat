@@ -87,7 +87,7 @@ h1, h2, h3, h4, h5, h6 {
   display: table;
   width: 100%;
   height: 100vh;
-  background: url(../img/hero-bg.jpg) top center;
+  background: url('/static/common/img/hero-bg.jpg') top center;
   background-size: cover;
 }
 
@@ -1087,4 +1087,17 @@ h1, h2, h3, h4, h5, h6 {
 
 .text-aligner{
   text-align: right;
+}
+
+.star-icon{
+  color: goldenrod
+}
+
+.login-link{
+  font-weight: bolder;
+  color:white
+}
+
+.date-input{
+  width: 20%;
 }

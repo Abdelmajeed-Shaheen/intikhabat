@@ -4,19 +4,13 @@
 {% block extra_content %}
   <header id="header">
     <div class="container-ar d-flex align-items-center" >
-
-      
-      <!-- Uncomment below if you prefer to use a text logo -->
-      
-
       <nav class="nav-menu d-none d-lg-block">
         <ul>
           <li><a href="{% url 'logout' %}">تسحيل خروج</a></li>
           <li><a href="#services">اتصل بنا</a></li>
-
-
         </ul>
-      </nav><!-- .nav-menu -->
+      </nav>
+      <!-- .nav-menu -->
 
     </div>
   </header>
@@ -225,143 +219,188 @@
 
             <div class="col-sm-3">
               <div class="form-group">
-                <label >العنوان</label>
-                <select multiple class="form-control" id="addresses">
-                  {% for address in addresses_list %}
-                  <option value="{{address.id}}">{{address.governorate}}/{{address.district}}</option>
+                <label >المحافظة</label>
+                <select  class="form-control" id="gov">
+                {% if candidate.profile.address.governorate %}
+                <option  value="{{candidate.profile.address.governorate.id}}">{{candidate.profile.address.governorate.name}}</option>
+                {% endif %}
+                  {% for gover in govenorate_list %}
+                  <option value="{{gover.id}}">{{gover.name}}</option>
                   {% endfor %}
  
                 </select>
               </div>
             </div>
-            
-
-
+            <div class="col-sm-3">
+              <div class="form-group">
+                <label >الدائرة</label>
+                <select  class="form-control" id="dept">
+                {% if candidate.profile.address.department %}
+                <option value="{{candidate.profile.address.department.id}}">{{candidate.profile.address.department.name}}</option>
+                {% endif %}
+                  {% for dept in departments_list %}
+                  <option value="{{dept.id}}">{{dept.name}}</option>
+                  {% endfor %}
+ 
+                </select>
+              </div>
+            </div>
           </div>
-          
-        </form>
-        
-        </div>
+            <div class="form-row">
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <a class="btn btn-info btn-sm" data-toggle="modal" data-target="#addArea"> اضافة منطقة +</a>
+
+                 / <label > اختيار منطقة</label>
+                  <select  class="form-control" id="area">
+                  {% if candidate.profile.address.area %}
+                  <option value="{{candidate.profile.address.area.id}}">{{candidate.profile.address.area.name}}</option>
+                  {% endif %}
+                    {% for area in areas_list %}
+                    <option value="{{area.id}}">{{area.name}}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <a class="btn btn-info btn-sm" data-toggle="modal" data-target="#addDist"> اضافة حي +</a>
+
+                 / <label > اختيار الحي</label>
+                  <select  class="form-control" id="district">
+                  {% if candidate.profile.address.district %}
+                  <option value="{{candidate.profile.address.district.id}}">{{candidate.profile.address.district.name}}</option>
+                  {% endif %}
+                    {% for district in districts_list %}
+                    <option value="{{district.id}}">{{district.name}}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
+              </div>
+            </div>
+        </form> 
         <div class="row">
           <button id="updateprofile" class="btn btn-danger" >تعديل</button>
         </div>
-      </div>
-    </div>
-  
-  <div class="tab-pane fade " id="createcomittee" role="tabpanel" aria-labelledby="home-tab">
- 
-    <div class="container mt-5">
-      <div class="row">
-        <form class="form-inline">
-          <input type="text" class="form-control mb-2 mr-sm-2" id="comitteeQuery" placeholder="ابحث بواسطة اسم اللجنة">
-          <button  id="searchCommittee" class="btn btn-primary m-2">ابحث</button>
-        </form>
-      </div>
-      <div class="row">
-        
-          <div class="row">
-            <div class="col-sm-6">
-              <div class='form-group text-aligner'>
-                <button id='camp' class="btn btn-danger mb-2" data-toggle="modal" data-target="#createComitteeMember">انشاء مدير حملة</button>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-sm-6">
-              <div class='form-group text-aligner'>
-                <button  id='cm' class="btn btn-danger mb-2"  data-toggle="modal" data-target="#createComitteeMember">انشاء عضو لجنة </button>
-              </div>
-            </div>
-          </div>        
-      </div>
-
-    <div class="row">
-      <div class='col-sm-6'>
-        <h2 class="about-title text-aligner">انشاء لجنة</h2>
-        <form>
-          {% csrf_token %}
-          <input type="hidden" value="{{request.user.userprofile.candidate.id}}" id="candidate_id" name="candidate">
-          <div class="row">
-            <div class="col-sm-4">
-              <div class='form-group text-aligner'>
-                <label for="formGroupExampleInput">اسم اللجنة</label>
-                {{form.name}}
-              </div>
-
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-sm-4">
-              <div class='form-group text-aligner'>
-                <label for="formGroupExampleInput">عن اللجنة:</label>
-                 {{form.description}}
-              </div>
-            </div>
-          </div>
-          <div class='row'>
-            <div class="col-sm-4">
-              <div class='form-check text-aligner'>
-                <label class="form-check-label " for="id_is_active">
-                   نشط؟
-                </label>
-                {{form.is_active}}           
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-sm-4">
-              <div class='form-group text-aligner'>
-                <label for="formGroupExampleInput">عنوان موقع اللجنة:</label>
-                {{form.address}}
-                
-              </div>
-              
-            </div>
-          </div>
-        </form>
-        <div class="row">
-          <div class="col-sm-4">
-            <div class='form-group text-aligner'>
-              <button  class="btn btn-success mb-2" id="comitteform">انشاء</button>
-            </div>
-          </div>
         </div>
+
       </div>
-      
-    <div class="col-sm-6">
-      
-      <h2 class="about-title text-aligner">قائمة اللجان</h2>
-      <table class="table table-striped table-dark" id="#comittee_table">
-        <thead>
-          <tr>
-            <th scope="col">اسم اللجنة</th>
-            <th scope="col">الحالة</th>
-            <th scope="col">مدير اللجنة</th>
-            <th scope="col">تعديل</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for comittee in comittees_list %}
-          <tr>
-            <th scope="row">{{comittee.name}}</th>
-            {% if comittee.is_active %}
-            <td>فعالة</td>
-            {% else %}
-            <td>غير فعالة</td>
-            {% endif %}
-            <td>{{comittee.candidate.campaign_manager}}</td>
-            <td><button class="btn btn-danger">تعديل</button></td>
-          </tr>
-          {% endfor %}
 
-        </tbody>
-      </table>
-    </div>
-    </div>
-
-  </div>
-
-  </div>
+      <div class="tab-pane fade " id="createcomittee" role="tabpanel" aria-labelledby="home-tab">
+ 
+        <div class="container mt-5">
+          <div class="row">
+            <form class="form-inline">
+              <input type="text" class="form-control mb-2 mr-sm-2" id="comitteeQuery" placeholder="ابحث بواسطة اسم اللجنة">
+              <button  id="searchCommittee" class="btn btn-primary m-2">ابحث</button>
+            </form>
+          </div>
+          <div class="row">
+            
+              <div class="row">
+                <div class="col-sm-6">
+                  <div class='form-group text-aligner'>
+                    <button id='camp' class="btn btn-danger mb-2" data-toggle="modal" data-target="#createComitteeMember">انشاء مدير حملة</button>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-6">
+                  <div class='form-group text-aligner'>
+                    <button  id='cm' class="btn btn-danger mb-2"  data-toggle="modal" data-target="#createComitteeMember">انشاء عضو لجنة </button>
+                  </div>
+                </div>
+              </div>        
+          </div>
+    
+        <div class="row">
+          <div class='col-sm-6'>
+            <h2 class="about-title text-aligner">انشاء لجنة</h2>
+            <form>
+              {% csrf_token %}
+              <input type="hidden" value="{{request.user.userprofile.candidate.id}}" id="candidate_id" name="candidate">
+              <div class="row">
+                <div class="col-sm-4">
+                  <div class='form-group text-aligner'>
+                    <label for="formGroupExampleInput">اسم اللجنة</label>
+                    {{form.name}}
+                  </div>
+    
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-4">
+                  <div class='form-group text-aligner'>
+                    <label for="formGroupExampleInput">عن اللجنة:</label>
+                     {{form.description}}
+                  </div>
+                </div>
+              </div>
+              <div class='row'>
+                <div class="col-sm-4">
+                  <div class='form-check text-aligner'>
+                    <label class="form-check-label " for="id_is_active">
+                       نشط؟
+                    </label>
+                    {{form.is_active}}           
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-4">
+                  <div class='form-group text-aligner'>
+                    <label for="formGroupExampleInput">عنوان موقع اللجنة:</label>
+                    {{form.address}}
+                    
+                  </div>
+                  
+                </div>
+              </div>
+            </form>
+            <div class="row">
+              <div class="col-sm-4">
+                <div class='form-group text-aligner'>
+                  <button  class="btn btn-success mb-2" id="comitteform">انشاء</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+        <div class="col-sm-6">
+          
+          <h2 class="about-title text-aligner">قائمة اللجان</h2>
+          <table class="table table-striped table-dark" id="#comittee_table">
+            <thead>
+              <tr>
+                <th scope="col">اسم اللجنة</th>
+                <th scope="col">الحالة</th>
+                <th scope="col">مدير اللجنة</th>
+                <th scope="col">تعديل</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for comittee in comittees_list %}
+              <tr>
+                <th scope="row">{{comittee.name}}</th>
+                {% if comittee.is_active %}
+                <td>فعالة</td>
+                {% else %}
+                <td>غير فعالة</td>
+                {% endif %}
+                <td>{{comittee.candidate.campaign_manager}}</td>
+                <td><button class="btn btn-danger">تعديل</button></td>
+              </tr>
+              {% endfor %}
+    
+            </tbody>
+          </table>
+        </div>
+        </div>
+    
+      </div>
+    
+      </div>
 
   <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
    
@@ -602,9 +641,23 @@
     </div>
   </div>
 
-  <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">...</div>
-</div>
 
+  <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+
+  <div class="container text-aligner">
+    <div class="row">
+      <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+        <a class="nav-link active" id="v-pills-home-tab"  href="{% url 'cm-report' %}" role="tab" aria-controls="v-pills-home" aria-selected="true">الاستعلام عن الناخبين حسب عضو الارتباط</a>
+        <a class="nav-link" id="v-pills-profile-tab"  href="#{% url 'identifier-report' %}" role="tab" aria-controls="v-pills-profile" aria-selected="false">الاستعلام عن ناخبين حسب المعرفين</a>
+        <a class="nav-link" id="v-pills-messages-tab"  href="{% url 'address-report' %}" role="tab" aria-controls="v-pills-messages" aria-selected="false">الاستعلام عن الناخبين حسب العناوين</a>
+        <a class="nav-link" id="v-pills-settings-tab" href="{% url 'status-report' %}" role="tab" aria-controls="v-pills-settings" aria-selected="false">الاستعلام عن الناخبين المترددين</a>
+      </div>
+    </div>
+
+  </div>
+  </div>
+    </div>
+  
 {% include 'modals.html' %}
 {% endblock %}
 
@@ -708,15 +761,14 @@ $("#updateprofile").on('click',function(){
   userprofile.last_name=$("#foname").val()
   userprofile.mobile_number=$("#phno").val()
   userprofile.whatsapp_number=$("#wano").val()
-    $('#addresses option').each(function() {
-    if (this.selected)
-       userprofile.address=$('#addresses option:selected').val()
-     else
-     userprofile.address="";
-});
+  console.log($('#gov').find("option:selected").val())
+  userprofile.governorate=$('#gov').find("option:selected").val()
+  userprofile.dept=$('#dept').find("option:selected").val()
   userprofile.id="{{user.id}}"
+  userprofile.area=$("#area").find("option:selected").val()
   userjson=JSON.stringify(userprofile)
-  console.log(userprofile)
+  console.log(userprofile.area)
+
 
   $.ajax({
     url:"{% url 'update-profile' %}",
@@ -751,6 +803,51 @@ $.ajax({
   }
 })
 })
+
+$("#creatArea").on('click',function(){
+  area_name=$("#areaName").val()
+  dept=$("#deptArea option:selected").val()
+  $.ajax({
+    url:"{% url 'create-area' %}",
+    type:"POST",
+    data:{
+      area_name:area_name,
+      dept:dept,
+      csrfmiddlewaretoken:"{{csrf_token}}"
+    },
+    success:function(){
+      
+      location.reload()
+
+    }
+  })
+})
+
+$("#creatDist").on('click',function(){
+  dist_name=$("#distName").val()
+  area=$("#areaDist option:selected").val()
+  $.ajax({
+    url:"{% url 'create-district' %}",
+    type:"POST",
+    data:{
+      dist_name:dist_name,
+      area:area,
+      csrfmiddlewaretoken:"{{csrf_token}}"
+    },
+    success:function(){
+      location.reload()
+    }
+  })
+})
+
+$("ul.nav-tabs > li > a").on("shown.bs.tab", function(e) {
+  var id = $(e.target).attr("href").substr(1);
+  window.location.hash = id;
+});
+
+// on load of the page: switch to the currently selected tab
+var hash = window.location.hash;
+$('#myTab a[href="' + hash + '"]').tab('show');
 </script>
 
 

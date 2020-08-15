@@ -1,0 +1,240 @@
+{% extends 'candidate_base.html' %}
+
+{% block extra_content %}
+  <header id="header">
+    <div class="container-ar d-flex align-items-center" >
+      <nav class="nav-menu d-none d-lg-block">
+        <ul>
+          <li><a href="{% url 'logout' %}">تسحيل خروج</a></li>
+          <li><a href="#services">اتصل بنا</a></li>
+        </ul>
+      </nav>
+      <!-- .nav-menu -->
+
+    </div>
+  </header>
+{% endblock extra_content %}
+
+{% block main %}
+<div class="container text-aligner">
+    <div class="row">
+    <h1 class="about-title">تقرير اعضاء اللجان</h1>
+    
+    <input id="area_report" hidden>
+    <input id="gover_report" hidden>
+    <input id="dept_report" hidden>
+    </div>
+    <div class="row">
+        <button class="btn btn-danger btn-sm mb-3" id="print">مراجعة و طباعة التقرير</button>
+    </div>
+    <div class="row">
+        <form >
+            <div class="form-row">
+                <div class="col-lg-4">
+                    
+                    <select  id="cm" name="cm" class="form-control">
+                        <option value="">اختر عضو لجنة</option>
+                        {% for member in cm_members_list %}
+                        <option value="{{member.id}}">{{member.profile.user.first_name}} {{member.profile.user.last_name}}/{{member.committee}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="col-lg-4">
+                    <input type="text" class="form-control"  id="p_no" placeholder="رقم هاتف١" >
+                    
+                </div>
+
+
+                <div class="col-lg-4">
+                    <input type="text"  class="form-control" id="w_no" placeholder="رقم هاتف٣" >                   
+                </div>
+            </div>
+            <div class="form-row mt-3">
+                <div class="col-lg-3">
+                    <select  id="governorate" name="governorate" class="form-control">
+                        <option value="">اختر المحافظة</option>
+                        {% for gover in gover_list %}
+                        <option value="{{gover.id}}">{{gover.name}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-lg-3">
+                    <select id="dept" name="dept" class="form-control">
+                        <option value="">اختر الدائرة</option>
+                    </select>
+                </div>
+                <div class="col-lg-3">
+                    <select id="area" name="area" class="form-control">
+                        <option value="">اختر المنطقة</option>
+                    </select>
+                </div>
+                <div class="col-lg-3">
+                    <button id="search" type="submit" class="btn btn-info">ابحث</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="row mt-3">
+        <div class="table-responsive">
+          <table class="table table-sm">
+              <thead>
+                  <tr>
+                  <th scope="col">رقم الناخب</th>
+                  <th scope="col">الاسم كامل </th>
+                  <th scope="col">هاتف الناخب</th>
+                  <th scope="col">اسم المعرف</th>
+                  <th scope="col">هاتف المعرف 1</th>
+                  <th scope="col">هاتف المعرف 2</th>
+                  <th scope="col">هل حصل على بطاقة?</th>
+                  </tr>
+              </thead>
+              <tbody>
+  
+              </tbody>
+              </table>
+        </div>
+  
+    </div>
+</div>
+{% endblock main %}
+
+
+{% block js %}
+
+<script>
+$(document).on('change', '#governorate', function () {
+    element = $('#governorate option:selected').val();
+    $.ajax(
+        {
+        type: "GET",
+        url: "{% url 'get_gover_dept' %}",
+        data: {
+        'gover_id': element
+        },
+        dataType: 'JSON',
+            success: function (result) {
+            $("#dept").empty();
+            $("#dept").append('<option value=""> كل الدوائر</option>');
+            $(result).each(function (index, value) {
+            $("#dept").append('<option value="' + value.id + '">' + value.name + '</option>');
+            });
+
+            }
+        }
+    );
+});
+
+$(document).on('change', '#dept', function () {
+    element = $('#dept option:selected').val();
+    $.ajax(
+        {
+        type: "GET",
+        url: "{% url 'get_dept_area' %}",
+        data: {
+        'dept_id': element
+        },
+        dataType: 'JSON',
+            success: function (result) {
+            $("#area").empty();
+            $("#area").append('<option value=""> كل المناطق</option>');
+            $(result).each(function (index, value) {
+            $("#area").append('<option value="' + value.id + '">' + value.name + '</option>');
+            });
+
+            }
+        }
+    );
+});
+
+$('#search').on('click',function(e){
+    e.preventDefault()
+    dept_id=$('#dept option:selected').val();
+    gover_id = $('#governorate option:selected').val();
+    area_id=element = $('#area option:selected').val();
+    cm_id=$('#cm option:selected').val()
+    phone_number=$('#p_no').val()
+    whatsapp_number=$('#w_no').val()
+
+    $('#area_report').val(area_id)
+    $('#gover_report').val(gover_id)
+    $('#dept_report').val(dept_id)
+
+
+
+    query=new Object()
+    query.dept_id=dept_id
+    query.gover_id=gover_id
+    query.area_id=area_id
+    query.phone_number=phone_number
+    query.whatsapp_number=whatsapp_number
+    query.cm_id=cm_id
+
+    $.ajax({
+        url:"{% url 'get_voters' %}",
+        type:"GET",
+        dataType:"JSON",
+        data:{
+            query:JSON.stringify(query)
+        },
+        success:function(result){
+            console.log(result)
+        table=$('tbody')
+        table.empty()
+        $(result.data).each(function(index,value){
+            row=document.createElement('tr')
+            id=document.createElement('td')
+            fullname=document.createElement('td')
+            mobile=document.createElement('td')
+            identifier=document.createElement('td')
+            identifier_mob=document.createElement('td')
+            identifier_wa=document.createElement('td')
+            election_card=document.createElement('td')
+
+            id.innerHTML=value.id
+            fullname.innerHTML=value.full_name+value.full_name+value.full_name+value.full_name
+            mobile.innerHTML=value.mobile_no
+            identifier.innerHTML=value.identifier
+            identifier_mob.innerHTML=value.identifier_phone_no
+            identifier_wa.innerHTML=value.identifier_whats_no
+            election_card.innerHTML=value.has_elc_card
+            row.append(id)
+            row.append(fullname)
+            row.append(mobile)
+            row.append(identifier)
+            row.append(identifier_mob)
+            row.append(identifier_wa)
+            row.append(election_card)
+            table.append(row)
+            
+        })
+        }
+    })
+
+})
+
+$("#print").on("click",function(){
+    area_id=$('#area_report').val()
+    gover_id=$('#gover_report').val()
+    dept_id=$('#dept_report').val()
+    cm_name=$('#cm option:selected').val()
+    phone_number=$('#p_no').val()
+    whatsapp_number=$('#w_no').val()
+    query=new Object()
+    query.dept_id=dept_id
+    query.gover_id=gover_id
+    query.area_id=area_id
+    query.phone_number=phone_number
+    query.whatsapp_number=whatsapp_number
+    query.cm_id=cm_name
+    
+    window.location.replace("{% url 'by-cm-report' %}?query="+JSON.stringify(query))
+    
+
+
+})
+</script>
+
+
+{% endblock %}

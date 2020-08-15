@@ -95,8 +95,85 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-danger" id="reload" >اغلاق</button>
-         
         </div>
       </div>
     </div>
     </div>
+
+<!-- Create area modal -->
+
+<div class="modal fade" id="addArea" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered text-aligner" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">اضافة منطقة</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      
+        <form >
+          <div class="form-group">
+            <label >اسم المنطقة</label>
+            <input type="text" name="area_name" id="areaName" class="form-control" placeholder="اسم المنطقة">
+          </div>
+        
+          <div class="form-group">
+            <label >الدائرة</label>
+            <select  class="form-control" id="deptArea">
+              {% for dept in departments_list %}
+              <option value="{{dept.id}}">{{dept.name}}</option>
+              {% endfor %}
+
+            </select>
+          </div>
+        </form>
+       
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" id="creatArea">اضافة</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- create district modal -->
+
+<div class="modal fade" id="addDist" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered text-aligner" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">اضافة منطقة</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      
+        <form >
+          <div class="form-group">
+            <label >اسم الحي</label>
+            <input type="text" name="dist_name" id="distName" class="form-control" placeholder="اسم المنطقة">
+          </div>
+        
+          <div class="form-group">
+            <label >المنطقة</label>
+            <select  class="form-control" id="areaDist">
+              {% for area in areas_list %}
+              <option value="{{area.id}}">{{area.name}}</option>
+              {% endfor %}
+
+            </select>
+          </div>
+        </form>
+       
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" id="creatDist">اضافة</button>
+      </div>
+    </div>
+  </div>
+</div>

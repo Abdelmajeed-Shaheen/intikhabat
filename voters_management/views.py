@@ -26,6 +26,7 @@ class CreateVoter(View):
         user.set_password(voter['pwd'])
         user.save()
         voter_work=WorkField.objects.get(id=int(voter['work']))
+        name_string=(voter['first_name']+voter['second_name']+voter['third_name']+voter['last_name'])
         profile_object={
             "mobile_number":voter['mobile_number'],
             "whatsapp_number":voter['whatsapp_number'],
@@ -35,7 +36,8 @@ class CreateVoter(View):
             "gender":voter["gender"],
             "address":Address.objects.get(id=int(voter['address'])),
             "work_field":voter_work,
-            "user":user
+            "user":user,
+            "name_string":name_string
             
         }
         profile=UserProfile(**profile_object)

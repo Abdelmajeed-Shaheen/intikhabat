@@ -33,6 +33,7 @@ class UserProfile(models.Model):
     address=models.ForeignKey(Address,on_delete=models.CASCADE,null=True,blank=True)
     work_field=models.ForeignKey('WorkField',on_delete=models.CASCADE,null=True,blank=True)
     name_string=models.CharField(max_length=255,null=True,unique=True)
+        
     def __str__(self):
         return self.user.username
 
@@ -46,9 +47,10 @@ class Voter(models.Model):
     followed_up=models.BooleanField(default=False)
     timestamp=models.DateTimeField(auto_now=True,auto_now_add=False)
     updated=models.DateTimeField(auto_now=False,auto_now_add=True)
-    identiefier=models.OneToOneField('Voter',on_delete=models.CASCADE,null=True,blank=True)
+    identiefier=models.ForeignKey('Voter',on_delete=models.CASCADE,null=True,blank=True)
     voting_id=models.CharField(max_length=50,null=True,blank=True)
     candidate=models.ForeignKey("Candidate",on_delete=models.CASCADE,null=True,blank=True)
+    has_elc_card=models.BooleanField(default=False)
 
     def __str__(self):
         return (self.profile.user.first_name +" "+self.profile.user.last_name)

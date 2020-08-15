@@ -9,8 +9,13 @@
       <div class="wow fadeIn">
         <h1>انتخابات مجلس النواب الاردني</h1>
         <div class="actions">
-          <a href="#about" class="btn btn-primary" data-toggle="modal" data-target="#candidateLoginForm">مرشح</a>
-          <a href="/" class="btn btn-success" data-toggle="modal" data-target="#voterLoginForm">ناخب</a>
+          <i class="fa fa-star fa-5x ml-2 star-icon" aria-hidden="true"></i>
+          <i class="fa fa-star fa-5x mr-2 star-icon" aria-hidden="true"></i>
+        </div>
+        <div class="actions">
+
+          <a href="#about" class="login-link" data-toggle="modal" data-target="#candidateLoginForm">مرشح</a>
+          <a href="/" class="login-link" data-toggle="modal" data-target="#voterLoginForm">ناخب</a>
         </div>
       </div>
     </div>
@@ -89,66 +94,86 @@
       <div class="modal-body ">
         <form>
           <div class="form-row">
-            <div class="col-sm-3">
-              <label >الاسم الاول</label>
+            <div class="col-sm-3 mb-3">
+              
               {{voter_reg_form.first_name}}
             </div>
-            <div class="col-sm-3">
-              <label >اسم الاب</label>
+            <div class="col-sm-3 mb-3">
+             
               {{voter_reg_form.second_name}}
             </div>
-            <div class="col-sm-3">
-              <label >اسم الجد</label>
+            <div class="col-sm-3 mb-3">
+              
               {{voter_reg_form.third_name}}
             </div>
-            <div class="col-sm-3">
-              <label >اسم العائلة</label>
+            <div class="col-sm-3 mb-3">
+              
               {{voter_reg_form.last_name}}
             </div>            
           </div>
           
           <div class="form-row">
-            <div class="col-sm-3">
-              <label >رقم الهاتف</label>
+            <div class="col-sm-3 mb-3">
+             
               {{voter_reg_form.mobile_number}}
             </div>
-            <div class="col-sm-4">
-              <label >رقم الواتساب</label>
+            <div class="col-sm-4 mb-3">
+              
               {{voter_reg_form.whatsapp_number}}
             </div>
 
-            <div class="col-sm-4">
-              <label >البريد الالكتروني</label>
+            <div class="col-sm-4 mb-3">
+              
               {{voter_reg_form.email}}
             </div>
           </div>
           
           <div class="form-row mt-2">
-            <div class="col-md-8">
+           
               <label >تاريخ الميلاد</label>
               {{voter_reg_form.dob}}
-            </div>
+            
+          </div>
+          <div class="form-row">
             <div class="col-md-4">
               <label >الجنس</label>
               {{voter_reg_form.gender}}
             </div>
-          </div>
-
-          <div class="form-row mb-5">
-            <div class="col-sm-4">
-              <label >العنوان</label>
-              {{voter_reg_form.address}}
-            </div>
-               <div class="col-sm-4">
-              <label >طبيعة العمل</label>
+            <div class="col-md-4">
+              <label >العمل</label>
               {{voter_reg_form.work}}
             </div>
           </div>
+          <div class="form-row">
+            <label >العنوان</label>
+          </div>
+          <div class="form-row mb-5">
+            
+              <div class="col-lg-4">
+               
+                <select  id="governorate" name="governorate" class="form-control">
+                    <option value="">اختر المحافظة</option>
+                    {% for gover in governorates_list %}
+                    <option value="{{gover.id}}">{{gover.name}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-lg-4">
+              <select id="dept" name="dept" class="form-control">
+                  <option value="">اختر الدائرة</option>
+              </select>
+          </div>
+
+          <div class="col-lg-4">
+            <select id="area" name="area" class="form-control">
+                <option value="">اختر المنطقة</option>
+            </select>
+        </div>
+          </div>
 
           <div class="form-row mb-5">
             <div class="col-sm-4">
-              <label >الرقم السري</label>
-              <input type="password" id="pwd" required>
+              <input type="password" id="pwd" required placeholder="كلمة السر">
             </div>
           </div>         
         </form>
@@ -236,7 +261,9 @@ $('#register').on('click',function(){
   userprofile.last_name=$("#id_last_name").val()
   userprofile.mobile_number=$("#id_mobile_number").val()
   userprofile.whatsapp_number=$("#id_whatsapp_number").val()
-  userprofile.address=$("#id_address option:selected").val()
+  userprofile.governorate=$("#governorate option:selected").val()
+  userprofile.dept=$("#dept option:selected").val()
+  userprofile.area=$("#area option:selected").val()
   userprofile.work=$("#id_work option:selected").val()
   userprofile.gender=$("#id_gender option:selected").val()
   day=$('#id_dob_day').val()
@@ -245,7 +272,7 @@ $('#register').on('click',function(){
   userprofile.dob=(year+"-"+month+"-"+day)
   userprofile.email=$("#id_email").val()
   userjson=JSON.stringify(userprofile)
-  
+  console.log(userprofile.governorate)
 
   $.ajax({
     url:"{% url 'create-voter' %}",
@@ -261,5 +288,56 @@ $('#register').on('click',function(){
   })
 
 })
+
+$(document).ready(function(){
+  $('#id_dob_month').addClass('form-control date-input m-2')
+  $('#id_dob_day').addClass('form-control  date-input m-2')
+  $('#id_dob_year').addClass('form-control date-input m-2')
+  $('#id_gender').addClass('form-control m-2')
+})
+
+$(document).on('change', '#governorate', function () {
+    element = $('#governorate option:selected').val();
+    $.ajax(
+        {
+        type: "GET",
+        url: "{% url 'get_gover_dept' %}",
+        data: {
+        'gover_id': element
+        },
+        dataType: 'JSON',
+            success: function (result) {
+            $("#dept").empty();
+            $("#dept").append('<option value=""> كل الدوائر</option>');
+            $(result).each(function (index, value) {
+            $("#dept").append('<option value="' + value.id + '">' + value.name + '</option>');
+            });
+
+            }
+        }
+    );
+});
+
+$(document).on('change', '#dept', function () {
+    element = $('#dept option:selected').val();
+    $.ajax(
+        {
+        type: "GET",
+        url: "{% url 'get_dept_area' %}",
+        data: {
+        'dept_id': element
+        },
+        dataType: 'JSON',
+            success: function (result) {
+            $("#area").empty();
+            $("#area").append('<option value=""> كل المناطق</option>');
+            $(result).each(function (index, value) {
+            $("#area").append('<option value="' + value.id + '">' + value.name + '</option>');
+            });
+
+            }
+        }
+    );
+});
 </script>
 {% endblock %}
