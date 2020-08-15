@@ -270,8 +270,15 @@ class GetVotersList(View):
         query=json.loads(query)
         search_object={}
         data={}
+
+        if 'status' in query:
+            search_object['vote_status']=query['status']
+        else:
+            search_object['vote_status']="Voting"
+
         if 'cm_id' in query and query['cm_id'] not in [None,""]:
             cm=ComitteeMember.objects.get(id=int(query['cm_id']))
+            print(cm)
             search_object['profile__address__district']=cm.profile.address.district
             search_object['candidate']=cm.candidate
 
