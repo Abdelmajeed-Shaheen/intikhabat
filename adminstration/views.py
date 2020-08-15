@@ -21,6 +21,7 @@ import json
 from django.core.files.storage import FileSystemStorage
 from django.urls import reverse
 from django.template.loader import render_to_string
+from django.shortcuts import get_object_or_404
 from weasyprint import HTML,CSS
 
 import json
@@ -255,9 +256,30 @@ class SearchComitteeView(View):
 
     def get(self,request): 
         query=request.GET.get('query')
-        print(query)
-
-        return JsonResponse({"message":"success"})
+        
+        response=[]
+        try:
+            comittee=Comittee.objects.get(name=query)         
+            if comittee.is_active:
+                status="فعالة"
+            else:
+                status="غير فعالة"
+            
+            if comittee.manager is not None:
+                manager=str(comittee.manager.profile.user.first_name+" " +comittee.manager.profile.user.last_name)
+            else:
+                manager="لا يوجد مدير"
+            comittee={
+                'comittee_name':comittee.name,
+                'status':status,
+                'manager':manager,
+                'id':comittee.id
+            }
+            response.append(comittee)
+            return JsonResponse({"comittee":comittee})
+        except:
+            response.append('لا توجد نتائج')
+            return JsonResponse({"comittee":response})
 
 
 class GetVotersList(View):
