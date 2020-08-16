@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-from common.models import Address
+from common.models import Address,ElectionAddress
 # from adminstration.models import (Comittee,ElectionList
                                 
 #                                 )
@@ -52,7 +52,7 @@ class Voter(models.Model):
     candidate=models.ForeignKey("Candidate",on_delete=models.CASCADE,null=True,blank=True)
     has_elc_card=models.BooleanField(default=False)
     related_comittee_member=models.ForeignKey('ComitteeMember',on_delete=models.CASCADE,null=True,blank=True)
-
+    election_address=models.ForeignKey(ElectionAddress,on_delete=models.CASCADE,null=True,blank=True)
     def __str__(self):
         return (self.profile.user.first_name +" "+self.profile.user.last_name)
 

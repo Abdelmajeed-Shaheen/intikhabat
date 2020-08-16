@@ -1,5 +1,5 @@
 from django.db import models
-from common.models import Address
+from common.models import Address,ElectionAddress
 from users_management.models import (ComitteeMember,Candidate,
                                       Voter,CommunicationOfficer
 
@@ -22,10 +22,9 @@ class Comittee(models.Model):
         return self.name
 
 class ElectionList(models.Model):
-
     name=name=models.CharField(max_length=255)
     description=models.TextField()
-    address=models.ForeignKey(Address,on_delete=models.CASCADE)
+    election_address=models.ForeignKey(ElectionAddress,on_delete=models.CASCADE,null=True,blank=True)
     timestamp=models.DateTimeField(auto_now=True, auto_now_add=False)
     updated=models.DateTimeField(auto_now=False, auto_now_add=True)
 

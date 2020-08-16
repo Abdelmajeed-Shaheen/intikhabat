@@ -51,8 +51,6 @@ class LoginView(View):
                 elif hasattr(user.userprofile, 'voter'):
                     
                     response['redirect_to']=reverse('voter-profile',kwargs={'pk':user.userprofile.id})
-
-
                 login(request, user)
                 return JsonResponse(response)
 

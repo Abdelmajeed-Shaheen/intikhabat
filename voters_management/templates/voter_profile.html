@@ -39,7 +39,7 @@
                     {% if voter.voter.vote_status == "Not_sure" %}
                      <a href="#" class="btn btn-warning">متردد</a>
                       {% elif voter.voter.vote_status == "Not_voting"%}
-                      <a href="#" class="btn btn-danger">ممتنع</a>
+                      <a href="#" class="btn btn-danger">لا ارغب</a>
                       {% elif not voter.voter.vote_status %}
                       <a href="#" class="btn btn-secondary">غير محدد</a>
                       {% else %}
@@ -64,12 +64,8 @@
           {% if voter.voter.voting_id %}
           <div class="col-sm-4">
             <h2 class="about-title text-aligner"> 
-                الرقم الانتخابي:
-                
-                
-                 <a href="#" class="btn btn-primary">{{voter.voter.voting_id}}</a>
-
-                  
+                الرقم الانتخابي:                
+                 <a href="#" class="btn btn-primary">{{voter.voter.voting_id}}</a>    
             </h2>
 
         </div>
@@ -135,51 +131,38 @@
                     </div>
                   </div>
       
-                  <div class="col-sm-3">
-                    <div class="form-group">
-                      <label >العنوان</label>
-                      <select multiple class="form-control" id="addresses">
-                          <option value="">{{voter.address.governorate}}/{{voter.address.district}}</option>
-                        {% for address in addresses_list %}
-                        <option value="{{address.id}}">{{address.governorate}}/{{address.district}}</option>
-                        {% endfor %}
-       
-                      </select>
-                    </div>
-                  </div>
-                  
-                  <div class="form-row">
-                    <div class="col-sm-4">
-                      <div class="form-group">
-                        <label>الجنس</label>
-                        <select multiple class="form-control" id="gender">
-                          <option value="male">ذكر</option>
-                          <option value="female">انثى</option>
-                        </select>
-                      </div>
-                    </div> 
-                    <div class="col-sm-3">
-                      <div class="form-group">
-                        <label >تاريخ الميلاد</label>
-                        <input type="date" name="dob" id="dob" >
-                      </div>
-                    </div>
-                    <div class="col-sm-6">
-                      <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
-                        <label class="form-check-label"  >هل ترغب بالحصول على بطاقة انتخابية؟</label>
-                       
-                      </div>
-                    </div>
- 
-                  </div>
+
       
                 </div>
-                
+                <div class="form-row">
+                  <div class="col-sm-3">
+                    <div class="form-group">
+                      <label>الجنس</label>
+                      <select  class="form-control" id="gender">
+                        <option value="male">ذكر</option>
+                        <option value="female">انثى</option>
+                      </select>
+                    </div>
+                  </div> 
+                  <div class="col-sm-4">
+                    <div class="form-group">
+                      <label >تاريخ الميلاد</label>
+                      <input type="date" name="dob" id="dob" class="form-control">
+                    </div>
+                  </div>
+                  <div class="col-sm-5">
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
+                      <label class="form-check-label"  >هل ترغب بالحصول على بطاقة انتخابية؟</label>
+                     
+                    </div>
+                  </div>
+
+                </div>
               </form>
         </div>
         <div class="row ">
-          <button id="updateprofile" class="btn btn-danger m-5">تعديل</button>
+          <button id="updateprofile" class="btn btn-danger m-5">حفظ</button>
         </div>
       </div>
     </div>
@@ -205,12 +188,12 @@
                 
               </div>
               <div class="form-check form-check-inline ">
-                <label class="form-check-label" >ممتنع</label>
+                <label class="form-check-label" >لا ارغب</label>
                 <input class="form-check-input" type="radio" id="nv" value="Not_voting">
               </div>
               <input type="hidden" id="voterId" value="{{voter.voter.id}}">
               <input type="hidden" name="" id="candidate_choice">
-          <button id="changeStatus" class="btn btn-danger mb-2 mr-sm-2">تعديل</button>
+          <button id="changeStatus" class="btn btn-danger mb-2 mr-sm-2">حفظ</button>
         </form>
           </div>
           <div class="row text-aligner">
