@@ -59,3 +59,11 @@ class Address(models.Model):
     street=models.ForeignKey(Street,on_delete=models.CASCADE,null=True,blank=True)
     def __str__(self):
         return (self.governorate.name+"/"+self.department.name)
+
+
+class ElectionAddress(models.Model):
+    governorate=models.ForeignKey(Governorate, on_delete=models.CASCADE)
+    department=models.ForeignKey(Department, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return str(self.governorate.name+"/"+self.department.name)

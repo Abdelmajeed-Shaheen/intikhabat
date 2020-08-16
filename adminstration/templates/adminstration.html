@@ -206,7 +206,7 @@
             </div>
         </form> 
         <div class="row">
-          <button id="updateprofile" class="btn btn-danger" >تعديل</button>
+          <button id="updateprofile" class="btn btn-danger" >حفظ</button>
         </div>
         </div>
 
@@ -301,7 +301,7 @@
                 <th scope="col">اسم اللجنة</th>
                 <th scope="col">الحالة</th>
                 <th scope="col">مدير اللجنة</th>
-                <th scope="col">تعديل</th>
+                <th scope="col">حفظ</th>
               </tr>
             </thead>
             <tbody id="comittee_table_tbody">
@@ -318,7 +318,7 @@
                   {{comittee.manager}} 
                 </td>
                 
-                <td><a class="btn btn-danger" href="{% url 'update-committee' comittee.id %}">تعديل</a></td>
+                <td><a class="btn btn-danger" href="{% url 'update-committee' comittee.id %}">حفظ</a></td>
 
               </tr>
               {% endfor %}
@@ -345,7 +345,7 @@
               <th scope="col">اسم المدير</th>
               <th scope="col">رقم الهاتف</th>
               <th scope="col">البريد الالكتروني</th>
-              <th scope="col">تعديل</th>
+              <th scope="col">حفظ</th>
             </tr>
           </thead>
           <tbody>
@@ -354,7 +354,7 @@
               <th scope="row">{{campaign_manager.profile.user.first_name}}  {{campaign_manager.profile.user.last_name}}</th>
               <td>{{campaign_manager.profile.mobile_number}}</td>
               <td>{{campaign_manager.profile.user.email}}</td>
-              <td><button class="btn btn-danger">تعديل</button></td>
+              <td><button class="btn btn-danger">حفظ</button></td>
             </tr>
             
   
@@ -376,7 +376,7 @@
                 <th scope="col">البريد الالكتروني</th>
                 <th scope="col">اللجنة</th>
                 <th scope="col">الحالة الادارية</th>
-                <th scope="col">تعديل</th>
+                <th scope="col">حفظ</th>
                 <th scope="col">صلاحيات</th>
                 
               </tr>
@@ -389,7 +389,7 @@
                 <td>{{comittee_member.profile.user.email}}</td>            
                 <td>{{comittee_member.comittee}}</td>
                 <td>{{comittee_member.is_manager}}</td>
-                <td><a href="{% url 'update-cm' comittee_member.id %}" class="btn btn-success">تعديل</a></td>
+                <td><a href="{% url 'update-cm' comittee_member.id %}" class="btn btn-success">حفظ</a></td>
                 <td><button class="btn btn-danger" data-toggle="modal" data-target="#modal_{{comittee_member.id}}">صلاحيات</button></td>
               </tr>
               <div class="modal fade" id="modal_{{comittee_member.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -417,7 +417,7 @@
                         <div class="col-sm-3">
                           <div class="form-check"> 
                             <label class="form-check-label" for="defaultCheck1"></label>
-                            تعديل
+                            حفظ
                           </label>                       
                             <input class="form-check-input" type="checkbox" id="editUser_{{comittee_member.id}}">  
                           </div>
@@ -454,7 +454,7 @@
                         <div class="col-sm-3">
                           <div class="form-check"> 
                             <label class="form-check-label" for="defaultCheck1"></label>
-                            تعديل
+                            حفظ
                           </label>                       
                             <input class="form-check-input" type="checkbox" value="" id="editComm_{{comittee_member.id}}">  
                           </div>
@@ -492,7 +492,7 @@
                         <div class="col-sm-3">
                           <div class="form-check"> 
                             <label class="form-check-label" for="defaultCheck1"></label>
-                            تعديل
+                            حفظ
                           </label>                       
                             <input class="form-check-input" type="checkbox" value="" id="editRep_{{comittee_member.id}}">  
                           </div>
@@ -530,7 +530,7 @@
                         <div class="col-sm-3">
                           <div class="form-check"> 
                             <label class="form-check-label" for="defaultCheck1">
-                            تعديل
+                            حفظ
                           </label>                       
                             <input class="form-check-input" type="checkbox" value="" id="editVoter_{{comittee_member.id}}">  
                           </div>
@@ -819,7 +819,7 @@ $('#searchCommittee').on('click',function(e){
         editdata=$("<td></td>")
         manager=$("<td>"+result.comittee.manager+"</td>");
         edit=$("<a>", { "class": "btn btn-danger","href":'/campaign-management/update-committee/'+result.comittee.id });
-        edit.text("تعديل")
+        edit.text("حفظ")
         editdata.append(edit)
         row.append(name)
         row.append(status)
@@ -834,7 +834,7 @@ $('#searchCommittee').on('click',function(e){
         editdata=$("<td></td>")
         manager=$("<td>"+result.error+"</td>");
         edit=$("<a>", { "class": "btn btn-secondary","href":'' });
-        edit.text("تعديل")
+        edit.text("حفظ")
         editdata.append(edit)
         row.append(name)
         row.append(status)
