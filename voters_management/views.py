@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
 from users_management.models import Voter,UserProfile,Candidate,WorkField
 from adminstration.models import ElectionCard
-from common.models import Address
+from common.models import Address,Governorate,Department,Area
 import json
 
 class CreateVoter(View):
@@ -27,6 +27,14 @@ class CreateVoter(View):
         user.save()
         voter_work=WorkField.objects.get(id=int(voter['work']))
         name_string=(voter['first_name']+voter['second_name']+voter['third_name']+voter['last_name'])
+        address_dict={
+            "governorate":Governorate.objects.get(id=voter['governorate']),
+            "department":Department.objects.get(id=voter['dept']),
+            "area":Area.objects.get(id=voter['area'])
+        }
+        print(address_dict)
+        address=Address(**address_dict)
+        address.save()
         profile_object={
             "mobile_number":voter['mobile_number'],
             "whatsapp_number":voter['whatsapp_number'],
@@ -34,7 +42,7 @@ class CreateVoter(View):
             "last_name":voter['third_name'],
             "date_of_birth":voter['dob'],
             "gender":voter["gender"],
-            "address":Address.objects.get(id=int(voter['address'])),
+            "address":address,
             "work_field":voter_work,
             "user":user,
             "name_string":name_string

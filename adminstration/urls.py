@@ -6,7 +6,9 @@ from .views import (
                     GetReportByCommitteeMember,GetGovernorateDepartment ,
                     GetDepartmentArea,GetVotersList,by_committee_member_report,
                     GetReportByIdentifier,by_identifier_report,GetVotersByAddressReport,
-                    by_address_report,GetVotersByStatusReport,by_status_report                                                                                                                                                 
+                    by_address_report,GetVotersByStatusReport,by_status_report,
+                    update_comittee,update_comittee_member,get_cm,
+                    get_identifier                                                                                                                                                
                     )
 urlpatterns = [
     path("main",CampaignManagementMainView.as_view(),name="main"),
@@ -27,7 +29,16 @@ urlpatterns = [
     path("address-report",GetVotersByAddressReport.as_view(),name="address-report"),
     path("by-address-report",by_address_report,name="by-address-report"),
     path("status-report",GetVotersByStatusReport.as_view(),name="status-report"),
-    path("by-astatus-report",by_status_report,name="by-status-report"),
+    path("by-status-report",by_status_report,name="by-status-report"),
+    path("update-committee/<id>/",update_comittee,name="update-committee"),
+    path("update-cm/<id>/",update_comittee_member,name="update-cm"),
+    path("get-cm",get_cm,name="get-cm"),
+    path("get-identifier",get_identifier,name="get-identifier"),
+
+
+
+
+
 
 
 

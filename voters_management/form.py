@@ -46,22 +46,27 @@ class VoterRegForm(forms.Form):
                                                         'placeholder':'رقم الواتساب'
                                                     }
                                                     ))
-    email=forms.CharField(max_length=15,widget=forms.EmailInput(
+    email=forms.CharField(widget=forms.EmailInput(
                                                     attrs={
                                                         'class':'form-control',
                                                         'placeholder':'البريد الالكتروني'
                                                     }
                                                     ))                                                
-    dob=forms.DateField(input_formats='%Y,%m,%d',widget=forms.SelectDateWidget(
-                                                                            years=range(1940, 2003,),
-                                                                            months=MONTHS,
-                                                                            empty_label=("السنة", "الشهر", "اليوم")
-                                                                            ))
+    dob=forms.DateField(input_formats='%Y-%m-%d',widget=forms.SelectDateWidget(
+                                                    years=range(1940, 2003,),
+                                                    months=MONTHS,
+                                                    empty_label=("السنة","الشهر", "اليوم"),
+                                                    
+                                                    ))
     GENDER_CHOICES=(('male', 'ذكر'),('female', 'انثى'),)
     gender=forms.ChoiceField(choices=GENDER_CHOICES)
-    work=forms.ModelChoiceField(queryset=WorkField.objects.all(),widget=forms.Select(attrs={'class':'form-control'}))
-
-
+    work=forms.ModelChoiceField(queryset=WorkField.objects.all(),widget=forms.Select(attrs={'class':'form-control m-2'}))
+    identifier=forms.CharField(max_length=7,widget=forms.TextInput(
+                                                    attrs={
+                                                        'class':'form-control',
+                                                        'placeholder':'الرقم الانتخابي للمعرف (ان وجد)'
+                                                    }
+                                                    ))
 
 class VoterUpdateForm(forms.Form):
 

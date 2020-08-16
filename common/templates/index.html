@@ -9,13 +9,12 @@
       <div class="wow fadeIn">
         <h1>انتخابات مجلس النواب الاردني</h1>
         <div class="actions">
-          <i class="fa fa-star fa-5x ml-2 star-icon" aria-hidden="true"></i>
-          <i class="fa fa-star fa-5x mr-2 star-icon" aria-hidden="true"></i>
+          <i class="fa fa-star fa-2x ml-5 star-icon" aria-hidden="true"></i>
+          <i class="fa fa-star fa-2x mr-5 star-icon" aria-hidden="true"></i>
         </div>
         <div class="actions">
-
-          <a href="#about" class="login-link" data-toggle="modal" data-target="#candidateLoginForm">مرشح</a>
-          <a href="/" class="login-link" data-toggle="modal" data-target="#voterLoginForm">ناخب</a>
+          <a href="#about" class="login-link ml-4" data-toggle="modal" data-target="#candidateLoginForm">مرشح</a>
+          <a href="/" class="login-link mr-4" data-toggle="modal" data-target="#voterLoginForm">ناخب</a>
         </div>
       </div>
     </div>
@@ -117,12 +116,9 @@
              
               {{voter_reg_form.mobile_number}}
             </div>
-            <div class="col-sm-4 mb-3">
-              
-              {{voter_reg_form.whatsapp_number}}
-            </div>
 
-            <div class="col-sm-4 mb-3">
+
+            <div class="col-sm-9 mb-3">
               
               {{voter_reg_form.email}}
             </div>
@@ -147,7 +143,7 @@
           <div class="form-row">
             <label >العنوان</label>
           </div>
-          <div class="form-row mb-5">
+          <div class="form-row mt-3">
             
               <div class="col-lg-4">
                
@@ -170,14 +166,19 @@
             </select>
         </div>
           </div>
-
-          <div class="form-row mb-5">
-            <div class="col-sm-4">
-              <input type="password" id="pwd" required placeholder="كلمة السر">
+        <div class="form-row mt-2">
+          <div class="col-sm-8">
+            {{voter_reg_form.identifier}}
+          </div>
+          
+        </div>
+          <div class="form-row mt-3 ">
+            <div class="col-sm-8">
+              <input type="password" id="pwd" required placeholder="كلمة السر" class="form-control">
             </div>
           </div>         
         </form>
-        <button class="btn btn-success btn-block" id="register">تسجيل</button>
+        <button class="btn btn-success btn-block mt-3" id="register">تسجيل</button>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-danger" data-dismiss="modal">اغلاق</button>

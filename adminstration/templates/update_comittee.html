@@ -1,0 +1,67 @@
+{% extends 'candidate_base.html' %}
+
+
+{% block extra_content %}
+  <header id="header">
+    <div class="container-ar d-flex align-items-center" >
+      <nav class="nav-menu d-none d-lg-block">
+        <ul>
+          <li><a href="{% url 'logout' %}">تسحيل خروج</a></li>
+          <li><a href="{% url 'main' %}">عودة</a></li>
+        </ul>
+      </nav>
+      <!-- .nav-menu -->
+
+    </div>
+  </header>
+{% endblock %}
+{% block main %}
+
+<div class="container mt-3">
+    <div class="row">
+        <h5 class="about-title text-aligner">تعديل لجنة : {{comittee.name}}</h5>
+    </div>
+<div class="row text-aligner">
+    <form method="POST">
+        {% csrf_token %}
+    <div class="col-sm-6 m-3">
+        <label for="">اسم اللجنة</label>
+        {{update_form.name}}
+    </div>
+</div>
+<div class="row text-aligner">
+    <div class="col-sm-6 m-3">
+        <label for="">مهام اللجنة</label>
+        {{update_form.description}}
+    </div>
+</div>
+<div class="row text-aligner">
+    <div class="col-sm-6 m-3">
+        <label for="">حالة اللجنة</label>
+        {{update_form.is_active}}
+    </div>
+</div>
+
+<div class="row text-aligner">
+    <div class="col-sm-6 m-3">
+        <label for="">عنوان اللجنة</label>
+        {{update_form.address}}
+    </div>
+</div>
+
+<div class="row text-aligner">
+    <div class="col-sm-6 m-3">
+        <input type="submit" value="تعديل" class="btn btn-danger">
+    </div>
+</div>
+</form>
+</div>
+
+
+{% endblock %}
+
+{% block js %}
+<script>
+
+</script>
+{% endblock js %}
