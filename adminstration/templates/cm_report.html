@@ -19,10 +19,6 @@
 <div class="container text-aligner">
     <div class="row">
     <h1 class="about-title">تقرير اعضاء اللجان</h1>
-    
-    <input id="area_report" hidden>
-    <input id="gover_report" hidden>
-    <input id="dept_report" hidden>
     </div>
     <div class="row">
         <button class="btn btn-danger btn-sm mb-3" id="print">مراجعة و طباعة التقرير</button>
@@ -32,47 +28,23 @@
             <div class="form-row">
                 <div class="col-lg-4">
                     
-                    <select  id="cm" name="cm" class="form-control">
-                        <option value="">اختر عضو لجنة</option>
-                        {% for member in cm_members_list %}
-                        <option value="{{member.id}}">{{member.profile.user.first_name}} {{member.profile.user.last_name}}/{{member.committee}}</option>
-                        {% endfor %}
-                    </select>
+                <input type="text" id="cm" placeholder="ابحث بأسم عضو اللجنة" class="form-control">
                 </div>
 
                 <div class="col-lg-4">
                     <input type="text" class="form-control"  id="p_no" placeholder="رقم هاتف١" >
+                    <input type="hidden" id="cm_id">
                     
                 </div>
-
-
                 <div class="col-lg-4">
                     <input type="text"  class="form-control" id="w_no" placeholder="رقم هاتف٣" >                   
                 </div>
             </div>
-            <div class="form-row mt-3">
-                <div class="col-lg-3">
-                    <select  id="governorate" name="governorate" class="form-control">
-                        <option value="">اختر المحافظة</option>
-                        {% for gover in gover_list %}
-                        <option value="{{gover.id}}">{{gover.name}}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-                <div class="col-lg-3">
-                    <select id="dept" name="dept" class="form-control">
-                        <option value="">اختر الدائرة</option>
-                    </select>
-                </div>
-                <div class="col-lg-3">
-                    <select id="area" name="area" class="form-control">
-                        <option value="">اختر المنطقة</option>
-                    </select>
-                </div>
-                <div class="col-lg-3">
-                    <button id="search" type="submit" class="btn btn-info">ابحث</button>
-                </div>
+            <div class="form-row m-3">
+                <button id="search" type="submit" class="btn btn-info">ابحث</button>
+
             </div>
+
         </form>
     </div>
 
@@ -104,69 +76,14 @@
 {% block js %}
 
 <script>
-$(document).on('change', '#governorate', function () {
-    element = $('#governorate option:selected').val();
-    $.ajax(
-        {
-        type: "GET",
-        url: "{% url 'get_gover_dept' %}",
-        data: {
-        'gover_id': element
-        },
-        dataType: 'JSON',
-            success: function (result) {
-            $("#dept").empty();
-            $("#dept").append('<option value=""> كل الدوائر</option>');
-            $(result).each(function (index, value) {
-            $("#dept").append('<option value="' + value.id + '">' + value.name + '</option>');
-            });
-
-            }
-        }
-    );
-});
-
-$(document).on('change', '#dept', function () {
-    element = $('#dept option:selected').val();
-    $.ajax(
-        {
-        type: "GET",
-        url: "{% url 'get_dept_area' %}",
-        data: {
-        'dept_id': element
-        },
-        dataType: 'JSON',
-            success: function (result) {
-            $("#area").empty();
-            $("#area").append('<option value=""> كل المناطق</option>');
-            $(result).each(function (index, value) {
-            $("#area").append('<option value="' + value.id + '">' + value.name + '</option>');
-            });
-
-            }
-        }
-    );
-});
 
 $('#search').on('click',function(e){
     e.preventDefault()
-    dept_id=$('#dept option:selected').val();
-    gover_id = $('#governorate option:selected').val();
-    area_id=element = $('#area option:selected').val();
-    cm_id=$('#cm option:selected').val()
+    cm_id=$('#cm_id').val()
     phone_number=$('#p_no').val()
     whatsapp_number=$('#w_no').val()
 
-    $('#area_report').val(area_id)
-    $('#gover_report').val(gover_id)
-    $('#dept_report').val(dept_id)
-
-
-
     query=new Object()
-    query.dept_id=dept_id
-    query.gover_id=gover_id
-    query.area_id=area_id
     query.phone_number=phone_number
     query.whatsapp_number=whatsapp_number
     query.cm_id=cm_id
@@ -215,25 +132,42 @@ $('#search').on('click',function(e){
 })
 
 $("#print").on("click",function(){
-    area_id=$('#area_report').val()
-    gover_id=$('#gover_report').val()
-    dept_id=$('#dept_report').val()
-    cm_name=$('#cm option:selected').val()
+
+    cm_name=$('#cm_id').val()
     phone_number=$('#p_no').val()
     whatsapp_number=$('#w_no').val()
     query=new Object()
-    query.dept_id=dept_id
-    query.gover_id=gover_id
-    query.area_id=area_id
     query.phone_number=phone_number
     query.whatsapp_number=whatsapp_number
-    query.cm_id=cm_name
-    
+    query.cm_id=cm_name    
     window.location.replace("{% url 'by-cm-report' %}?query="+JSON.stringify(query))
-    
-
-
 })
+
+
+ 
+    $( "#cm" ).autocomplete({
+      minLength:2 ,
+      source: "{% url 'get-cm' %}",
+
+      focus: function( event, ui ) {
+          
+        $( "#cm" ).val( ui.item['lable']);
+        return false;
+      },
+      select: function( event, ui ) {
+          console.log(ui.item['lable'])
+        $( "#cm" ).val(ui.item['lable'] );
+        $( "#cm_id" ).val( ui.item['id']); 
+        return false;
+      }
+    })
+    .autocomplete( "instance" )._renderItem = function( ul, item ) {
+      return $( "<li>" )
+        .append( "<div>" + item.lable + "</div>" )
+        .appendTo( ul );
+    };
+
+
 </script>
 
 
