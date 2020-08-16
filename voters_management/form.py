@@ -1,7 +1,7 @@
 from django import forms 
 from common.models import Address
 from users_management.models import Candidate,WorkField
-from campaign_manager.settings import DATE_INPUT_FORMATS
+
 
 
 MONTHS = {
