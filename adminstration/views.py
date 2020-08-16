@@ -310,12 +310,12 @@ class GetVotersList(View):
 
                     identifier_name=query['identifier_name']
                     identifier_name=identifier_name.replace(" ","")
-                    identifier_object["profile__name_string"]=identifier_name
+                    identifier_object["id"]=identifier_name
                 
                 if  query['identifier_wa'] not in [None,""]:
                     identifier_object['profile__whatsapp_number']=query['identifier_wa']
-
-                identifier=Voter.objects.get(**identifier_object,candidate=cm.candidate)
+                print(identifier_object)
+                identifier=Voter.objects.get(**identifier_object,related_comittee_member=cm)
                 search_object["identiefier"]=identifier
                 
                 if  query['identifier_mobile'] not in [None,""]:
@@ -427,8 +427,8 @@ def by_identifier_report(request):
             if query['identifier_name'] not in [None,""]:
                 
                 identifier_name=query['identifier_name']
-                name=identifier_name.replace(" ","")
-                identifier_object["profile__name_string"]=name
+                
+                identifier_object["id"]=identifier_name
             
             if  query['identifier_wa'] not in [None,""]:
                 identifier_object['profile__whatsapp_number']=query['identifier_wa']
@@ -441,17 +441,7 @@ def by_identifier_report(request):
                 identifier_object['profile__mobile_number']=query['identifier_mobile']            
 
 
-    if query['area_id'] not in [None,""]:
-        area=Area.objects.get(id=int(query['area_id']))
-        search_object['profile__address__area']=area
 
-    if query['gover_id'] not in [None,""]:
-        governorate=Governorate.objects.get(id=int(query['gover_id']))
-        search_object['profile__address__governorate']=governorate
-
-    if query['dept_id'] not in [None,""]:
-        dept=Department.objects.get(id=int(query['dept_id']))
-        search_object['profile__address__department']=dept
     voters_list=Voter.objects.filter(**search_object)
     
     html_string = render_to_string('by_idn_report.html', {'voters_list': voters_list,'display_idn_name':display_idn_name})
@@ -657,6 +647,25 @@ def get_cm(request):
                                       Q(profile__user__last_name__icontains=term)|
                                       Q(profile__middle_name__icontains=term)|
                                       Q(profile__last_name__icontains=term)
+    )
+    
+    cm_list = []
+    for cm in qs:
+        cm={
+            'lable':str(cm.profile.user.first_name+" "+cm.profile.user.last_name),
+            'id':cm.id
+        }
+        cm_list.append(cm)
+    
+    return JsonResponse(cm_list, safe=False)
+
+def get_identifier(request):
+    term=request.GET.get("term")
+    qs = Voter.objects.filter(Q(profile__user__first_name__icontains=term)|
+                                      Q(profile__user__last_name__icontains=term)|
+                                      Q(profile__middle_name__icontains=term)|
+                                      Q(profile__last_name__icontains=term),
+                                      is_identifier=True
     )
     
     cm_list = []
