@@ -531,20 +531,8 @@ def by_status_report(request):
         cm=ComitteeMember.objects.get(id=int(query['cm_id']))
         search_object['profile__address__district']=cm.profile.address.district
         search_object['candidate']=cm.candidate
-        
-    if query['area_id'] not in [None,""]:
-        area=Area.objects.get(id=int(query['area_id']))
-        search_object['profile__address__area']=area
-
-    if query['gover_id'] not in [None,""]:
-        governorate=Governorate.objects.get(id=int(query['gover_id']))
-        search_object['profile__address__governorate']=governorate
-
-    if query['dept_id'] not in [None,""]:
-        dept=Department.objects.get(id=int(query['dept_id']))
-        search_object['profile__address__department']=dept
     
-    voters_list=Voter.objects.filter(**search_object)
+    voters_list=Voter.objects.filter(candidate=cm.candidate,vote_status="Not_sure")
     
     html_string = render_to_string('by_status_report.html', {'voters_list': voters_list})
     html = HTML(string=html_string,base_url=request.build_absolute_uri())
