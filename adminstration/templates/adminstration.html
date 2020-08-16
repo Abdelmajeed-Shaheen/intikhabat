@@ -183,51 +183,10 @@
               </div>
             </div>
 
-            <div class="col-sm-3">
-              <div class="form-group">
-                <label >المحافظة</label>
-                <select  class="form-control" id="gov">
-                {% if candidate.profile.address.governorate %}
-                <option  value="{{candidate.profile.address.governorate.id}}">{{candidate.profile.address.governorate.name}}</option>
-                {% endif %}
-                  {% for gover in govenorate_list %}
-                  <option value="{{gover.id}}">{{gover.name}}</option>
-                  {% endfor %}
- 
-                </select>
-              </div>
-            </div>
-            <div class="col-sm-3">
-              <div class="form-group">
-                <label >الدائرة</label>
-                <select  class="form-control" id="dept">
-                {% if candidate.profile.address.department %}
-                <option value="{{candidate.profile.address.department.id}}">{{candidate.profile.address.department.name}}</option>
-                {% endif %}
-                  {% for dept in departments_list %}
-                  <option value="{{dept.id}}">{{dept.name}}</option>
-                  {% endfor %}
- 
-                </select>
-              </div>
-            </div>
+
+          
           </div>
             <div class="form-row">
-              <div class="col-sm-3">
-                <div class="form-group">
-                  <a class="btn btn-info btn-sm" data-toggle="modal" data-target="#addArea"> اضافة منطقة +</a>
-
-                 / <label > اختيار منطقة</label>
-                  <select  class="form-control" id="area">
-                  {% if candidate.profile.address.area %}
-                  <option value="{{candidate.profile.address.area.id}}">{{candidate.profile.address.area.name}}</option>
-                  {% endif %}
-                    {% for area in areas_list %}
-                    <option value="{{area.id}}">{{area.name}}</option>
-                    {% endfor %}
-                  </select>
-                </div>
-              </div>
               <div class="col-sm-3">
                 <div class="form-group">
                   <a class="btn btn-info btn-sm" data-toggle="modal" data-target="#addDist"> اضافة حي +</a>
@@ -849,9 +808,11 @@ $('#searchCommittee').on('click',function(e){
       },
 
       success:function(result){
-        console.log(result.comittee.comittee_name)
+        console.log(result)
         table=$('#comittee_table_tbody')
         table.empty()
+        if (!result.error){
+
         row=$("<tr></tr>");
         name=("<td>"+result.comittee.comittee_name+"</td>");
         status=("<td>"+result.comittee.status+"</td>");
@@ -865,6 +826,23 @@ $('#searchCommittee').on('click',function(e){
         row.append(manager)
         row.append(editdata)
         table.append(row)     
+        }
+        else{
+        row=$("<tr></tr>");
+        name=("<td>"+result.error+"</td>");
+        status=("<td>"+result.error+"</td>");
+        editdata=$("<td></td>")
+        manager=$("<td>"+result.error+"</td>");
+        edit=$("<a>", { "class": "btn btn-secondary","href":'' });
+        edit.text("تعديل")
+        editdata.append(edit)
+        row.append(name)
+        row.append(status)
+        row.append(manager)
+        row.append(editdata)
+        table.append(row)     
+        }
+    
       }
     })
 })

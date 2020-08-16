@@ -210,7 +210,7 @@ class GetReportByCommitteeMember(ListView):
             candidate=request.user.userprofile.candidate
 
         
-        comittee_members_list=ComitteeMember.objects.filter(candidate=candidate)
+        comittee_members_list=candidate.comitteemember_set.all()
         context={
             'gover_list':governorates_list,
             'cm_members_list':comittee_members_list
@@ -279,7 +279,7 @@ class SearchComitteeView(View):
             return JsonResponse({"comittee":comittee})
         except:
             response.append('لا توجد نتائج')
-            return JsonResponse({"comittee":response})
+            return JsonResponse({"error":response})
 
 
 class GetVotersList(View):
@@ -300,9 +300,7 @@ class GetVotersList(View):
 
         if 'cm_id' in query and query['cm_id'] not in [None,""]:
             cm=ComitteeMember.objects.get(id=int(query['cm_id']))
-            print(cm)
-            search_object['profile__address__district']=cm.profile.address.district
-            search_object['candidate']=cm.candidate
+            search_object['related_comittee_member']=cm
 
         if 'is_identifier' in query and query['is_identifier'] not in [None,""]:
                 identifier_object={
@@ -328,15 +326,15 @@ class GetVotersList(View):
                 data["identifier"]=identifier_response 
                 
 
-        if query['area_id'] not in [None,""]:
+        if 'area_id' in query and query['area_id'] not in [None,""]:
             area=Area.objects.get(id=int(query['area_id']))
             search_object['profile__address__area']=area
 
-        if query['gover_id'] not in [None,""]:
+        if 'gover_id' in query and query['gover_id'] not in [None,""]:
             governorate=Governorate.objects.get(id=int(query['gover_id']))
             search_object['profile__address__governorate']=governorate
 
-        if query['dept_id'] not in [None,""]:
+        if 'dept_id' in query and query['dept_id'] not in [None,""]:
             dept=Department.objects.get(id=int(query['dept_id']))
             search_object['profile__address__department']=dept
         print(search_object)
@@ -372,30 +370,15 @@ def by_committee_member_report(request):
 
     query=request.GET.get('query')
     query=json.loads(query)
-    search_object={}
     if query['cm_id'] not in [None,""]:
         cm=ComitteeMember.objects.get(id=int(query['cm_id']))
-        search_object['profile__address__district']=cm.profile.address.district
-        search_object['candidate']=cm.candidate
-        
-    if query['area_id'] not in [None,""]:
-        area=Area.objects.get(id=int(query['area_id']))
-        search_object['profile__address__area']=area
-
-    if query['gover_id'] not in [None,""]:
-        governorate=Governorate.objects.get(id=int(query['gover_id']))
-        search_object['profile__address__governorate']=governorate
-
-    if query['dept_id'] not in [None,""]:
-        dept=Department.objects.get(id=int(query['dept_id']))
-        search_object['profile__address__department']=dept
-    
-    voters_list=Voter.objects.filter(**search_object)
+        voters_list=Voter.objects.filter(related_comittee_member=cm)
+    else:
+        voters_list=None
     
     html_string = render_to_string('by_cm_report.html', {'voters_list': voters_list})
     html = HTML(string=html_string,base_url=request.build_absolute_uri())
-    css=CSS('/home/yahya/Dev/dev_jpems/intikhabat/common/static/common/vendor/bootstrap/css/bootstrap.css')
-    html.write_pdf(target='/tmp/mypdf.pdf',stylesheets=[css])
+    html.write_pdf(target='/tmp/mypdf.pdf',)
     fs = FileSystemStorage('/tmp')
     with fs.open('mypdf.pdf') as pdf:
         response = HttpResponse(pdf, content_type='application/pdf')
@@ -412,9 +395,6 @@ class GetReportByIdentifier(View):
         if hasattr(request.user.userprofile,'campaignadminstrator'):
             candidate=request.user.userprofile.campaignadminstrator.candidate
         
-        elif hasattr(request.user.userprofile,'comitteemember'):
-            candidate=request.user.userprofile.comitteemember.candidate
-
         else :
             candidate=request.user.userprofile.candidate
         comittee_members_list=ComitteeMember.objects.filter(candidate=candidate)
@@ -476,8 +456,7 @@ def by_identifier_report(request):
     
     html_string = render_to_string('by_idn_report.html', {'voters_list': voters_list,'display_idn_name':display_idn_name})
     html = HTML(string=html_string,base_url=request.build_absolute_uri())
-    css=CSS('/home/yahya/Dev/dev_jpems/intikhabat/common/static/common/vendor/bootstrap/css/bootstrap.css')
-    html.write_pdf(target='/tmp/by_identifier_report.pdf',stylesheets=[css])
+    html.write_pdf(target='/tmp/by_identifier_report.pdf')
     fs = FileSystemStorage('/tmp')
     with fs.open('by_identifier_report.pdf') as pdf:
         response = HttpResponse(pdf, content_type='application/pdf')
@@ -546,8 +525,7 @@ def by_address_report(request):
     
     html_string = render_to_string('by_cm_report.html', {'voters_list': voters_list})
     html = HTML(string=html_string,base_url=request.build_absolute_uri())
-    css=CSS('/home/yahya/Dev/dev_jpems/intikhabat/common/static/common/vendor/bootstrap/css/bootstrap.css')
-    html.write_pdf(target='/tmp/mypdf.pdf',stylesheets=[css])
+    html.write_pdf(target='/tmp/mypdf.pdf')
     fs = FileSystemStorage('/tmp')
     with fs.open('mypdf.pdf') as pdf:
         response = HttpResponse(pdf, content_type='application/pdf')
@@ -580,8 +558,7 @@ def by_status_report(request):
     
     html_string = render_to_string('by_status_report.html', {'voters_list': voters_list})
     html = HTML(string=html_string,base_url=request.build_absolute_uri())
-    css=CSS('/home/yahya/Dev/dev_jpems/intikhabat/common/static/common/vendor/bootstrap/css/bootstrap.css')
-    html.write_pdf(target='/tmp/by_status_report.pdf',stylesheets=[css])
+    html.write_pdf(target='/tmp/by_status_report.pdf')
     fs = FileSystemStorage('/tmp')
     with fs.open('by_status_report.pdf') as pdf:
         response = HttpResponse(pdf, content_type='application/pdf')
@@ -671,3 +648,23 @@ def update_comittee_member(request,id):
         
     }
     return render(request,"update_cm.html",context)
+
+
+
+def get_cm(request):
+    term=request.GET.get("term")
+    qs = ComitteeMember.objects.filter(Q(profile__user__first_name__icontains=term)|
+                                      Q(profile__user__last_name__icontains=term)|
+                                      Q(profile__middle_name__icontains=term)|
+                                      Q(profile__last_name__icontains=term)
+    )
+    
+    cm_list = []
+    for cm in qs:
+        cm={
+            'lable':str(cm.profile.user.first_name+" "+cm.profile.user.last_name),
+            'id':cm.id
+        }
+        cm_list.append(cm)
+    
+    return JsonResponse(cm_list, safe=False)

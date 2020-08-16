@@ -49,13 +49,7 @@
             </div>
             <div class="form-row">
                 <div class="col-lg-4">
-                    
-                    <select  id="cm" name="cm" class="form-control">
-                        <option value="">اختر عضو لجنة</option>
-                        {% for member in cm_members_list %}
-                        <option value="{{member.id}}">{{member.profile.user.first_name}} {{member.profile.user.last_name}}/{{member.committee}}</option>
-                        {% endfor %}
-                    </select>
+                    <input type="text" class="form-control"  id="cm_id" placeholder="اسم عضو اللجنة" >         
                 </div>
 
                 <div class="col-lg-4">
@@ -69,24 +63,6 @@
                 </div>
             </div>
             <div class="form-row mt-3">
-                <div class="col-lg-3">
-                    <select  id="governorate" name="governorate" class="form-control">
-                        <option value="">اختر المحافظة</option>
-                        {% for gover in gover_list %}
-                        <option value="{{gover.id}}">{{gover.name}}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-                <div class="col-lg-3">
-                    <select id="dept" name="dept" class="form-control">
-                        <option value="">اختر الدائرة</option>
-                    </select>
-                </div>
-                <div class="col-lg-3">
-                    <select id="area" name="area" class="form-control">
-                        <option value="">اختر المنطقة</option>
-                    </select>
-                </div>
                 <div class="col-lg-3">
                     <button id="search" type="submit" class="btn btn-info">ابحث</button>
                 </div>
