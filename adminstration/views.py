@@ -309,7 +309,6 @@ class GetVotersList(View):
                 if query['identifier_name'] not in [None,""]:
 
                     identifier_name=query['identifier_name']
-                    identifier_name=identifier_name.replace(" ","")
                     identifier_object["id"]=identifier_name
                 
                 if  query['identifier_wa'] not in [None,""]:
@@ -372,7 +371,7 @@ def by_committee_member_report(request):
     query=json.loads(query)
     if query['cm_id'] not in [None,""]:
         cm=ComitteeMember.objects.get(id=int(query['cm_id']))
-        voters_list=Voter.objects.filter(related_comittee_member=cm)
+        voters_list=Voter.objects.filter(related_comittee_member=cm,vote_status="Voting")
     else:
         voters_list=None
     
@@ -395,6 +394,9 @@ class GetReportByIdentifier(View):
         if hasattr(request.user.userprofile,'campaignadminstrator'):
             candidate=request.user.userprofile.campaignadminstrator.candidate
         
+        if hasattr(request.user.userprofile,'comitteemember'):
+            candidate=request.user.userprofile.comitteemember.candidate
+
         else :
             candidate=request.user.userprofile.candidate
         comittee_members_list=ComitteeMember.objects.filter(candidate=candidate)
@@ -417,15 +419,14 @@ def by_identifier_report(request):
     display_idn_name=""
     if query['cm_id'] not in [None,""]:
         cm=ComitteeMember.objects.get(id=int(query['cm_id']))
-        search_object['profile__address__district']=cm.profile.address.district
-        search_object['candidate']=cm.candidate
+        search_object['related_comittee_member']=cm
 
     if query['is_identifier']:
             identifier_object={
                 'is_identifier':True
             }
             if query['identifier_name'] not in [None,""]:
-                
+
                 identifier_name=query['identifier_name']
                 
                 identifier_object["id"]=identifier_name
@@ -433,16 +434,13 @@ def by_identifier_report(request):
             if  query['identifier_wa'] not in [None,""]:
                 identifier_object['profile__whatsapp_number']=query['identifier_wa']
 
-            identifier=Voter.objects.get(**identifier_object,candidate=cm.candidate)
+            identifier=Voter.objects.get(**identifier_object)
             display_idn_name=identifier
             search_object["identiefier"]=identifier
             
             if  query['identifier_mobile'] not in [None,""]:
-                identifier_object['profile__mobile_number']=query['identifier_mobile']            
-
-
-
-    voters_list=Voter.objects.filter(**search_object)
+                identifier_object['profile__mobile_number']=query['identifier_mobile']
+    voters_list=Voter.objects.filter(**search_object,vote_status="Voting")
     
     html_string = render_to_string('by_idn_report.html', {'voters_list': voters_list,'display_idn_name':display_idn_name})
     html = HTML(string=html_string,base_url=request.build_absolute_uri())

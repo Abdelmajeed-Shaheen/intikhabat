@@ -24,6 +24,8 @@
         <button class="btn btn-danger btn-sm mb-3" id="print">مراجعة و طباعة التقرير</button>
     </div>
     <div class="row">
+    {% if request.user.userprofile.campaignadminstrator or request.user.userprofileprofile.campaignadminstrator %}
+   
         <form >
             <div class="form-row">
                 <div class="col-lg-4">
@@ -39,14 +41,24 @@
                 <div class="col-lg-4">
                     <input type="text"  class="form-control" id="w_no" placeholder="رقم هاتف٣" >                   
                 </div>
+                
             </div>
+            <div class="form-row m-3">
+              <button id="search" type="submit" class="btn btn-info">ابحث</button>
+
+          </div>
+            {% else %}
+            <input type="hidden" id="cm_id" value="{{request.user.userprofile.comitteemember.id}}">
             <div class="form-row m-3">
                 <button id="search" type="submit" class="btn btn-info">ابحث</button>
 
             </div>
-
+            {% endif %}
         </form>
     </div>
+   
+   
+ 
 
     <div class="row mt-3">
         <div class="table-responsive">
@@ -79,13 +91,12 @@
 
 $('#search').on('click',function(e){
     e.preventDefault()
-    cm_id=$('#cm_id').val()
+    query=new Object()
     phone_number=$('#p_no').val()
     whatsapp_number=$('#w_no').val()
-
-    query=new Object()
     query.phone_number=phone_number
     query.whatsapp_number=whatsapp_number
+    cm_id=$('#cm_id').val()
     query.cm_id=cm_id
 
     $.ajax({
@@ -132,13 +143,13 @@ $('#search').on('click',function(e){
 })
 
 $("#print").on("click",function(){
-
-    cm_name=$('#cm_id').val()
+    query=new Object()
     phone_number=$('#p_no').val()
     whatsapp_number=$('#w_no').val()
-    query=new Object()
     query.phone_number=phone_number
     query.whatsapp_number=whatsapp_number
+    cm_name=$('#cm_id').val()
+    
     query.cm_id=cm_name    
     window.location.replace("{% url 'by-cm-report' %}?query="+JSON.stringify(query))
 })
