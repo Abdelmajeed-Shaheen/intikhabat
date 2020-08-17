@@ -188,16 +188,28 @@ class CreateDistrictView(View):
         return JsonResponse({"message":"success"})
 
 def html_to_pdf_view(request):
-    paragraphs = ['يحى', 'صلاح', 'البشار']
-    html_string = render_to_string('report.html', {'paragraphs': paragraphs})
+    
+
+    user=request.GET.get('user')
+    if user['type'] == 'cm':
+        cm=ComitteeMember.objects.get(id=request.GET.get(int(user['id'])))
+        voters_list=Voter.objects.all(candidate=cm.candidate,has_elc_card=True)
+
+    elif user['type'] == 'cmo':
+        cm=ComitteeMember.objects.get(id=request.GET.get(int(user['id'])))
+        voters_list=Voter.objects.all(related_comittee_member=cm,has_elc_card=True)
+    elif user['type'] == 'candi':
+        candi=Candidate.objects.get(id=request.GET.get(int(user['id'])))
+        voters_list=Voter.objects.all(candidate=candi,has_elc_card=True)
+
+    html_string = render_to_string('report.html', {'voters_list': voters_list})
     html = HTML(string=html_string,base_url=request.build_absolute_uri())
-    css=CSS('/home/yahya/Dev/dev_jpems/intikhabat/common/static/common/vendor/bootstrap/css/bootstrap.css')
-    html.write_pdf(target='/tmp/mypdf.pdf',stylesheets=[css])
+    html.write_pdf(target='/tmp/election_cards.pdf')
 
     fs = FileSystemStorage('/tmp')
-    with fs.open('mypdf.pdf') as pdf:
+    with fs.open('election_cards.pdf') as pdf:
         response = HttpResponse(pdf, content_type='application/pdf')
-    response['Content-Disposition'] = 'attachment; filename="mypdf.pdf"'
+    response['Content-Disposition'] = 'attachment; filename="election_cards.pdf"'
     return response
 
 
@@ -343,7 +355,7 @@ class GetVotersList(View):
         if 'dept_id' in query and query['dept_id'] not in [None,""]:
             dept=Department.objects.get(id=int(query['dept_id']))
             search_object['profile__address__department']=dept
-        print(search_object)
+        
         voters_list=Voter.objects.filter(**search_object)       
         for voter in voters_list:
             obj={}
