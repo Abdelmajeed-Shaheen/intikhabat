@@ -272,6 +272,9 @@ $('#register').on('click',function(){
   year=$('#id_dob_year').val()
   userprofile.dob=(year+"-"+month+"-"+day)
   userprofile.email=$("#id_email").val()
+  if($('#id_identifier').val()){
+    userprofile.identifier=$('#id_identifier').val()
+  }
   userjson=JSON.stringify(userprofile)
   console.log(userprofile.governorate)
 
@@ -285,6 +288,11 @@ $('#register').on('click',function(){
     success:function(result){
       $("#regModal").modal('hide')
       window.location.replace(result.redirect_to)
+      console.log("success")
+
+    },
+    error:function(result){
+      alert("حدث خطأ بالتسجيل")
     }
   })
 
