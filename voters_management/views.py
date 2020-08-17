@@ -92,7 +92,7 @@ class VoterProfile(DetailView):
     def get(self,request,pk):
         voter=self.get_object()
         addresses_list=Address.objects.all()
-        candidates_list=Candidate.objects.all()
+        candidates_list=Candidate.objects.all().exclude(id=voter.voter.candidate.id)
         context={
             "voter":voter,
             "addresses_list":addresses_list,
