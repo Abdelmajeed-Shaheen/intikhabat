@@ -24,9 +24,6 @@
     <a class="nav-link active" id="home-tab" data-toggle="tab" href="#details" role="tab" aria-controls="details" aria-selected="true">الصفحة الشخصية</a>
   </li>
 
-  <li class="nav-item">
-    <a class="nav-link" id="contact-tab" data-toggle="tab" href="#vote" role="tab" aria-controls="vote" aria-selected="false">المرشحين</a>
-  </li>
 </ul>
   <div class="tab-content" id= "myTabContent">
     <div class="tab-pane fade show active" id="details" role="tabpanel" aria-labelledby="details-tab">
@@ -48,7 +45,7 @@
                 </h2>
 
             </div>
-            {% if voter.voter.candidate %}
+            {% if voter.voter.vote_status == "Voting"  and voter.voter.candidate %}
             <div class="col-sm-3">
               <h2 class="about-title text-aligner"> 
                   المرشح:
@@ -60,7 +57,7 @@
               </h2>
 
           </div>
-          {% endif %}
+          
           {% if voter.voter.voting_id %}
           <div class="col-sm-4">
             <h2 class="about-title text-aligner"> 
@@ -70,9 +67,52 @@
 
         </div>
         {% endif %}
+        {% endif %}
           </div>
 
+          <div class="row">
+          <h4 class="about-title text-aligner">  الحالة الانتخابية و المرشحين: </h4>
+          </div>
+          <div class="row">
 
+            {% if voter.voter.vote_status != "Not_voting" %}
+            <div class="col-lg-5 text-aligner">
+              <select id='candis' class="form-control" >
+                <option value="">{{voter.voter.candidate.profile.user.first_name}} {{voter.voter.candidate.profile.user.last_name}}</option>
+                {% for candi in candidates_list %}
+                <option value="{{candi.id}}">{{voter.voter.candidate.profile.user.first_name}} {{voter.voter.candidate.profile.user.last_name}}</option>
+                {% endfor %}
+
+              </select>
+
+            </div>
+            {% endif %}
+
+
+            <div class="col-lg-6">
+              <form class="form-inline" id="voteStatusForm">
+         
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label" >مؤيد</label>
+                  <input class="form-check-input" type="radio" id="v" value="Voting">
+                  
+                </div>
+                <div class="form-check form-check-inline">
+                  <label class="form-check-label" >متردد</label>
+                  <input class="form-check-input" type="radio" id="ns" value="Not_sure">
+                  
+                </div>
+                <div class="form-check form-check-inline ">
+                  <label class="form-check-label" >لا ارغب</label>
+                  <input class="form-check-input" type="radio" id="nv" value="Not_voting">
+                </div>
+                <input type="hidden" id="voterId" value="{{voter.voter.id}}">
+                <input type="hidden" name="" id="candidate_choice">
+           
+          </form>
+            </div>
+
+          </div>
         <div class="row">
           <div class="col-sm-6">
             <h2 class="about-title text-aligner">تفاصيل الحساب</h2>
@@ -135,24 +175,9 @@
       
                 </div>
                 <div class="form-row">
-                  <div class="col-sm-3">
-                    <div class="form-group">
-                      <label>الجنس</label>
-                      <select  class="form-control" id="gender">
-                        <option value="male">ذكر</option>
-                        <option value="female">انثى</option>
-                      </select>
-                    </div>
-                  </div> 
-                  <div class="col-sm-4">
-                    <div class="form-group">
-                      <label >تاريخ الميلاد</label>
-                      <input type="date" name="dob" id="dob" class="form-control">
-                    </div>
-                  </div>
                   <div class="col-sm-5">
                     <div class="form-check form-check-inline">
-                      <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
+                      <input class="form-check-input ml-2" type="checkbox" id="inlineCheckbox1" value="option1">
                       <label class="form-check-label"  >هل ترغب بالحصول على بطاقة انتخابية؟</label>
                      
                     </div>
@@ -166,100 +191,7 @@
         </div>
       </div>
     </div>
-    <div class="tab-pane fade " id="vote" role="tabpanel" aria-labelledby="vote-tab">
-        <div class="container mt-5">
-          <div class="row">
-            <div class="col-sm-6">
-              <h2 class="about-title text-aligner">اختيار المرشح\قائمة المرشحين</h2>
-            </div>
-          </div>
-          <div class="row text-aligner">
-            <h5 class="about-title text-aligner">تعديل الحالة الانتخابية:</h5>
-        <form class="form-inline" id="voteStatusForm">
-         
-              <div class="form-check form-check-inline">
-                <label class="form-check-label" >مؤيد</label>
-                <input class="form-check-input" type="radio" id="v" value="Voting">
-                
-              </div>
-              <div class="form-check form-check-inline">
-                <label class="form-check-label" >متردد</label>
-                <input class="form-check-input" type="radio" id="ns" value="Not_sure">
-                
-              </div>
-              <div class="form-check form-check-inline ">
-                <label class="form-check-label" >لا ارغب</label>
-                <input class="form-check-input" type="radio" id="nv" value="Not_voting">
-              </div>
-              <input type="hidden" id="voterId" value="{{voter.voter.id}}">
-              <input type="hidden" name="" id="candidate_choice">
-          <button id="changeStatus" class="btn btn-danger mb-2 mr-sm-2">حفظ</button>
-        </form>
-          </div>
-          <div class="row text-aligner">
-            <h5 class="about-title text-aligner">خيارك للمرشح الحالي: </h5>
-            {% if voter.voter.candidate %}
-            <a href="#" id="selectedCandidate"> {{voter.voter.candidate.profile.user.first_name}} {{voter.voter.candidate.profile.user.last_name}} </a>
-            {% else %}
-            <a href="#" id="selectedCandidate"> لا يوجد اختيار </a>
 
-            {% endif %}
-          </div>
-          {% if voter.voter.vote_status != "Not_voting" %}
-          <div class="row text-aligner">
-          <form method="GET" class="form-inline mb-5">
-            
-            <div class="form-group ml-2 mr-2">
-              <input class="form-control" type="text" placeholder="البحث بواسطة اسم المرشح">
-              
-            </div>
-            <div class="form-group ml-2 mr-2">
-              <label for="exampleFormControlSelect1">المنطقة:</label>
-              <select class="form-control mr-2" id="adressList">
-                {% for item in addresses_list %}
-                <option value="{{item.id}}">{{item.governorate}}</option>
-                {% endfor %}
-              </select>
-            </div>
-
-
-
-           <div class="form-group ml-2 mr-2">
-            <button  class="btn btn-info"  type="submit">ابحث</button>
-           </div>
-          </form>
-          </div>
-          <div class="row text-aligner">
-            {% for item in candidates_list %}
-            <div class="card mb-2 mt-2" style="width: 18rem;">
-              <img class="card-img-top" src="{% static 'common/img/candidate.jpg' %}" alt="Card image cap">
-              <div class="card-body">
-                <h5 class="card-title">{{item.profile.user.first_name}} {{item.profile.user.last_name}}</h5>
-                <button  class="btn btn-danger" data-toggle="modal" data-target="#candidate_{{item.id}}">اختيار المرشح</button>
-              </div>
-            </div>
-            <div class="modal fade" id="candidate_{{item.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-              <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">{{item.profile.user.first_name}} {{item.profile.user.last_name}}</h5>
-          
-                  </div>
-                  <div class="modal-body">
-                     تأكيد اختيار المرشح؟ 
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">الغاء</button>
-                    <button type="button" class="btn btn-success select-candidate" data-candidate-id="{{item.id}}" data-candidate-name="{{item.profile.user.first_name}} {{item.profile.user.last_name}}" data-voter="{{voter.voter.id}}">اختيار</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-            {% endfor %}
-          </div>
-          {% endif %}
-        </div>
-      </div>
   </div>
 
   <div class="modal fade" id="succesModal" tabindex="-1" role="dialog" aria-labelledby="successModalTitle" aria-hidden="true">
@@ -306,7 +238,24 @@ $("#updateprofile").on('click',function(){
   userprofile.dob=$("#dob").val()
   userprofile.id="{{user.id}}"
   userjson=JSON.stringify(userprofile)
-  
+
+  status=$("#voteStatusForm").find('input:radio:checked').val()
+  candidate=$('#candis option:selected').val()
+  voter_id=$("#voterId").val()
+  $.ajax({
+    url:"{% url 'edit-voting-status' %}",
+    type:"POST",
+    data:{
+      status:status,
+      voter_id:voter_id,
+      candidate:candidate,
+      csrfmiddlewaretoken:"{{csrf_token}}",
+      success:function(reslut){
+        
+        $("#succesModal").modal('show')
+      }
+    }
+  })
   $.ajax({
     url:"{% url 'update-profile' %}",
     type:"POST",
@@ -320,6 +269,7 @@ $("#updateprofile").on('click',function(){
       location.reload()
     }
   })
+
 
 })
 
@@ -342,26 +292,26 @@ $("#ns").prop("checked", false);
 $("#v").prop("checked", false);
 });
 
-$("#changeStatus").on('click',function(event){
-  event.preventDefault()
-  status=$("#voteStatusForm").find('input:radio:checked').val()
-  candidate=$("#candidate_choice").val()
-  voter_id=$("#voterId").val()
-  $.ajax({
-    url:"{% url 'edit-voting-status' %}",
-    type:"POST",
-    data:{
-      status:status,
-      voter_id:voter_id,
-      candidate:candidate,
-      csrfmiddlewaretoken:"{{csrf_token}}",
-      success:function(reslut){
+// $("#changeStatus").on('click',function(event){
+//   event.preventDefault()
+//   status=$("#voteStatusForm").find('input:radio:checked').val()
+//   candidate=$("#candidate_choice").val()
+//   voter_id=$("#voterId").val()
+//   $.ajax({
+//     url:"{% url 'edit-voting-status' %}",
+//     type:"POST",
+//     data:{
+//       status:status,
+//       voter_id:voter_id,
+//       candidate:candidate,
+//       csrfmiddlewaretoken:"{{csrf_token}}",
+//       success:function(reslut){
         
-        $("#succesModal").modal('show')
-      }
-    }
-  })
-})
+//         $("#succesModal").modal('show')
+//       }
+//     }
+//   })
+// })
 
 $(".select-candidate").on("click",function(){
   candidate_id=$(this).attr('data-candidate-id')
@@ -377,5 +327,22 @@ $(".select-candidate").on("click",function(){
 $("#reload").on("click",function(){
   location.reload()
 })
+
+
+
+$(document).ready(function(){
+ 
+ // Initialize select2
+ $("#candis").select2({
+  dir: "rtl"
+});
+
+ // Read selected option
+ $('#but_read').click(function(){
+   var username = $('#candis option:selected').text();
+   
+ });
+});
+
 </script>
 {% endblock %}
