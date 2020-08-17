@@ -102,6 +102,7 @@ class CreateUser(View):
         whatsapp_number=form.data.get('whatsapp_number')
         email=form.data.get('email')
         is_manager=form.data.get('is_manager')
+        print(is_manager)
         if is_manager =="on":
             is_manager=True
         else:
@@ -109,6 +110,7 @@ class CreateUser(View):
         password='changeme12'
         user_type=request.POST.get('usertype')
         comittee=""
+        print(user_type)
         if request.POST.get('comittee'):
             comittee=Comittee.objects.get(id=request.POST.get('comittee'))
       
@@ -118,12 +120,10 @@ class CreateUser(View):
             'last_name':last_name,
             'email':email
         }
-        # try:
         user=User(**user_instance)
         user.set_password(password)
         user.save()
-        # except (IntegrityError):
-        #     return JsonResponse({'error':'اسم مكرر'})
+
         profile_instance={
             'middle_name':middle_name,
             'last_name':third_name,
@@ -138,13 +138,22 @@ class CreateUser(View):
             user_profile.save()
         except (IntegrityError):
             return JsonResponse({'error':'رقم هاتف مكرر'})
-        candidate=request.user.userprofile.candidate
         
+        if hasattr(request.user.userprofile,'candidate') :
+            candidate=request.user.userprofile.candidate
+        
+        if hasattr(request.user.userprofile,'campaignadminstrator') :
+            candidate=request.user.userprofile.campaignadminstrator.candidate
+    
+        if hasattr(request.user.userprofile,'comitteemember') :
+            candidate=request.user.userprofile.comitteemember.candidate
+
+
         if user_type == "cm":
           
             comittee_member_object={
                 'profile':user_profile,
-                'candidate':request.user.userprofile.candidate,
+                'candidate':candidate,
                 'comittee':comittee,
                 'is_manager':is_manager
             }
@@ -153,6 +162,20 @@ class CreateUser(View):
 
             comittee=Comittee.objects.get(id=comittee_member.comittee.id)
             comittee.manager=comittee_member
+            comittee.save()
+        
+        if user_type == "cmo":
+            print("hi")
+            comittee_member_object={
+                'profile':user_profile,
+                'candidate':candidate,
+                'comittee':comittee,
+                'is_manager':False
+            }
+            comittee_member=ComitteeMember(**comittee_member_object)
+            comittee_member.save()
+
+            comittee=Comittee.objects.get(id=comittee_member.comittee.id)
             comittee.save()
 
         elif user_type =="camp":

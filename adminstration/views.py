@@ -674,11 +674,23 @@ def get_identifier(request):
 
 def update_voter(request,id):
     voter=Voter.objects.get(id=id)
-    cm_list=ComitteeMember.objects.filter(candidate=voter.candidate)
+    if hasattr(request.user.userprofile,"campaignadminstrator") or hasattr(request.user.userprofile,"candidate"):
+        cm_list=ComitteeMember.objects.filter(candidate=voter.candidate)
+    
+    elif request.user.userprofile.comitteemember.is_manager :
+        cm_list=ComitteeMember.objects.filter(comittee=request.user.userprofile.comitteemember.comittee)
+
     if request.POST:
         cm=request.POST.get('cm')
+        followed_up=request.POST.get('followed_up')
+        if followed_up == 'true':
+            followed_up=True
+        else:
+            followed_up=False
+            
         cm=ComitteeMember.objects.get(id=int(cm))
         voter.related_comittee_member=cm
+        voter.followed_up=followed_up
     voter.save()
 
     context={

@@ -290,7 +290,96 @@
     </div>
 </div>
 
-{% include 'modals.html' %}
+<div class="modal fade" id="createComitteeMember" tabindex="-1" role="dialog" aria-labelledby="createComitteeMemberTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="createComitteeMemberTitle">انشاء عضو لجنة</h5>
+
+      </div>
+      <div class="modal-body">
+      <form>
+      <div class="row text-aligner">
+ 
+      <div class="col-sm-3">
+        <div class="form-group">
+          <label >الاسم الاول:</label>
+          {{comittee_member_form.first_name}}
+        </div>
+      </div>
+      <div class="col-sm-3">
+        <div class="form-group">
+          <label >اسم الاب:</label>
+          {{comittee_member_form.middle_name}}
+        </div>
+      </div>
+      <div class="col-sm-3">
+        <div class="form-group">
+          <label >اسم الجد:</label>
+          {{comittee_member_form.third_name}}
+        </div>
+      </div>
+      <div class="col-sm-3">
+        <div class="form-group">
+          <label >اسم العائلة:</label>
+          {{comittee_member_form.last_name}}
+        </div>
+      </div>
+      </div>
+      <div class="row text-aligner">
+ 
+        <div class="col-sm-6">
+          <div class="form-group">
+            <label >رقم الهاتف:</label>
+            {{comittee_member_form.mobile_number}}
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <div class="form-group">
+            <label > الواتساب:</label>
+            {{comittee_member_form.whatsapp_number}}
+          </div>
+        </div>
+        <div class="col">
+          <div class="form-group">
+            <label > البريد الالكتروني:</label>
+            {{comittee_member_form.email}}
+          </div>
+        </div>
+      </div>
+
+        <input type="hidden" value="cmo" name="member_type" id='usertype'>
+        <input type="hidden" id="comittee" value="{{comittee.id}}">
+      </form>
+        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">اغلاق</button>
+        <button type="button" class="btn btn-success" id="createmember">حفظ</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="succesModal" tabindex="-1" role="dialog" aria-labelledby="successModalTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+       
+
+      </div>
+      <div class="modal-body">
+        <div class="alert alert-success" role="alert">
+          <h4 class="alert-heading">تمت العملية بنجاح</h4>
+         
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" id="reload" >اغلاق</button>
+      </div>
+    </div>
+  </div>
+  </div>
 {% endblock %}
 
 {% block js %}
@@ -305,6 +394,7 @@
       third_name:$('#id_last_name').val(),
       usertype:$('#usertype').val(),
       middle_name:$('#id_middle_name').val(),
+      comittee:$('#comittee').val(),
       csrfmiddlewaretoken:csrftoken  
     }
     return data
@@ -400,5 +490,19 @@ $("#updateprofile").on('click',function(){
 $("#reload").on("click",function(){
   location.reload()
 })
+$('#createmember').on('click',function(){
+  data=getFormData()
+  $.ajax({
+    url:"{% url 'create-user' %}",
+    type:"POST",
+    data:data,
+    success:function(result){
+      $('#createComitteeMember').modal('hide')
+      $("#succesModal").modal('show')
+    }
+  })
+})
+
 </script>
+
 {% endblock %}
