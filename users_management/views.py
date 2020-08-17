@@ -207,7 +207,12 @@ class UpdateProfile(View):
             user_object['mobile_number']=userprofile['mobile_number']
 
         if 'whatsapp_number' in userprofile and userprofile['whatsapp_number'] not in empty:
-            user_object['whatsapp_number']=userprofile['whatsapp_number']        
+            user_object['whatsapp_number']=userprofile['whatsapp_number']
+
+        if 'title' in userprofile and userprofile['title'] is not None:
+            candidate=request.user.userprofile.candidate
+            candidate.title=userprofile['title']
+            candidate.save()        
         
         profile.update(**user_object)
         
