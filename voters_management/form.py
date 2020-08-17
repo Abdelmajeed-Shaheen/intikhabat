@@ -61,7 +61,7 @@ class VoterRegForm(forms.Form):
     GENDER_CHOICES=(('male', 'ذكر'),('female', 'انثى'),)
     gender=forms.ChoiceField(choices=GENDER_CHOICES)
     work=forms.ModelChoiceField(queryset=WorkField.objects.all(),widget=forms.Select(attrs={'class':'form-control m-2'}))
-    identifier=forms.CharField(max_length=7,widget=forms.TextInput(
+    identifier=forms.CharField(max_length=9,widget=forms.TextInput(
                                                     attrs={
                                                         'class':'form-control',
                                                         'placeholder':'الرقم الانتخابي للمعرف (ان وجد)'
