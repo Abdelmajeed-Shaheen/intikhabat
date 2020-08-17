@@ -8,7 +8,7 @@ from .views import (
                     GetReportByIdentifier,by_identifier_report,GetVotersByAddressReport,
                     by_address_report,GetVotersByStatusReport,by_status_report,
                     update_comittee,update_comittee_member,get_cm,
-                    get_identifier                                                                                                                                                
+                    get_identifier,update_voter                                                                                                                                                
                     )
 urlpatterns = [
     path("main",CampaignManagementMainView.as_view(),name="main"),
@@ -34,6 +34,8 @@ urlpatterns = [
     path("update-cm/<id>/",update_comittee_member,name="update-cm"),
     path("get-cm",get_cm,name="get-cm"),
     path("get-identifier",get_identifier,name="get-identifier"),
+    path("update-voter/<id>/",update_voter,name="update-voter"),
+
 
 
 

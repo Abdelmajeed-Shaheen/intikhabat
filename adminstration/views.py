@@ -43,6 +43,7 @@ class CampaignManagementMainView(View):
         departments_list=Department.objects.all()
         areas_list=Area.objects.all()
         districts_list=District.objects.all()
+        new_voters_list=Voter.objects.all().filter(followed_up=False,candidate=candidate).order_by("-id")
             
         context={
             "form":CreateComitteeForm,
@@ -55,7 +56,8 @@ class CampaignManagementMainView(View):
             "candidate":candidate,
             "departments_list":departments_list,
             "areas_list":areas_list,
-            "districts_list":districts_list
+            "districts_list":districts_list,
+            "new_voters_list":new_voters_list
         }
         return render(request,"adminstration.html",context)
 
@@ -68,7 +70,12 @@ class ComitteeMemberView(View):
         user=request.user.userprofile
         campaign_manager=candidate.campaignadminstrator_set.first()
         comittees_members=comittee.comitteemember_set.all()
-        addresses_list=Address.objects.all()
+        
+        if user.comitteemember.is_manager:
+            new_voters_list=Voter.objects.all().filter(candidate=candidate)
+        else:
+            new_voters_list=Voter.objects.all().filter(related_comittee_member=user.comitteemember)
+        
             
         context={
             "comittee_member_form":SignUpForm,
@@ -76,7 +83,7 @@ class ComitteeMemberView(View):
             "comittees_members":comittees_members,
             "user":user,
             "comittee":comittee,
-            "addresses_list":addresses_list
+            "new_voters_list":new_voters_list
         }
         return render(request,"adminstration_cm.html",context)
 
@@ -663,3 +670,20 @@ def get_identifier(request):
         cm_list.append(cm)
     
     return JsonResponse(cm_list, safe=False)
+
+
+def update_voter(request,id):
+    voter=Voter.objects.get(id=id)
+    cm_list=ComitteeMember.objects.filter(candidate=voter.candidate)
+    if request.POST:
+        cm=request.POST.get('cm')
+        cm=ComitteeMember.objects.get(id=int(cm))
+        voter.related_comittee_member=cm
+    voter.save()
+
+    context={
+        'voter':voter,
+        'cm_list':cm_list
+        
+    }
+    return render(request,"edit_voter.html",context)

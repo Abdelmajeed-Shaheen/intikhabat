@@ -63,7 +63,7 @@ class Candidate(models.Model):
     timestamp=models.DateTimeField(auto_now=True,auto_now_add=False)
     updated=models.DateTimeField(auto_now=False,auto_now_add=True)
     election_list=models.OneToOneField(to='adminstration.ElectionList',on_delete=models.CASCADE,null=True)
-    
+    title=models.CharField(max_length=255,blank=True,null=True)
     class Meta:
         permissions = [
             ("create_commitee", "Can create commitee"),
