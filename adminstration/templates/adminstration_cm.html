@@ -37,6 +37,10 @@
   <li class="nav-item">
     <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">التقارير</a>
   </li>
+
+    <li class="nav-item">
+    <a class="nav-link" id="newVoters-tab" data-toggle="tab" href="#newVoters" role="tab" aria-controls="newVoters" aria-selected="false">الناخبين الجدد</a>
+  </li>
 </ul>
   <div class="tab-content text-aligner" id= "myTabContent">
 
@@ -99,20 +103,6 @@
                 <input type="text" class="form-control" id="wano" placeholder="رقم الواتساب" value="{{user.mobile_number}}">
               </div>
             </div>
-
-            <div class="col-sm-3">
-              <div class="form-group">
-                <label >العنوان</label>
-                <select multiple class="form-control" id="addresses">
-                  {% for address in addresses_list %}
-                  <option value="{{address.id}}">{{address.governorate}}/{{address.district}}</option>
-                  {% endfor %}
- 
-                </select>
-              </div>
-            </div>
-            
-
 
           </div>
           
@@ -189,6 +179,7 @@
               <th scope="col">اسم المدير</th>
               <th scope="col">رقم الهاتف</th>
               <th scope="col">البريد الالكتروني</th>
+           
               
             </tr>
           </thead>
@@ -263,6 +254,40 @@
 
   </div>
   </div>
+  <div class="tab-pane fade" id="newVoters" role="tabpanel" aria-labelledby="contact-tab">
+
+    <div class="container text-aligner mt-5">
+      <div class="row">
+        <h4>الناخبين الجدد</h4>
+      </div>
+      <div class="row">
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">الاسم الكامل</th>
+                <th scope="col">عضو الارتباط</th>
+                <th scope="col">رقم الهاتف</th>
+                <th scope="col">تم المتابعة</th>
+                <th scope="col">التفاصيل</th>
+              </tr>
+            </thead>
+            <tbody>
+              {%  for voter in new_voters_list %}
+              <tr>
+                <td >{{voter.profile.user.first_name}} {{voter.profile.middle_name}} {{voter.profile.last_name}} {{voter.profile.user.last_name}}</td>
+                <td >{{voter.related_comittee_member.profile.user.first_name}} {{voter.related_comittee_member.profile.middle_name}} {{voter.related_comittee_member.profile.user.last_name}}</td>
+                <td >{{voter.profile.mobile_number}}</td>
+                <td >لا</td>
+                <td><a class="btn btn-danger" href="{% url 'update-voter' voter.id %}"> عرض التفاصيل</a></td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    </div>
 </div>
 
 {% include 'modals.html' %}

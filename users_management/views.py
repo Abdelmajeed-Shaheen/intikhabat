@@ -172,30 +172,19 @@ class UpdateProfile(View):
         profile=UserProfile.objects.filter(id=int(userprofile['id']))
         User.objects.filter(id=request.user.id).update(first_name=userprofile["first_name"],last_name=userprofile["last_name"])
         user_object={}
-        address=request.user.userprofile.address
         empty=[None,""]
-        if userprofile['second_name'] not in empty:
+        
+        if 'second_name' in userprofile and userprofile['second_name'] not in empty:
             user_object['middle_name']=userprofile['second_name']
 
-        if userprofile['third_name'] not in empty:
+        if 'third_name' in userprofile and userprofile['third_name'] not in empty:
             user_object['last_name']=userprofile['third_name']
         
-        if userprofile['mobile_number'] not in empty:
+        if 'mobile_number' in userprofile and userprofile['mobile_number'] not in empty:
             user_object['mobile_number']=userprofile['mobile_number']
 
-        if userprofile['whatsapp_number'] not in empty:
-            user_object['whatsapp_number']=userprofile['whatsapp_number']
-        
-        if userprofile['governorate'] not in empty:
-            address.governorate=Governorate.objects.get(id=int(userprofile['governorate']))
-            address.save()
-
-        if userprofile['dept'] not in empty:
-            address.department=Department.objects.get(id=int(userprofile['dept']))
-            address.save()
-        if userprofile['area'] not in empty:
-            address.area=Area.objects.get(id=int(userprofile['area']))
-            address.save()
+        if 'whatsapp_number' in userprofile and userprofile['whatsapp_number'] not in empty:
+            user_object['whatsapp_number']=userprofile['whatsapp_number']        
         
         profile.update(**user_object)
         
