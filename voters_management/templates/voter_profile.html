@@ -28,6 +28,23 @@
   <div class="tab-content" id= "myTabContent">
     <div class="tab-pane fade show active" id="details" role="tabpanel" aria-labelledby="details-tab">
       <div class="container mt-5">
+      <div class="row">
+        <div class="col-sm-6">
+          <div class="alert alert-danger text-aligner" role="alert">
+            <h5>اسم المستخدم: {{request.user.username}} </h5>
+            <h6> ملاحظة: يستخدم كأسم مستخدم عند تسجيل الدخول, يرجى عدم مشاركته مع الاخرين</h6>
+           </div>
+        </div>
+        {% if voter.voter.identiefier %}
+        <div class="col-sm-6">
+          <div class="alert alert-info text-aligner" role="alert">
+            <h5>اسم المعرف: {{voter.voter.identiefier.profile.user.first_name}}  {{voter.voter.identiefier.profile.last_name}}</h5>
+           </div>
+        </div>
+        {% endif %}
+
+
+      </div>
           <div class="row">
             <div class="col-sm-4">
                 <h2 class="about-title text-aligner"> 
@@ -74,13 +91,17 @@
           <h4 class="about-title text-aligner">  الحالة الانتخابية و المرشحين: </h4>
           </div>
           <div class="row">
-
+              
             {% if voter.voter.vote_status != "Not_voting" %}
             <div class="col-lg-5 text-aligner">
               <select id='candis' class="form-control" >
+                {% if voter.voter.candidate %}
                 <option value="">{{voter.voter.candidate.profile.user.first_name}} {{voter.voter.candidate.profile.user.last_name}}</option>
+                {% else %}
+                <option>اختر او ابحث عن مرشح</option>
+                {% endif %}
                 {% for candi in candidates_list %}
-                <option value="{{candi.id}}">{{voter.voter.candidate.profile.user.first_name}} {{voter.voter.candidate.profile.user.last_name}}</option>
+                <option value="{{candi.id}}">{{candi.profile.user.first_name}} {{candi.profile.user.last_name}}</option>
                 {% endfor %}
 
               </select>
@@ -167,7 +188,8 @@
                   <div class="col-sm-3">             
                     <div class="form-group">
                       <label>رقم الواتساب</label>
-                      <input type="text" class="form-control" id="wano" placeholder="رقم الواتساب" value="{{voter.mobile_number}}">
+                      
+                      <input type="text" class="form-control" id="wano" placeholder="رقم الواتساب" value="{% if voter.whatsapp_number %}{{voter.whatsapp_number}}{% else %}لا يوجد رقم{% endif %}">
                     </div>
                   </div>
       
@@ -177,7 +199,12 @@
                 <div class="form-row">
                   <div class="col-sm-5">
                     <div class="form-check form-check-inline">
-                      <input class="form-check-input ml-2" type="checkbox" id="inlineCheckbox1" value="option1">
+                      {% if voter.voter.has_elc_card %}
+                      <input class="form-check-input ml-2" type="checkbox" id="elecCard" checked  >
+                      {% else %}
+                      <input class="form-check-input ml-2" type="checkbox" id="elecCard" >
+
+                      {% endif %}
                       <label class="form-check-label"  >هل ترغب بالحصول على بطاقة انتخابية؟</label>
                      
                     </div>
@@ -238,7 +265,13 @@ $("#updateprofile").on('click',function(){
   userprofile.dob=$("#dob").val()
   userprofile.id="{{user.id}}"
   userjson=JSON.stringify(userprofile)
-
+  elect_card=$('#elecCard')
+  if (elect_card.prop('checked')){
+    ec=true
+  }
+  else{
+    ec=false
+  }
   status=$("#voteStatusForm").find('input:radio:checked').val()
   candidate=$('#candis option:selected').val()
   voter_id=$("#voterId").val()
@@ -249,6 +282,7 @@ $("#updateprofile").on('click',function(){
       status:status,
       voter_id:voter_id,
       candidate:candidate,
+      ec:ec,
       csrfmiddlewaretoken:"{{csrf_token}}",
       success:function(reslut){
         
