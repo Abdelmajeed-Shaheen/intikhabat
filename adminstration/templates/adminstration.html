@@ -180,15 +180,21 @@
                 <input type="text" class="form-control" id="phno" placeholder="رقم الهاتف" value="{{user.mobile_number}}">
               </div>
             </div>
+
             <div class="col-sm-3">             
               <div class="form-group">
                 <label>رقم الواتساب</label>
                 <input type="text" class="form-control" id="wano" placeholder="رقم الواتساب" value="{{user.mobile_number}}">
               </div>
             </div>
-
-
-          
+            {% if user.candidate %}
+            <div class="col-sm-3">             
+              <div class="form-group">
+                <label>اسم الشهرة</label>
+                <input type="text" class="form-control" id="title" placeholder="اسم الشهرة" value="{{user.candidate.title}}">
+              </div>
+            </div>
+          {% endif %}
           </div>
             <div class="form-row">
               <div class="col-sm-3">
@@ -745,8 +751,12 @@ $("#updateprofile").on('click',function(){
   userprofile.dept=$('#dept').find("option:selected").val()
   userprofile.id="{{user.id}}"
   userprofile.area=$("#area").find("option:selected").val()
+  if ($('#title').length){
+    userprofile.title=$("#title").val()
+  }
   userjson=JSON.stringify(userprofile)
-  console.log(userprofile.area)
+
+
 
 
   $.ajax({

@@ -63,12 +63,12 @@
 
             </div>
             {% if voter.voter.vote_status == "Voting"  and voter.voter.candidate %}
-            <div class="col-sm-3">
+            <div class="col-sm-4">
               <h2 class="about-title text-aligner"> 
                   المرشح:
                   
                   
-                   <a href="#" class="btn btn-info">{{voter.voter.candidate.profile.user.first_name}} {{voter.voter.candidate.profile.user.last_name}}</a>
+                   <a href="#" class="btn btn-info">{{voter.voter.candidate.profile.user.first_name}} {{voter.voter.candidate.profile.user.last_name}} {% if voter.voter.candidate.title != None %} {{voter.voter.candidate.title}}{% endif %} </a>
 
                     
               </h2>
@@ -96,12 +96,12 @@
             <div class="col-lg-5 text-aligner">
               <select id='candis' class="form-control" >
                 {% if voter.voter.candidate %}
-                <option value="">{{voter.voter.candidate.profile.user.first_name}} {{voter.voter.candidate.profile.user.last_name}}</option>
+                <option value="">{{voter.voter.candidate.profile.user.first_name}} {{voter.voter.candidate.profile.user.last_name}} {% if voter.voter.candidate.title != None %}{{voter.voter.candidate.title}}{% endif %}</option>
                 {% else %}
                 <option>اختر او ابحث عن مرشح</option>
                 {% endif %}
                 {% for candi in candidates_list %}
-                <option value="{{candi.id}}">{{candi.profile.user.first_name}} {{candi.profile.user.last_name}}</option>
+                <option value="{{candi.id}}">{{candi.profile.user.first_name}} {{candi.profile.user.last_name}} {% if candi.title != None %}{{candi.title}}{% endif %}</option>
                 {% endfor %}
 
               </select>
