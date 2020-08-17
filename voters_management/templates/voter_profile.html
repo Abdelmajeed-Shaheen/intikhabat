@@ -74,13 +74,17 @@
           <h4 class="about-title text-aligner">  الحالة الانتخابية و المرشحين: </h4>
           </div>
           <div class="row">
-
+              
             {% if voter.voter.vote_status != "Not_voting" %}
             <div class="col-lg-5 text-aligner">
               <select id='candis' class="form-control" >
+                {% if voter.voter.candidate %}
                 <option value="">{{voter.voter.candidate.profile.user.first_name}} {{voter.voter.candidate.profile.user.last_name}}</option>
+                {% else %}
+                <option>اختر او ابحث عن مرشح</option>
+                {% endif %}
                 {% for candi in candidates_list %}
-                <option value="{{candi.id}}">{{voter.voter.candidate.profile.user.first_name}} {{voter.voter.candidate.profile.user.last_name}}</option>
+                <option value="{{candi.id}}">{{candi.profile.user.first_name}} {{candi.profile.user.last_name}}</option>
                 {% endfor %}
 
               </select>
