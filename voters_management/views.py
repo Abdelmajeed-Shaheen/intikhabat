@@ -27,17 +27,10 @@ class CreateVoter(View):
         user.save()
         voter_work=WorkField.objects.get(id=int(voter['work']))
         name_string=(voter['first_name']+voter['second_name']+voter['third_name']+voter['last_name'])
-        address_dict={
-            "governorate":Governorate.objects.get(id=voter['governorate']),
-            "department":Department.objects.get(id=voter['dept']),
-            "area":Area.objects.get(id=voter['area'])
-        }
-        
-        address=Address(**address_dict)
-        address.save()
+
         identifier_string_list=list("0/0/0/0/0")
         
-        if "identifier" in voter:
+        if "identifier" in voter and voter["identifier"] not in [None,""]:
             identifier=voter['identifier']
             
             if str.isnumeric(identifier):
@@ -66,7 +59,6 @@ class CreateVoter(View):
             "last_name":voter['third_name'],
             "date_of_birth":voter['dob'],
             "gender":voter["gender"],
-            "address":address,
             "work_field":voter_work,
             "user":user,
             "name_string":name_string,
@@ -92,7 +84,12 @@ class VoterProfile(DetailView):
     def get(self,request,pk):
         voter=self.get_object()
         addresses_list=Address.objects.all()
-        candidates_list=Candidate.objects.all().exclude(id=voter.voter.candidate.id)
+        candidates_list=Candidate.objects.all()
+
+        if voter.voter.candidate is not None:
+
+            candidates_list=candidates_list.exclude(id=voter.voter.candidate.id)
+      
         context={
             "voter":voter,
             "addresses_list":addresses_list,
