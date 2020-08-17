@@ -32,12 +32,36 @@ class CreateVoter(View):
             "department":Department.objects.get(id=voter['dept']),
             "area":Area.objects.get(id=voter['area'])
         }
-        print(address_dict)
+        
         address=Address(**address_dict)
         address.save()
+        identifier_string_list=list("0/0/0/0/0")
+        
+        if "identifier" in voter:
+            identifier=voter['identifier']
+            
+            if str.isnumeric(identifier):
+                identifier=list(identifier)
+                identifier_string_list[0]=identifier[0]
+                identifier_string_list[2]=identifier[1]
+                identifier_string_list[4]=identifier[2]
+                identifier_string_list[6]=identifier[3]
+                identifier_string_list[8]=identifier[4]
+                identifier="".join(identifier_string_list)
+                identifier=Voter.objects.get(voting_id=identifier)
+                print(identifier)
+            else:
+                
+                identifier=Voter.objects.get(voting_id=identifier)
+                print(identifier)
+
+        else:
+            identifier=None
+
+       
+
         profile_object={
             "mobile_number":voter['mobile_number'],
-            "whatsapp_number":voter['whatsapp_number'],
             "middle_name":voter['second_name'],
             "last_name":voter['third_name'],
             "date_of_birth":voter['dob'],
@@ -45,12 +69,14 @@ class CreateVoter(View):
             "address":address,
             "work_field":voter_work,
             "user":user,
-            "name_string":name_string
-            
+            "name_string":name_string,
         }
+
+
+
         profile=UserProfile(**profile_object)
         profile.save()
-        voter=Voter(profile=profile)
+        voter=Voter(profile=profile,identiefier=identifier)
         voter.save()
         login(request,user)
         response['redirect_to']=reverse('voter-profile',kwargs={'pk':user.userprofile.id})
@@ -66,7 +92,7 @@ class VoterProfile(DetailView):
     def get(self,request,pk):
         voter=self.get_object()
         addresses_list=Address.objects.all()
-        candidates_list=Candidate.objects.all()
+        candidates_list=Candidate.objects.all().exclude(id=voter.voter.candidate.id)
         context={
             "voter":voter,
             "addresses_list":addresses_list,
@@ -83,7 +109,7 @@ class UpdateVoter(View):
     def post(self,request):
         
         voter_object={}
-        voting_id_string=list("0/0/0/0")
+        voting_id_string=list("0/0/0/0/0")
         if request.POST.get('voter_id'):
             voter_id=request.POST.get('voter_id')
             voter=Voter.objects.filter(id=int(voter_id))
@@ -91,7 +117,7 @@ class UpdateVoter(View):
         if voter.values('voting_id')[0]['voting_id'] is not None:
             voting_id=voter.values('voting_id')
             voting_id_string=list(voting_id[0]['voting_id'])
-          
+            
 
             
         if request.POST.get('candidate'):
@@ -103,7 +129,16 @@ class UpdateVoter(View):
             voting_id_string[2]=candidate_id_string
             voting_id_string[4]=candidate_address_id_string
             voting_id_string[6]=candidate_dept_id_string
+            
+            if len(voting_id_string)<7:
+                voting_id_string.append(str("+"+voter.values('id')[0]['id']))
+
+            else:
+                voting_id_string[8]=str(voter.values('id')[0]['id'])
+
+
             new_id="".join(voting_id_string)
+            print(new_id)
             voter_object['voting_id']=new_id
       
         if request.POST.get("status"):
