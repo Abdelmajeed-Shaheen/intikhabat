@@ -18,7 +18,7 @@ class CreateVoter(View):
         user_object={
             "first_name":voter['first_name'],
             "last_name":voter['last_name'],
-            "username":(voter['first_name']+voter['last_name']),
+            "username":(voter['mobile_number']),
             "email":voter['email'],
         }
         response={}
@@ -62,6 +62,7 @@ class CreateVoter(View):
             "work_field":voter_work,
             "user":user,
             "name_string":name_string,
+            
         }
 
 
@@ -153,6 +154,13 @@ class UpdateVoter(View):
             voting_id_string[0]=status_id
             new_id="".join(voting_id_string)
             voter_object['voting_id']=new_id
+        
+        
+        if request.POST.get('ec'):
+            if request.POST.get('ec')=='true':
+                voter_object['has_elc_card']=True
+            else:
+                voter_object['has_elc_card']=False
 
         voter.update(**voter_object)
 
