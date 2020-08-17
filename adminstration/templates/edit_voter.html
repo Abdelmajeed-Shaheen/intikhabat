@@ -1,0 +1,67 @@
+{% extends 'candidate_base.html' %}
+
+
+{% block extra_content %}
+  <header id="header">
+    <div class="container-ar d-flex align-items-center" >
+      <nav class="nav-menu d-none d-lg-block">
+        <ul>
+          <li><a href="{% url 'logout' %}">تسحيل خروج</a></li>
+          <li><a href="{% url 'main' %}">عودة</a></li>
+        </ul>
+      </nav>
+      <!-- .nav-menu -->
+
+    </div>
+  </header>
+{% endblock %}
+{% block main %}
+<div class="container mt-5 text-aligner">
+<div class="row">
+    <div class="col-sm-4">
+        <h5 class="about-title">
+            تعديل الناخب: 
+            {{voter.profile.first_name}} {{voter.profile.last_name}}
+        </h5>
+    </div>
+    {% if voter.related_comittee_memebr %}
+    <div class="col-sm-6">
+        <h5 class="about-title">عضو اللجنة: {{voter.related_comittee_memebr.profile.user.first_name}} {{voter.related_comittee_memebr.profile.user.first_name}}/{{voter.related_comittee_memebr.profile.mobile_number}}</h5>
+    </div>
+    {% else %}
+        <div class="col-sm-6">
+        <h5 class="about-title">عضو اللجنة: غير محدد</h5>
+    </div>
+    {% endif %}
+
+</div>
+
+<div class="row">
+    <div class="col-sm-4">
+        <h5> رقم الهاتف الناخب:{{voter.profile.mobile_number}}</h5>
+        <h5> رقم واتساب الناخب:{{voter.profile.whatsapp_number}}</h5>
+    </div>
+
+</div>
+
+<div class="row">
+    <form method="POST">
+        {% csrf_token %}
+        <div class="form-row">
+                <label for="">اعضاء اللجان</label>
+                <select class="form-control" name="cm">
+                   
+                    {% for cm in cm_list %}
+                    <option value="{{cm.id}}">{{cm.profile.user.first_name}} {{cm.profile.user.first_name}}</option>
+                    {% endfor %}
+                  </select>
+            
+        </div>
+        <div class="form-row mt-2">
+            <input type="submit" class="btn btn-danger" value="حفظ">
+        </div>
+    </form>
+
+</div>
+</div>
+{% endblock %}
