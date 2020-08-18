@@ -634,7 +634,12 @@ def update_comittee_member(request,id):
             is_manager=False
 
         profile=cm.profile
-
+        if request.POST.get('is_active') =='on':
+            is_active=True
+        else:
+            is_active=False
+        cm.is_active=is_active
+      
         if not cm.profile.address:
             governorate=candidate.election_list.election_address.governorate
             address=Address(governorate=governorate,department=department)
@@ -692,7 +697,33 @@ def get_cm(request):
         cm_list.append(cm)
     
     return JsonResponse(cm_list, safe=False)
-
+def get_cm_by_comittee(request):
+    cm_id=request.GET.get("cm_id")
+    comittee=Comittee.objects.get(id=int(request.GET.get("comittee")))
+    qs = ComitteeMember.objects.filter(Q(id=int(cm_id))|
+                                      Q(comittee=comittee)
+                                       )
+    
+    cm_list = []
+    for cm in qs:
+        
+            
+        cm_obj={
+            'name':str(cm.profile.user.first_name+" "+cm.profile.user.last_name),
+            'phone_number':cm.profile.mobile_number,
+            'email':cm.profile.user.email,
+            'comittee':comittee.name,
+            'id':cm.id,
+        
+        }
+        if cm.is_manager:
+            cm_obj['status']="مدير"
+        else:
+            cm_obj['status']="عضو"
+            
+        cm_list.append(cm_obj)
+    
+    return JsonResponse(cm_list, safe=False)
 def get_identifier(request):
     term=request.GET.get("term")
     qs = Voter.objects.filter(Q(profile__user__first_name__icontains=term)|
