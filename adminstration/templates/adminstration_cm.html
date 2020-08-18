@@ -22,7 +22,13 @@
   </header>
 {% endblock %}
 {% block main %}
-
+{% if request.user.userprofile.comitteemember.is_active %}
+<div class="row m-5">
+  <div class="alert alert-danger" role="alert">
+   حسابك موقوف من قبل ادارة الحملة
+  </div>
+</div>
+{% else %}
 <ul class="nav nav-tabs" id="myTab" role="tablist">
 
   <li class="nav-item">
@@ -380,6 +386,9 @@
     </div>
   </div>
   </div>
+
+
+  {% endif %}
 {% endblock %}
 
 {% block js %}

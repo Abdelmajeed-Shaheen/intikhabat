@@ -378,6 +378,28 @@
       </div>
 
       </div>
+      <div class="row">
+        <form >
+          <div class="form-row">
+            <div class="col-sm-7">
+              <input type="text" class="form-control" name="" id="cm_search" placeholder="ابحث عن اسم عضو لجنة">
+              <input type="hidden" name="" id="hidden_cm">
+            </div>
+            <div class="col-sm-3">
+              <select name="" id="cmo_search" class="form-control">
+                {% for comittee in comittees_list %}
+                <option value="{{comittee.id}}">{{comittee.name}}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+          <div class="col-sm-3">
+            <button class="btn btn-success" id="search_cm" type="submit">بحث</button>
+          </div>
+        </form>
+        
+
+      </div>
     <div class="row">
       <div class="col-md-8">
         <h2 class="about-title text-aligner">اعضاء اللجان</h2>
@@ -391,12 +413,12 @@
                 <th scope="col">البريد الالكتروني</th>
                 <th scope="col">اللجنة</th>
                 <th scope="col">الحالة الادارية</th>
-                <th scope="col">حفظ</th>
+                <th scope="col">تعديل</th>
                 <th scope="col">صلاحيات</th>
                 
               </tr>
             </thead>
-            <tbody>
+            <tbody id="cmt">
               {% for comittee_member in comittees_members %}
               <tr>
                 <th scope="row">{{comittee_member.profile.user.first_name}}  {{comittee_member.profile.user.last_name}}</th>
@@ -872,8 +894,8 @@ $('#comitteeQuery').on('change',function(e){
         row=$("<tr></tr>");
         name=("<td>"+result.comittee.comittee_name+"</td>");
         status=("<td>"+result.comittee.status+"</td>");
-        editdata=$("<td></td>")
         manager=$("<td>"+result.comittee.manager+"</td>");
+        editdata=$("<td></td>")
         edit=$("<a>", { "class": "btn btn-danger","href":'/campaign-management/update-committee/'+result.comittee.id });
         edit.text("حفظ")
         editdata.append(edit)
@@ -902,6 +924,81 @@ $('#comitteeQuery').on('change',function(e){
       }
     })
 })
+
+$("#search_cm").on('click',function(e){
+  e.preventDefault()
+  console.log($("#hidden_cm").val())
+  console.log($("#cmo_search option:selected").val())
+
+  $.ajax({
+    url:"{% url 'get-cm-comittee' %}",
+    type:"GET",
+    data:{
+      cm_id:$("#hidden_cm").val(),
+      comittee:$("#cmo_search option:selected").val()
+    },
+    success:function(result){
+    table=$("#cmt")
+    table.empty()
+      console.log(result)
+      $(result).each(function(index,value){
+      
+        row=$("<tr></tr>");
+       
+        phone=$("<td></td>").text(value.phone_number);
+        email=$("<td></td>").text(value.email);
+        comittee=$("<td></td>").text(value.comittee);
+        manage_status=$("<td></td>").text(value.status);
+        cm_name=$("<td></td>").text(value.name);
+        editdata=$("<td></td>")
+        edit=$("<a>", { "class": "btn btn-success","href":'/campaign-management/update-cm/'+value.id });
+        edit.text("تعديل")
+        editdata.append(edit)
+        perms=$("<button></button>",{
+          "class":"btn btn-danger",
+          "data-toggle":"modal",
+          "data-target":"#modal_"+value.id,
+
+        })
+        permsButton=$("<td></td>")
+        permsButton.append(perms)
+        perms.text("صلاحيات")
+        row.append(cm_name)
+        row.append(phone)
+        row.append(email)
+        row.append(comittee)
+        row.append(manage_status)
+        row.append(editdata)
+        row.append(permsButton)
+        table.append(row)
+
+      })
+    }
+  })
+
+})
+
+$( "#cm_search" ).autocomplete({
+      minLength:2 ,
+      source: "{% url 'get-cm' %}",
+
+      focus: function( event, ui ) {
+          
+        $( "#cm" ).val( ui.item['lable']);
+        return false;
+      },
+      select: function( event, ui ) {
+          console.log(ui.item['lable'])
+        $( "#cm_search" ).val(ui.item['lable'] );
+        $( "#hidden_cm" ).val( ui.item['id']); 
+        return false;
+      }
+    })
+    .autocomplete( "instance" )._renderItem = function( ul, item ) {
+      return $( "<li>" )
+        .append( "<div>" + item.lable + "</div>" )
+        .appendTo( ul );
+    };
 </script>
 
 
