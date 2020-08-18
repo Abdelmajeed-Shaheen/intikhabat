@@ -6,7 +6,7 @@ from django.contrib.auth import login,authenticate
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
 from users_management.models import Voter,UserProfile,Candidate,WorkField
-from adminstration.models import ElectionCard,ElectionAddress
+from adminstration.models import ElectionCard,ElectionAddress,ElectionList
 from common.models import Address,Governorate,Department,Area
 import json
 
@@ -97,7 +97,9 @@ class VoterProfile(DetailView):
         voter=self.get_object()
         addresses_list=Address.objects.all()
         candidates_list=Candidate.objects.all()
-
+        ea=voter.voter.election_address
+        election_lists=ElectionList.objects.all().filter(election_address__department=ea.department)
+        
         if voter.voter.candidate is not None:
 
             candidates_list=candidates_list.exclude(id=voter.voter.candidate.id)
@@ -105,7 +107,8 @@ class VoterProfile(DetailView):
         context={
             "voter":voter,
             "addresses_list":addresses_list,
-            "candidates_list":candidates_list
+            "candidates_list":candidates_list,
+            "election_lists":election_lists
            
         }
         if str(self.request.user.id) == str(voter.user.id):
@@ -178,3 +181,31 @@ class UpdateVoter(View):
         return JsonResponse({"message":"success"})
 
 
+class GetCandidates(View):
+
+    def get(self,request):
+        election_list=request.GET.get('election_list')
+        election_list=ElectionList.objects.get(id=int(election_list))
+
+        candidates_list=Candidate.objects.filter(election_list=election_list)
+
+        response=[]
+
+        for candidate in candidates_list:
+            obj={}
+            obj['id']=candidate.id
+            name=str(candidate.profile.user.first_name+" "+candidate.profile.user.last_name)
+            if candidate.title:
+                if not "(" in candidate.title:
+                    title=(" ","(",candidate.title,")")
+                    title="".join(title)
+                else:
+                    title=candidate.title
+                print(name+" "+title)
+                obj['name']=name+title
+            else:
+                obj['name']=name
+
+            response.append(obj)
+        
+        return JsonResponse(response,safe=False)

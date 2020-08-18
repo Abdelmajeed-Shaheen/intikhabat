@@ -22,7 +22,7 @@ class Comittee(models.Model):
         return self.name
 
 class ElectionList(models.Model):
-    name=name=models.CharField(max_length=255)
+    name=models.CharField(max_length=255)
     description=models.TextField()
     election_address=models.ForeignKey(ElectionAddress,on_delete=models.CASCADE,null=True,blank=True)
     timestamp=models.DateTimeField(auto_now=True, auto_now_add=False)
