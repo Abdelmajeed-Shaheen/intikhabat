@@ -13,7 +13,7 @@
           <i class="fa fa-star fa-2x mr-5 star-icon" aria-hidden="true"></i>
         </div>
         <div class="actions">
-          <a href="#about" class="login-link ml-4" data-toggle="modal" data-target="#candidateLoginForm">مرشح</a>
+          <a href="#about" class="login-link ml-4" data-toggle="modal" data-target="#candidateLoginForm">ادارة اللجان</a>
           <a href="/" class="login-link mr-4" data-toggle="modal" data-target="#voterLoginForm">ناخب</a>
         </div>
       </div>
@@ -112,13 +112,13 @@
           </div>
           
           <div class="form-row">
-            <div class="col-sm-3 mb-3">
+            <div class="col-sm-5 mb-3">
              
               {{voter_reg_form.mobile_number}}
             </div>
 
 
-            <div class="col-sm-9 mb-3">
+            <div class="col-sm-7 mb-3">
               
               {{voter_reg_form.email}}
             </div>
@@ -140,32 +140,29 @@
               {{voter_reg_form.work}}
             </div>
           </div>
-          <div class="form-row">
-            <label >العنوان</label>
-          </div>
-          <div class="form-row mt-3">
-            
-              <div class="col-lg-4">
-               
-                <select  id="governorate" name="governorate" class="form-control">
-                    <option value="">اختر المحافظة</option>
-                    {% for gover in governorates_list %}
-                    <option value="{{gover.id}}">{{gover.name}}</option>
-                    {% endfor %}
-                </select>
-            </div>
-            <div class="col-lg-4">
-              <select id="dept" name="dept" class="form-control">
-                  <option value="">اختر الدائرة</option>
+
+
+
+
+          <div class="form-row mt-2">
+            <div class="col-sm-6">
+              <select name="" id="gover" class="form-control">
+                <option value="">اختر المحافظة</option>
+                {% for gover in governorates_list %}
+                <option value="{{gover.id}}">{{gover.name}}</option>
+                {% endfor %}
               </select>
+            </div>
+            <div class="col-sm-6">
+              <select name="" id="dept" class="form-control">
+                <option value="">اختر الدائرة</option>
+
+              </select>
+            </div>
           </div>
 
-          <div class="col-lg-4">
-            <select id="area" name="area" class="form-control">
-                <option value="">اختر المنطقة</option>
-            </select>
-        </div>
-          </div>
+  
+
         <div class="form-row mt-2">
           <div class="col-sm-8">
             {{voter_reg_form.identifier}}
@@ -262,9 +259,8 @@ $('#register').on('click',function(){
   userprofile.last_name=$("#id_last_name").val()
   userprofile.mobile_number=$("#id_mobile_number").val()
   userprofile.whatsapp_number=$("#id_whatsapp_number").val()
-  userprofile.governorate=$("#governorate option:selected").val()
+  userprofile.governorate=$("#gover option:selected").val()
   userprofile.dept=$("#dept option:selected").val()
-  userprofile.area=$("#area option:selected").val()
   userprofile.work=$("#id_work option:selected").val()
   userprofile.gender=$("#id_gender option:selected").val()
   day=$('#id_dob_day').val()
@@ -277,6 +273,7 @@ $('#register').on('click',function(){
   }
   userjson=JSON.stringify(userprofile)
   console.log(userprofile.governorate)
+  console.log(userprofile.dept)
 
   $.ajax({
     url:"{% url 'create-voter' %}",
@@ -289,6 +286,7 @@ $('#register').on('click',function(){
       $("#regModal").modal('hide')
       window.location.replace(result.redirect_to)
       console.log("success")
+      
 
     },
     error:function(result){
@@ -305,8 +303,8 @@ $(document).ready(function(){
   $('#id_gender').addClass('form-control m-2')
 })
 
-$(document).on('change', '#governorate', function () {
-    element = $('#governorate option:selected').val();
+$(document).on('change', '#gover', function () {
+    element = $('#gover option:selected').val();
     $.ajax(
         {
         type: "GET",

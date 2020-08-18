@@ -6,7 +6,7 @@ from django.contrib.auth import login,authenticate
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
 from users_management.models import Voter,UserProfile,Candidate,WorkField
-from adminstration.models import ElectionCard
+from adminstration.models import ElectionCard,ElectionAddress,ElectionList
 from common.models import Address,Governorate,Department,Area
 import json
 
@@ -51,8 +51,6 @@ class CreateVoter(View):
         else:
             identifier=None
 
-       
-
         profile_object={
             "mobile_number":voter['mobile_number'],
             "middle_name":voter['second_name'],
@@ -65,11 +63,24 @@ class CreateVoter(View):
             
         }
 
-
-
         profile=UserProfile(**profile_object)
         profile.save()
-        voter=Voter(profile=profile,identiefier=identifier)
+        election_address={}
+        if 'governorate' in voter and voter['governorate'] not in [None,""]:
+            governorate=Governorate.objects.get(id=int(voter['governorate']))
+            election_address['governorate']=governorate
+
+        if 'dept' in voter and voter['dept'] not in [None,""]:
+            dept=Department.objects.get(id=int(voter['dept']))
+            election_address['department']=dept
+
+        if 'department' in election_address and 'governorate' in election_address:
+            ea=ElectionAddress(**election_address)
+            ea.save()
+
+            print(ea)
+
+        voter=Voter(profile=profile,identiefier=identifier,election_address=ea)
         voter.save()
         login(request,user)
         response['redirect_to']=reverse('voter-profile',kwargs={'pk':user.userprofile.id})
@@ -86,7 +97,9 @@ class VoterProfile(DetailView):
         voter=self.get_object()
         addresses_list=Address.objects.all()
         candidates_list=Candidate.objects.all()
-
+        ea=voter.voter.election_address
+        election_lists=ElectionList.objects.all().filter(election_address__department=ea.department)
+        areas_list=Area.objects.all().filter(department=voter.voter.election_address.department)
         if voter.voter.candidate is not None:
 
             candidates_list=candidates_list.exclude(id=voter.voter.candidate.id)
@@ -94,7 +107,9 @@ class VoterProfile(DetailView):
         context={
             "voter":voter,
             "addresses_list":addresses_list,
-            "candidates_list":candidates_list
+            "candidates_list":candidates_list,
+            "election_lists":election_lists,
+            "areas_list":areas_list
            
         }
         if str(self.request.user.id) == str(voter.user.id):
@@ -105,7 +120,7 @@ class VoterProfile(DetailView):
 class UpdateVoter(View):
 
     def post(self,request):
-        
+       
         voter_object={}
         voting_id_string=list("0/0/0/0/0")
         if request.POST.get('voter_id'):
@@ -155,7 +170,6 @@ class UpdateVoter(View):
             new_id="".join(voting_id_string)
             voter_object['voting_id']=new_id
         
-        
         if request.POST.get('ec'):
             if request.POST.get('ec')=='true':
                 voter_object['has_elc_card']=True
@@ -167,3 +181,31 @@ class UpdateVoter(View):
         return JsonResponse({"message":"success"})
 
 
+class GetCandidates(View):
+
+    def get(self,request):
+        election_list=request.GET.get('election_list')
+        election_list=ElectionList.objects.get(id=int(election_list))
+
+        candidates_list=Candidate.objects.filter(election_list=election_list)
+
+        response=[]
+
+        for candidate in candidates_list:
+            obj={}
+            obj['id']=candidate.id
+            name=str(candidate.profile.user.first_name+" "+candidate.profile.user.last_name)
+            if candidate.title:
+                if not "(" in candidate.title:
+                    title=(" ","(",candidate.title,")")
+                    title="".join(title)
+                else:
+                    title=candidate.title
+                print(name+" "+title)
+                obj['name']=name+title
+            else:
+                obj['name']=name
+
+            response.append(obj)
+        
+        return JsonResponse(response,safe=False)

@@ -39,7 +39,7 @@
     <div class="col-sm-4"> 
         <h5>العنوان:</h5>
       
-        <h5>{{cm.profile.address.governorate}}/{{cm.profile.address.department}}/{{cm.profile.address.area}}</h5>
+        <h5>{{cm.profile.address.area}}/{{cm.profile.address.district}}</h5>
     </div>
 </div>
 
@@ -62,11 +62,55 @@
             <label for="">تعيين كمدير للجنة </label>
             
         </div>
-        <div class="form-row">
+        <div class="form-row mt-3">
+            <div class="col-lg">
+                <label >تتعيين منطقة</label>
+                <select name="area" id="area" class='form-control'>
+                    {% for area in areas_list %}
+                    <option value="{{area.id}}">{{area.name}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-lg">
+                <label >تتعيين حي</label>
+                <select name="district" id="district" class='form-control'>
+                    
+                    <option value="">الحي</option>
+                    
+                </select>
+            </div>
+        </div>
+        <div class="form-row mt-3">
             <input type="submit" class="btn btn-danger" value="حفظ">
         </div>
     </form>
 
 </div>
 </div>
+{% endblock %}
+
+{% block js %}
+<script>
+    $(document).on('change', '#area', function () {
+    element = $('#area option:selected').val();
+    $.ajax(
+        {
+        type: "GET",
+        url: "{% url 'get_district' %}",
+        data: {
+        'area_id': element
+        },
+        dataType: 'JSON',
+            success: function (result) {
+            $("#district").empty();
+            $("#district").append('<option value=""> الحي</option>');
+            $(result).each(function (index, value) {
+            $("#district").append('<option value="' + value.id + '">' + value.name + '</option>');
+            });
+
+            }
+        }
+    );
+});
+</script>
 {% endblock %}

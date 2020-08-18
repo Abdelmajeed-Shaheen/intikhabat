@@ -188,16 +188,28 @@ class CreateDistrictView(View):
         return JsonResponse({"message":"success"})
 
 def html_to_pdf_view(request):
-    paragraphs = ['يحى', 'صلاح', 'البشار']
-    html_string = render_to_string('report.html', {'paragraphs': paragraphs})
+    
+
+    user=request.GET.get('user')
+    if user['type'] == 'cm':
+        cm=ComitteeMember.objects.get(id=request.GET.get(int(user['id'])))
+        voters_list=Voter.objects.all(candidate=cm.candidate,has_elc_card=True)
+
+    elif user['type'] == 'cmo':
+        cm=ComitteeMember.objects.get(id=request.GET.get(int(user['id'])))
+        voters_list=Voter.objects.all(related_comittee_member=cm,has_elc_card=True)
+    elif user['type'] == 'candi':
+        candi=Candidate.objects.get(id=request.GET.get(int(user['id'])))
+        voters_list=Voter.objects.all(candidate=candi,has_elc_card=True)
+
+    html_string = render_to_string('report.html', {'voters_list': voters_list})
     html = HTML(string=html_string,base_url=request.build_absolute_uri())
-    css=CSS('/home/yahya/Dev/dev_jpems/intikhabat/common/static/common/vendor/bootstrap/css/bootstrap.css')
-    html.write_pdf(target='/tmp/mypdf.pdf',stylesheets=[css])
+    html.write_pdf(target='/tmp/election_cards.pdf')
 
     fs = FileSystemStorage('/tmp')
-    with fs.open('mypdf.pdf') as pdf:
+    with fs.open('election_cards.pdf') as pdf:
         response = HttpResponse(pdf, content_type='application/pdf')
-    response['Content-Disposition'] = 'attachment; filename="mypdf.pdf"'
+    response['Content-Disposition'] = 'attachment; filename="election_cards.pdf"'
     return response
 
 
@@ -343,7 +355,7 @@ class GetVotersList(View):
         if 'dept_id' in query and query['dept_id'] not in [None,""]:
             dept=Department.objects.get(id=int(query['dept_id']))
             search_object['profile__address__department']=dept
-        print(search_object)
+        
         voters_list=Voter.objects.filter(**search_object)       
         for voter in voters_list:
             obj={}
@@ -609,6 +621,9 @@ def update_comittee_member(request,id):
     cm=ComitteeMember.objects.get(id=id)
     candidate=cm.candidate
     comittees_list=candidate.comittee_candidate.all()
+    department=candidate.election_list.election_address.department
+    areas_list=Area.objects.filter(department=department)
+    
     if request.POST:
         print(request.POST)
         comittee=request.POST.get('comittee')
@@ -617,6 +632,30 @@ def update_comittee_member(request,id):
             is_manager=True
         else:
             is_manager=False
+
+        profile=cm.profile
+
+        if not cm.profile.address:
+            governorate=candidate.election_list.election_address.governorate
+            address=Address(governorate=governorate,department=department)
+            address.save()
+            
+            profile.address=address
+            profile.save()
+
+        else:
+            address=cm.profile.address
+        
+        if request.POST.get('area'):
+            area=request.POST.get('area')
+            address.area=Area.objects.get(id=int(area))
+        
+        if request.POST.get('district'):
+            district=request.POST.get('district')
+            address.district=District.objects.get(id=int(district))
+        
+        address.save()
+        
         
         comittee=Comittee.objects.get(id=int(comittee))
         cm.comittee=comittee
@@ -624,10 +663,12 @@ def update_comittee_member(request,id):
         comittee.manager=cm
         comittee.save()
         cm.save()
+        address.save()
 
     context={
         'cm':cm,
-        'comittees_list':comittees_list
+        'comittees_list':comittees_list,
+        "areas_list":areas_list
         
     }
     return render(request,"update_cm.html",context)
@@ -674,11 +715,23 @@ def get_identifier(request):
 
 def update_voter(request,id):
     voter=Voter.objects.get(id=id)
-    cm_list=ComitteeMember.objects.filter(candidate=voter.candidate)
+    if hasattr(request.user.userprofile,"campaignadminstrator") or hasattr(request.user.userprofile,"candidate"):
+        cm_list=ComitteeMember.objects.filter(candidate=voter.candidate)
+    
+    elif request.user.userprofile.comitteemember.is_manager :
+        cm_list=ComitteeMember.objects.filter(comittee=request.user.userprofile.comitteemember.comittee)
+
     if request.POST:
         cm=request.POST.get('cm')
+        followed_up=request.POST.get('followed_up')
+        if followed_up == 'true':
+            followed_up=True
+        else:
+            followed_up=False
+            
         cm=ComitteeMember.objects.get(id=int(cm))
         voter.related_comittee_member=cm
+        voter.followed_up=followed_up
     voter.save()
 
     context={
@@ -687,3 +740,21 @@ def update_voter(request,id):
         
     }
     return render(request,"edit_voter.html",context)
+
+
+
+class GetDistrict(View):
+
+    def get(self,request):
+        response=[]
+        area_id=request.GET.get('area_id')
+        area=Area.objects.get(id=int(area_id))
+        districts_list=District.objects.filter(area=area)
+
+        for district in districts_list:
+            item={}
+            item['name']=district.name
+            item['id']=district.id
+            response.append(item)
+        
+        return JsonResponse(response,safe=False)
