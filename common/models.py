@@ -16,7 +16,7 @@ class Department(models.Model):
     updated=models.DateTimeField(auto_now=False, auto_now_add=True)
 
     def __str__(self):
-        return self.name
+        return (self.name+"/"+self.governorate.name)
 
 class Area(models.Model):
     name=models.CharField(max_length=50)
