@@ -6,7 +6,7 @@ from django.contrib.auth import login,authenticate
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
 from users_management.models import Voter,UserProfile,Candidate,WorkField
-from adminstration.models import ElectionCard
+from adminstration.models import ElectionCard,ElectionAddress
 from common.models import Address,Governorate,Department,Area
 import json
 
@@ -51,8 +51,6 @@ class CreateVoter(View):
         else:
             identifier=None
 
-       
-
         profile_object={
             "mobile_number":voter['mobile_number'],
             "middle_name":voter['second_name'],
@@ -65,11 +63,24 @@ class CreateVoter(View):
             
         }
 
-
-
         profile=UserProfile(**profile_object)
         profile.save()
-        voter=Voter(profile=profile,identiefier=identifier)
+        election_address={}
+        if 'governorate' in voter and voter['governorate'] not in [None,""]:
+            governorate=Governorate.objects.get(id=int(voter['governorate']))
+            election_address['governorate']=governorate
+
+        if 'dept' in voter and voter['dept'] not in [None,""]:
+            dept=Department.objects.get(id=int(voter['dept']))
+            election_address['department']=dept
+
+        if 'department' in election_address and 'governorate' in election_address:
+            ea=ElectionAddress(**election_address)
+            ea.save()
+
+            print(ea)
+
+        voter=Voter(profile=profile,identiefier=identifier,election_address=ea)
         voter.save()
         login(request,user)
         response['redirect_to']=reverse('voter-profile',kwargs={'pk':user.userprofile.id})
