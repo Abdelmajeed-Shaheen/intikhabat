@@ -201,8 +201,24 @@
                     </div>
                   </div>
       
-
-      
+                </div>
+                <div class="form-row">
+                  <h4>عنوان السكن</h4>
+                </div>
+                <div class="form-row">
+                  
+                  <div class="col-lg-4">
+                    <select name="" id="area" class="form-control">
+                      {% for area in areas_list %}
+                      <option value="{{area.id}}">{{area.name}}</option>
+                      {% endfor %}
+                    </select>
+                  </div>
+                  <div class="col-lg-4">
+                    <select name="" id="district" class="form-control">
+                      <option value="">الحي</option>
+                    </select>
+                  </div>
                 </div>
                 <div class="form-row">
                   <div class="col-sm-5">
@@ -270,9 +286,11 @@ $("#updateprofile").on('click',function(){
 });
   
   userprofile.gender=$("#gender option:selected").val()
+  userprofile.district=$("#district option:selected").val()
   userprofile.dob=$("#dob").val()
   userprofile.id="{{user.id}}"
   userjson=JSON.stringify(userprofile)
+  console.log(userprofile.district)
   elect_card=$('#elecCard')
   if (elect_card.prop('checked')){
     ec=true
@@ -385,5 +403,27 @@ $(document).ready(function(){
  });
 });
 
+
+$(document).on('change', '#area', function () {
+    element = $('#area option:selected').val();
+    $.ajax(
+        {
+        type: "GET",
+        url: "{% url 'get_district' %}",
+        data: {
+        area_id: element
+        },
+        dataType: 'JSON',
+            success: function (result) {
+            $("#district").empty();
+            $("#district").append('<option value=""> الحي</option>');
+            $(result).each(function (index, value) {
+            $("#district").append('<option value="' + value.id + '">' + value.name + '</option>');
+            });
+
+            }
+        }
+    );
+});
 </script>
 {% endblock %}
