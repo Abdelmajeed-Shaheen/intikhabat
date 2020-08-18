@@ -634,7 +634,12 @@ def update_comittee_member(request,id):
             is_manager=False
 
         profile=cm.profile
-
+        if request.POST.get('is_active') =='on':
+            is_active=True
+        else:
+            is_active=False
+        cm.is_active=is_active
+      
         if not cm.profile.address:
             governorate=candidate.election_list.election_address.governorate
             address=Address(governorate=governorate,department=department)

@@ -95,6 +95,7 @@ class ComitteeMember(models.Model):
     is_manager=models.BooleanField(default=False)
     comittee=models.ForeignKey(to='adminstration.Comittee',on_delete=models.CASCADE)
     election_address=models.ForeignKey(ElectionAddress, on_delete=models.CASCADE,null=True,blank=True)
+    is_active=models.BooleanField(default=False)
     def __str__(self):
         return self.profile.user.username
 
