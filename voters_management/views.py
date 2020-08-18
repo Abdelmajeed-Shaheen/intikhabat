@@ -99,7 +99,7 @@ class VoterProfile(DetailView):
         candidates_list=Candidate.objects.all()
         ea=voter.voter.election_address
         election_lists=ElectionList.objects.all().filter(election_address__department=ea.department)
-        
+        areas_list=Area.objects.all().filter(department=voter.voter.election_address.department)
         if voter.voter.candidate is not None:
 
             candidates_list=candidates_list.exclude(id=voter.voter.candidate.id)
@@ -108,7 +108,8 @@ class VoterProfile(DetailView):
             "voter":voter,
             "addresses_list":addresses_list,
             "candidates_list":candidates_list,
-            "election_lists":election_lists
+            "election_lists":election_lists,
+            "areas_list":areas_list
            
         }
         if str(self.request.user.id) == str(voter.user.id):
@@ -119,7 +120,7 @@ class VoterProfile(DetailView):
 class UpdateVoter(View):
 
     def post(self,request):
-        
+       
         voter_object={}
         voting_id_string=list("0/0/0/0/0")
         if request.POST.get('voter_id'):
@@ -168,7 +169,6 @@ class UpdateVoter(View):
             voting_id_string[0]=status_id
             new_id="".join(voting_id_string)
             voter_object['voting_id']=new_id
-        
         
         if request.POST.get('ec'):
             if request.POST.get('ec')=='true':
