@@ -5,9 +5,15 @@ from .models import (
                         District,
                         Governorate,
                         Department,
-                        Area
+                        Area,
+                        ElectionAddress
                     )
 # Register your models here.
+
+@admin.register(ElectionAddress)
+class AdminElectionAddress(admin.ModelAdmin):
+    list_display=['governorate','department']
+
 
 @admin.register(Address)
 class AdminAdress(admin.ModelAdmin):

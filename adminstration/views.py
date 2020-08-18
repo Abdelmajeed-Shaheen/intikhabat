@@ -621,6 +621,9 @@ def update_comittee_member(request,id):
     cm=ComitteeMember.objects.get(id=id)
     candidate=cm.candidate
     comittees_list=candidate.comittee_candidate.all()
+    department=candidate.election_list.election_address.department
+    areas_list=Area.objects.filter(department=department)
+    
     if request.POST:
         print(request.POST)
         comittee=request.POST.get('comittee')
@@ -629,6 +632,30 @@ def update_comittee_member(request,id):
             is_manager=True
         else:
             is_manager=False
+
+        profile=cm.profile
+
+        if not cm.profile.address:
+            governorate=candidate.election_list.election_address.governorate
+            address=Address(governorate=governorate,department=department)
+            address.save()
+            
+            profile.address=address
+            profile.save()
+
+        else:
+            address=cm.profile.address
+        
+        if request.POST.get('area'):
+            area=request.POST.get('area')
+            address.area=Area.objects.get(id=int(area))
+        
+        if request.POST.get('district'):
+            district=request.POST.get('district')
+            address.district=District.objects.get(id=int(district))
+        
+        address.save()
+        
         
         comittee=Comittee.objects.get(id=int(comittee))
         cm.comittee=comittee
@@ -636,10 +663,12 @@ def update_comittee_member(request,id):
         comittee.manager=cm
         comittee.save()
         cm.save()
+        address.save()
 
     context={
         'cm':cm,
-        'comittees_list':comittees_list
+        'comittees_list':comittees_list,
+        "areas_list":areas_list
         
     }
     return render(request,"update_cm.html",context)
@@ -711,3 +740,21 @@ def update_voter(request,id):
         
     }
     return render(request,"edit_voter.html",context)
+
+
+
+class GetDistrict(View):
+
+    def get(self,request):
+        response=[]
+        area_id=request.GET.get('area_id')
+        area=Area.objects.get(id=int(area_id))
+        districts_list=District.objects.filter(area=area)
+
+        for district in districts_list:
+            item={}
+            item['name']=district.name
+            item['id']=district.id
+            response.append(item)
+        
+        return JsonResponse(response,safe=False)

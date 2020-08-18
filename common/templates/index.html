@@ -140,32 +140,8 @@
               {{voter_reg_form.work}}
             </div>
           </div>
-          <div class="form-row">
-            <label >العنوان</label>
-          </div>
-          <div class="form-row mt-3">
-            
-              <div class="col-lg-4">
-               
-                <select  id="governorate" name="governorate" class="form-control">
-                    <option value="">اختر المحافظة</option>
-                    {% for gover in governorates_list %}
-                    <option value="{{gover.id}}">{{gover.name}}</option>
-                    {% endfor %}
-                </select>
-            </div>
-            <div class="col-lg-4">
-              <select id="dept" name="dept" class="form-control">
-                  <option value="">اختر الدائرة</option>
-              </select>
-          </div>
 
-          <div class="col-lg-4">
-            <select id="area" name="area" class="form-control">
-                <option value="">اختر المنطقة</option>
-            </select>
-        </div>
-          </div>
+  
         <div class="form-row mt-2">
           <div class="col-sm-8">
             {{voter_reg_form.identifier}}
