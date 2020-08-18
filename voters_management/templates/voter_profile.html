@@ -90,20 +90,28 @@
           <div class="row">
           <h4 class="about-title text-aligner">  الحالة الانتخابية و المرشحين: </h4>
           </div>
-          <div class="row">
+            <div class="row mb-3">
               
             {% if voter.voter.vote_status != "Not_voting" %}
             <div class="col-lg-5 text-aligner">
-              <select id='candis' class="form-control" >
-                {% if voter.voter.candidate %}
-                <option value="">{{voter.voter.candidate.profile.user.first_name}} {{voter.voter.candidate.profile.user.last_name}} {% if voter.voter.candidate.title != None %}{{voter.voter.candidate.title}}{% endif %}</option>
-                {% else %}
-                <option>اختر او ابحث عن مرشح</option>
-                {% endif %}
-                {% for candi in candidates_list %}
-                <option value="{{candi.id}}">{{candi.profile.user.first_name}} {{candi.profile.user.last_name}} {% if candi.title != None %}{{candi.title}}{% endif %}</option>
+              <select id='elecList' class="form-control" >
+                 
+                <option>اختر القائمة الانتخابية</option>
+                
+                {% for eleclist in election_lists %}
+                <option value="{{eleclist.id}}">{{eleclist.name}}</option>
                 {% endfor %}
 
+              </select>
+
+            </div>
+          </div>
+            {% endif %}
+          <div class="row">
+              
+            {% if voter.voter.vote_status != "Not_voting" %}
+            <div class="col-lg-5 text-aligner" id="candidates_div">
+              <select id='candis' class="form-control" >
               </select>
 
             </div>
@@ -285,7 +293,6 @@ $("#updateprofile").on('click',function(){
       ec:ec,
       csrfmiddlewaretoken:"{{csrf_token}}",
       success:function(reslut){
-        
         $("#succesModal").modal('show')
       }
     }
@@ -326,26 +333,7 @@ $("#ns").prop("checked", false);
 $("#v").prop("checked", false);
 });
 
-// $("#changeStatus").on('click',function(event){
-//   event.preventDefault()
-//   status=$("#voteStatusForm").find('input:radio:checked').val()
-//   candidate=$("#candidate_choice").val()
-//   voter_id=$("#voterId").val()
-//   $.ajax({
-//     url:"{% url 'edit-voting-status' %}",
-//     type:"POST",
-//     data:{
-//       status:status,
-//       voter_id:voter_id,
-//       candidate:candidate,
-//       csrfmiddlewaretoken:"{{csrf_token}}",
-//       success:function(reslut){
-        
-//         $("#succesModal").modal('show')
-//       }
-//     }
-//   })
-// })
+
 
 $(".select-candidate").on("click",function(){
   candidate_id=$(this).attr('data-candidate-id')
@@ -362,10 +350,29 @@ $("#reload").on("click",function(){
   location.reload()
 })
 
-
+$('#elecList').on('change',function(){
+  election_list=$('#elecList option:selected').val()
+  $.ajax({
+    url:'{% url "get_candidates" %}',
+    type:'GET',
+    data:{
+      election_list:election_list
+    },
+    success:function(result){
+      $("#candidates_div").show()
+      console.log(result)
+      $(result).each(function(index,value){
+        $('#candis').append('<option'+' value='+value.id +'>'+value.name+'</option>')
+        
+      })
+        
+      
+    }
+  })
+})
 
 $(document).ready(function(){
- 
+  $("#candidates_div").hide()
  // Initialize select2
  $("#candis").select2({
   dir: "rtl"
