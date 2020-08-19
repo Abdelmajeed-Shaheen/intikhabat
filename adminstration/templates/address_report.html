@@ -28,30 +28,25 @@
         <button class="btn btn-danger btn-sm mb-3" id="print">مراجعة و طباعة التقرير</button>
     </div>
     <div class="row">
-        <form >
+        <form class="form-inline">
 
             <div class="form-row mt-3">
-                <div class="col-lg-4">
-                    <select  id="governorate" name="governorate" class="form-control">
-                        <option value="">اختر المحافظة</option>
-                        {% for gover in gover_list %}
-                        <option value="{{gover.id}}">{{gover.name}}</option>
+
+                
+                    <select id="area" name="area" class="form-control m-2">
+                        <option value="">اختر المنطقة</option>
+                        {% for area in areas_list %}
+                        <option value="{{area.id}}">{{area.name}}</option>
                         {% endfor %}
                     </select>
-                </div>
-                <div class="col-lg-4">
-                    <select id="dept" name="dept" class="form-control">
-                        <option value="">اختر الدائرة</option>
+            
+                    <select id="district" name="district" class="form-control m-2">
+                        <option value="">اختر الحي</option>
                     </select>
-                </div>
-                <div class="col-lg-4">
-                    <select id="area" name="area" class="form-control">
-                        <option value="">اختر المنطقة</option>
-                    </select>
-                </div>
-                <div class="col-lg-3 mt-2">
-                    <button id="search" type="submit" class="btn btn-info">ابحث</button>
-                </div>
+               
+             
+                    <button id="search" type="submit" class="btn btn-info m-2">ابحث</button>
+            
             </div>
         </form>
     </div>
@@ -106,21 +101,21 @@ $(document).on('change', '#governorate', function () {
     );
 });
 
-$(document).on('change', '#dept', function () {
-    element = $('#dept option:selected').val();
+$(document).on('change', '#area', function () {
+    element = $('#area option:selected').val();
     $.ajax(
         {
         type: "GET",
-        url: "{% url 'get_dept_area' %}",
+        url: "{% url 'get_district' %}",
         data: {
-        'dept_id': element
+        'area_id': element
         },
         dataType: 'JSON',
             success: function (result) {
-            $("#area").empty();
-            $("#area").append('<option value=""> كل المناطق</option>');
+            $("#district").empty();
+            $("#district").append('<option value=""> اختر الحي</option>');
             $(result).each(function (index, value) {
-            $("#area").append('<option value="' + value.id + '">' + value.name + '</option>');
+            $("#district").append('<option value="' + value.id + '">' + value.name + '</option>');
             });
 
             }
@@ -130,20 +125,12 @@ $(document).on('change', '#dept', function () {
 
 $('#search').on('click',function(e){
     e.preventDefault()
-    dept_id=$('#dept option:selected').val();
-    gover_id = $('#governorate option:selected').val();
-    area_id=element = $('#area option:selected').val();
-    phone_number=$('#p_no').val()
-    whatsapp_number=$('#w_no').val()
-
-    $('#area_report').val(area_id)
-    $('#gover_report').val(gover_id)
-    $('#dept_report').val(dept_id)
-
+    area_id= $('#area option:selected').val();
+    district_id= $('#district option:selected').val();
     query=new Object()
-    query.dept_id=dept_id
-    query.gover_id=gover_id
     query.area_id=area_id
+    query.district=district_id
+    query.candidate="{{candidate.id}}"
 
 
     $.ajax({
@@ -190,20 +177,12 @@ $('#search').on('click',function(e){
 })
 
 $("#print").on("click",function(){
-    area_id=$('#area_report').val()
-    gover_id=$('#gover_report').val()
-    dept_id=$('#dept_report').val()
-    cm_name=""
-    phone_number=$('#p_no').val()
-    whatsapp_number=$('#w_no').val()
+    area_id= $('#area option:selected').val();
+    district_id= $('#district option:selected').val();
     query=new Object()
-    query.dept_id=dept_id
-    query.gover_id=gover_id
     query.area_id=area_id
-    query.phone_number=phone_number
-    query.whatsapp_number=whatsapp_number
-    query.cm_id=cm_name
-    
+    query.district=district_id
+    query.candidate="{{candidate.id}}"
     window.open("{% url 'by-address-report' %}?query="+JSON.stringify(query))
     
 
