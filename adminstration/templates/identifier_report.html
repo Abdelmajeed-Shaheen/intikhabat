@@ -105,7 +105,7 @@ $('#search').on('click',function(e){
     cm_id=$('#cm_id').val()
     phone_number=$('#p_no').val()
     whatsapp_number=$('#w_no').val()
-    identifier_name=$('#idn_id').val()
+    identifier_id=$('#idn_id').val()
     identifier_mobile=$('#idn_p_no').val()
     identifier_wa=$('#idn_w_no').val()
 
@@ -115,7 +115,7 @@ $('#search').on('click',function(e){
     query.whatsapp_number=whatsapp_number
     query.cm_id=cm_id
     query.identifier_mobile=identifier_mobile
-    query.identifier_name=identifier_name
+    query.identifier_id=identifier_id
     query.identifier_wa=identifier_wa
     query.is_identifier=true
 
@@ -160,7 +160,7 @@ $("#print").on("click",function(){
     cm_name=$('#cm').val()
     phone_number=$('#p_no').val()
     whatsapp_number=$('#w_no').val()
-    identifier_name=$('#idn_id').val()
+    identifier_id=$('#idn_id').val()
     identifier_mobile=$('#idn_p_no').val()
     identifier_wa=$('#idn_w_no').val()
     query=new Object()
@@ -168,7 +168,7 @@ $("#print").on("click",function(){
     query.whatsapp_number=whatsapp_number
     query.cm_id=cm_id
     query.identifier_mobile=identifier_mobile
-    query.identifier_name=identifier_name
+    query.identifier_id=identifier_id
     query.identifier_wa=identifier_wa
     query.is_identifier=true
     window.open("{% url 'by-idn-report' %}?query="+JSON.stringify(query))
