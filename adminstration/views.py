@@ -332,7 +332,7 @@ class GetVotersList(View):
                 
                 if  query['identifier_wa'] not in [None,""]:
                     identifier_object['profile__whatsapp_number']=query['identifier_wa']
-                print(identifier_object)
+       
                 identifier=Voter.objects.get(**identifier_object,related_comittee_member=cm)
                 search_object["identiefier"]=identifier
                 
@@ -348,13 +348,13 @@ class GetVotersList(View):
             area=Area.objects.get(id=int(query['area_id']))
             search_object['profile__address__area']=area
 
-        if 'gover_id' in query and query['gover_id'] not in [None,""]:
-            governorate=Governorate.objects.get(id=int(query['gover_id']))
-            search_object['profile__address__governorate']=governorate
+            if 'district' in query:
+                search_object["profile__address__district"]=query['district']
+            
+            candidate=Candidate.objects.get(id=int(query['candidate']))
 
-        if 'dept_id' in query and query['dept_id'] not in [None,""]:
-            dept=Department.objects.get(id=int(query['dept_id']))
-            search_object['profile__address__department']=dept
+            search_object['candidate']=candidate
+
         
         voters_list=Voter.objects.filter(**search_object)       
         for voter in voters_list:
@@ -474,8 +474,7 @@ def by_identifier_report(request):
 class GetVotersByAddressReport(View):
     template_name="address_report.html"
     def get(self,request):
-        governorates_list=Governorate.objects.all()
-
+        
         if hasattr(request.user.userprofile,'campaignadminstrator'):
             candidate=request.user.userprofile.campaignadminstrator.candidate
         
@@ -485,12 +484,10 @@ class GetVotersByAddressReport(View):
         else :
             candidate=request.user.userprofile.candidate
 
-        
-        comittee_members_list=ComitteeMember.objects.filter(candidate=candidate)
+        areas_list=Area.objects.filter(department=candidate.election_list.election_address.department)        
         context={
-            'gover_list':governorates_list,
-            'cm_members_list':comittee_members_list
-            
+            'areas_list':areas_list,
+            'candidate':candidate            
         }
         
         return render(request,self.template_name,context)
@@ -503,30 +500,13 @@ def by_address_report(request):
     query=json.loads(query)
     search_object={}
 
-    if 'cm_id' in query and query['cm_id'] not in [None,""]:
-        cm=ComitteeMember.objects.get(id=int(query['cm_id']))
-        search_object['profile__address__district']=cm.profile.address.district
-        search_object['candidate']=cm.candidate
-    else:
-        if hasattr(request.user.userprofile,'candidate') or hasattr(request.user.userprofile,'campaignadminstrator'):
-            search_object['candidate']=request.user.userprofile.candidate
-        
-        else:
-            search_object['candidate']=request.user.userprofile.comitteemanager.candidate
-        
-
-        
     if query['area_id'] not in [None,""]:
-        area=Area.objects.get(id=int(query['area_id']))
-        search_object['profile__address__area']=area
+        search_object['profile__address__area']=Area.objects.get(id=int(query['area_id']))
 
-    if query['gover_id'] not in [None,""]:
-        governorate=Governorate.objects.get(id=int(query['gover_id']))
-        search_object['profile__address__governorate']=governorate
-
-    if query['dept_id'] not in [None,""]:
-        dept=Department.objects.get(id=int(query['dept_id']))
-        search_object['profile__address__department']=dept
+        if query['district'] not in [None,""]:
+            search_object['profile__address__district']=District.objects.get(id=int(query['district']))
+        candidate=Candidate.objects.get(id=int(query['candidate']))
+        search_object['candidate']=candidate
     
     voters_list=Voter.objects.filter(**search_object)
     
