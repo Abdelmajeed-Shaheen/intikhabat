@@ -137,8 +137,8 @@ class UpdateVoter(View):
             candidate=Candidate.objects.get(id=request.POST.get('candidate'))
             voter_object['candidate']=candidate
             candidate_id_string=str(candidate.id)
-            candidate_address_id_string=str(candidate.profile.address.governorate.id)
-            candidate_dept_id_string=str(candidate.profile.address.district.id)
+            candidate_address_id_string=str(candidate.election_list.election_address.governorate.id)
+            candidate_dept_id_string=str(candidate.election_list.election_address.department.id)
             voting_id_string[2]=candidate_id_string
             voting_id_string[4]=candidate_address_id_string
             voting_id_string[6]=candidate_dept_id_string

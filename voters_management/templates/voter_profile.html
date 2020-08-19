@@ -209,6 +209,10 @@
                   
                   <div class="col-lg-4">
                     <select name="" id="area" class="form-control">
+                      {% if voter.address.area %}
+                      <option value="{{voter.address.area.id}}">{{voter.address.area}}</option>
+                      {% endif %}
+                      <option value="">اختر المنطقة</option>
                       {% for area in areas_list %}
                       <option value="{{area.id}}">{{area.name}}</option>
                       {% endfor %}
@@ -216,7 +220,10 @@
                   </div>
                   <div class="col-lg-4">
                     <select name="" id="district" class="form-control">
-                      <option value="">الحي</option>
+                      {% if voter.address.district %}
+                      <option value="{{voter.address.district.id}}">{{voter.address.district}}</option>
+                      {% endif %}
+                      <option value="">اختر الحي</option>
                     </select>
                   </div>
                 </div>
@@ -277,7 +284,9 @@ $("#updateprofile").on('click',function(){
   userprofile.third_name=$("#tname").val()
   userprofile.last_name=$("#foname").val()
   userprofile.mobile_number=$("#phno").val()
+  console.log(userprofile.mobile_number)
   userprofile.whatsapp_number=$("#wano").val()
+  console.log(userprofile.whatsapp_number)
   $('#addresses option').each(function() {
     if (this.selected)
        userprofile.address=$('#addresses option:selected').val()
@@ -288,7 +297,7 @@ $("#updateprofile").on('click',function(){
   userprofile.gender=$("#gender option:selected").val()
   userprofile.district=$("#district option:selected").val()
   userprofile.dob=$("#dob").val()
-  userprofile.id="{{user.id}}"
+  userprofile.id="{{voter.id}}"
   userjson=JSON.stringify(userprofile)
   console.log(userprofile.district)
   elect_card=$('#elecCard')
