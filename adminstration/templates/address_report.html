@@ -17,6 +17,7 @@
 
 {% block main %}
 <div class="container text-aligner">
+    
     <div class="row">
     <h1 class="about-title">تقرير اعضاء اللجان</h1>
     
@@ -24,9 +25,13 @@
     <input id="gover_report" hidden>
     <input id="dept_report" hidden>
     </div>
+    {% if reports_permissions.can_create_report %}
+
     <div class="row">
         <button class="btn btn-danger btn-sm mb-3" id="print">مراجعة و طباعة التقرير</button>
     </div>
+    {% endif %}
+    {% if  request.user.userprofile.campaignadminstrator or request.user.userprofile.candidate or request.user.userprofile.comitteemember.is_manager %}
     <div class="row">
         <form class="form-inline">
 
@@ -50,6 +55,13 @@
             </div>
         </form>
     </div>
+    {% else %}
+    <form class="form-inline">
+        <button id="search" type="submit" class="btn btn-info m-2">عرض النتائج</button>
+
+   <input type="hidden" value="{{request.user.userprofile.comitteemember.id}}" id="cm_id">
+    </form>
+    {% endif %}
 
     <div class="row mt-3">
         <div class="table-responsive">
@@ -131,6 +143,10 @@ $('#search').on('click',function(e){
     query.area_id=area_id
     query.district=district_id
     query.candidate="{{candidate.id}}"
+    {% if not request.user.userprofile.comitteemember.is_manager %}
+    query.cm_id=$("#cm_id").val()
+    console.log(query.cm_id)
+    {% endif %}
 
 
     $.ajax({

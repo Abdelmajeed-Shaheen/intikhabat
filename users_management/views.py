@@ -8,7 +8,10 @@ from django.http import HttpResponseRedirect,HttpResponse,JsonResponse
 from django.db.utils import IntegrityError
 from django.urls import reverse
 from users_management.models import (UserProfile,ComitteeMember, 
-                                     CampaignAdminstrator,CommunicationOfficer)
+                                    CampaignAdminstrator,CommunicationOfficer,
+                                    CustomVoterssPermissions,CustomMembersPermissions,
+                                    CustomReportsPermissions,CustomComitteePermission,
+                                     )
 from common.models import (Address,
                            Governorate,
                            Department,
@@ -103,7 +106,6 @@ class CreateUser(View):
         whatsapp_number=form.data.get('whatsapp_number')
         email=form.data.get('email')
         is_manager=form.data.get('is_manager')
-        print(is_manager)
         if is_manager =="on":
             is_manager=True
         else:
@@ -111,7 +113,6 @@ class CreateUser(View):
         password='changeme12'
         user_type=request.POST.get('usertype')
         comittee=""
-        print(user_type)
         if request.POST.get('comittee'):
             comittee=Comittee.objects.get(id=request.POST.get('comittee'))
       
@@ -124,7 +125,7 @@ class CreateUser(View):
         user=User(**user_instance)
         user.set_password(password)
         user.save()
-
+       
         profile_instance={
             'middle_name':middle_name,
             'last_name':third_name,
@@ -137,6 +138,52 @@ class CreateUser(View):
         try:
             user_profile=UserProfile(**profile_instance)
             user_profile.save()
+
+            vp={
+                'user':user_profile,
+                'can_view_voter':True,
+                'can_create_voter':True,
+                'can_update_voter':True,
+                'can_remove_voter':True
+            }
+            voter_permissions=CustomVoterssPermissions(**vp)
+
+            rp={
+                'user':user_profile,
+                'can_view_report':True,
+                'can_create_report':True,
+                'can_update_report':True,
+                'can_remove_report':True
+            }
+            report_permissions=CustomReportsPermissions(**rp)
+
+            cp={
+                'user':user_profile,
+                'can_view_comittee':True,
+                'can_create_comittee':True,
+                'can_update_comittee':True,
+                'can_remove_comittee':True
+            }
+            comittee_permissions=CustomComitteePermission(**cp)
+
+            mp={
+                'user':user_profile,
+                'can_view_member':True,
+                'can_create_member':True,
+                'can_update_member':True,
+                'can_remove_member':True
+            }
+            member_permissions=CustomMembersPermissions(**mp)
+            member_permissions.save()
+            voter_permissions.save()
+            report_permissions.save()
+            comittee_permissions.save()
+
+            print(member_permissions)
+            print(voter_permissions)
+            print(report_permissions)
+            print(comittee_permissions)
+
         except (IntegrityError):
             return JsonResponse({'error':'رقم هاتف مكرر'})
         
@@ -192,15 +239,12 @@ class UpdateProfile(View):
 
     def post(self,request):
         userprofile=request.POST.get("user")
-        print(userprofile)
         userprofile=json.loads(userprofile)
         User.objects.filter(id=request.user.id).update(first_name=userprofile["first_name"],last_name=userprofile["last_name"])
-        
         profile=UserProfile.objects.get(id=int(userprofile['id']))
-        print(profile)
         user_object={}
         empty=[None,""]
-       
+
         if 'second_name' in userprofile and userprofile['second_name'] not in empty:
             user_object['middle_name']=userprofile['second_name']
         
