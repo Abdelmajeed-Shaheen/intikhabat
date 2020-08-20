@@ -4,9 +4,10 @@ from django.views.generic import CreateView,View,ListView
 from django.db.models import Q
 from .models import Comittee
 from users_management.models import ( 
-                                        Candidate,CustomComitteePermission,
-                                        CustomMembersPermissions,ComitteeMember,
-                                        Voter
+                                        Candidate,
+                                        ComitteeMember,Voter,
+                                        CustomVoterssPermissions,CustomMembersPermissions,
+                                        CustomReportsPermissions,CustomComitteePermission,
                                     )
 from common.models import ( Address,
                             Department,
@@ -70,6 +71,10 @@ class ComitteeMemberView(View):
         user=request.user.userprofile
         campaign_manager=candidate.campaignadminstrator_set.first()
         comittees_members=comittee.comitteemember_set.all()
+        voters_permissions=CustomVoterssPermissions.objects.get(user=user)
+        reports_permissions=CustomReportsPermissions.objects.get(user=user)
+        comittees_permissions=CustomComitteePermission.objects.get(user=user)
+        memebrs_permissions=CustomMembersPermissions.objects.get(user=user)
         
         if user.comitteemember.is_manager:
             new_voters_list=Voter.objects.all().filter(candidate=candidate)
@@ -83,7 +88,11 @@ class ComitteeMemberView(View):
             "comittees_members":comittees_members,
             "user":user,
             "comittee":comittee,
-            "new_voters_list":new_voters_list
+            "new_voters_list":new_voters_list,
+            "voters_permissions":voters_permissions,
+            "reports_permissions":reports_permissions,
+            "members_permissions":memebrs_permissions,
+            "comittees_permissions":comittees_permissions
         }
         return render(request,"adminstration_cm.html",context)
 
@@ -121,21 +130,58 @@ class GrantPermissions(View):
     def post(self,request):
         user=request.POST.get('userId')
         comittee_member=ComitteeMember.objects.get(id=int(user))
-        if request.POST.get('userPerm'):
-            user_perm=json.loads(request.POST.get('userPerm'))
-            
+        profile=comittee_member.profile
 
+        if request.POST.get('memberPerm'):
+            member_perm=json.loads(request.POST.get('memberPerm'))
             cmp_data={
                 'user':comittee_member.profile,
-                'can_view_member':user_perm['show'],
-                'can_update_member':user_perm['edit'],
-                'can_create_member':user_perm['create'],
-                'can_remove_member':user_perm['delete']
+                'can_view_members':member_perm['show'],
+                'can_update_member':member_perm['edit'],
+                'can_create_member':member_perm['create'],
+                'can_remove_member':member_perm['delete']               
             }
-            custom_member_permission=CustomMembersPermissions(**cmp_data)
-            custom_member_permission.save()
-            
-            
+            member_permissions=CustomMembersPermissions.objects.get(user=profile)
+            member_permissions.can_view_member=cmp_data['can_view_members']
+            member_permissions.can_update_member=cmp_data['can_update_member']
+            member_permissions.can_create_member=cmp_data['can_create_member']
+            member_permissions.can_remove_member=cmp_data['can_remove_member']
+            member_permissions.save()
+
+        if request.POST.get('voterPerm'):
+            voter_perms=json.loads(request.POST.get('voterPerm'))
+            cvp_data={
+                'user':comittee_member.profile,
+                'can_view_voter':voter_perms['show'],
+                'can_update_voter':voter_perms['edit'],
+                'can_create_vpter':voter_perms['create'],
+                'can_remove_member':voter_perms['delete']               
+            }
+            voter_permissions=CustomVoterssPermissions.objects.get(user=profile)
+            voter_permissions.can_view_voter=cvp_data['can_view_voter']
+            voter_permissions.can_update_voter=cvp_data['can_update_voter']
+            voter_permissions.can_create_voter=cvp_data['can_create_voter']
+            voter_permissions.can_remove_voter=cvp_data['can_remove_voter']
+            voter_permissions.save()
+
+        if request.POST.get('reportPerm'):
+            report_perms=json.loads(request.POST.get('reportPerm'))
+            crp_data={
+                'user':comittee_member.profile,
+                'can_view_report':report_perms['show'],
+                'can_update_report':report_perms['edit'],
+                'can_create_report':report_perms['create'],
+                'can_remove_report':report_perms['delete']               
+            }
+            report_permissions=CustomReportsPermissions.objects.get(user=profile)
+            report_permissions.can_view_report=crp_data['can_view_report']
+            report_permissions.can_update_voter=crp_data['can_update_report']
+            report_permissions.can_create_voter=crp_data['can_create_report']
+            report_permissions.can_remove_voter=crp_data['can_remove_report']
+            report_permissions.save()
+
+
+
         if  request.POST.get('commPerm'):
             comm_perm=json.loads(request.POST.get('commPerm'))
             ccp_data={
@@ -145,8 +191,14 @@ class GrantPermissions(View):
                 'can_create_comittee':comm_perm['create'],
                 'can_remove_comittee':comm_perm['delete']               
             }
-            comittee_permissions=CustomComitteePermission(**ccp_data)
+
+            comittee_permissions=CustomComitteePermission.objects.get(user=profile)
+            comittee_permissions.can_view_comittee=ccp_data['can_view_comittee']
+            comittee_permissions.can_update_comittee=ccp_data['can_update_comittee']
+            comittee_permissions.can_create_comittee=ccp_data['can_create_comittee']
+            comittee_permissions.can_remove_comittee=ccp_data['can_remove_comittee']
             comittee_permissions.save()
+            # print("ccp to: ",comittee_permissions.user)
 
         return JsonResponse({"message":"success"})
 
@@ -307,7 +359,6 @@ class GetVotersList(View):
         
         response=[]
         query=request.GET.get('query')
-        print(query)
         query=json.loads(query)
         search_object={}
         data={}
@@ -348,8 +399,6 @@ class GetVotersList(View):
             pass
 
  
-        
-
         if 'area_id' in query and query['area_id'] not in [None,""]:
             area=Area.objects.get(id=int(query['area_id']))
             search_object['profile__address__area']=area
@@ -363,6 +412,7 @@ class GetVotersList(View):
 
         
         voters_list=Voter.objects.filter(**search_object)
+  
        
         for voter in voters_list:
             obj={}
@@ -480,7 +530,8 @@ def by_identifier_report(request):
 class GetVotersByAddressReport(View):
     template_name="address_report.html"
     def get(self,request):
-        
+        user=request.user.userprofile
+        reports_permissions=CustomReportsPermissions.objects.get(user=user)
         if hasattr(request.user.userprofile,'campaignadminstrator'):
             candidate=request.user.userprofile.campaignadminstrator.candidate
         
@@ -493,7 +544,8 @@ class GetVotersByAddressReport(View):
         areas_list=Area.objects.filter(department=candidate.election_list.election_address.department)        
         context={
             'areas_list':areas_list,
-            'candidate':candidate            
+            'candidate':candidate,
+            'reports_permissions':reports_permissions            
         }
         
         return render(request,self.template_name,context)
@@ -534,8 +586,17 @@ def by_status_report(request):
         cm=ComitteeMember.objects.get(id=int(query['cm_id']))
         search_object['profile__address__district']=cm.profile.address.district
         search_object['candidate']=cm.candidate
-    
-    voters_list=Voter.objects.filter(candidate=cm.candidate,vote_status="Not_sure")
+    try:
+        voters_list=Voter.objects.filter(candidate=cm.candidate,vote_status="Not_sure")
+    except:
+        if hasattr(request.user.userprofile,"candidate"):
+            candidate=request.user.userprofile.candidate
+            voters_list=Voter.objects.filter(candidate=candidate,vote_status="Not_sure")
+
+        elif hasattr(request.user.userprofile,"campaignadminstrator"):
+            candidate=request.user.userprofile.campaignadminstrator.candidate
+            voters_list=Voter.objects.filter(candidate=candidate,vote_status="Not_sure")
+
     
     html_string = render_to_string('by_status_report.html', {'voters_list': voters_list})
     html = HTML(string=html_string,base_url=request.build_absolute_uri())
