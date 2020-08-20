@@ -34,23 +34,28 @@
   <li class="nav-item">
     <a class="nav-link " id="home-tab" data-toggle="tab" href="#account" role="tab" aria-controls="account" aria-selected="false">الصفحة الشخصية</a>
   </li>
+  
   <li class="nav-item">
-    <a class="nav-link" id="members-tab" data-toggle="tab" href="#createcomittee" role="tab" aria-controls="home" aria-selected="false">ادارة اللجان</a>
+    <a class="nav-link" id="members-tab" data-toggle="tab" href="#createcomittee" role="tab" aria-controls="home" aria-selected="false">اللجان</a>
   </li>
+  {% if members_permissions.can_view_member %}
   <li class="nav-item">
     <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false"> الاعضاء</a>
   </li>
+  {% endif %}
+  
+  {% if reports_permissions.can_view_report %}
   <li class="nav-item">
     <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">التقارير</a>
   </li>
-
+  {% endif %}
+   {% if voters_permissions.can_view_voter %}
     <li class="nav-item">
     <a class="nav-link" id="newVoters-tab" data-toggle="tab" href="#newVoters" role="tab" aria-controls="newVoters" aria-selected="false">الناخبين الجدد</a>
   </li>
+  {% endif %}
 </ul>
   <div class="tab-content text-aligner" id= "myTabContent">
-
-
     <div class="tab-pane fade show active " id="account" role="tabpanel" aria-labelledby="account-tab">
       <div class="container mt-5">
         <div class="row">
@@ -127,7 +132,7 @@
       
       {% if user.comitteemember.is_manager %}
       
-        
+        {% if memebers_permissions.can_create_member %}
           <div class="row">
             <div class="col-sm-6">
               <div class='form-group text-aligner'>
@@ -135,7 +140,7 @@
               </div>
             </div>
           </div>
-          
+          {% endif %}
      
       {% endif %}
     <div class="row">      
@@ -204,6 +209,8 @@
       </div>
 
       </div>
+  <!-- comittee members -->
+  
     <div class="row">
       <div class="col-md-8">
         <h2 class="about-title text-aligner">اعضاء اللجنة</h2>
@@ -215,7 +222,11 @@
               <th scope="col">رقم الهاتف</th>
               <th scope="col">البريد الالكتروني</th>
               <th scope="col">اللجنة</th>
-              <th scope="col">الحالة الادارية</th>  
+              <th scope="col">الحالة الادارية</th>
+              {% if members_permissions.can_update_member %}
+              <th scope="col">تعديل</th>
+              <th scope="col">صلاحيات</th>
+              {% endif %}  
               
             </tr>
           </thead>
@@ -231,7 +242,179 @@
               {% else %}
               <td>عضو</td>
               {% endif %}
-      
+              {% if members_permissions.can_update_member %}
+              <td><a href="{% url 'update-cm' comittee_member.id %}" class="btn btn-success">حفظ</a></td>
+              <td><button class="btn btn-danger" data-toggle="modal" data-target="#modal_{{comittee_member.id}}">صلاحيات</button></td>
+              <div class="modal fade" id="modal_{{comittee_member.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLabel"> صلاحيات المستخدم: {{comittee_member.profile.user.first_name}}  {{comittee_member.profile.user.last_name}}</h5>
+  
+                      </button>
+                    </div>
+                    <div class="modal-body text-aligner">
+                      <form>
+                        <h4> المستخدمين:</h4>
+                        <div class="row mt-2">
+                          
+                         
+                        <div class="col-sm-3">
+                          <div class="form-check"> 
+                            <label class="form-check-label" for="defaultCheck1"></label>
+                            عرض
+                          </label>                       
+                            <input class="form-check-input" type="checkbox" value="" id="showUser_{{comittee_member.id}}">  
+                          </div>
+                        </div>
+                        <div class="col-sm-3">
+                          <div class="form-check"> 
+                            <label class="form-check-label" for="defaultCheck1"></label>
+                            حفظ
+                          </label>                       
+                            <input class="form-check-input" type="checkbox" id="editUser_{{comittee_member.id}}">  
+                          </div>
+                        </div>
+                        <div class="col-sm-3">
+                          <div class="form-check"> 
+                            <label class="form-check-label" for="defaultCheck1"></label>
+                            حذف
+                          </label>                       
+                            <input class="form-check-input" type="checkbox"id="deleteUser_{{comittee_member.id}}">  
+                          </div>
+                        </div>
+                        <div class="col-sm-3">
+                          <div class="form-check"> 
+                            <label class="form-check-label" for="defaultCheck1"></label>
+                            انشاء
+                          </label>                       
+                            <input class="form-check-input" type="checkbox"  id="createUser_{{comittee_member.id}}">  
+                          </div>
+                        </div>
+                        </div> 
+                        <h4> اللجان:</h4>
+                        <div class="row mt-2">
+                          
+                         
+                        <div class="col-sm-3">
+                          <div class="form-check"> 
+                            <label class="form-check-label" for="defaultCheck1"></label>
+                            عرض
+                          </label>                       
+                            <input class="form-check-input" type="checkbox" value="" id="showComm_{{comittee_member.id}}">  
+                          </div>
+                        </div>
+                        <div class="col-sm-3">
+                          <div class="form-check"> 
+                            <label class="form-check-label" for="defaultCheck1"></label>
+                            حفظ
+                          </label>                       
+                            <input class="form-check-input" type="checkbox" value="" id="editComm_{{comittee_member.id}}">  
+                          </div>
+                        </div>
+                        <div class="col-sm-3">
+                          <div class="form-check"> 
+                            <label class="form-check-label" for="defaultCheck1"></label>
+                            حذف
+                          </label>                       
+                            <input class="form-check-input" type="checkbox" value="" id="deleteComm_{{comittee_member.id}}">  
+                          </div>
+                        </div>
+                        <div class="col-sm-3">
+                          <div class="form-check"> 
+                            <label class="form-check-label" for="defaultCheck1"></label>
+                            انشاء
+                          </label>                       
+                            <input class="form-check-input" type="checkbox" value="" id="createComm_{{comittee_member.id}}">  
+                          </div>
+                        </div>
+                        </div> 
+  
+                        <h4> التقارير:</h4>
+                        <div class="row mt-2">
+                          
+                         
+                        <div class="col-sm-3">
+                          <div class="form-check"> 
+                            <label class="form-check-label" for="defaultCheck1"></label>
+                            عرض
+                          </label>                       
+                            <input class="form-check-input" type="checkbox" value="" id="showRep_{{comittee_member.id}}">  
+                          </div>
+                        </div>
+                        <div class="col-sm-3">
+                          <div class="form-check"> 
+                            <label class="form-check-label" for="defaultCheck1"></label>
+                            حفظ
+                          </label>                       
+                            <input class="form-check-input" type="checkbox" value="" id="editRep_{{comittee_member.id}}">  
+                          </div>
+                        </div>
+                        <div class="col-sm-3">
+                          <div class="form-check"> 
+                            <label class="form-check-label" for="defaultCheck1"></label>
+                            حذف
+                          </label>                       
+                            <input class="form-check-input" type="checkbox" value="" id="deleteRep_{{comittee_member.id}}">  
+                          </div>
+                        </div>
+                        <div class="col-sm-3">
+                          <div class="form-check"> 
+                            <label class="form-check-label" for="defaultCheck1"></label>
+                            انشاء
+                          </label>                       
+                            <input class="form-check-input" type="checkbox" value="" id="createRep_{{comittee_member.id}}">  
+                          </div>
+                        </div>
+                        </div> 
+                       
+                        <h4> الناخبين:</h4>
+                        <div class="row mt-2">
+                          
+                         
+                        <div class="col-sm-3">
+                          <div class="form-check"> 
+                            <label class="form-check-label" for="defaultCheck1">
+                            عرض
+                          </label>                       
+                            <input class="form-check-input" type="checkbox" value="" id="showVoter_{{comittee_member.id}}">  
+                          </div>
+                        </div>
+                        <div class="col-sm-3">
+                          <div class="form-check"> 
+                            <label class="form-check-label" for="defaultCheck1">
+                            حفظ
+                          </label>                       
+                            <input class="form-check-input" type="checkbox" value="" id="editVoter_{{comittee_member.id}}">  
+                          </div>
+                        </div>
+                        <div class="col-sm-3">
+                          <div class="form-check"> 
+                            <label class="form-check-label" for="defaultCheck1">
+                            حذف
+                          </label>                       
+                            <input class="form-check-input" type="checkbox" value="" id="deleteVoter_{{comittee_member.id}}">  
+                          </div>
+                        </div>
+                        <div class="col-sm-3">
+                          <div class="form-check"> 
+                            <label class="form-check-label" for="defaultCheck1">
+                            انشاء
+                          </label>                       
+                            <input class="form-check-input" type="checkbox" value="" id="createVoter{{comittee_member.id}}">  
+                          </div>
+                        </div>
+                        </div>    
+                      </form>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-danger" data-dismiss="modal">اغلاق</button>
+                      <button type="button" class="btn btn-success grant" id='grantPermit' data-user="{{comittee_member.id}}">حفظ</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {% endif %}
             </tr>
             
             {% endfor %}
@@ -249,17 +432,20 @@
   <div class="container text-aligner">
     <div class="row">
       <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+        {% if request.user.userprofile.comitteemember.is_manager %}
         <a class="nav-link active" id="v-pills-home-tab"  href="{% url 'cm-report' %}" role="tab" aria-controls="v-pills-home" aria-selected="true">الاستعلام عن الناخبين حسب عضو الارتباط</a>
         <a class="nav-link" id="v-pills-profile-tab"  href="{% url 'identifier-report' %}" role="tab" aria-controls="v-pills-profile" aria-selected="false">الاستعلام عن ناخبين حسب المعرفين</a>
-        {% if request.user.userprofile.comitteemember.is_manager %}
+        <a class="nav-link" id="v-pills-messages-tab"  href="{% url 'address-report' %}" role="tab" aria-controls="v-pills-messages" aria-selected="false">الاستعلام عن الناخبين حسب العناوين</a>
+        <a class="nav-link" id="v-pills-settings-tab" href="{% url 'status-report' %}" role="tab" aria-controls="v-pills-settings" aria-selected="false">الاستعلام عن الناخبين المترددين</a>
+        {% else %}
         <a class="nav-link" id="v-pills-messages-tab"  href="{% url 'address-report' %}" role="tab" aria-controls="v-pills-messages" aria-selected="false">الاستعلام عن الناخبين حسب العناوين</a>
         {% endif %}
-        <a class="nav-link" id="v-pills-settings-tab" href="{% url 'status-report' %}" role="tab" aria-controls="v-pills-settings" aria-selected="false">الاستعلام عن الناخبين المترددين</a>
       </div>
     </div>
 
   </div>
   </div>
+  
   <div class="tab-pane fade" id="newVoters" role="tabpanel" aria-labelledby="contact-tab">
 
     <div class="container text-aligner mt-5">
@@ -285,7 +471,9 @@
                 <td >{{voter.related_comittee_member.profile.user.first_name}} {{voter.related_comittee_member.profile.middle_name}} {{voter.related_comittee_member.profile.user.last_name}}</td>
                 <td >{{voter.profile.mobile_number}}</td>
                 <td >لا</td>
+                {% if voters_permissions.can_update_voters%}
                 <td><a class="btn btn-danger" href="{% url 'update-voter' voter.id %}"> عرض التفاصيل</a></td>
+                {% endif %}
               </tr>
               {% endfor %}
             </tbody>
@@ -452,6 +640,7 @@ $(document).on("click", ".grant", function () {
        data:{
          userPerm:userJson,
          commPerm:comitteeJson,
+         
          userId:user,
          csrfmiddlewaretoken: csrftoken 
        },

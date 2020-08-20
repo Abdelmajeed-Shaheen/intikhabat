@@ -447,16 +447,24 @@
                           <div class="form-check"> 
                             <label class="form-check-label" for="defaultCheck1"></label>
                             عرض
-                          </label>                       
-                            <input class="form-check-input" type="checkbox" value="" id="showUser_{{comittee_member.id}}">  
+                          </label>
+                          {% if comittee_member.profile.custommemberspermissions_set.first.can_view_member %}                       
+                            <input class="form-check-input" type="checkbox" value="" id="showUser_{{comittee_member.id}}" checked> 
+                          {% else %}
+                          <input class="form-check-input" type="checkbox" value="" id="showUser_{{comittee_member.id}}">  
+                          {% endif %}
                           </div>
                         </div>
                         <div class="col-sm-3">
                           <div class="form-check"> 
                             <label class="form-check-label" for="defaultCheck1"></label>
                             حفظ
-                          </label>                       
-                            <input class="form-check-input" type="checkbox" id="editUser_{{comittee_member.id}}">  
+                          </label>
+                          {% if comittee_member.profile.custommemberspermissions_set.first.can_update_member %}                       
+                            <input class="form-check-input" type="checkbox" id="editUser_{{comittee_member.id}}" checked>
+                            {% else %}
+                            <input class="form-check-input" type="checkbox" id="editUser_{{comittee_member.id}}">
+                            {% endif %}
                           </div>
                         </div>
                         <div class="col-sm-3">
@@ -464,15 +472,23 @@
                             <label class="form-check-label" for="defaultCheck1"></label>
                             حذف
                           </label>                       
-                            <input class="form-check-input" type="checkbox"id="deleteUser_{{comittee_member.id}}">  
+                          {% if comittee_member.profile.custommemberspermissions_set.first.can_remove_member %}                       
+                            <input class="form-check-input" type="checkbox"id="deleteUser_{{comittee_member.id}}" checked>
+                          {% else %}
+                          <input class="form-check-input" type="checkbox"id="deleteUser_{{comittee_member.id}}">
+                          {% endif %}
                           </div>
                         </div>
                         <div class="col-sm-3">
                           <div class="form-check"> 
                             <label class="form-check-label" for="defaultCheck1"></label>
                             انشاء
-                          </label>                       
-                            <input class="form-check-input" type="checkbox"  id="createUser_{{comittee_member.id}}">  
+                          </label>
+                          {% if comittee_member.profile.custommemberspermissions_set.first.can_create_member %}                       
+                            <input class="form-check-input" type="checkbox"  id="createUser_{{comittee_member.id}}" checked>
+                          {% else %}
+                          <input class="form-check-input" type="checkbox"  id="createUser_{{comittee_member.id}}">  
+                          {% endif %}    
                           </div>
                         </div>
                         </div> 
@@ -484,16 +500,26 @@
                           <div class="form-check"> 
                             <label class="form-check-label" for="defaultCheck1"></label>
                             عرض
-                          </label>                       
-                            <input class="form-check-input" type="checkbox" value="" id="createComm_{{comittee_member.id}}">  
+                          </label>
+                          {% if comittee_member.profile.customcomitteepermissions_set.first.can_view_comittee %}                       
+                          <input class="form-check-input" type="checkbox" value="" id="showComm_{{comittee_member.id}}" checked> 
+                          {% else %}
+                          <input class="form-check-input" type="checkbox" value="" id="showComm_{{comittee_member.id}}">  
+                          
+                          {% endif %}
                           </div>
                         </div>
                         <div class="col-sm-3">
                           <div class="form-check"> 
                             <label class="form-check-label" for="defaultCheck1"></label>
                             حفظ
-                          </label>                       
-                            <input class="form-check-input" type="checkbox" value="" id="editComm_{{comittee_member.id}}">  
+                          </label>
+                          {% if comittee_member.profile.customcomitteepermissions_set.first.can_update_comittee %}                       
+
+                            <input class="form-check-input" type="checkbox" value="" id="editComm_{{comittee_member.id}}" checked>
+                          {% else %}
+                          <input class="form-check-input" type="checkbox" value="" id="editComm_{{comittee_member.id}}">  
+                          {% endif %}
                           </div>
                         </div>
                         <div class="col-sm-3">
@@ -501,15 +527,24 @@
                             <label class="form-check-label" for="defaultCheck1"></label>
                             حذف
                           </label>                       
-                            <input class="form-check-input" type="checkbox" value="" id="deleteComm_{{comittee_member.id}}">  
+                          {% if comittee_member.profile.customcomitteepermissions_set.first.can_remove_comittee %}
+                          <input class="form-check-input" type="checkbox" value="" id="deleteComm_{{comittee_member.id}}" checked>
+                          {% else %}
+                          <input class="form-check-input" type="checkbox" value="" id="deleteComm_{{comittee_member.id}}">  
+                          
+                          {% endif %}
                           </div>
                         </div>
                         <div class="col-sm-3">
                           <div class="form-check"> 
                             <label class="form-check-label" for="defaultCheck1"></label>
                             انشاء
-                          </label>                       
+                          </label>
+                          {% if comittee_member.profile.customcomitteepermissions_set.first.can_create_comittee %}                       
+                            <input class="form-check-input" type="checkbox" value="" id="createComm_{{comittee_member.id}}" checked>
+                          {% else %}
                             <input class="form-check-input" type="checkbox" value="" id="createComm_{{comittee_member.id}}">  
+                          {% endif %}
                           </div>
                         </div>
                         </div> 
@@ -522,70 +557,100 @@
                           <div class="form-check"> 
                             <label class="form-check-label" for="defaultCheck1"></label>
                             عرض
-                          </label>                       
-                            <input class="form-check-input" type="checkbox" value="" id="showRep_{{comittee_member.id}}">  
+                          </label>
+                          {% if comittee_member.profile.customreprotspermissions_set.first.can_view_report %}
+                            <input class="form-check-input" type="checkbox" value="" id="showRep_{{comittee_member.id}}" checked>
+                          {% else %}
+                          <input class="form-check-input" type="checkbox" value="" id="showRep_{{comittee_member.id}}">
+                          {% endif %}
                           </div>
                         </div>
                         <div class="col-sm-3">
                           <div class="form-check"> 
                             <label class="form-check-label" for="defaultCheck1"></label>
                             حفظ
-                          </label>                       
-                            <input class="form-check-input" type="checkbox" value="" id="editRep_{{comittee_member.id}}">  
+                          </label>
+                          {% if comittee_member.profile.customreprotspermissions_set.first.can_update_report %}
+                            <input class="form-check-input" type="checkbox" value="" id="editRep_{{comittee_member.id}}" checked>
+                          {% else %}
+                          <input class="form-check-input" type="checkbox" value="" id="editRep_{{comittee_member.id}}">  
+                          {% endif %}    
                           </div>
                         </div>
                         <div class="col-sm-3">
                           <div class="form-check"> 
                             <label class="form-check-label" for="defaultCheck1"></label>
                             حذف
-                          </label>                       
-                            <input class="form-check-input" type="checkbox" value="" id="deleteRep_{{comittee_member.id}}">  
+                          </label>
+                          {% if comittee_member.profile.customreprotspermissions_set.first.can_remove_report %}
+                            <input class="form-check-input" type="checkbox" value="" id="deleteRep_{{comittee_member.id}}" checked>
+                          {% else %}
+                          <input class="form-check-input" type="checkbox" value="" id="deleteRep_{{comittee_member.id}}">  
+                          {% endif %}
                           </div>
                         </div>
                         <div class="col-sm-3">
                           <div class="form-check"> 
                             <label class="form-check-label" for="defaultCheck1"></label>
                             انشاء
-                          </label>                       
-                            <input class="form-check-input" type="checkbox" value="" id="createRep_{{comittee_member.id}}">  
+                          </label>
+                          {% if comittee_member.profile.customreprotspermissions_set.first.can_remove_report %}
+                            <input class="form-check-input" type="checkbox" value="" id="createRep_{{comittee_member.id}}" checked>
+                          {% else %}
+                          <input class="form-check-input" type="checkbox" value="" id="createRep_{{comittee_member.id}}">  
+                           {% endif %}
                           </div>
                         </div>
                         </div> 
                        
                         <h4> الناخبين:</h4>
-                        <div class="row mt-2">
-                          
-                         
+                        <div class="row mt-2">                    
                         <div class="col-sm-3">
                           <div class="form-check"> 
                             <label class="form-check-label" for="defaultCheck1">
                             عرض
-                          </label>                       
-                            <input class="form-check-input" type="checkbox" value="" id="showVoter_{{comittee_member.id}}">  
+                          </label>
+                          {% if comittee_member.profile.customvotersspermissions_set.first.can_view_voter %}
+                            <input class="form-check-input" type="checkbox" value="" id="showVoter_{{comittee_member.id}}" checked>
+                          {% else %}
+                          <input class="form-check-input" type="checkbox" value="" id="showVoter_{{comittee_member.id}}">
+                          {% endif %}
                           </div>
                         </div>
                         <div class="col-sm-3">
                           <div class="form-check"> 
                             <label class="form-check-label" for="defaultCheck1">
                             حفظ
-                          </label>                       
-                            <input class="form-check-input" type="checkbox" value="" id="editVoter_{{comittee_member.id}}">  
+                          </label>
+                          {% if comittee_member.profile.customvotersspermissions_set.first.can_update_voter %}
+                            <input class="form-check-input" type="checkbox" value="" id="editVoter_{{comittee_member.id}}" checked>
+                          {% else %}
+                          <input class="form-check-input" type="checkbox" value="" id="editVoter_{{comittee_member.id}}" checked>  
+                          {% endif %}
                           </div>
                         </div>
                         <div class="col-sm-3">
                           <div class="form-check"> 
                             <label class="form-check-label" for="defaultCheck1">
                             حذف
-                          </label>                       
-                            <input class="form-check-input" type="checkbox" value="" id="deleteVoter_{{comittee_member.id}}">  
+                          </label>       
+                          {% if comittee_member.profile.customvotersspermissions_set.first.can_remove_voter %}                
+                            <input class="form-check-input" type="checkbox" value="" id="deleteVoter_{{comittee_member.id}}" checked>
+                          {% else %}
+                          <input class="form-check-input" type="checkbox" value="" id="deleteVoter_{{comittee_member.id}}">  
+                          {% endif%}
                           </div>
                         </div>
                         <div class="col-sm-3">
                           <div class="form-check"> 
                             <label class="form-check-label" for="defaultCheck1">
                             انشاء
-                          </label>                       
-                            <input class="form-check-input" type="checkbox" value="" id="createVoter{{comittee_member.id}}">  
+                          </label>
+                          {% if comittee_member.profile.customvotersspermissions_set.first.can_create_voter %}            
+                            <input class="form-check-input" type="checkbox" value="" id="createVoter{{comittee_member.id}}" checked>
+                          {% else %}
+                          <input class="form-check-input" type="checkbox" value="" id="createVoter{{comittee_member.id}}">  
+                           {% endif %} 
                           </div>
                         </div>
                         </div>    
@@ -724,13 +789,22 @@ $(document).on("click", ".grant", function () {
      var editUser=$('#editUser_'+user).is(":checked")
      var deleteUser=$('#deleteUser_'+user).is(":checked")
      var createUser=$('#createUser_'+user).is(":checked")
-     
-     commPerm={
-       'show':showComm,
-       'edit':editComm,
-       'delete':deleteComm,
-       'create':createComm,
-     }
+     console.log(showUser)
+     console.log(editUser)
+     console.log(deleteUser)
+     console.log(createUser)
+
+
+     var showReport=$('#showRep_'+user).is(":checked")
+     var editReport=$('#editRep_'+user).is(":checked")
+     var deleteReport=$('#deleteRep_'+user).is(":checked")
+     var createReport=$('#createRep_'+user).is(":checked")     
+
+     var showVoter=$('#showVoter_'+user).is(":checked")
+     var editVoter=$('#editVoter_'+user).is(":checked")
+     var deleteVoter=$('#deleteVoter_'+user).is(":checked")
+     var createVoter=$('#createVoter_'+user).is(":checked") 
+
 
       var comitteePerm=new Object();
       comitteePerm.show=showComm
@@ -738,23 +812,38 @@ $(document).on("click", ".grant", function () {
       comitteePerm.delete=deleteComm
       comitteePerm.create=createComm
 
-      var userPerm = new Object();
-      userPerm.show = showUser;
-      userPerm.edit = editUser;
-      userPerm.delete = deleteUser;
-      userPerm.create=createUser;
-      userJson=JSON.stringify(userPerm)
-      comitteeJson=JSON.stringify(comitteePerm)
+      var memberPerm = new Object();
+      memberPerm.show = showUser;
+      memberPerm.edit = editUser;
+      memberPerm.delete = deleteUser;
+      memberPerm.create=createUser;
       
-      console.log(userJson)
-      console.log(comitteeJson)
-     
+
+      var reportPerm= new Object();
+      reportPerm.show=showReport;
+      reportPerm.edit=editReport;
+      reportPerm.delete=deleteReport;
+      reportPerm.create=createReport; 
+
+      var voterPerm= new Object();
+      voterPerm.show=showVoter;
+      voterPerm.edit=editVoter;
+      voterPerm.delete=deleteVoter;
+      voterPerm.create=createVoter;
+
+      memberJson=JSON.stringify(memberPerm)
+      comitteeJson=JSON.stringify(comitteePerm)
+      reportJson=JSON.stringify(reportPerm)
+      voterJson=JSON.stringify(voterPerm)     
+
      $.ajax({
        url:"{% url 'grant-permession' %}",
        type:"POST",
        data:{
-         userPerm:userJson,
+         memberPerm:memberJson,
          commPerm:comitteeJson,
+         reportPerm:reportPerm,
+         voterPerm:voterPerm,
          userId:user,
          csrfmiddlewaretoken: csrftoken 
        },
