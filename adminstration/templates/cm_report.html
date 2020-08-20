@@ -24,7 +24,7 @@
         <button class="btn btn-danger btn-sm mb-3" id="print">مراجعة و طباعة التقرير</button>
     </div>
     <div class="row">
-    {% if request.user.userprofile.campaignadminstrator or request.user.userprofileprofile.campaignadminstrator %}
+    {% if request.user.userprofile.campaignadminstrator or request.user.userprofile.candidate %}
    
         <form >
             <div class="form-row">
@@ -169,6 +169,7 @@ $("#print").on("click",function(){
           console.log(ui.item['lable'])
         $( "#cm" ).val(ui.item['lable'] );
         $( "#cm_id" ).val( ui.item['id']); 
+        console.log(ui.item['id'])
         return false;
       }
     })
