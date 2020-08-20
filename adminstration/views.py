@@ -326,25 +326,28 @@ class GetVotersList(View):
             identifier_object["related_comittee_member"]=cm
             search_object['related_comittee_member']=cm
 
-        if query['identifier_id'] not in [None,""]:
+        if 'identifier' in query and query['identifier_id'] not in [None,""]:
 
             identifier_id=query['identifier_id']
             identifier_object["id"]=identifier_id
         
-        if  query['identifier_wa'] not in [None,""]:
+        if 'identifier_wa' in query and query['identifier_wa'] not in [None,""]:
             identifier_object['profile__whatsapp_number']=query['identifier_wa']
 
 
         
-        if  query['identifier_mobile'] not in [None,""]:
+        if 'identifier_mobile' in query and query['identifier_mobile'] not in [None,""]:
             identifier_object['profile__mobile_number']=query['identifier_mobile']
+        try:
+            identifier=Voter.objects.get(**identifier_object)
+            search_object["identiefier"]=identifier
+            identifier_response={}
+            identifier_response['idn_name']=(identifier.profile.user.first_name+" "+identifier.profile.middle_name+" "+identifier.profile.last_name+" "+identifier.profile.user.last_name)
+            data["identifier"]=identifier_response
+        except:
+            pass
 
-        identifier=Voter.objects.get(**identifier_object)
-        search_object["identiefier"]=identifier
-
-        identifier_response={}
-        identifier_response['idn_name']=(identifier.profile.user.first_name+" "+identifier.profile.middle_name+" "+identifier.profile.last_name+" "+identifier.profile.user.last_name)
-        data["identifier"]=identifier_response 
+ 
         
 
         if 'area_id' in query and query['area_id'] not in [None,""]:
@@ -360,8 +363,7 @@ class GetVotersList(View):
 
         
         voters_list=Voter.objects.filter(**search_object)
-        for obj in voters_list:
-            print(obj.identiefier)       
+       
         for voter in voters_list:
             obj={}
             obj['id']=voter.id
