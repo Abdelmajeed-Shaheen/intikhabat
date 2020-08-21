@@ -135,7 +135,7 @@ class GrantPermissions(View):
         if request.POST.get('memberPerm'):
             member_perm=json.loads(request.POST.get('memberPerm'))
             cmp_data={
-                'user':comittee_member.profile,
+                'user':profile,
                 'can_view_members':member_perm['show'],
                 'can_update_member':member_perm['edit'],
                 'can_create_member':member_perm['create'],
@@ -151,47 +151,49 @@ class GrantPermissions(View):
         if request.POST.get('voterPerm'):
             voter_perms=json.loads(request.POST.get('voterPerm'))
             cvp_data={
-                'user':comittee_member.profile,
+                'user':profile,
                 'can_view_voter':voter_perms['show'],
                 'can_update_voter':voter_perms['edit'],
-                'can_create_vpter':voter_perms['create'],
-                'can_remove_member':voter_perms['delete']               
+                'can_create_voter':voter_perms['create'],
+                'can_remove_voter':voter_perms['delete']               
             }
+            # print(cvp_data)
             voter_permissions=CustomVoterssPermissions.objects.get(user=profile)
             voter_permissions.can_view_voter=cvp_data['can_view_voter']
             voter_permissions.can_update_voter=cvp_data['can_update_voter']
             voter_permissions.can_create_voter=cvp_data['can_create_voter']
             voter_permissions.can_remove_voter=cvp_data['can_remove_voter']
+ 
             voter_permissions.save()
 
         if request.POST.get('reportPerm'):
             report_perms=json.loads(request.POST.get('reportPerm'))
             crp_data={
-                'user':comittee_member.profile,
+                'user':profile,
                 'can_view_report':report_perms['show'],
                 'can_update_report':report_perms['edit'],
                 'can_create_report':report_perms['create'],
                 'can_remove_report':report_perms['delete']               
             }
+            # print(cvp_data)
             report_permissions=CustomReportsPermissions.objects.get(user=profile)
             report_permissions.can_view_report=crp_data['can_view_report']
-            report_permissions.can_update_voter=crp_data['can_update_report']
-            report_permissions.can_create_voter=crp_data['can_create_report']
-            report_permissions.can_remove_voter=crp_data['can_remove_report']
+            report_permissions.can_update_report=crp_data['can_update_report']
+            report_permissions.can_create_report=crp_data['can_create_report']
+            report_permissions.can_remove_report=crp_data['can_remove_report']
+ 
             report_permissions.save()
 
 
-
-        if  request.POST.get('commPerm'):
+        if request.POST.get('commPerm'):
             comm_perm=json.loads(request.POST.get('commPerm'))
             ccp_data={
-                'user':comittee_member.profile,
+                'user':profile,
                 'can_view_comittee':comm_perm['show'],
                 'can_update_comittee':comm_perm['edit'],
                 'can_create_comittee':comm_perm['create'],
                 'can_remove_comittee':comm_perm['delete']               
             }
-
             comittee_permissions=CustomComitteePermission.objects.get(user=profile)
             comittee_permissions.can_view_comittee=ccp_data['can_view_comittee']
             comittee_permissions.can_update_comittee=ccp_data['can_update_comittee']
