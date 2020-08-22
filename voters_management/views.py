@@ -28,28 +28,7 @@ class CreateVoter(View):
         voter_work=WorkField.objects.get(id=int(voter['work']))
         name_string=(voter['first_name']+voter['second_name']+voter['third_name']+voter['last_name'])
 
-        identifier_string_list=list("0/0/0/0/0")
-        
-        if "identifier" in voter and voter["identifier"] not in [None,""]:
-            identifier=voter['identifier']
-            
-            if str.isnumeric(identifier):
-                identifier=list(identifier)
-                identifier_string_list[0]=identifier[0]
-                identifier_string_list[2]=identifier[1]
-                identifier_string_list[4]=identifier[2]
-                identifier_string_list[6]=identifier[3]
-                identifier_string_list[8]=identifier[4]
-                identifier="".join(identifier_string_list)
-                identifier=Voter.objects.get(voting_id=identifier)
-                print(identifier)
-            else:
-                
-                identifier=Voter.objects.get(voting_id=identifier)
-                print(identifier)
 
-        else:
-            identifier=None
 
         profile_object={
             "mobile_number":voter['mobile_number'],
@@ -77,10 +56,7 @@ class CreateVoter(View):
         if 'department' in election_address and 'governorate' in election_address:
             ea=ElectionAddress(**election_address)
             ea.save()
-
-            print(ea)
-
-        voter=Voter(profile=profile,identiefier=identifier,election_address=ea)
+        voter=Voter(profile=profile,election_address=ea)
         voter.save()
         login(request,user)
         response['redirect_to']=reverse('voter-profile',kwargs={'pk':user.userprofile.id})
@@ -103,7 +79,7 @@ class VoterProfile(DetailView):
         if voter.voter.candidate is not None:
 
             candidates_list=candidates_list.exclude(id=voter.voter.candidate.id)
-      
+     
         context={
             "voter":voter,
             "addresses_list":addresses_list,
@@ -151,7 +127,7 @@ class UpdateVoter(View):
 
 
             new_id="".join(voting_id_string)
-            print(new_id)
+           
             voter_object['voting_id']=new_id
       
         if request.POST.get("status"):
@@ -176,6 +152,39 @@ class UpdateVoter(View):
             else:
                 voter_object['has_elc_card']=False
 
+        if request.POST.get('has_identifier')== 'true':
+            has_identifier=True
+        elif request.POST.get('has_identifier')== 'false':
+            has_identifier=False
+        else:
+            has_identifier=None
+
+        if request.POST.get('identifier') not in [None,""]:
+            identifier=request.POST.get('identifier')
+            
+            identifier_string_list=list("0/0/0/0/0")
+            if str.isnumeric(identifier):
+                identifier=list(identifier)
+                identifier_string_list[0]=identifier[0]
+                identifier_string_list[2]=identifier[1]
+                identifier_string_list[4]=identifier[2]
+                identifier_string_list[6]=identifier[3]
+                identifier_string_list[8]=identifier[4]
+                identifier="".join(identifier_string_list)
+                identifier=Voter.objects.get(voting_id=identifier)
+                print(identifier)
+            else:
+                
+                identifier=Voter.objects.get(voting_id=identifier)
+                print(identifier)
+        else:
+            identifier=None
+
+        first_login=False
+
+        voter_object['identiefier']=identifier
+        voter_object['first_login']=first_login
+        voter_object['has_identifier']=has_identifier
         voter.update(**voter_object)
 
         return JsonResponse({"message":"success"})

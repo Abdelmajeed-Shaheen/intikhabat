@@ -53,6 +53,8 @@ class Voter(models.Model):
     has_elc_card=models.BooleanField(default=False)
     related_comittee_member=models.ForeignKey('ComitteeMember',on_delete=models.CASCADE,null=True,blank=True)
     election_address=models.ForeignKey(ElectionAddress,on_delete=models.CASCADE,null=True,blank=True)
+    has_identifier=models.BooleanField(null=True, blank=True)
+    first_login=models.BooleanField(default=True)
     def __str__(self):
         return (self.profile.user.first_name +" "+self.profile.user.last_name)
 
