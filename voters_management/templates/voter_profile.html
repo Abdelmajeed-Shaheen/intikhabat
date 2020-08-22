@@ -150,8 +150,24 @@
         <div class="row text-aligner">
         
             <form>
-            
-                <div class="form-row">
+                {% if not voter.voter.identiefier and  voter.voter.first_login %}
+                  <div class="form-row">
+                      <label for="">هل لديك معرف؟</label>
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" id="has_identifier_t" value="true">
+                        <label class="form-check-label" >نعم</label>
+                      </div>
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" id="has_identifier_f" value="false">
+                        <label class="form-check-label" >لا</label>
+                      </div>
+                      <div class="col-sm-4">
+                        <input type="text" placeholder="ادخل رقم المعرف ان وجد" class="form-control" id="identifier">
+
+                      </div>
+                  </div>
+                  {% endif %}
+                  <div class="form-row mt-2">
                   <div class="col-sm-3">
                     
                       <div class="form-group">
@@ -227,7 +243,9 @@
                     </select>
                   </div>
                 </div>
-                <div class="form-row">
+ 
+
+                <div class="form-row mt-2">
                   <div class="col-sm-5">
                     <div class="form-check form-check-inline">
                       {% if voter.voter.has_elc_card %}
@@ -242,6 +260,9 @@
                   </div>
 
                 </div>
+
+
+
               </form>
         </div>
         <div class="row ">
@@ -277,7 +298,7 @@
 <script>
 
 $("#updateprofile").on('click',function(){
-  
+
   userprofile= new Object()
   userprofile.first_name=$("#fname").val()
   userprofile.second_name=$("#sname").val()
@@ -293,13 +314,24 @@ $("#updateprofile").on('click',function(){
      else
      userprofile.address="";
 });
-  
+identifier="" 
+if ($("#has_identifier_t").is(":checked")){
+    identifier=$("#identifier").val()
+    has_identifier=true
+  }
+  else if(($("#has_identifier_f").is(":checked"))){
+    
+    has_identifier=false
+  }
+  else{
+    has_identifier=undefined
+  }
   userprofile.gender=$("#gender option:selected").val()
   userprofile.district=$("#district option:selected").val()
   userprofile.dob=$("#dob").val()
   userprofile.id="{{voter.id}}"
   userjson=JSON.stringify(userprofile)
-  console.log(userprofile.district)
+
   elect_card=$('#elecCard')
   if (elect_card.prop('checked')){
     ec=true
@@ -318,6 +350,9 @@ $("#updateprofile").on('click',function(){
       voter_id:voter_id,
       candidate:candidate,
       ec:ec,
+      identifier:identifier,
+      has_identifier:has_identifier,
+   
       csrfmiddlewaretoken:"{{csrf_token}}",
       success:function(reslut){
         $("#succesModal").modal('show')
@@ -434,5 +469,20 @@ $(document).on('change', '#area', function () {
         }
     );
 });
+
+$("#identifier").hide()
+$("#has_identifier_t").on('change',function(){
+  $("#identifier").show()
+  $("#has_identifier_f").prop('checked',false)
+})
+
+$("#has_identifier_f").change(function(){
+  $("#identifier").hide()
+  $("#has_identifier_t").prop('checked',false)
+
+})
+
+
+
 </script>
 {% endblock %}
