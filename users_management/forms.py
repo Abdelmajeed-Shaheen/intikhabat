@@ -13,7 +13,7 @@ class LoginForm(forms.Form):
     				widget=forms.TextInput(
                     attrs={
                         "class": "form-control",
-                        "placeholder": "رقم الهاتف / اسم المستخدم"
+                        "placeholder": "رقم الهاتف"
                     	}
                     )
     	)
@@ -31,7 +31,7 @@ class CandidateLoginForm(forms.Form):
     				widget=forms.TextInput(
                     attrs={
                         "class": "form-control",
-                        "placeholder": "رقم الهاتف / اسم المستخدم"
+                        "placeholder": "رقم الهاتف"
                     	}
                     )
     	)
