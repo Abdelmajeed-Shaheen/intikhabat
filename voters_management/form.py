@@ -13,47 +13,56 @@ class VoterRegForm(forms.Form):
     first_name=forms.CharField(max_length=16,widget=forms.TextInput(
                                                     attrs={
                                                         'class':'form-control',
-                                                        'placeholder':'الاسم الاول'
+                                                        'placeholder':'الاسم الاول',
+                                                        "data-field-name":'الاسم الاول',
                                                     }
                                                     ))
     second_name=forms.CharField(max_length=16,widget=forms.TextInput(
                                                      attrs={
                                                          'class':'form-control',
-                                                         'placeholder':'اسم الاب'
+                                                         'placeholder':'اسم الاب',
+                                                         "data-field-name":'اسم الاب'
                                                      }   
                                                      ))
     third_name=forms.CharField(max_length=16,widget=forms.TextInput(
                                                       attrs={
                                                             'class':'form-control',
-                                                             'placeholder':'اسم الجد'                                                              
+                                                             'placeholder':'اسم الجد',
+                                                             "data-field-name":'اسم الجد'                                                              
                                                         }
                                                         ))
     last_name=forms.CharField(max_length=16,widget=forms.TextInput(
                                                     attrs={
                                                         'class':'form-control',
-                                                        'placeholder':'الاسم العائلة'
+                                                        'placeholder':'الاسم العائلة',
+                                                        "data-field-name":'الاسم العائلة'
                                                     }
                                                     ))
     mobile_number=forms.CharField(max_length=15,widget=forms.TextInput(
                                                     attrs={
                                                         'class':'form-control',
-                                                        'placeholder':'رقم الهاتف'
+                                                        'placeholder':'رقم الهاتف',
+                                                        "data-field-name":'رقم الهاتف'
+                                                        
                                                     }
                                                     ))
     whatsapp_number=forms.CharField(max_length=15,widget=forms.TextInput(
                                                     attrs={
                                                         'class':'form-control',
-                                                        'placeholder':'رقم الواتساب'
+                                                        'placeholder':'رقم الواتساب',
+                                                        "data-field-name":'رقم الواتساب'
+                                                        
                                                     }
                                                     ))
     email=forms.CharField(widget=forms.EmailInput(
                                                     attrs={
                                                         'class':'form-control',
-                                                        'placeholder':'البريد الالكتروني'
+                                                        'placeholder':'البريد الالكتروني',
+                                                        "data-field-name":'البريد الالكتروني'
                                                     }
                                                     ))                                                
     dob=forms.DateField(input_formats='%Y-%m-%d',widget=forms.SelectDateWidget(
-                                                    years=range(1940, 2003,),
+                                                    years=range(1940, 2004),
                                                     months=MONTHS,
                                                     empty_label=("السنة","الشهر", "اليوم"),
                                                     

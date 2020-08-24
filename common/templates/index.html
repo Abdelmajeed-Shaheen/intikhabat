@@ -91,11 +91,13 @@
         <h5 class="modal-title" id="regLable">مرحبا بك </h5>
       </div>
       <div class="modal-body ">
-        <form>
+        <form id="createProfileForm" class="needs-validation" novalidate>
           <div class="form-row">
             <div class="col-sm-3 mb-3">
               
               {{voter_reg_form.first_name}}
+
+
             </div>
             <div class="col-sm-3 mb-3">
              
@@ -140,14 +142,12 @@
               {{voter_reg_form.work}}
             </div>
           </div>
-
-
-
-
           <div class="form-row mt-2">
             <div class="col-sm-6">
-              <select name="" id="gover" class="form-control">
-                <option value="">اختر المحافظة</option>
+              <select name="" id="gover" class="form-control"   >
+                <option value="" data-field-name="المحافظة">
+                  اختر المحافظة
+                </option>
                 {% for gover in governorates_list %}
                 <option value="{{gover.id}}">{{gover.name}}</option>
                 {% endfor %}
@@ -155,7 +155,9 @@
             </div>
             <div class="col-sm-6">
               <select name="" id="dept" class="form-control">
-                <option value="">اختر الدائرة</option>
+                <option value="" data-field-name="الدائرة">  
+                  اختر الدائرة
+                </option>
 
               </select>
             </div>
@@ -163,7 +165,13 @@
 
           <div class="form-row mt-3 ">
             <div class="col-sm-8">
-              <input type="password" id="pwd" required placeholder="كلمة السر" class="form-control">
+              <input type="password" id="pwd" required placeholder="كلمة السر" class="form-control" data-field-name="كلمة السر">
+              <div class="m-2 field-warning">
+                <span>* يرجى مراعاة وجود ارقام واحرف باللغة الانجليزية</span>
+              </div>
+              <div class="m-2 field-warning">
+                <span>* يجب ان تتكون كلمة السر من ٨ خانات</span>
+              </div>
             </div>
           </div>         
         </form>
@@ -197,9 +205,32 @@
     </div>
   </div>
   </div>
+
+  <div class="modal fade" id="errorMessage" tabindex="-1" role="dialog" aria-labelledby="successModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+         
+  
+        </div>
+        <div class="modal-body">
+          <div class="alert alert-danger" role="alert">
+            <h4 class="alert-heading" id="message" ></h4>
+           
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-dismiss="modal">اغلاق</button>
+         
+        </div>
+      </div>
+    </div>
+    </div>
+   
 {% endblock  %}
 
 {% block main %}
+
 {% endblock %}
 
 {% block js %}
@@ -217,10 +248,15 @@
         csrfmiddlewaretoken: '{{ csrf_token }}' 
       },
       success:function (result) {
-        window.location.replace(result.redirect_to);
+        if (result.error){
+          $("#message").text(result.error)
+          $("#errorMessage").modal('show')
+        }
+        else{
+          window.location.replace(result.redirect_to);
+        }
       },
     })
-
   })
   
   $("#candidate-submit-form").on('click',function(){
@@ -236,49 +272,114 @@
         csrfmiddlewaretoken: '{{ csrf_token }}' 
       },
       success:function (result) {
-        window.location.replace(result.redirect_to);
+
+        if (result.error){
+          $("#message").text(result.error)
+          $("#errorMessage").modal('show')
+        }
+        else{
+          window.location.replace(result.redirect_to);
+        }
+        
       },
     })
 
   })
 
-$('#register').on('click',function(){
-  userprofile= new Object()
-  userprofile.pwd=$('#pwd').val()
-  userprofile.first_name=$("#id_first_name").val()
-  userprofile.second_name=$("#id_second_name").val()
-  userprofile.third_name=$("#id_third_name").val()
-  userprofile.last_name=$("#id_last_name").val()
-  userprofile.mobile_number=$("#id_mobile_number").val()
-  userprofile.whatsapp_number=$("#id_whatsapp_number").val()
-  userprofile.governorate=$("#gover option:selected").val()
-  userprofile.dept=$("#dept option:selected").val()
-  userprofile.work=$("#id_work option:selected").val()
-  userprofile.gender=$("#id_gender option:selected").val()
-  day=$('#id_dob_day').val()
-  month=$('#id_dob_month').val()
-  year=$('#id_dob_year').val()
-  userprofile.dob=(year+"-"+month+"-"+day)
-  userprofile.email=$("#id_email").val()
-  userjson=JSON.stringify(userprofile)
-  $.ajax({
-    url:"{% url 'create-voter' %}",
-    type:"POST",
-    data:{
-      csrfmiddlewaretoken:'{{csrf_token}}',
-      voter:userjson
-    },
-    success:function(result){
-      $("#regModal").modal('hide')
-      window.location.replace(result.redirect_to)
-      console.log("success")
-      
 
-    },
-    error:function(result){
-      alert("حدث خطأ بالتسجيل")
-    }
+  var checker=false 
+  function checkField(formFields,selecFields){
+  inputFields=formFields
+  selectFields
+  
+  inputFields.each(function(){
+    field=$(this)
+      if (!field.val()){
+        $("#message").append("<span>"+field.data("field-name")+" مطلوب"+"</span> <br>");
+        $("#errorMessage").modal("show");
+      
+        checker=false
+      }
+    
+      else{
+        checker=true
+
+      }
+      
   })
+
+  selectFields.each(function(){
+    option=$(this)
+    console.log(option.val())
+      if (!option.val() || option.val()==""){
+        $("#message").append("<span>"+option.data("field-name")+" مطلوب"+"</span> <br>");
+        $("#errorMessage").modal("show");
+      
+        checker=false
+        console.log(checker)
+      }
+    
+      else{
+        checker=true
+
+      }
+      
+  })
+  console.log(checker)
+  return checker
+}
+
+
+$('#register').on('click',function(){
+
+  formFields=$('#createProfileForm').find('input')
+  selectFields=$('#createProfileForm').find('select option:selected')
+
+  fieldChecker=checkField(formFields,selectFields)
+
+  if (fieldChecker){
+    userprofile= new Object()
+    userprofile.pwd=$('#pwd').val()
+    userprofile.first_name=$("#id_first_name").val()
+    userprofile.second_name=$("#id_second_name").val()
+    userprofile.third_name=$("#id_third_name").val()
+    userprofile.last_name=$("#id_last_name").val()
+    userprofile.mobile_number=$("#id_mobile_number").val()
+    userprofile.whatsapp_number=$("#id_whatsapp_number").val()
+    userprofile.governorate=$("#gover option:selected").val()
+    userprofile.dept=$("#dept option:selected").val()
+    userprofile.work=$("#id_work option:selected").val()
+    userprofile.gender=$("#id_gender option:selected").val()
+    day=$('#id_dob_day').val()
+    month=$('#id_dob_month').val()
+    year=$('#id_dob_year').val()
+    userprofile.dob=(year+"-"+month+"-"+day)
+    userprofile.email=$("#id_email").val()
+    userjson=JSON.stringify(userprofile)
+    $.ajax({
+      url:"{% url 'create-voter' %}",
+      type:"POST",
+      data:{
+        csrfmiddlewaretoken:'{{csrf_token}}',
+        voter:userjson
+      },
+      success:function(result){
+        if (result.error){
+            $("#message").text(result.error)
+            $("#errorMessage").modal('show')
+         
+          }
+          else{
+            window.location.replace(result.redirect_to);
+     
+          }
+
+      },
+      error:function(result){
+        alert("حدث خطأ بالتسجيل")
+      }
+    })
+    }
 
 })
 
@@ -287,6 +388,7 @@ $(document).ready(function(){
   $('#id_dob_day').addClass('form-control  date-input m-2')
   $('#id_dob_year').addClass('form-control date-input m-2')
   $('#id_gender').addClass('form-control m-2')
+  $('#id_work').find("option:selected").attr("data-field-name","العمل")
 })
 
 $(document).on('change', '#gover', function () {
