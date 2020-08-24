@@ -18,11 +18,19 @@ import datetime
 def hasNumbers(inputString):
     return bool(re.search(r'\d', inputString))
 
+def hasLetters(inputString):
+    return bool(re.search(r'[a-zA-Z]', inputString))
+    
 class CreateVoter(View):
 
     def post(self,request):
         voter=json.loads(request.POST.get("voter"))
         name_string=(voter['first_name']+voter['second_name']+voter['third_name']+voter['last_name'])
+        if hasNumbers(name_string):
+            return JsonResponse({"error":"لايمكن للاسم ان يحتوي ارقام"})
+
+        if hasLetters(voter['mobile_number']) :
+            return JsonResponse({'error':"لا يمكن لرقم الهاتف ان يحتوي احرف"})
         try:
             user_object={
                 "first_name":voter['first_name'],
@@ -30,17 +38,7 @@ class CreateVoter(View):
                 "username":(voter['mobile_number']),
                 "email":voter['email'],
             }
-            # dob=voter['dob']
-            # dob = datetime.datetime.strptime(dob, '%Y-%m-%d')
-            # today=datetime.datetime.now().strftime('%Y-%m-%d')
-            # now_date=datetime.datetime.strptime(today,'%Y-%m-%d')
-            # now_date=now_date.date()-dob.date()
-            # print(type(dob.date()))
-            # print(type(now_date))
-            # print(now_date)
 
-            # days_count=datetime.date(dob.date())- datetime.date(today)
-           
             response={}
             user=User(**user_object)
 
