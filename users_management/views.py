@@ -59,11 +59,13 @@ class LoginView(View):
                 return JsonResponse(response)
 
             else:
-                response["error"]="unauthorized access"
+                response["error"]="دخول غير مصرح به"
+                
                 return JsonResponse(response)
         else:
             
-            response["error"]="invalid username or password"
+            response["error"]="اسم المستخدم او كلمة المرور غير صحيحة"
+            
             return JsonResponse(response)
 
 class LogoutView(View):

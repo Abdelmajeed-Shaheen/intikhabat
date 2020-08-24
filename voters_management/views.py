@@ -5,63 +5,104 @@ from django.urls import reverse
 from django.contrib.auth import login,authenticate
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
+from django.db import IntegrityError
 from users_management.models import Voter,UserProfile,Candidate,WorkField
 from adminstration.models import ElectionCard,ElectionAddress,ElectionList
 from common.models import Address,Governorate,Department,Area
 import json
+import re
+import datetime
+
+
+
+def hasNumbers(inputString):
+    return bool(re.search(r'\d', inputString))
 
 class CreateVoter(View):
 
     def post(self,request):
         voter=json.loads(request.POST.get("voter"))
-
-        user_object={
-            "first_name":voter['first_name'],
-            "last_name":voter['last_name'],
-            "username":(voter['mobile_number']),
-            "email":voter['email'],
-        }
-        response={}
-        user=User(**user_object)
-        user.set_password(voter['pwd'])
-        user.save()
-        voter_work=WorkField.objects.get(id=int(voter['work']))
         name_string=(voter['first_name']+voter['second_name']+voter['third_name']+voter['last_name'])
+        try:
+            user_object={
+                "first_name":voter['first_name'],
+                "last_name":voter['last_name'],
+                "username":(voter['mobile_number']),
+                "email":voter['email'],
+            }
+            # dob=voter['dob']
+            # dob = datetime.datetime.strptime(dob, '%Y-%m-%d')
+            # today=datetime.datetime.now().strftime('%Y-%m-%d')
+            # now_date=datetime.datetime.strptime(today,'%Y-%m-%d')
+            # now_date=now_date.date()-dob.date()
+            # print(type(dob.date()))
+            # print(type(now_date))
+            # print(now_date)
 
+            # days_count=datetime.date(dob.date())- datetime.date(today)
+           
+            response={}
+            user=User(**user_object)
 
-
-        profile_object={
-            "mobile_number":voter['mobile_number'],
-            "middle_name":voter['second_name'],
-            "last_name":voter['third_name'],
-            "date_of_birth":voter['dob'],
-            "gender":voter["gender"],
-            "work_field":voter_work,
-            "user":user,
-            "name_string":name_string,
+            if len(voter['pwd']) < 8 :
+                return JsonResponse({"error":"كلمة السر يجب ان تكون ٨ خانات على الاقل"})
             
-        }
+            if not hasNumbers(voter['pwd']):
+                return JsonResponse({"error":"يجب ان تحتوي كلمة السر على ارقام"})
+            
+            user.set_password(voter['pwd'])
+            user.save()
 
-        profile=UserProfile(**profile_object)
-        profile.save()
-        election_address={}
-        if 'governorate' in voter and voter['governorate'] not in [None,""]:
-            governorate=Governorate.objects.get(id=int(voter['governorate']))
-            election_address['governorate']=governorate
+            if voter["work"] in ["",None]:
+                return JsonResponse({"error":"حقل العمل مطلوب"})
+            voter_work=WorkField.objects.get(id=int(voter['work']))
 
-        if 'dept' in voter and voter['dept'] not in [None,""]:
-            dept=Department.objects.get(id=int(voter['dept']))
-            election_address['department']=dept
+            profile_object={
+                "mobile_number":voter['mobile_number'],
+                "middle_name":voter['second_name'],
+                "last_name":voter['third_name'],
+                "date_of_birth":voter['dob'],
+                "gender":voter["gender"],
+                "work_field":voter_work,
+                "user":user,
+                "name_string":name_string,
+                
+            }
 
-        if 'department' in election_address and 'governorate' in election_address:
-            ea=ElectionAddress(**election_address)
-            ea.save()
-        voter=Voter(profile=profile,election_address=ea)
-        voter.save()
-        login(request,user)
-        response['redirect_to']=reverse('voter-profile',kwargs={'pk':user.userprofile.id})
-        return JsonResponse(response)   
+            profile=UserProfile(**profile_object)
+            profile.save()
 
+            print("success: ",user_object)
+
+            election_address={}
+            if 'governorate' in voter and voter['governorate'] not in [None,""]:
+                governorate=Governorate.objects.get(id=int(voter['governorate']))
+                election_address['governorate']=governorate
+
+            if 'dept' in voter and voter['dept'] not in [None,""]:
+                dept=Department.objects.get(id=int(voter['dept']))
+                election_address['department']=dept
+
+            if 'department' in election_address and 'governorate' in election_address:
+                ea=ElectionAddress(**election_address)
+                ea.save()
+            voter=Voter(profile=profile,election_address=ea)
+            voter.save()
+            login(request,user)
+            response['redirect_to']=reverse('voter-profile',kwargs={'pk':user.userprofile.id})
+            return JsonResponse(response)
+       
+        except IntegrityError :
+
+            if User.objects.filter(username=voter['mobile_number']).exists():
+                error_message="رقم هاتف مكرر  {0}"
+                error_message=error_message.format(voter['mobile_number'])
+
+            if UserProfile.objects.filter(name_string=name_string).exists():
+              
+                error_message="هذا الناخب مسجل مسبقا"
+
+            return JsonResponse({"error":error_message})
 
 class VoterProfile(DetailView):
 
