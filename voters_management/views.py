@@ -95,6 +95,10 @@ class CreateVoter(View):
             if User.objects.filter(username=voter['mobile_number']).exists():
                 error_message="رقم هاتف مكرر  {0}"
                 error_message=error_message.format(voter['mobile_number'])
+            
+            if User.objects.filter(email=voter['email']).exists():
+                error_message="بريد الكتروني مكرر  {0}"
+                error_message=error_message.format(voter['email'])                
 
             if UserProfile.objects.filter(name_string=name_string).exists():
               
