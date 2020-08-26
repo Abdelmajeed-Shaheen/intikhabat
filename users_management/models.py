@@ -66,12 +66,13 @@ class Candidate(models.Model):
     updated=models.DateTimeField(auto_now=False,auto_now_add=True)
     election_list=models.ForeignKey(to='adminstration.ElectionList',on_delete=models.CASCADE,null=True)
     title=models.CharField(max_length=255,blank=True,null=True)
+    profile_picture=models.ImageField(upload_to="candidate_images", null=True,blank=True)
     class Meta:
         permissions = [
             ("create_commitee", "Can create commitee"),
             ("add_committee_member", "can add commitee member"),
         ]
-    # profile_picture=models.ImageField(upload_to="path")
+    
 
     def __str__(self):
         return self.profile.user.username
