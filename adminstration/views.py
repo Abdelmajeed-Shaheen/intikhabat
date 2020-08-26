@@ -8,6 +8,7 @@ from users_management.models import (
                                         ComitteeMember,Voter,
                                         CustomVoterssPermissions,CustomMembersPermissions,
                                         CustomReportsPermissions,CustomComitteePermission,
+                                        CampaignAdminstrator
                                     )
 from common.models import ( Address,
                             Department,
@@ -242,19 +243,17 @@ class CreateDistrictView(View):
         return JsonResponse({"message":"success"})
 
 def html_to_pdf_view(request):
-    
+    if hasattr(request.user.userprofile,'comitteemanager'):
+        cm=ComitteeMember.objects.get(id=request.user.userprofile.comitteemember.id)
+        voters_list=Voter.objects.all().filter(related_comittee_member=cm,has_elc_card=True)
 
-    user=request.GET.get('user')
-    if user['type'] == 'cm':
-        cm=ComitteeMember.objects.get(id=request.GET.get(int(user['id'])))
-        voters_list=Voter.objects.all(candidate=cm.candidate,has_elc_card=True)
+    elif hasattr(request.user.userprofile,'campaignadminstrator'):
+        ca=CampaignAdminstrator.objects.get(id=request.user.userprofile.campaignadminstrator.id)
+        voters_list=Voter.objects.all().filter(candidate=ca.candidate,has_elc_card=True)
 
-    elif user['type'] == 'cmo':
-        cm=ComitteeMember.objects.get(id=request.GET.get(int(user['id'])))
-        voters_list=Voter.objects.all(related_comittee_member=cm,has_elc_card=True)
-    elif user['type'] == 'candi':
-        candi=Candidate.objects.get(id=request.GET.get(int(user['id'])))
-        voters_list=Voter.objects.all(candidate=candi,has_elc_card=True)
+    elif hasattr(request.user.userprofile,'candidate'):
+        candi=Candidate.objects.get(id=request.user.userprofile.candidate.id)
+        voters_list=Voter.objects.all().filter(candidate=candi,has_elc_card=True)
 
     html_string = render_to_string('report.html', {'voters_list': voters_list})
     html = HTML(string=html_string,base_url=request.build_absolute_uri())

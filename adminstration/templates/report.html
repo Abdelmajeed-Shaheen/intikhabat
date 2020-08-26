@@ -26,42 +26,47 @@
    
 
     <div class="container mt-5">
+      {% for voter in voters_list %}
         <h3>البطاقة الانتخابية</h3>
         <div class="row">
             <table class="table table-sm ">
               <thead>
                 <tr>
-
-                  <th scope="col">هاتف المعرف: 079666666</th>
-                  <th scope="col">الرقم الانتخابي: 1/0/2/1</th>
+                  <th scope="col">هاتف المعرف: {{voter.identiefier.profile.mobile_number}}</th>
+                  <th scope="col">الرقم الانتخابي:{{voter.voting_id}}</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
 
-                    <th scope="col">الرقم المعرف: 1/0/2/1</th>
-                    <th scope="col">اسم الناخب: احمد حمد حمايدة</th>
+                    <th scope="col">الرقم المعرف:{{voter.identiefier.voting_id}}</th>
+                    <th scope="col">  
+                      اسم الناخب: {{voter.profile.user.first_name}} {{voter.profile.middle_name}} {{voter.profile.last_name}} {{voter.profile.user.last_name}}
+                    </th>
                   </tr>
                   <tr>
 
-                    <th scope="col">هاتف عضو الارتباط: 079666666</th>
-                    <th scope="col">اسم المعرف: محمود حمد حمايدة</th>
+                    <th scope="col">هاتف المعرف: {{voter.identiefier.profile.mobile_number}}</th>
+                    <th scope="col">
+                      
+                      اسم المعرف: {{voter.identiefier.profile.user.first_name}} {{voter.identiefier.profile.middle_name}} {{voter.identiefier.profile.last_name}} {{voter.identiefier.profile.user.last_name}} 
+                    </th>
                   </tr>
  
                   <tr>
-                    <th scope="col">اسم عضو الارتباط: علي علاوي معلل</th>
-                    <th scope="col">هاتف عضو الارتباط: 079666666</th>
+                    <th scope="col">اسم عضو الارتباط:  {{voter.related_comittee_member.profile.user.first_name}} {{voter.related_comittee_member.profile.middle_name}} {{voter.related_comittee_member.profile.last_name}} {{voter.related_comittee_member.profile.user.last_name}} </th>
+                    <th scope="col">هاتف عضو الارتباط: {{voter.related_comittee_member.profile.mobile_number}}</th>
                   </tr>
                   <tr>
                       <th>صورة المرشح</th>
-                    <th scope="col">رقم المرشح: 2 </th>
+                    <th scope="col">رقم المرشح: {{voter.candidate.id}} </th>
                   </tr>
                   <tr>
-                    <th scope="col"><img src="{% static 'common/img/client-1.jpg' %}" alt=""></th>
+                    <th scope="col"><img src="{{voter.candidate.profile_picture.url}}" alt=""></th>
                       <th scope="col">
-                          اسم المرشح: عبد المجيد شاهين
+                          اسم المرشح:  {{voter.candidate.profile.user.first_name}} {{voter.candidate.profile.middle_name}} {{voter.candidate.profile.last_name}} {{voter.candidate.profile.user.last_name}}
                             <br>
-                            قائمة المرشح: قائمة طعام
+                            قائمة المرشح: {{voter.candidate.election_list}}
                       </th>
                   </tr>
                   <tr>
@@ -72,97 +77,7 @@
             </table>
           </div>
           <br>
-          <h3>البطاقة الانتخابية</h3>
-          <div class="row">
-            <table class="table table-sm">
-              <thead>
-                <tr>
-
-                  <th scope="col">هاتف المعرف: 079666666</th>
-                  <th scope="col">الرقم الانتخابي: 1/0/2/1</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-
-                    <th scope="col">الرقم المعرف: 1/0/2/1</th>
-                    <th scope="col">اسم الناخب: احمد حمد حمايدة</th>
-                  </tr>
-                  <tr>
-
-                    <th scope="col">هاتف عضو الارتباط: 079666666</th>
-                    <th scope="col">اسم المعرف: محمود حمد حمايدة</th>
-                  </tr>
- 
-                  <tr>
-                    <th scope="col">اسم عضو الارتباط: علي علاوي معلل</th>
-                    <th scope="col">هاتف عضو الارتباط: 079666666</th>
-                  </tr>
-                  <tr>
-                      <th>صورة المرشح</th>
-                    <th scope="col">رقم المرشح: 2 </th>
-                  </tr>
-                  <tr>
-                    <th scope="col"><img src="{% static 'common/img/client-1.jpg' %}" alt=""></th>
-                      <th scope="col">
-                          اسم المرشح: عبد المجيد شاهين
-                            <br>
-                            قائمة المرشح: قائمة طعام
-                      </th>
-                  </tr>
-                  <tr>
-                      <th scope="col"></th>
-                      <th scope="col"></th>
-                  </tr>   
-              </tbody>
-            </table>
-          </div>
-          <br>
-          <h3>البطاقة الانتخابية</h3>
-          <div class="row">
-            <table class="table table-sm">
-              <thead>
-                <tr>
-
-                  <th scope="col">هاتف المعرف: 079666666</th>
-                  <th scope="col">الرقم الانتخابي: 1/0/2/1</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-
-                    <th scope="col">الرقم المعرف: 1/0/2/1</th>
-                    <th scope="col">اسم الناخب: احمد حمد حمايدة</th>
-                  </tr>
-                  <tr>
-
-                    <th scope="col">هاتف عضو الارتباط: 079666666</th>
-                    <th scope="col">اسم المعرف: محمود حمد حمايدة</th>
-                  </tr>
- 
-                  <tr>
-                    <th scope="col">اسم عضو الارتباط: علي علاوي معلل</th>
-                    <th scope="col">هاتف عضو الارتباط: 079666666</th>
-                  </tr>
-                  <tr>
-                      <th>صورة المرشح</th>
-                    <th scope="col">رقم المرشح: 2 </th>
-                  </tr>
-                  <tr>
-                    <th scope="col"><img src="{% static 'common/img/client-1.jpg' %}" alt=""></th>
-                      <th scope="col">
-                          اسم المرشح: عبد المجيد شاهين
-                            <br>
-                            قائمة المرشح: قائمة طعام
-                      </th>
-                  </tr>
-                  <tr>
-                      <th scope="col"></th>
-                      <th scope="col"></th>
-                  </tr>   
-              </tbody>
-            </table>
-          </div>
+          {% endfor %}
     </div>
 
 
