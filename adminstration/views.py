@@ -23,7 +23,7 @@ from django.core.files.storage import FileSystemStorage
 from django.urls import reverse
 from django.template.loader import render_to_string
 from django.shortcuts import get_object_or_404
-from weasyprint import HTML,CSS
+# from weasyprint import HTML,CSS
 
 import json
 

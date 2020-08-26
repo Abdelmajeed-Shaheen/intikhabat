@@ -7,14 +7,20 @@
   <section id="hero">
     <div class="hero-container">
       <div class="wow fadeIn">
+        <div class="actions">
+          <i class="fa fa-star fa-2x mx-1 star-icon" aria-hidden="true"></i>
+          <i class="fa fa-star fa-2x mx-1 star-icon" aria-hidden="true"></i>
+          <i class="fa fa-star fa-2x mx-1  star-icon" aria-hidden="true"></i>
+          <i class="fa fa-star fa-2x mx-1 star-icon" aria-hidden="true"></i>
+          <i class="fa fa-star fa-2x mx-1 star-icon" aria-hidden="true"></i>
+        </div>
         <h1>انتخابات مجلس النواب الاردني</h1>
         <div class="actions">
-          <i class="fa fa-star fa-2x ml-5 star-icon" aria-hidden="true"></i>
-          <i class="fa fa-star fa-2x mr-5 star-icon" aria-hidden="true"></i>
-        </div>
-        <div class="actions">
-          <a href="#about" class="login-link ml-4" data-toggle="modal" data-target="#candidateLoginForm">ادارة الحملة</a>
-          <a href="/" class="login-link mr-4" data-toggle="modal" data-target="#voterLoginForm">ناخب</a>
+          <button  class="btn btn-success  mx-3 my-2" data-toggle="modal" data-target="#candidateLoginForm">ادارة الحملة</button>
+          <button  class="btn btn-success  mx-3 my-2" data-toggle="modal" data-target="#doyouhave">ناخب</button>
+          <button  class="btn btn-success  mx-3 my-2" data-toggle="modal" data-target="#video1">البث المباشر</button>
+          <button  class="btn btn-success  mx-3 my-2" data-toggle="modal" data-target="#video1">الاحصاء</button>
+          <button  class="btn btn-success  mx-3 my-2" data-toggle="modal" data-target="#video1">المرشحين</button>
         </div>
       </div>
     </div>
@@ -23,15 +29,13 @@
   <div class="modal fade" id="candidateLoginForm" tabindex="-1" role="dialog" aria-labelledby="candidateloginformlabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
-        <div class="modal-header"> 
+        <div class="modal-header">
           <h5 class="modal-title" id="loginformlabel">تسجيل دخول</h5>
-  
-          </button>
-        </div>
-        
+          </div>
+
           <div class="modal-body">
             <form id="#voterloginform" method="POST" action="{% url 'userlogin' %}">
-            {% csrf_token %} 
+            {% csrf_token %}
               <div class="form-group text-aligner">
                 <label for="recipient-name" class="col-form-label">رقم الهاتف</label>
                 {{candidate_login_form.candidate_username}}
@@ -40,12 +44,12 @@
                 <label for="message-text" class="col-form-label">كلمة السر</label>
                 {{candidate_login_form.candidate_password}}
               </div>
-  
+
             </form>
           </div>
-        
+
         <div class="modal-footer">
-          <button id="candidate-submit-form" class="btn btn-primary btn-block">تسجيل دخول</button>        </div>
+          <button id="candidate-submit-form" class="btn btn-info btn-block">تسجيل دخول</button></div>
       </div>
     </div>
   </div>
@@ -54,15 +58,12 @@
 <div class="modal fade" id="voterLoginForm" tabindex="-1" role="dialog" aria-labelledby="voterloginformlabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
-      <div class="modal-header"> 
+      <div class="modal-header">
         <h5 class="modal-title" id="loginformlabel">تسجيل دخول</h5>
-
-        </button>
       </div>
-      
         <div class="modal-body">
           <form id="loginform" method="POST" action="{% url 'userlogin' %}">
-          {% csrf_token %} 
+          {% csrf_token %}
             <div class="form-group text-aligner">
               <label for="recipient-name" class="col-form-label">رقم الهاتف</label>
               {{login_form.username}}
@@ -74,65 +75,68 @@
 
           </form>
         </div>
-      
+
       <div class="modal-footer">
-        <button id="submit-form" class="btn btn-primary btn-block">تسجيل دخول</button>
-        <button type="button" class="btn btn-success btn-block" data-target="#regModal" data-toggle="modal" >لا تمتلك حساب؟ سجل الان</button>
+        <button id="submit-form" class="btn btn-info btn-block">تسجيل دخول</button>
       </div>
     </div>
   </div>
 </div>
-
-<!-- regmodal -->
- <div class="modal fade text-aligner" id="regModal" tabindex="-1" role="dialog" aria-labelledby="regLable" aria-hidden="true">
+<!-- do you have an account modal -->
+<div class="modal fade" id="doyouhave" tabindex="-1" role="dialog" aria-labelledby="doyouhavelabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
-      <div class="modal-header"> 
+      <div class="modal-header">
+        <div calss="row">
+          <div class="text-center"><h5>هل لديك حساب ؟</h5></div>
+        </div>
+      </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-md-6 "><button class="btn btn-info btn-block mx-2 my-2"data-toggle="modal" data-target="#voterLoginForm" data-dismiss="modal">نعم</button></div>
+            <div class="col-md-6 "><button class="btn btn-info btn-block mx-2 my-2"data-toggle="modal" data-target="#regModal" data-dismiss="modal">لا</button></div>
+          </div>
+        </div>
+    </div>
+  </div>
+</div>
+<!-- regmodal -->
+ <div class="modal" id="regModal" tabindex="-1" role="dialog" aria-labelledby="regLable" aria-hidden="true" style="overflow-y:scroll;">
+  <div class="modal-dialog modal-dialog-center" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
         <h5 class="modal-title" id="regLable">مرحبا بك </h5>
       </div>
-      <div class="modal-body ">
+      <div class="modal-body text-aligner">
         <form id="createProfileForm" class="needs-validation" novalidate>
           <div class="form-row">
-            <div class="col-sm-3 mb-3">
-              
+            <div class="col-md-3 mb-3">
               {{voter_reg_form.first_name}}
-
-
             </div>
-            <div class="col-sm-3 mb-3">
-             
+            <div class="col-md-3 mb-3">
               {{voter_reg_form.second_name}}
             </div>
-            <div class="col-sm-3 mb-3">
-              
+            <div class="col-md-3 mb-3">
               {{voter_reg_form.third_name}}
             </div>
-            <div class="col-sm-3 mb-3">
-              
+            <div class="col-md-3 mb-3">
               {{voter_reg_form.last_name}}
-            </div>            
+            </div>
           </div>
-          
           <div class="form-row">
-            <div class="col-sm-5 mb-3">
-             
+            <div class="col-md-5 mb-3">
               {{voter_reg_form.mobile_number}}
             </div>
-
-
-            <div class="col-sm-7 mb-3">
-              
+            <div class="col-md-7 mb-3">
               {{voter_reg_form.email}}
             </div>
           </div>
-          
           <div class="form-row mt-2">
-           
-              <label >تاريخ الميلاد</label>
-              {{voter_reg_form.dob}}
-            
-          </div>
+              <label >تاريخ الميلاد</label></div>
           <div class="form-row">
+              {{voter_reg_form.dob}}
+          </div>
+          <div class="form-row mt-2">
             <div class="col-md-4">
               <label >الجنس</label>
               {{voter_reg_form.gender}}
@@ -143,7 +147,10 @@
             </div>
           </div>
           <div class="form-row mt-2">
-            <div class="col-sm-6">
+            <label >المحافظة و الدائرة الانتخابية</label>
+          </div>
+          <div class="form-row mt-2">
+              <div class="col-md-6 mt-1">
               <select name="" id="gover" class="form-control"   >
                 <option value="" data-field-name="المحافظة">
                   اختر المحافظة
@@ -153,17 +160,16 @@
                 {% endfor %}
               </select>
             </div>
-            <div class="col-sm-6">
+            <div class="col-md-6 mt-1">
               <select name="" id="dept" class="form-control">
-                <option value="" data-field-name="الدائرة">  
+                <option value="" data-field-name="الدائرة">
                   اختر الدائرة
                 </option>
 
               </select>
             </div>
           </div>
-
-          <div class="form-row mt-3 ">
+          <div class="form-row mt-5">
             <div class="col-sm-8">
               <input type="password" id="pwd" required placeholder="كلمة السر" class="form-control" data-field-name="كلمة السر">
               <div class="m-2 field-warning">
@@ -173,34 +179,35 @@
                 <span>* يجب ان تتكون كلمة السر من ٨ خانات</span>
               </div>
             </div>
-          </div>         
+          </div>
         </form>
-        <button class="btn btn-success btn-block mt-3" id="register">تسجيل</button>
+        <span style="color:red;font-weight:bolder;">يستخدم رقم الهاتف و كلمة السر للدخول الى الصفحة مرة اخرى</span>
+        <button class="btn btn-info btn-block mt-3" id="register">تسجيل</button>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-danger" data-dismiss="modal">اغلاق</button>
-        
       </div>
     </div>
   </div>
 </div>
+
 <!-- success modal -->
 <div class="modal fade" id="succesModal" tabindex="-1" role="dialog" aria-labelledby="successModalTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-       
+
 
       </div>
       <div class="modal-body">
         <div class="alert alert-success" role="alert">
           <h4 class="alert-heading">تم التسجيل بنجاح</h4>
-         
+
         </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-danger" data-dismiss="modal">اغلاق</button>
-       
+
       </div>
     </div>
   </div>
@@ -210,23 +217,36 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header">
-         
-  
+
+
         </div>
         <div class="modal-body">
           <div class="alert alert-danger" role="alert">
             <h4 class="alert-heading" id="message" ></h4>
-           
+
           </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-danger" data-dismiss="modal">اغلاق</button>
-         
+
         </div>
       </div>
     </div>
     </div>
-   
+
+    <!-- select candidate Modal -->
+    <div class="modal fade" id="video1" tabindex="-1" role="dialog" aria-labelledby="video1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+      <div class="modal-body">
+        <div class="embed-responsive embed-responsive-16by9">
+  <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/v64KOxKVLVg" allowfullscreen></iframe>      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">اغلاق</button>
+      </div>
+    </div>
+  </div>
+
 {% endblock  %}
 
 {% block main %}
@@ -245,7 +265,7 @@
       data:{
         username:user,
         password:pwd,
-        csrfmiddlewaretoken: '{{ csrf_token }}' 
+        csrfmiddlewaretoken: '{{ csrf_token }}'
       },
       success:function (result) {
         if (result.error){
@@ -258,7 +278,7 @@
       },
     })
   })
-  
+
   $("#candidate-submit-form").on('click',function(){
     pwd=$("#id_candidate_password").val()
     user=$("#id_candidate_username").val()
@@ -269,7 +289,7 @@
       data:{
         username:user,
         password:pwd,
-        csrfmiddlewaretoken: '{{ csrf_token }}' 
+        csrfmiddlewaretoken: '{{ csrf_token }}'
       },
       success:function (result) {
 
@@ -280,32 +300,32 @@
         else{
           window.location.replace(result.redirect_to);
         }
-        
+
       },
     })
 
   })
 
 
-  var checker=false 
+  var checker=false
   function checkField(formFields,selecFields){
   inputFields=formFields
   selectFields
-  
+
   inputFields.each(function(){
     field=$(this)
       if (!field.val()){
         $("#message").append("<span>"+field.data("field-name")+" مطلوب"+"</span> <br>");
         $("#errorMessage").modal("show");
-      
+
         checker=false
       }
-    
+
       else{
         checker=true
 
       }
-      
+
   })
 
   selectFields.each(function(){
@@ -314,16 +334,16 @@
       if (!option.val() || option.val()==""){
         $("#message").append("<span>"+option.data("field-name")+" مطلوب"+"</span> <br>");
         $("#errorMessage").modal("show");
-      
+
         checker=false
 
       }
-    
+
       else{
         checker=true
 
       }
-      
+
   })
 
   return checker
@@ -367,11 +387,11 @@ $('#register').on('click',function(){
         if (result.error){
             $("#message").text(result.error)
             $("#errorMessage").modal('show')
-         
+
           }
           else{
             window.location.replace(result.redirect_to);
-     
+
           }
 
       },
