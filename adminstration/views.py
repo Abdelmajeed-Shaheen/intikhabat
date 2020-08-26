@@ -414,7 +414,9 @@ class GetVotersList(View):
             candidate=Candidate.objects.get(id=int(query['candidate']))
 
             search_object['candidate']=candidate
-
+        
+        if query['gender'] not in [None,""]:
+            search_object['profile__gender']=query['gender']
         
         voters_list=Voter.objects.filter(**search_object)
   
@@ -450,12 +452,13 @@ def by_committee_member_report(request):
 
     query=request.GET.get('query')
     query=json.loads(query)
+    search_object={'vote_status':"Voting"}
+    if query['gender'] not in [None,""]:
+        search_object['profile__gender']=query['gender']
     if query['cm_id'] not in [None,""]:
         cm=ComitteeMember.objects.get(id=int(query['cm_id']))
-        voters_list=Voter.objects.filter(related_comittee_member=cm,vote_status="Voting")
-    else:
-        voters_list=None
-    
+        search_object['related_comittee_member']=cm
+    voters_list=Voter.objects.filter(**search_object)
     html_string = render_to_string('by_cm_report.html', {'voters_list': voters_list})
     html = HTML(string=html_string,base_url=request.build_absolute_uri())
     html.write_pdf(target='/tmp/mypdf.pdf',)
@@ -503,7 +506,8 @@ def by_identifier_report(request):
         cm=ComitteeMember.objects.get(id=int(query['cm_id']))
         identifier_object['related_comittee_member']=cm
         search_object['related_comittee_member']=cm
-
+    if query["gender"] not in [None,""]:
+        search_object["profile__gender"]=query["gender"]
     if query['is_identifier']:
             identifier_object['is_identifier']=True
         
@@ -536,11 +540,12 @@ class GetVotersByAddressReport(View):
     template_name="address_report.html"
     def get(self,request):
         user=request.user.userprofile
-        reports_permissions=CustomReportsPermissions.objects.get(user=user)
+        reports_permissions=None
         if hasattr(request.user.userprofile,'campaignadminstrator'):
             candidate=request.user.userprofile.campaignadminstrator.candidate
         
         elif hasattr(request.user.userprofile,'comitteemember'):
+            reports_permissions=CustomReportsPermissions.objects.get(user=user)
             candidate=request.user.userprofile.comitteemember.candidate
 
         else :
@@ -562,7 +567,8 @@ def by_address_report(request):
     query=request.GET.get('query')
     query=json.loads(query)
     search_object={}
-
+    if query["gender"] not [None,""]:
+        search_object["profile__gender"]=query["gender"]
     if query['area_id'] not in [None,""]:
         search_object['profile__address__area']=Area.objects.get(id=int(query['area_id']))
 
@@ -587,6 +593,8 @@ def by_status_report(request):
     query=request.GET.get('query')
     query=json.loads(query)
     search_object={}
+    if query["gender"] not in [None,""]:
+        search_object["profile__gender"]=query["gender"]
     if query['cm_id'] not in [None,""]:
         cm=ComitteeMember.objects.get(id=int(query['cm_id']))
         search_object['profile__address__district']=cm.profile.address.district

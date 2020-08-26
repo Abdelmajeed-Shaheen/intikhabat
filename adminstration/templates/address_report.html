@@ -25,7 +25,7 @@
     <input id="gover_report" hidden>
     <input id="dept_report" hidden>
     </div>
-    {% if reports_permissions.can_create_report %}
+    {% if reports_permissions.can_create_report or request.user.userprofile.campaignadminstrator or request.user.userprofile.candidate %}
 
     <div class="row">
         <button class="btn btn-danger btn-sm mb-3" id="print">مراجعة و طباعة التقرير</button>
@@ -48,7 +48,18 @@
                     <select id="district" name="district" class="form-control m-2">
                         <option value="">اختر الحي</option>
                     </select>
-               
+                 <div class="form-check mb-2 mr-sm-2">
+                <input class="form-check-input" type="radio" id="male" value="Male">
+                <label class="form-check-label" >
+                ذكر
+                </label>
+                </div>
+                    <div class="form-check mb-2 mr-sm-2">
+                    <input class="form-check-input" type="radio" id="female" value="Female">
+                    <label class="form-check-label" >
+                    انثى
+                    </label>
+                    </div>
              
                     <button id="search" type="submit" class="btn btn-info m-2">ابحث</button>
             
@@ -139,13 +150,19 @@ $('#search').on('click',function(e){
     e.preventDefault()
     area_id= $('#area option:selected').val();
     district_id= $('#district option:selected').val();
+    gender=""
+    if($(".form-inline").find('input:radio:checked').val()){
+        gender=$(".form-inline").find('input:radio:checked').val()
+    }
+    
     query=new Object()
     query.area_id=area_id
     query.district=district_id
     query.candidate="{{candidate.id}}"
+    query.gender=gender
     {% if not request.user.userprofile.comitteemember.is_manager %}
     query.cm_id=$("#cm_id").val()
-    console.log(query.cm_id)
+
     {% endif %}
 
 
@@ -199,9 +216,21 @@ $("#print").on("click",function(){
     query.area_id=area_id
     query.district=district_id
     query.candidate="{{candidate.id}}"
+    gender=""
+    if($(".form-inline").find('input:radio:checked').val()){
+        gender=$(".form-inline").find('input:radio:checked').val()
+    }
+    query.gender=genders
     window.open("{% url 'by-address-report' %}?query="+JSON.stringify(query))
     
 
+})
+$("#male").change(function(){
+    $("#female").prop('checked',false)
+})
+
+$("#female").change(function(){
+    $("#male").prop('checked',false)
 })
 </script>
 
