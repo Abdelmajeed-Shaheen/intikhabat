@@ -67,7 +67,7 @@ class VoterRegForm(forms.Form):
                                                     empty_label=("السنة","الشهر", "اليوم"),
                                                     
                                                     ))
-    GENDER_CHOICES=(('male', 'ذكر'),('female', 'انثى'),)
+    GENDER_CHOICES=(('Male', 'ذكر'),('Female', 'انثى'),)
     gender=forms.ChoiceField(choices=GENDER_CHOICES)
     work=forms.ModelChoiceField(queryset=WorkField.objects.all(),widget=forms.Select(attrs={'class':'form-control m-2'}))
     identifier=forms.CharField(widget=forms.TextInput(

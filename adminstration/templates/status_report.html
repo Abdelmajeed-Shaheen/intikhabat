@@ -44,6 +44,22 @@
                     <input type="text"  class="form-control" id="w_no" placeholder="رقم هاتف٣" >                   
                 </div>
             </div>
+            <div class="form-row">
+                <div class="col-lg-3">
+                    <div class="form-check mb-2 ml-sm-2">
+                        <input class="form-check-input" type="radio" id="male" value="Male">
+                        <label class="form-check-label mr-4" >
+                        ذكر
+                        </label>
+                        </div>
+                            <div class="form-check mb-2 ml-sm-2">
+                            <input class="form-check-input" type="radio" id="female" value="Female">
+                            <label class="form-check-label mr-4" >
+                            انثى
+                            </label>
+                            </div>
+                </div>
+            </div>
             <div class="form-row mt-3">
                 <div class="col-lg-3">
                     <button id="search" type="submit" class="btn btn-info">ابحث</button>
@@ -126,12 +142,18 @@ $('#search').on('click',function(e){
     cm_id=$('#cm_id').val()
     phone_number=$('#p_no').val()
     whatsapp_number=$('#w_no').val()
+    gender=""
+    if($(".form-inline").find('input:radio:checked').val()){
+        gender=$(".form-inline").find('input:radio:checked').val()
+    }
+
+
     query=new Object()
     query.phone_number=phone_number
     query.whatsapp_number=whatsapp_number
     query.cm_id=cm_id
     query.status="Not_sure"
-
+    query.gender=gender
     $.ajax({
         url:"{% url 'get_voters' %}",
         type:"GET",
@@ -163,7 +185,10 @@ $('#search').on('click',function(e){
 })
 
 $("#print").on("click",function(){
-
+    gender=""
+    if($(".form-inline").find('input:radio:checked').val()){
+        gender=$(".form-inline").find('input:radio:checked').val()
+    }
     cm_name=$('#cm_id').val()
     phone_number=$('#p_no').val()
     whatsapp_number=$('#w_no').val()
@@ -171,7 +196,7 @@ $("#print").on("click",function(){
     query.phone_number=phone_number
     query.whatsapp_number=whatsapp_number
     query.cm_id=cm_name
-    
+    query.gender=gender 
     window.open("{% url 'by-status-report' %}?query="+JSON.stringify(query))
     
 
@@ -199,6 +224,17 @@ $( "#cm" ).autocomplete({
         .append( "<div>" + item.lable + "</div>" )
         .appendTo( ul );
     };
+
+
+
+$("#male").change(function(){
+    $("#female").prop('checked',false)
+})
+
+$("#female").change(function(){
+    $("#male").prop('checked',false)
+})
+
 </script>
 
 
