@@ -11,8 +11,8 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
-import dj_database_url
-import dotenv
+
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -27,7 +27,7 @@ SECRET_KEY = 'ixac3+_w+xx26vpz$jdvq89g!5@lavg+*94v9k)1s+wqo!lqwa'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['0.0.0.0','127.0.0.1','blooming-fortress-61534.herokuapp.com']
 
 
 # Application definition
@@ -85,13 +85,12 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'jpems',
         'USER': 'postgres',
-        'PASSWORD': 'test1234',
-        'HOST': '',
+        'PASSWORD': 'postgres',
+        'HOST': '*',
         'PORT': '5432',
     }
 }
-# DATABASES = {}
-# DATABASES['default'] = dj_database_url.config(conn_max_age=600)
+
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
@@ -114,7 +113,10 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
-
+try:
+    from .local_settings import *
+except:
+    pass
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
