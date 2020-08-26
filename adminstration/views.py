@@ -567,7 +567,7 @@ def by_address_report(request):
     query=request.GET.get('query')
     query=json.loads(query)
     search_object={}
-    if query["gender"] not [None,""]:
+    if query["gender"] not in [None,""]:
         search_object["profile__gender"]=query["gender"]
     if query['area_id'] not in [None,""]:
         search_object['profile__address__area']=Area.objects.get(id=int(query['area_id']))
