@@ -66,6 +66,20 @@
             {% endif %}
             <div class="form-row mt-3">
                 <div class="col-lg-3">
+                    <div class="form-check mb-2 ml-sm-2">
+                        <input class="form-check-input" type="radio" id="male" value="Male">
+                        <label class="form-check-label mr-4" >
+                        ذكر
+                        </label>
+                        </div>
+                            <div class="form-check mb-2 ml-sm-2">
+                            <input class="form-check-input" type="radio" id="female" value="Female">
+                            <label class="form-check-label mr-4" >
+                            انثى
+                            </label>
+                            </div>
+                </div>
+                <div class="col-lg-3">
                     <button id="search" type="submit" class="btn btn-info">ابحث</button>
                 </div>
             </div>
@@ -108,7 +122,11 @@ $('#search').on('click',function(e){
     identifier_id=$('#idn_id').val()
     identifier_mobile=$('#idn_p_no').val()
     identifier_wa=$('#idn_w_no').val()
-
+    gender=""
+    if($(".form-inline").find('input:radio:checked').val()){
+        gender=$(".form-inline").find('input:radio:checked').val()
+    }
+    
     query=new Object()
 
     query.phone_number=phone_number
@@ -118,7 +136,7 @@ $('#search').on('click',function(e){
     query.identifier_id=identifier_id
     query.identifier_wa=identifier_wa
     query.is_identifier=true
-
+    query.gender=gender
     $.ajax({
         url:"{% url 'get_voters' %}",
         type:"GET",
@@ -156,7 +174,10 @@ $('#search').on('click',function(e){
 })
 
 $("#print").on("click",function(){
-
+    gender=""
+    if($(".form-inline").find('input:radio:checked').val()){
+        gender=$(".form-inline").find('input:radio:checked').val()
+    }
     cm_name=$('#cm').val()
     phone_number=$('#p_no').val()
     whatsapp_number=$('#w_no').val()
@@ -164,6 +185,7 @@ $("#print").on("click",function(){
     identifier_mobile=$('#idn_p_no').val()
     identifier_wa=$('#idn_w_no').val()
     query=new Object()
+    quer.gender=gender
     query.phone_number=phone_number
     query.whatsapp_number=whatsapp_number
     query.cm_id=cm_id
@@ -219,6 +241,15 @@ $( "#idn_name" ).autocomplete({
     .append( "<div>" + item.lable + "</div>" )
     .appendTo( ul );
 };
+
+$("#male").change(function(){
+    $("#female").prop('checked',false)
+})
+
+$("#female").change(function(){
+    $("#male").prop('checked',false)
+})
+
 </script>
 
 

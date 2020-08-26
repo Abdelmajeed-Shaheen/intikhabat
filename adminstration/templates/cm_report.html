@@ -43,6 +43,22 @@
                 </div>
                 
             </div>
+            <div class="form-row">
+              <div class="col-lg-3">
+                <div class="form-check mb-2 ml-sm-2">
+                    <input class="form-check-input" type="radio" id="male" value="Male">
+                    <label class="form-check-label mr-4" >
+                    ذكر
+                    </label>
+                    </div>
+                        <div class="form-check mb-2 ml-sm-2">
+                        <input class="form-check-input" type="radio" id="female" value="Female">
+                        <label class="form-check-label mr-4" >
+                        انثى
+                        </label>
+                        </div>
+            </div>
+            </div>
             <div class="form-row m-3">
               <button id="search" type="submit" class="btn btn-info">ابحث</button>
 
@@ -91,13 +107,21 @@
 
 $('#search').on('click',function(e){
     e.preventDefault()
+
+    gender=""
+      if($(".form-inline").find('input:radio:checked').val()){
+          gender=$(".form-inline").find('input:radio:checked').val()
+      }
+
     query=new Object()
     phone_number=$('#p_no').val()
     whatsapp_number=$('#w_no').val()
     query.phone_number=phone_number
     query.whatsapp_number=whatsapp_number
     cm_id=$('#cm_id').val()
+    console.log(cm_id)
     query.cm_id=cm_id
+    query.gender=gender
 
     $.ajax({
         url:"{% url 'get_voters' %}",
@@ -143,13 +167,18 @@ $('#search').on('click',function(e){
 })
 
 $("#print").on("click",function(){
+
+    gender=""
+      if($(".form-inline").find('input:radio:checked').val()){
+          gender=$(".form-inline").find('input:radio:checked').val()
+      }
     query=new Object()
     phone_number=$('#p_no').val()
     whatsapp_number=$('#w_no').val()
     query.phone_number=phone_number
     query.whatsapp_number=whatsapp_number
     cm_name=$('#cm_id').val()
-    
+    query.gender=gender
     query.cm_id=cm_name    
     window.location.replace("{% url 'by-cm-report' %}?query="+JSON.stringify(query))
 })
@@ -179,7 +208,13 @@ $("#print").on("click",function(){
         .appendTo( ul );
     };
 
+    $("#male").change(function(){
+    $("#female").prop('checked',false)
+})
 
+$("#female").change(function(){
+    $("#male").prop('checked',false)
+})
 </script>
 
 
