@@ -245,7 +245,11 @@ class CreateDistrictView(View):
 def html_to_pdf_view(request):
     if hasattr(request.user.userprofile,'comitteemanager'):
         cm=ComitteeMember.objects.get(id=request.user.userprofile.comitteemember.id)
-        voters_list=Voter.objects.all().filter(related_comittee_member=cm,has_elc_card=True)
+        if cm.is_manager:
+            voters_list=Voter.objects.all().filter(candidate=cm.candidate,has_elc_card=True)
+        else:
+            voters_list=Voter.objects.all().filter(related_comittee_member=cm,has_elc_card=True)
+
 
     elif hasattr(request.user.userprofile,'campaignadminstrator'):
         ca=CampaignAdminstrator.objects.get(id=request.user.userprofile.campaignadminstrator.id)
