@@ -1,8 +1,10 @@
 from django.shortcuts import render,redirect
+from django.contrib import messages
 from django.urls import reverse
 from django.views.generic import View,DetailView
-from django.contrib.auth import authenticate, login,logout
+from django.contrib.auth import authenticate, login,logout,update_session_auth_hash
 from django.contrib.auth.models import User
+from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib import messages
 from django.http import HttpResponseRedirect,HttpResponse,JsonResponse
 from django.db.utils import IntegrityError
@@ -280,7 +282,27 @@ class UpdateProfile(View):
         profile.save()
         
         return JsonResponse({"user":"success"})
-        
+
+
+def change_password(request):
+    if request.method == 'POST':
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)  # Important!
+            messages.success(request, 'تم نغيير كلمة السر بنجاح')
+            
+            return redirect(reverse('change_password'))
+        else:
+            messages.error(request, 'يرجى مراعاة كلمة السر ان تتضمن ٨ خانات على الاقل و ارقام واحرف')
+    else:
+        form = PasswordChangeForm(request.user)
+    return render(request, 'change_password.html', {
+        'form': form
+    })
+   
+
+                
 
 
 

@@ -22,7 +22,7 @@
   </header>
 {% endblock %}
 {% block main %}
-{% if request.user.userprofile.comitteemember.is_active %}
+{% if request.user.userprofile.comitteemember.is_active or not request.user.userprofile.comitteemember.comittee.is_active %}
 <div class="row m-5">
   <div class="alert alert-danger" role="alert">
    حسابك موقوف من قبل ادارة الحملة

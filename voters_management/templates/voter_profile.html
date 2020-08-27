@@ -65,6 +65,14 @@
         </h5></div>
       {% endif %}
       {% endif %}
+      {% if voter.voter.related_comittee_member %}
+        <div class="col-md-3">
+        <h5 class="about-title text-aligner">
+            عضو الارتباط:
+              <span style="color:green;font-size:24px;">{{voter.voter.related_comittee_member.profile.user.first_name}} {{voter.voter.related_comittee_member.profile.user.last_name}}</span>
+        </h5>
+      </div>
+     {% endif %}
     </div>
   </div>
 </div>
