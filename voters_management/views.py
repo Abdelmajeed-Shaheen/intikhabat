@@ -12,6 +12,7 @@ from common.models import Address,Governorate,Department,Area
 import json
 import re
 import datetime
+from collections import defaultdict
 
 
 
@@ -141,36 +142,23 @@ class UpdateVoter(View):
     def post(self,request):
        
         voter_object={}
-        voting_id_string=list("0/0/0/0/0")
+        voting_id_string='{}/{}/{}/{}/{}'
+        candidate_id_string=0
+        candidate_address_id_string=0
+        candidate_dept_id_string=0
         if request.POST.get('voter_id'):
             voter_id=request.POST.get('voter_id')
             voter=Voter.objects.filter(id=int(voter_id))
-
-        if voter.values('voting_id')[0]['voting_id'] is not None:
-            voting_id=voter.values('voting_id')
-            voting_id_string=list(voting_id[0]['voting_id'])
-            
+            voter_id=voter.values('id')[0]['id']
+                       
         if request.POST.get('candidate'):
             candidate=Candidate.objects.get(id=request.POST.get('candidate'))
             voter_object['candidate']=candidate
             candidate_id_string=str(candidate.id)
             candidate_address_id_string=str(candidate.election_list.election_address.governorate.id)
             candidate_dept_id_string=str(candidate.election_list.election_address.department.id)
-            voting_id_string[2]=candidate_id_string
-            voting_id_string[4]=candidate_address_id_string
-            voting_id_string[6]=candidate_dept_id_string
             
-            if len(voting_id_string)<7:
-                voting_id_string.append(str("+"+voter.values('id')[0]['id']))
 
-            else:
-                voting_id_string[8]=str(voter.values('id')[0]['id'])
-
-
-            new_id="".join(voting_id_string)
-           
-            voter_object['voting_id']=new_id
-      
         if request.POST.get("status"):
             voter_object['vote_status']=request.POST.get("status")
 
@@ -183,9 +171,8 @@ class UpdateVoter(View):
             else:
                 status_id="3"
             
-            voting_id_string[0]=status_id
-            new_id="".join(voting_id_string)
-            voter_object['voting_id']=new_id
+        voting_id_string=voting_id_string.format(status_id,candidate_address_id_string,candidate_address_id_string,candidate_dept_id_string,voter_id)
+        voter_object['voting_id']=voting_id_string
         
         if request.POST.get('ec'):
             if request.POST.get('ec')=='true':
