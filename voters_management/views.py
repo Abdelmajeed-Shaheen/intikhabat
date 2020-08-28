@@ -150,8 +150,6 @@ class UpdateVoter(View):
             voting_id=voter.values('voting_id')
             voting_id_string=list(voting_id[0]['voting_id'])
             
-
-            
         if request.POST.get('candidate'):
             candidate=Candidate.objects.get(id=request.POST.get('candidate'))
             voter_object['candidate']=candidate

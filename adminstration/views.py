@@ -37,8 +37,9 @@ class CampaignManagementMainView(View):
             candidate=request.user.userprofile.campaignadminstrator.candidate
         else:
             candidate=request.user.userprofile.candidate
+
         user=request.user.userprofile
-        comittees_list=Comittee.objects.filter(is_active=True,candidate=candidate)
+        comittees_list=Comittee.objects.filter(candidate=candidate)
         campaign_manager=candidate.campaignadminstrator
         comittees_members=candidate.comitteemember_set.all()
         govenorate_list=Governorate.objects.all()
@@ -108,22 +109,21 @@ class CreateComitteeView(View):
         name=request.POST.get('name')
         description=request.POST.get('description')
         is_active=request.POST.get('status')
-        print(is_active)
         if is_active == "on":
             is_active=True
         else:
             is_active=False
-        address=request.POST.get('address')
-        address=Address.objects.get(pk=int(address))
+        address=request.POST.get('address_description')
+        
         response={
             'candidate':candidate,
             'name':name,
             'description':description,
             'is_active':is_active,
-            'address':address
+            'address_description':address
         }
-        comittee=Comittee.objects.create(**response)
-        print(comittee)
+        Comittee.objects.create(**response)
+        
 
         return JsonResponse({"message":"success"})
 
@@ -331,10 +331,10 @@ class GetDepartmentArea(View):
 class SearchComitteeView(View):
 
     def get(self,request): 
-        query=request.GET.get('query')
-        
+        query=request.GET.get('is_active')
+        print(query)
         response=[]
-        try:
+        if 'comittee_name' in query:
             comittee=Comittee.objects.get(name=query)         
             if comittee.is_active:
                 status="فعالة"
@@ -353,7 +353,34 @@ class SearchComitteeView(View):
             }
             response.append(comittee)
             return JsonResponse({"comittee":comittee})
-        except:
+        
+        elif request.GET.get("is_active"):
+
+            if query=="true":
+                comittees_list=Comittee.objects.all().filter(is_active=True)
+                status="فعالة"
+            else:
+                comittees_list=Comittee.objects.all().filter(is_active=False)
+                status="غير فعالة"
+            
+            for comittee in comittees_list:
+
+                if comittee.manager is not None:
+                    manager=str(comittee.manager.profile.user.first_name+" " +comittee.manager.profile.user.last_name)
+                else:
+                    manager="لا يوجد مدير"
+
+                comittee={
+                    'comittee_name':comittee.name,
+                    'status':status,
+                    'manager':manager,
+                    'id':comittee.id
+                }
+                response.append(comittee)
+    
+            return JsonResponse({"comittee_list":response})
+        
+        else:
             response.append('لا توجد نتائج')
             return JsonResponse({"error":response})
 
@@ -368,6 +395,8 @@ class GetVotersList(View):
         search_object={}
         data={}
         identifier_object={}
+        if 'card_status' in query and query["card_status"] not in [None,""]:
+            search_object['has_elc_card']=query["card_status"]
 
         if 'status' in query:
             search_object['vote_status']=query['status']
@@ -659,12 +688,12 @@ def update_comittee(request,id):
             is_active=True
         else:
             is_active=False
-        address=Address.objects.get(id=int(request.POST.get('address')))
+        address=request.POST.get('address_description')
 
         comittee.name=name
         comittee.is_active=is_active
         comittee.description=description
-        comittee.address=address
+        comittee.address_description=address
         comittee.save()
 
         return HttpResponseRedirect(reverse('update-committee',kwargs={'id':comittee.id}))
@@ -685,7 +714,6 @@ def update_comittee_member(request,id):
     areas_list=Area.objects.filter(department=department)
     
     if request.POST:
-        print(request.POST)
         comittee=request.POST.get('comittee')
 
         if request.POST.get('is_manager') == "on":
