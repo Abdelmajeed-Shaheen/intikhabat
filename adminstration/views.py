@@ -39,7 +39,7 @@ class CampaignManagementMainView(View):
             candidate=request.user.userprofile.candidate
         user=request.user.userprofile
         comittees_list=Comittee.objects.filter(is_active=True,candidate=candidate)
-        campaign_manager=candidate.campaignadminstrator_set.first()
+        campaign_manager=candidate.campaignadminstrator
         comittees_members=candidate.comitteemember_set.all()
         govenorate_list=Governorate.objects.all()
         departments_list=Department.objects.all()
@@ -70,7 +70,7 @@ class ComitteeMemberView(View):
         comittee=request.user.userprofile.comitteemember.comittee
         candidate=request.user.userprofile.comitteemember.candidate
         user=request.user.userprofile
-        campaign_manager=candidate.campaignadminstrator_set.first()
+        campaign_manager=candidate.campaignadminstrator
         comittees_members=comittee.comitteemember_set.all()
         voters_permissions=CustomVoterssPermissions.objects.get(user=user)
         reports_permissions=CustomReportsPermissions.objects.get(user=user)
@@ -78,9 +78,9 @@ class ComitteeMemberView(View):
         memebrs_permissions=CustomMembersPermissions.objects.get(user=user)
         
         if user.comitteemember.is_manager:
-            new_voters_list=Voter.objects.all().filter(candidate=candidate)
+            new_voters_list=Voter.objects.all().filter(candidate=candidate,followed_up=False)
         else:
-            new_voters_list=Voter.objects.all().filter(related_comittee_member=user.comitteemember)
+            new_voters_list=Voter.objects.all().filter(related_comittee_member=user.comitteemember,followed_up=False)
         
             
         context={
@@ -814,8 +814,8 @@ def update_voter(request,id):
 
     if request.POST:
         cm=request.POST.get('cm')
-        followed_up=request.POST.get('followed_up')
-        if followed_up == 'true':
+        followed_up=request.POST.get('is_followed')
+        if followed_up == 'on':
             followed_up=True
         else:
             followed_up=False

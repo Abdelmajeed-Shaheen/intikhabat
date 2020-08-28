@@ -183,11 +183,6 @@ class CreateUser(View):
             report_permissions.save()
             comittee_permissions.save()
 
-            print(member_permissions)
-            print(voter_permissions)
-            print(report_permissions)
-            print(comittee_permissions)
-
         except (IntegrityError):
             return JsonResponse({'error':'رقم هاتف مكرر'})
         
@@ -231,8 +226,13 @@ class CreateUser(View):
             comittee.save()
 
         elif user_type =="camp":
-            campaign_manager=CampaignAdminstrator(profile=user_profile,candidate=candidate)
-            campaign_manager.save()
+            try:
+                campaign_manager=CampaignAdminstrator(profile=user_profile,candidate=candidate)
+                campaign_manager.save()
+            except IntegrityError:
+                camp_admin=CampaignAdminstrator.objects.get(candidate=candidate)
+                camp_admin.profile=user_profile
+                camp_admin.save()
 
 
         return JsonResponse({'message':'تم التسجيل بنجاح'})

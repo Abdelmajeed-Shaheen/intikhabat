@@ -201,7 +201,7 @@
               </form>
             </div>
             <div class="row">
-              <div class="col-9"></div>
+              <div class="col-9"><a href="{% url 'password-change' %}" class="btn btn-danger btn-sm" >تغيير الرقم السري</a></div>
               <div class="col-3"><button id="updateprofile" class="btn btn-danger" >حفظ</button></div>
             </div>
           </div>
@@ -310,11 +310,13 @@
       <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
         <div class="container mt-5">
           <div class="row">
+            {% if request.user.userprofile.candidate %}
                   <div class="col-md-3">
                     <div class='form-group text-aligner'>
                       <button id='camp' class="btn btn-danger mb-2" data-toggle="modal" data-target="#createComitteeMember">انشاء مدير حملة</button>
                     </div>
                   </div>
+                  {% endif %}
                   <div class="col-md-3">
                     <div class='form-group text-aligner'>
                       <button  id='cm' class="btn btn-danger mb-2"  data-toggle="modal" data-target="#createComitteeMember">انشاء عضو لجنة </button>

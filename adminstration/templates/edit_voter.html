@@ -7,11 +7,11 @@
       <nav class="nav-menu d-none d-lg-block">
         <ul>
           <li><a href="{% url 'logout' %}">تسحيل خروج</a></li>
-          {% if request.user.userprofile.committeemember %}
-          <li><a href="{% url 'main' %}">عودة</a></li>
-          {% else %}
+          {% if request.user.userprofile.comitteemember %}
           <li><a href="{% url 'comittee-member' %}#newVoters">عودة</a></li>
-
+          {% else %}
+          
+          <li><a href="{% url 'main' %}">عودة</a></li>
           {% endif %}
         </ul>
       </nav>
@@ -71,7 +71,10 @@
             {% else %}
             <input type="checkbox" name="is_followed">
             {% endif%}
-            <label for="">تمت متابعته</label>
+            <label for="">
+
+            تمت متابعته
+            </label>
             
         </div>
         <div class="form-row mt-2">

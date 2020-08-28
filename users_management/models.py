@@ -80,7 +80,7 @@ class Candidate(models.Model):
 class CampaignAdminstrator(models.Model):
 
     profile=models.OneToOneField(UserProfile, on_delete=models.CASCADE)
-    candidate=models.ForeignKey('Candidate',on_delete=models.CASCADE)
+    candidate=models.OneToOneField('Candidate',on_delete=models.CASCADE)
     timestamp=models.DateTimeField(auto_now=True,auto_now_add=False)
     updated=models.DateTimeField(auto_now=False,auto_now_add=True)
 

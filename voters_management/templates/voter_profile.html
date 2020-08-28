@@ -28,6 +28,9 @@
   <div class="card-header text-center">
     <h5 style="color:red;">اسم المستخدم: {{request.user.username}} </h5>
     <h6> ملاحظة: يستخدم كأسم مستخدم عند تسجيل الدخول, يرجى عدم مشاركته مع الاخرين</h6>
+    <h6>
+      <a  href="{% url 'password-change' %}" class="btn btn-danger btn-sm" >تغيير الرقم السري</a>
+    </h6>
   </div>
   <div class="card-body" style="background-color:rgba(0,0,0,.03)">
     <div class="row">
