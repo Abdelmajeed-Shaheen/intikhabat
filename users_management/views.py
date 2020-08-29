@@ -243,10 +243,10 @@ class UpdateProfile(View):
 
     def post(self,request):
         userprofile=request.POST.get("user")
-        print(userprofile)
         userprofile=json.loads(userprofile)
         User.objects.filter(id=request.user.id).update(first_name=userprofile["first_name"],last_name=userprofile["last_name"])
         profile=UserProfile.objects.get(id=int(userprofile['id']))
+        print(profile)
         user_object={}
         empty=[None,""]
 
@@ -268,18 +268,18 @@ class UpdateProfile(View):
 
         if 'district' in userprofile and userprofile['district'] not in empty:
             district=District.objects.get(id=int(userprofile['district']))
-            area=district.area
-            userprofile['address__district']=district
-            userprofile['address__area']=area
-
+            address=profile.address
+            address.district=district
+            address.save()
+           
         if 'title' in userprofile and userprofile['title'] is not None:
             candidate=request.user.userprofile.candidate
             candidate.title=userprofile['title']
             candidate.save()
 
-
-        print("test me: ",user_object)
+        print("test me: ",profile.address.district)
         profile.save()
+        print("test me after save: ",profile.address.district)
         
         return JsonResponse({"user":"success"})
 
