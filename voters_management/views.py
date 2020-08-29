@@ -140,19 +140,8 @@ class VoterProfile(DetailView):
 class UpdateVoter(View):
 
     def post(self,request):
-
-        """
-        {'status': ['Voting'],
-        'voter_id': ['1'], 
-        'candidate': ['2'], 
-        'ec': ['false'], 
-        'identifier': [''], 
-        }>
-        """
-        print(request.POST)
         voter_object={}
         voting_id_string='{}/{}/{}/{}/{}'
-        candidate_id_string=0
         candidate_address_id_string=0
         candidate_dept_id_string=0
         if request.POST.get('voter_id'):
@@ -169,7 +158,7 @@ class UpdateVoter(View):
         candidate_address_id_string=str(candidate.election_list.election_address.governorate.id)
         candidate_dept_id_string=str(candidate.election_list.election_address.department.id)
 
-        if request.POST.get("status"):
+        if request.POST.get("status") not in [None,'undefined']:
             voter_object['vote_status']=request.POST.get("status")
 
             if request.POST.get("status") == "Not_voting":
@@ -181,7 +170,7 @@ class UpdateVoter(View):
             else:
                 status_id="3"
             
-        voting_id_string=voting_id_string.format(   
+            voting_id_string=voting_id_string.format(   
                                                     status_id,
                                                     candidate_address_id_string,
                                                     candidate_address_id_string,
@@ -189,8 +178,8 @@ class UpdateVoter(View):
                                                     voter_id
                                                 
                                                 )
-        voter_object['voting_id']=voting_id_string
-        
+            voter_object['voting_id']=voting_id_string
+            voter.vote_status=voter_object['vote_status']        
         if request.POST.get('ec'):
             if request.POST.get('ec')=='true':
                 voter_object['has_elc_card']=True
@@ -233,7 +222,7 @@ class UpdateVoter(View):
         voter.identiefier=voter_object['identiefier']
         voter.first_login=voter_object['first_login']
         voter.has_identifier=voter_object['has_identifier']
-        voter.vote_status=voter_object['vote_status']
+
         voter.save()
         return JsonResponse({"message":"success"})
 

@@ -124,7 +124,7 @@
   </div>
   <div class="row mt-2">
     <div class="col-9"></div>
-    <div class="col-3 text-center"><button id="updateprofile" class="btn btn-danger">حفظ</button></div>
+    <div class="col-3 text-center"><button id="updateprofile" class="btn btn-success">تغيير الحالة الانتخابية</button></div>
   </div>
   </div>
 </div>
@@ -267,46 +267,6 @@
 
 $("#updateprofile").on('click',function(){
 
-  userprofile= new Object()
-  userprofile.first_name=$("#fname").val()
-  userprofile.second_name=$("#sname").val()
-  userprofile.third_name=$("#tname").val()
-  userprofile.last_name=$("#foname").val()
-  userprofile.mobile_number=$("#phno").val()
-  console.log(userprofile.mobile_number)
-  userprofile.whatsapp_number=$("#wano").val()
-  console.log(userprofile.whatsapp_number)
-  $('#addresses option').each(function() {
-    if (this.selected)
-       userprofile.address=$('#addresses option:selected').val()
-     else
-     userprofile.address="";
-});
-identifier=""
-if ($("#has_identifier_t").is(":checked")){
-    identifier=$("#identifier").val()
-    has_identifier=true
-  }
-  else if(($("#has_identifier_f").is(":checked"))){
-
-    has_identifier=false
-  }
-  else{
-    has_identifier=undefined
-  }
-  userprofile.gender=$("#gender option:selected").val()
-  userprofile.district=$("#district option:selected").val()
-  userprofile.dob=$("#dob").val()
-  userprofile.id="{{voter.id}}"
-  userjson=JSON.stringify(userprofile)
-
-  elect_card=$('#elecCard')
-  if (elect_card.prop('checked')){
-    ec=true
-  }
-  else{
-    ec=false
-  }
   status=$("#voteStatusForm").find('input:radio:checked').val()
   candidate=$('#candis option:selected').val()
   voter_id=$("#voterId").val()
@@ -317,10 +277,6 @@ if ($("#has_identifier_t").is(":checked")){
       status:status,
       voter_id:voter_id,
       candidate:candidate,
-      ec:ec,
-      identifier:identifier,
-      has_identifier:has_identifier,
-
       csrfmiddlewaretoken:"{{csrf_token}}",
       success:function(reslut){
         $("#succesModal").modal('show')
@@ -492,16 +448,13 @@ if ($("#has_identifier_t").is(":checked")){
   else{
     ec=false
   }
-  status=$("#voteStatusForm").find('input:radio:checked').val()
-  candidate=$('#candis option:selected').val()
+
   voter_id=$("#voterId").val()
   $.ajax({
     url:"{% url 'edit-voting-status' %}",
     type:"POST",
     data:{
-      status:status,
       voter_id:voter_id,
-      candidate:candidate,
       ec:ec,
       identifier:identifier,
       has_identifier:has_identifier,
