@@ -144,6 +144,7 @@ class UpdateVoter(View):
         voting_id_string='{}/{}/{}/{}/{}'
         candidate_address_id_string=0
         candidate_dept_id_string=0
+        print(request.POST)
         if request.POST.get('voter_id'):
             voter_id=request.POST.get('voter_id')
             voter=Voter.objects.get(id=int(voter_id))
@@ -153,8 +154,8 @@ class UpdateVoter(View):
             candidate=Candidate.objects.get(id=request.POST.get('candidate'))
         else:
             candidate=voter.candidate
+
         voter_object['candidate']=candidate
-        candidate_id_string=str(candidate.id)
         candidate_address_id_string=str(candidate.election_list.election_address.governorate.id)
         candidate_dept_id_string=str(candidate.election_list.election_address.department.id)
 
@@ -168,7 +169,7 @@ class UpdateVoter(View):
                 status_id="1"
 
             else:
-                status_id="3"
+                status_id="2"
             
             voting_id_string=voting_id_string.format(   
                                                     status_id,
@@ -178,8 +179,11 @@ class UpdateVoter(View):
                                                     voter_id
                                                 
                                                 )
+            
             voter_object['voting_id']=voting_id_string
-            voter.vote_status=voter_object['vote_status']        
+            voter.vote_status=voter_object['vote_status']
+            voter.voting_id=voter_object['voting_id']
+
         if request.POST.get('ec'):
             if request.POST.get('ec')=='true':
                 voter_object['has_elc_card']=True
@@ -222,6 +226,7 @@ class UpdateVoter(View):
         voter.identiefier=voter_object['identiefier']
         voter.first_login=voter_object['first_login']
         voter.has_identifier=voter_object['has_identifier']
+        voter.candidate=candidate
 
         voter.save()
         return JsonResponse({"message":"success"})

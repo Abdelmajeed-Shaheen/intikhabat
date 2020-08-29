@@ -105,7 +105,7 @@
         <input type="hidden" name="" id="candidate_choice">
   </form>
     </div>
-    {% if voter.voter.vote_status == "Voting" %}
+    {% if voter.voter.vote_status == "Voting" or not voter.voter.candidate %}
     <div class="col-md-4">
       <select id='elecList' class="form-control" >
         <option>اختر القائمة الانتخابية</option>
@@ -115,7 +115,7 @@
       </select>
     </div>
     {% endif %}
-    {% if voter.voter.vote_status == "Voting" %}
+    {% if voter.voter.vote_status == "Voting" or not voter.voter.candidate%}
     <div class="col-md-4" id="candidates_div">
       <select id='candis' class="form-control" >
       </select>
@@ -475,7 +475,7 @@ if ($("#has_identifier_t").is(":checked")){
       },
     success:function(result){
       console.log(result)
-      location.reload()
+      $("#succesModal").modal('show')
     }
   })
 

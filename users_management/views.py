@@ -243,6 +243,7 @@ class UpdateProfile(View):
 
     def post(self,request):
         userprofile=request.POST.get("user")
+        print(userprofile)
         userprofile=json.loads(userprofile)
         User.objects.filter(id=request.user.id).update(first_name=userprofile["first_name"],last_name=userprofile["last_name"])
         profile=UserProfile.objects.get(id=int(userprofile['id']))
@@ -251,10 +252,11 @@ class UpdateProfile(View):
 
         if 'second_name' in userprofile and userprofile['second_name'] not in empty:
             user_object['middle_name']=userprofile['second_name']
-        
+            profile.middle_name=user_object['middle_name']
 
         if 'third_name' in userprofile and userprofile['third_name'] not in empty:
             user_object['last_name']=userprofile['third_name']
+            profile.last_name=user_object['last_name']
         
         if 'mobile_number' in userprofile and userprofile['mobile_number'] not in empty:
             user_object['mobile_number']=userprofile['mobile_number']
@@ -263,22 +265,20 @@ class UpdateProfile(View):
         if 'whatsapp_number' in userprofile and userprofile['whatsapp_number'] not in empty:
             user_object['whatsapp_number']=userprofile['whatsapp_number']
             profile.whatsapp_number=user_object['whatsapp_number']
-            profile.save()
-
 
         if 'district' in userprofile and userprofile['district'] not in empty:
             district=District.objects.get(id=int(userprofile['district']))
             area=district.area
-
             userprofile['address__district']=district
             userprofile['address__area']=area
-
 
         if 'title' in userprofile and userprofile['title'] is not None:
             candidate=request.user.userprofile.candidate
             candidate.title=userprofile['title']
-            candidate.save()        
+            candidate.save()
 
+
+        print("test me: ",user_object)
         profile.save()
         
         return JsonResponse({"user":"success"})
