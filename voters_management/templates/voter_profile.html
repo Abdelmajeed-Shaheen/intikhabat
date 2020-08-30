@@ -92,30 +92,31 @@
       <form class="form-inline" id="voteStatusForm">
         <div class="form-check form-check-inline">
           <label class="form-check-label" >مؤيد</label>
-          <input class="form-check-input" type="radio" id="v" value="Voting">
+          <input class="form-check-input" type="radio" id="v" value="Voting" name="v"{% if voter.voter.vote_status == "Voting" %}checked{% endif %}>
         </div>
         <div class="form-check form-check-inline">
           <label class="form-check-label" >متردد</label>
-          <input class="form-check-input" type="radio" id="ns" value="Not_sure">
+          <input class="form-check-input" type="radio" id="ns" value="Not_sure" name="ns" {% if voter.voter.vote_status == "Not_sure" %}checked{% endif %}>
         </div>
         <div class="form-check form-check-inline ">
           <label class="form-check-label" >لا ارغب</label>
-          <input class="form-check-input" type="radio" id="nv" value="Not_voting">
+          
+          <input class="form-check-input" type="radio" id="nv" value="Not_voting" name="nv" {% if voter.voter.vote_status == "Not_voting" %}checked{% endif %}>
         </div>
         <input type="hidden" id="voterId" value="{{voter.voter.id}}">
         <input type="hidden" name="" id="candidate_choice">
   </form>
     </div>
-    {% if voter.voter.vote_status == "Voting" or not voter.voter.candidate %}
+    
     <div class="col-md-4">
-      <select id='elecList' class="form-control" >
+      <select id='elecList' class="form-control" style="visibility: hidden;">
         <option>اختر القائمة الانتخابية</option>
         {% for eleclist in election_lists %}
         <option value="{{eleclist.id}}">{{eleclist.name}}</option>
         {% endfor %}
       </select>
     </div>
-    {% endif %}
+   
     {% if voter.voter.vote_status == "Voting" or not voter.voter.candidate%}
     <div class="col-md-4" id="candidates_div">
       <select id='candis' class="form-control" >
@@ -125,7 +126,7 @@
   </div>
   <div class="row mt-2">
     <div class="col-9"></div>
-    <div class="col-3 text-center"><button id="updateprofile" class="btn btn-success">تغيير الحالة الانتخابية</button></div>
+    <div class="col-3 text-center"><button id="updateprofile" class="btn btn-success">تعديل الميول الانتخابي</button></div>
   </div>
   </div>
 </div>
@@ -206,7 +207,7 @@
           {% else %}
           <input class="form-check-input ml-2" type="checkbox" id="elecCard" >
           {% endif %}
-          <label class="form-check-label"  >هل ترغب بالحصول على بطاقة انتخابية؟</label>
+          <label class="form-check-label" id="elecCardLable"  >هل ترغب بالحصول على بطاقة انتخابية؟</label>
 
         </div>
       </div>
@@ -304,20 +305,26 @@ $("#updateprofile").on('click',function(){
 })
 
 $("#v").change(function(){
-
-$("#ns").prop("checked", false);
-$("#nv").prop("checked", false);
+  $("#elecList").show()
+  $("#ns").prop("checked", false);
+  $("#nv").prop("checked", false);
 
 });
 
 $("#ns").change(function(){
-
+$("#elecList").hide()
+$("#elecCard").hide()
+$('#elecCardLable').hide()
 $("#nv").prop("checked", false);
 $("#v").prop("checked", false);
+
+
 });
 
 $("#nv").change(function(){
-
+$("#elecList").hide()
+$("#elecCard").hide()
+$('#elecCardLable').hide()
 $("#ns").prop("checked", false);
 $("#v").prop("checked", false);
 });
@@ -361,6 +368,17 @@ $('#elecList').on('change',function(){
 })
 
 $(document).ready(function(){
+
+  if ($("#v").is(':checked')){
+
+    $("#elecList").css("visibility", "visible");
+  }
+  if($("#nv").is(':checked') || $("#ns").is(':checked')){
+    $('#elecCard').hide()
+    $('#elecCardLable').hide()
+  }
+
+
   $("#candidates_div").hide()
  // Initialize select2
  $("#candis").select2({
