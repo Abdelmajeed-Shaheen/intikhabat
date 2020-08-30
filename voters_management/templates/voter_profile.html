@@ -28,9 +28,7 @@
   <div class="card-header text-center">
     <h5 style="color:red;">اسم المستخدم: {{request.user.username}} </h5>
     <h6> ملاحظة: يستخدم كأسم مستخدم عند تسجيل الدخول, يرجى عدم مشاركته مع الاخرين</h6>
-    <h6>
-      <a  href="{% url 'password-change' %}" class="btn btn-danger btn-sm" >تغيير الرقم السري</a>
-    </h6>
+
   </div>
   <div class="card-body" style="background-color:rgba(0,0,0,.03)">
     <div class="row">
@@ -39,20 +37,7 @@
           <h5>اسم المعرف: {{voter.voter.identiefier.profile.user.first_name}}  {{voter.voter.identiefier.profile.last_name}}</h5>
       </div>
       {% endif %}
-      <div class="col-md-3">
-        <h5 class="about-title text-aligner">
-            الحالة الانتخابية:
-            {% if voter.voter.vote_status == "Not_sure" %}
-             <span style="color:yellow">متردد</span>
-              {% elif voter.voter.vote_status == "Not_voting"%}
-              <span style="color:red">لا ارغب</span>
-              {% elif not voter.voter.vote_status %}
-              <span style="color:gray">غير محدد</span>
-              {% else %}
-              <span style="color:green;font-size:24px;">مؤيد</span>
-              {% endif %}
-        </h5>
-      </div>
+
       {% if voter.voter.vote_status == "Voting"  and voter.voter.candidate %}
       <div class="col-md-3">
         <h5 class="about-title text-aligner">
@@ -68,6 +53,7 @@
         </h5></div>
       {% endif %}
       {% endif %}
+      {% if voter.voter.vote_status == "Voting"  and voter.voter.candidate %}
       {% if voter.voter.related_comittee_member %}
         <div class="col-md-3">
         <h5 class="about-title text-aligner">
@@ -75,6 +61,7 @@
               <span style="color:green;font-size:24px;">{{voter.voter.related_comittee_member.profile.user.first_name}} {{voter.voter.related_comittee_member.profile.user.last_name}}</span>
         </h5>
       </div>
+     {% endif %}
      {% endif %}
     </div>
   </div>
@@ -84,6 +71,20 @@
 <div class="card mt-3">
   <div class="card-header text-center">
     <h4>  الحالة الانتخابية و المرشحين</h4>
+    <div class="col-md-3">
+      <h5 class="about-title text-aligner">
+          الحالة الانتخابية:
+          {% if voter.voter.vote_status == "Not_sure" %}
+           <span style="color:#bf931b">متردد</span>
+            {% elif voter.voter.vote_status == "Not_voting"%}
+            <span style="color:red">لا ارغب</span>
+            {% elif not voter.voter.vote_status %}
+            <span style="color:gray">غير محدد</span>
+            {% else %}
+            <span style="color:green;font-size:24px;">مؤيد</span>
+            {% endif %}
+      </h5>
+    </div>
   </div>
   <div class="card-body">
     <div class="row">
@@ -229,7 +230,9 @@
       {% endif %}
     </form>
     <div class="row mt-2">
-      <div class="col-9"></div>
+      <div class="col-9">
+        <a  href="{% url 'password-change' %}" class="btn btn-danger" >تغيير الرقم السري</a>
+    </div>
       <div class="col-3 text-center"><button id="updateprofile2" class="btn btn-danger">حفظ</button></div>
     </div>
   </div>
