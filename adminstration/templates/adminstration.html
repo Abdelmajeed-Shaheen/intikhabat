@@ -187,11 +187,11 @@
                 <div class="col-sm-3">
                   <div class="form-group">
                     <label > اختيار الحي الذي تسكن فيه</label>
-                    
+
                     <select  class="form-control" id="district">
-                    
+
                     <option value="{{request.user.userprofile.address.district.id}}">{{request.user.userprofile.address.district.name}}</option>
-                    
+
                       {% for district in districts_list %}
                       <option value="{{district.id}}">{{district.name}}</option>
                       {% endfor %}
@@ -218,86 +218,38 @@
       </div>
 
       <div class="tab-pane fade " id="createcomittee" role="tabpanel" aria-labelledby="home-tab">
-        <div class="container mt-3">
-          <div class="row">
-            <div class="card text-aligner">
-              <div class="card-header">
-                <h2 class="about-title text-aligner">انشاء لجنة</h2>
-              </div>
-              <div class="card-body">
-                <div class="row">
-                  <div class="col-md-6">
-                  <form>
-                    {% csrf_token %}
-                    <input type="hidden" value="{{request.user.userprofile.candidate.id}}" id="candidate_id" name="candidate">
-                    <div class="row px-3">
-                        <div class='form-group text-aligner'>
-                          <label for="formGroupExampleInput">اسم اللجنة</label>
-                          {{form.name}}
-                        </div>
-                    </div>
-                    <div class="row px-3">
-                        <div class='form-group text-aligner'>
-                          <label for="formGroupExampleInput">عن اللجنة:</label>
-                           {{form.description}}
-                        </div>
-                    </div>
-                    <div class='row px-3'>
-                        <div class='form-check text-aligner'>
-                          <label class="form-check-label " for="id_is_active">
-                             نشط؟
-                          </label>
-                          {{form.is_active}}
-                      </div>
-                    </div>
-                    <div class="row px-3">
-                      
-                        <div class='form-group text-aligner'>
-                          <label for="formGroupExampleInput">عنوان موقع اللجنة:</label>
-                          {{form.address_description}}
-                        </div>
-                      
-                    </div>
-                    <div class="row px-3">
-                      <div class="col-sm-4">
-                        <div class='form-group text-aligner'>
-                          <button  class="btn btn-success mb-2" id="comitteform">انشاء</button>
-                        </div>
-                      </div>
-                    </div>
-                  </form>
-                </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-6">
-                <div class="col-3">
-                  <div class="form-check">
-                    <label class="form-check-label" for="exampleRadios1">
-                      فعالة
-                    </label>
-                    <input class="form-check-input" type="radio" name="exampleRadios" id="acom" value="option1" checked>
-
-                  </div>
-
-                </div>
-                <div class="col-3">
-                  <div class="form-check">
-                    <label class="form-check-label" for="incom">
-                      غير فعالة
-                    </label>
-                    <input class="form-check-input" type="radio" name="exampleRadios" id="incom" value="option1" >
-
-                  </div>
-
-                </div>
+        <div class="container mt-3 text-aligner">
+          <button type="button" class="btn btn-info my-3" data-toggle="modal" data-target="#exampleModalCenter">
+            انشاء لجنة
+          </button>
+          <div>
+            <div>
                   <h2 class="about-title text-aligner">قائمة اللجان</h2>
+                  <div class="row">
+                  <div class="col-md-8">
                   <select  id="comitteeQuery" class="form-control my-2">
                     {% for comittee in comittees_list %}
                     <option value="{{comittee.name}}">{{comittee.name}}</option>
                     {% endfor %}
                   </select>
-                  
+                  </div>
+                  <div class="col-md-2">
+                    <div class="form-check">
+                      <label class="form-check-label" for="exampleRadios1">
+                        فعالة
+                      </label>
+                      <input class="form-check-input" type="radio" name="exampleRadios" id="acom" value="option1" checked>
+                    </div>
+                  </div>
+                  <div class="col-md-2">
+                    <div class="form-check">
+                      <label class="form-check-label" for="incom">
+                        غير فعالة
+                      </label>
+                      <input class="form-check-input" type="radio" name="exampleRadios" id="incom" value="option1" >
+                    </div>
+                  </div>
+                  </div>
                   <table class="table table-striped table-dark">
                     <thead id="comittee_table">
                       <tr>
@@ -331,22 +283,23 @@
 
       <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
         <div class="container mt-5">
+          <div class="text-aligner">
           <div class="row">
             {% if request.user.userprofile.candidate %}
-                  <div class="col-md-3">
+                  <div class="col-md-2">
                     <div class='form-group text-aligner'>
                       <button id='camp' class="btn btn-danger mb-2" data-toggle="modal" data-target="#createComitteeMember">انشاء مدير حملة</button>
                     </div>
                   </div>
                   {% endif %}
-                  <div class="col-md-3">
+                  <div class="col-md-2">
                     <div class='form-group text-aligner'>
                       <button  id='cm' class="btn btn-danger mb-2"  data-toggle="modal" data-target="#createComitteeMember">انشاء عضو لجنة </button>
                     </div>
                   </div>
                 </div>
           <div class="row">
-          <div class="col-sm-8">
+          <div class="col-md-12">
             <h2 class="about-title text-aligner">مدير الحملة</h2>
             <table class="table table-striped table-dark">
               <thead>
@@ -369,7 +322,7 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-md-8">
+          <div class="col-md-12">
             <h2 class="about-title text-aligner">اعضاء اللجان</h2>
             <form>
               <div class="form-row">
@@ -418,18 +371,14 @@
                       <div class="modal-content">
                         <div class="modal-header">
                           <h5 class="modal-title" id="exampleModalLabel"> صلاحيات المستخدم: {{comittee_member.profile.user.first_name}}  {{comittee_member.profile.user.last_name}}</h5>
-
-                          </button>
                         </div>
                         <div class="modal-body text-aligner">
                           <form>
                             <h4> المستخدمين:</h4>
                             <div class="row mt-2">
-
-
                             <div class="col-sm-3">
                               <div class="form-check">
-                                <label class="form-check-label" for="defaultCheck1"></label>
+                                <label class="form-check-label" for="defaultCheck1">
                                 عرض
                               </label>
                               {% if comittee_member.profile.custommemberspermissions_set.first.can_view_member %}
@@ -441,7 +390,7 @@
                             </div>
                             <div class="col-sm-3">
                               <div class="form-check">
-                                <label class="form-check-label" for="defaultCheck1"></label>
+                                <label class="form-check-label" for="defaultCheck1">
                                 حفظ
                               </label>
                               {% if comittee_member.profile.custommemberspermissions_set.first.can_update_member %}
@@ -453,7 +402,7 @@
                             </div>
                             <div class="col-sm-3">
                               <div class="form-check">
-                                <label class="form-check-label" for="defaultCheck1"></label>
+                                <label class="form-check-label" for="defaultCheck1">
                                 حذف
                               </label>
                               {% if comittee_member.profile.custommemberspermissions_set.first.can_remove_member %}
@@ -465,7 +414,7 @@
                             </div>
                             <div class="col-sm-3">
                               <div class="form-check">
-                                <label class="form-check-label" for="defaultCheck1"></label>
+                                <label class="form-check-label" for="defaultCheck1">
                                 انشاء
                               </label>
                               {% if comittee_member.profile.custommemberspermissions_set.first.can_create_member %}
@@ -482,7 +431,7 @@
 
                             <div class="col-sm-3">
                               <div class="form-check">
-                                <label class="form-check-label" for="defaultCheck1"></label>
+                                <label class="form-check-label" for="defaultCheck1">
                                 عرض
                               </label>
                               {% if comittee_member.profile.customcomitteepermission_set.first.can_view_comittee %}
@@ -495,7 +444,7 @@
                             </div>
                             <div class="col-sm-3">
                               <div class="form-check">
-                                <label class="form-check-label" for="defaultCheck1"></label>
+                                <label class="form-check-label" for="defaultCheck1">
                                 حفظ
                               </label>
                               {% if comittee_member.profile.customcomitteepermission_set.first.can_update_comittee %}
@@ -508,7 +457,7 @@
                             </div>
                             <div class="col-sm-3">
                               <div class="form-check">
-                                <label class="form-check-label" for="defaultCheck1"></label>
+                                <label class="form-check-label" for="defaultCheck1">
                                 حذف
                               </label>
                               {% if comittee_member.profile.customcomitteepermission_set.first.can_remove_comittee %}
@@ -521,7 +470,7 @@
                             </div>
                             <div class="col-sm-3">
                               <div class="form-check">
-                                <label class="form-check-label" for="defaultCheck1"></label>
+                                <label class="form-check-label" for="defaultCheck1">
                                 انشاء
                               </label>
                               {% if comittee_member.profile.customcomitteepermission_set.first.can_create_comittee %}
@@ -657,20 +606,28 @@
           </div>
         </div>
 
+      </div>
         </div>
       </div>
 
 
       <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
-
       <div class="container text-aligner">
         <div class="row">
-          <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-            <a class="nav-link active" id="v-pills-home-tab"  href="{% url 'cm-report' %}" role="tab" aria-controls="v-pills-home" aria-selected="true">الاستعلام عن الناخبين حسب عضو الارتباط</a>
-            <a class="nav-link" id="v-pills-profile-tab"  href="{% url 'identifier-report' %}" role="tab" aria-controls="v-pills-profile" aria-selected="false">الاستعلام عن ناخبين حسب المعرفين</a>
-            <a class="nav-link" id="v-pills-messages-tab"  href="{% url 'address-report' %}" role="tab" aria-controls="v-pills-messages" aria-selected="false">الاستعلام عن الناخبين حسب العناوين</a>
-            <a class="nav-link" id="v-pills-settings-tab" href="{% url 'status-report' %}" role="tab" aria-controls="v-pills-settings" aria-selected="false">الاستعلام عن الناخبين المترددين</a>
-            <a class="nav-link" id="v-pills-settings-tab" href="{% url 'pdf-report' %}" id="elcCards" role="tab" aria-controls="v-pills-settings" aria-selected="false">البطاقات الانتخابية</a>
+          <div class="col-md-4 my-2">
+              <a class="btn btn-info btn-block" id="v-pills-home-tab"  href="{% url 'cm-report' %}" role="tab" aria-controls="v-pills-home" aria-selected="true">الاستعلام عن الناخبين حسب عضو الارتباط</a>
+          </div>
+          <div class="col-md-4 my-2">
+            <a class="btn btn-info btn-block" id="v-pills-profile-tab"  href="{% url 'identifier-report' %}" role="tab" aria-controls="v-pills-profile" aria-selected="false">الاستعلام عن ناخبين حسب المعرفين</a>
+          </div>
+          <div class="col-md-4 my-2">
+            <a class="btn btn-info btn-block" id="v-pills-messages-tab"  href="{% url 'address-report' %}" role="tab" aria-controls="v-pills-messages" aria-selected="false">الاستعلام عن الناخبين حسب العناوين</a>
+          </div>
+          <div class="col-md-4 my-2">
+            <a class="btn btn-info btn-block" id="v-pills-settings-tab" href="{% url 'status-report' %}" role="tab" aria-controls="v-pills-settings" aria-selected="false">الاستعلام عن الناخبين المترددين</a>
+          </div>
+          <div class="col-md-4 my-2">
+            <a class="btn btn-info btn-block" id="v-pills-settings-tab" href="{% url 'pdf-report' %}" id="elcCards" role="tab" aria-controls="v-pills-settings" aria-selected="false">البطاقات الانتخابية</a>
           </div>
         </div>
 
@@ -712,6 +669,53 @@
     </div>
       </div>
   </div>
+
+
+  <div class="modal fade text-aligner" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="about-title text-aligner">انشاء لجنة</h2>
+      </div>
+      <div class="modal-body">
+        <form>
+          {% csrf_token %}
+          <input type="hidden" value="{{request.user.userprofile.candidate.id}}" id="candidate_id" name="candidate">
+          <div class="row px-3">
+              <div class='form-group text-aligner'>
+                <label for="formGroupExampleInput">اسم اللجنة</label>
+                {{form.name}}
+              </div>
+          </div>
+          <div class="row px-3">
+              <div class='form-group text-aligner'>
+                <label for="formGroupExampleInput">عن اللجنة:</label>
+                 {{form.description}}
+              </div>
+          </div>
+          <div class='row px-3'>
+              <div class='form-check text-aligner'>
+                <label class="form-check-label " for="id_is_active">
+                   نشط؟
+                </label>
+                {{form.is_active}}
+            </div>
+          </div>
+          <div class="row px-3">
+              <div class='form-group text-aligner'>
+                <label for="formGroupExampleInput">عنوان موقع اللجنة:</label>
+                {{form.address_description}}
+              </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button  class="btn btn-success mb-2" id="comitteform">انشاء</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 {% include 'modals.html' %}
 {% endblock %}
@@ -954,7 +958,7 @@ $('#comitteeQuery').on('change',function(e){
       },
 
       success:function(result){
-        
+
         table=$('#comittee_table_tbody')
         table.empty()
         if (!result.error){
@@ -995,7 +999,7 @@ $('#comitteeQuery').on('change',function(e){
 
 $('#acom').on('change',function(e){
   e.preventDefault()
- 
+
     is_active=true
 
     $.ajax({
@@ -1011,7 +1015,7 @@ $('#acom').on('change',function(e){
         table=$('#comittee_table_tbody')
         table.empty()
         if (!result.error){
-           
+
           $(result.comittee_list).each(function(index,value){
           item=result.comittee_list[index]
           row=$("<tr></tr>");
@@ -1028,8 +1032,8 @@ $('#acom').on('change',function(e){
           row.append(editdata)
           table.append(row)
         })
-        
-        
+
+
         }
         else{
         row=$("<tr></tr>");
@@ -1052,7 +1056,7 @@ $('#acom').on('change',function(e){
 })
 $('#incom').on('change',function(e){
   e.preventDefault()
-    
+
     is_active=false
     $.ajax({
       url:'{% url "search-comittee" %}',
@@ -1063,14 +1067,14 @@ $('#incom').on('change',function(e){
       },
 
       success:function(result){
-   
+
         table=$('#comittee_table_tbody')
         table.empty()
         if (!result.error){
-          
+
         $(result.comittee_list).each(function(index,value){
           item=result.comittee_list[index]
-          
+
           row=$("<tr></tr>");
           name=("<td>"+item.comittee_name+"</td>");
           status=("<td>"+item.status+"</td>");
@@ -1085,7 +1089,7 @@ $('#incom').on('change',function(e){
           row.append(editdata)
           table.append(row)
         })
-        
+
         }
         else{
         row=$("<tr></tr>");
