@@ -33,6 +33,7 @@ def hasNumbers(inputString):
     return bool(re.search(r'\d', inputString))
 
 def hasLetters(inputString):
+  
     return bool(re.search(r'[a-zA-Z]', inputString))
 
 
@@ -125,7 +126,7 @@ class CreateUser(View):
             return JsonResponse({"error":"لا يمكن للارقام ان تحتوي احرف"})
         email=form.data.get('email')
         is_manager=form.data.get('is_manager')
-        if is_manager =="on":
+        if is_manager == "on" :
             is_manager=True
         else:
             is_manager=False
@@ -134,27 +135,30 @@ class CreateUser(View):
         comittee=""
         if request.POST.get('comittee'):
             comittee=Comittee.objects.get(id=request.POST.get('comittee'))
-      
-        user_instance={
-            'username':mobile_number,
-            'first_name':first_name,
-            'last_name':last_name,
-            'email':email
-        }
-        user=User(**user_instance)
-        user.set_password(password)
-        user.save()
-       
-        profile_instance={
-            'middle_name':middle_name,
-            'last_name':third_name,
-            'user':user,
-            'mobile_number':mobile_number,
-            'whatsapp_number':whatsapp_number,
-            'date_of_birth':date.today()
-            
-        }
+
         try:
+            
+            user_instance={
+                'username':mobile_number,
+                'first_name':first_name,
+                'last_name':last_name,
+                'email':email
+            }
+            user=User(**user_instance)
+            user.set_password(password)
+            user.save()
+        
+            profile_instance={
+                'middle_name':middle_name,
+                'last_name':third_name,
+                'user':user,
+                'mobile_number':mobile_number,
+                'whatsapp_number':whatsapp_number,
+                'date_of_birth':date.today(),
+                'name_string':name_string
+                
+            }            
+ 
             user_profile=UserProfile(**profile_instance)
             user_profile.save()
 
@@ -199,7 +203,12 @@ class CreateUser(View):
             comittee_permissions.save()
 
         except (IntegrityError):
-            return JsonResponse({'error':'رقم هاتف مكرر'})
+            if User.objects.all().filter(username=user_instance["username"]).exists():
+                return JsonResponse({'error':'هذا المستخدم مسجل مسبقا'})
+
+            elif UserProfile.objects.all().filter(name_string=name_string).exists():
+                return JsonResponse({'error':'هذا الاسم مكرر'})
+
         
         if hasattr(request.user.userprofile,'candidate') :
             candidate=request.user.userprofile.candidate

@@ -724,10 +724,59 @@
   var csrftoken='{{ csrf_token }}'
 
 
+  var checker=false
+  function checkField(formFields,selecFields){
+  inputFields=formFields
+  selectFields=selecFields
+  inputFields.each(function(){
+    field=$(this)
+      if (!field.val()){
+        console.log("empty fields are here")
+        $("#message").empty()
+        $("#message").append("<span>"+field.data("field-name")+" مطلوب"+"</span> <br>");
+        $("#errorMessage").modal("show");
+
+        checker=false
+      }
+
+      else{
+        checker=true
+
+      }
+
+  })
+
+  selectFields.each(function(){
+    option=$(this)
+    console.log(option.val())
+      if (!option.val() || option.val()==""){
+        $("#message").empty()
+        $("#message").append("<span>"+option.data("field-name")+" مطلوب"+"</span> <br>");
+        $("#errorMessage").modal("show");
+
+        checker=false
+
+      }
+
+      else{
+        checker=true
+
+      }
+
+  })
+
+  return checker
+}
+
 $('#createmember').on('click',function(){
-  data={
+  formFields=$('#createCmForm').find('input')
+  selectFields=$('#createCmForm').find('select option:selected')
+  fieldChecker=checkField(formFields,selectFields)
+  if(fieldChecker){
+    data={
       first_name:$('#id_first_name').val(),
       mobile_number:$('#id_mobile_number').val(),
+      whatsapp_number:$('#id_whatsapp_number').val(),
       email:$('#id_email').val(),
       last_name:$('#id_last_name').val(),
       third_name:$('#id_last_name').val(),
@@ -737,7 +786,7 @@ $('#createmember').on('click',function(){
       comittee:$('#assign_comittee option:selected').val(),
       is_manager:$('#id_is_manager').val()
     }
-
+  
   $.ajax({
     url:"{% url 'create-user' %}",
     type:"POST",
@@ -753,13 +802,20 @@ $('#createmember').on('click',function(){
       }
     }
   })
+  }
+
 })
 
 
 $('#createca').on('click',function(){
-  data={
+  formFields=$('#creatAdminForm').find('input')
+  selectFields=$('#creatAdminForm').find('select option:selected')
+  fieldChecker=checkField(formFields,selectFields)
+  if(fieldChecker){
+    data={
       first_name:$('#id_ca_first_name').val(),
       mobile_number:$('#id_ca_mobile_number').val(),
+      whatsapp_number:$('#id_ca_whatsapp_number').val(),
       email:$('#id_ca_email').val(),
       last_name:$('#id_ca_last_name').val(),
       third_name:$('#id_ca_last_name').val(),
@@ -784,6 +840,8 @@ $('#createca').on('click',function(){
       
     }
   })
+  }
+  
 })
 
 
