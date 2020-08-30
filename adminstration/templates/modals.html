@@ -74,7 +74,7 @@
         </div>
 
         </div>
-        <input type="hidden" value="cm" name="member_type" id='usertype'>
+        <input type="hidden" value="cm" name="member_type" id='cmm'>
       </form>
         
       </div>
@@ -85,6 +85,90 @@
     </div>
   </div>
 </div>
+
+
+<!-- create campaign adminstrator -->
+<div class="modal fade" id="createCampaignAdmin" tabindex="-1" role="dialog" aria-labelledby="createComitteeMemberTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="createCampaignAdmin">انشاء مدير حملة</h5>
+
+      </div>
+      <div class="modal-body">
+      <form>
+      <div class="row text-aligner">
+ 
+      <div class="col-sm-3">
+        <div class="form-group">
+          <label >الاسم الاول:</label>
+          {{campadmin_form.ca_first_name}}
+        </div>
+      </div>
+      <div class="col-sm-3">
+        <div class="form-group">
+          <label >اسم الاب:</label>
+          {{campadmin_form.ca_middle_name}}
+        </div>
+      </div>
+      <div class="col-sm-3">
+        <div class="form-group">
+          <label >اسم الجد:</label>
+          {{campadmin_form.ca_third_name}}
+        </div>
+      </div>
+      <div class="col-sm-3">
+        <div class="form-group">
+          <label >اسم العائلة:</label>
+          {{campadmin_form.ca_last_name}}
+        </div>
+      </div>
+      </div>
+      <div class="row text-aligner">
+ 
+        <div class="col-sm-6">
+          <div class="form-group">
+            <label >رقم الهاتف:</label>
+            {{campadmin_form.ca_mobile_number}}
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <div class="form-group">
+            <label > الواتساب:</label>
+            {{campadmin_form.ca_whatsapp_number}}
+          </div>
+        </div>
+        <div class="col">
+          <div class="form-group">
+            <label > البريد الالكتروني:</label>
+            {{campadmin_form.ca_email}}
+          </div>
+        </div>
+      </div>
+        <input type="hidden" value="camp" name="member_type" id='ca'>
+      </form>
+        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">اغلاق</button>
+        <button type="button" class="btn btn-success" id="createca">حفظ</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
  <div class="modal fade" id="succesModal" tabindex="-1" role="dialog" aria-labelledby="successModalTitle" aria-hidden="true">
@@ -186,5 +270,24 @@
 </div>
 
 
-<!-- update comittee -->
+<!-- error modal -->
+<div class="modal fade" id="errorMessage" tabindex="-1" role="dialog" aria-labelledby="successModalTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
 
+
+      </div>
+      <div class="modal-body">
+        <div class="alert alert-danger" role="alert">
+          <h4 class="alert-heading" id="message" ></h4>
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">اغلاق</button>
+
+      </div>
+    </div>
+  </div>
+  </div>
