@@ -24,7 +24,17 @@ from users_management.forms import SignUpForm
 from adminstration.models import Comittee
 from voters_management.views import UpdateVoter
 import json
+import re
 from datetime import date
+
+
+
+def hasNumbers(inputString):
+    return bool(re.search(r'\d', inputString))
+
+def hasLetters(inputString):
+    return bool(re.search(r'[a-zA-Z]', inputString))
+
 
 class LoginView(View):
     """
@@ -106,8 +116,13 @@ class CreateUser(View):
         third_name=form.data.get('third_name')
         middle_name=form.data.get('middle_name')
         last_name=form.data.get('last_name')
+        name_string=(first_name+middle_name+third_name+last_name)
+        if hasNumbers(name_string):
+            return JsonResponse({"error":"لا يمكن للاسماء ان تحتوي ارقام"})
         mobile_number=form.data.get('mobile_number')
         whatsapp_number=form.data.get('whatsapp_number')
+        if hasLetters(mobile_number) or hasLetters(whatsapp_number):
+            return JsonResponse({"error":"لا يمكن للارقام ان تحتوي احرف"})
         email=form.data.get('email')
         is_manager=form.data.get('is_manager')
         if is_manager =="on":
@@ -212,7 +227,7 @@ class CreateUser(View):
             comittee.save()
         
         if user_type == "cmo":
-            print("hi")
+          
             comittee_member_object={
                 'profile':user_profile,
                 'candidate':candidate,
@@ -240,16 +255,20 @@ class CreateUser(View):
 
       
 class UpdateProfile(View):
-
+ 
     def post(self,request):
         userprofile=request.POST.get("user")
         userprofile=json.loads(userprofile)
         User.objects.filter(id=request.user.id).update(first_name=userprofile["first_name"],last_name=userprofile["last_name"])
         profile=UserProfile.objects.get(id=int(userprofile['id']))
-        print(profile)
+        name_string=(userprofile['first_name']+userprofile['second_name']+userprofile['third_name']+userprofile['last_name'])
+        if hasNumbers(name_string):
+            return JsonResponse({"error":"الاسماء لا يمكن ان تحتوي على ارقام"})
+        if hasLetters(userprofile["mobile_number"]) or hasLetters(userprofile["whatsapp_number"]):
+            return JsonResponse({"error":"ارقام الهواتف لا يمكن ان تحتوي على احرف"})
         user_object={}
         empty=[None,""]
-
+      
         if 'second_name' in userprofile and userprofile['second_name'] not in empty:
             user_object['middle_name']=userprofile['second_name']
             profile.middle_name=user_object['middle_name']
@@ -273,14 +292,14 @@ class UpdateProfile(View):
             address.save()
            
         if 'title' in userprofile and userprofile['title'] is not None:
-            candidate=request.user.userprofile.candidate
-            candidate.title=userprofile['title']
-            candidate.save()
+            if hasNumbers(userprofile['title']):
+                return JsonResponse({"error":"لا يمكن للاسماء ان تحتوي ارقام"})
+            else:
+                candidate=request.user.userprofile.candidate
+                candidate.title=userprofile['title']
+                candidate.save()
 
-        print("test me: ",profile.address.district)
-        profile.save()
-        print("test me after save: ",profile.address.district)
-        
+        profile.save()        
         return JsonResponse({"user":"success"})
 
 

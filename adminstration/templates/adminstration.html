@@ -288,7 +288,7 @@
             {% if request.user.userprofile.candidate %}
                   <div class="col-md-2">
                     <div class='form-group text-aligner'>
-                      <button id='camp' class="btn btn-danger mb-2" data-toggle="modal" data-target="#createComitteeMember">انشاء مدير حملة</button>
+                      <button id='camp' class="btn btn-danger mb-2" data-toggle="modal" data-target="#createCampaignAdmin">انشاء مدير حملة</button>
                     </div>
                   </div>
                   {% endif %}
@@ -605,7 +605,6 @@
 
           </div>
         </div>
-
       </div>
         </div>
       </div>
@@ -723,46 +722,68 @@
 {% block js %}
 <script>
   var csrftoken='{{ csrf_token }}'
-  function getFormData(){
-    data={
+
+
+$('#createmember').on('click',function(){
+  data={
       first_name:$('#id_first_name').val(),
       mobile_number:$('#id_mobile_number').val(),
       email:$('#id_email').val(),
       last_name:$('#id_last_name').val(),
       third_name:$('#id_last_name').val(),
-      usertype:$('#usertype').val(),
-
       middle_name:$('#id_middle_name').val(),
-      csrfmiddlewaretoken:csrftoken
-    }
-    usertype=$('#usertype').val()
-    if (data.usertype=='cm'){
-      data['comittee']=$('#assign_comittee option:selected').val()
-      data['is_manager']=$('#id_is_manager').val()
+      csrfmiddlewaretoken:csrftoken,
+      usertype:$('#cmm').val(),
+      comittee:$('#assign_comittee option:selected').val(),
+      is_manager:$('#id_is_manager').val()
     }
 
-    return data
-  }
-$('#createmember').on('click',function(){
-  data=getFormData()
   $.ajax({
     url:"{% url 'create-user' %}",
     type:"POST",
     data:data,
     success:function(result){
-      $("#succesModal").modal('show')
+      if (!result.error){
+        $("#succesModal").modal('show')
+      }
+      else{
+        $("#message").empty()
+        $("#message").text(result.error)
+        $("#errorMessage").modal("show")
+      }
     }
   })
 })
-$('#cm').on('click',function(){
-  $('#usertype').val('cm')
-})
-$('#camp').on('click',function(){
-  $('#usertype').val('camp')
-})
 
-$('#cmo').on('click',function(){
-  $('#usertype').val('cmo')
+
+$('#createca').on('click',function(){
+  data={
+      first_name:$('#id_ca_first_name').val(),
+      mobile_number:$('#id_ca_mobile_number').val(),
+      email:$('#id_ca_email').val(),
+      last_name:$('#id_ca_last_name').val(),
+      third_name:$('#id_ca_last_name').val(),
+      middle_name:$('#id_ca_middle_name').val(),
+      csrfmiddlewaretoken:csrftoken,
+      usertype:$('#ca').val(),
+    }
+    console.log(data)
+  $.ajax({
+    url:"{% url 'create-user' %}",
+    type:"POST",
+    data:data,
+    success:function(result){
+      if (!result.error){
+        $("#succesModal").modal('show')
+      }
+      else{
+        $("#message").empty()
+        $("#message").text(result.error)
+        $("#errorMessage").modal("show")
+      }
+      
+    }
+  })
 })
 
 
@@ -865,8 +886,14 @@ $("#updateprofile").on('click',function(){
       csrfmiddlewaretoken: csrftoken
       },
     success:function(result){
-
-      $("#succesModal").modal('show')
+      if(!result.error){
+        $("#succesModal").modal('show')
+      }
+      else{
+          $("#message").empty()
+          $("#message").text(result.error)
+          $("#errorMessage").modal("show")
+      }
     }
   })
 })

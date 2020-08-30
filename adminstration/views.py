@@ -17,7 +17,7 @@ from common.models import ( Address,
                             Area)
 
 from .forms import CreateComitteeForm,UpdateCmForm
-from users_management.forms import SignUpForm
+from users_management.forms import SignUpForm,CampaignAdminCreateForm
 import json
 # testing purpose
 from django.core.files.storage import FileSystemStorage
@@ -31,7 +31,6 @@ import json
 
 class CampaignManagementMainView(View):    
     model=Comittee
-
     def get(self,request):
         if hasattr(request.user.userprofile,'campaignadminstrator'):
             candidate=request.user.userprofile.campaignadminstrator.candidate
@@ -51,6 +50,7 @@ class CampaignManagementMainView(View):
         context={
             "form":CreateComitteeForm,
             "comittee_member_form":SignUpForm,
+            "campadmin_form":CampaignAdminCreateForm,
             "comittees_list":comittees_list,
             "campaign_manager":campaign_manager,
             "comittees_members":comittees_members,
