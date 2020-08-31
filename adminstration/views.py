@@ -331,11 +331,12 @@ class GetDepartmentArea(View):
 class SearchComitteeView(View):
 
     def get(self,request): 
-        query=request.GET.get('is_active')
+        query=json.loads(request.GET.get('query'))
+        print(request.GET)
         print(query)
         response=[]
         if 'comittee_name' in query:
-            comittee=Comittee.objects.get(name=query)         
+            comittee=Comittee.objects.get(name=query['comittee_name'])         
             if comittee.is_active:
                 status="فعالة"
             else:
@@ -354,9 +355,9 @@ class SearchComitteeView(View):
             response.append(comittee)
             return JsonResponse({"comittee":comittee})
         
-        elif request.GET.get("is_active"):
+        elif 'is_active' in query:
 
-            if query=="true":
+            if query['is_active']==True:
                 comittees_list=Comittee.objects.all().filter(is_active=True)
                 status="فعالة"
             else:
@@ -785,33 +786,59 @@ def get_cm(request):
         cm_list.append(cm)
     
     return JsonResponse(cm_list, safe=False)
+
 def get_cm_by_comittee(request):
-    cm_id=request.GET.get("cm_id")
-    comittee=Comittee.objects.get(id=int(request.GET.get("comittee")))
-    qs = ComitteeMember.objects.filter(Q(id=int(cm_id))|
-                                      Q(comittee=comittee)
-                                       )
-    
+    query=json.loads(request.GET.get("query"))
+    print(query)
     cm_list = []
-    for cm in qs:
-        
-            
+    # return JsonResponse({"message":"success"})
+    if "cm_id" in query and query["cm_id"] not in [None,""]:
+        cm =ComitteeMember.objects.get(id=int(query["cm_id"]))
         cm_obj={
-            'name':str(cm.profile.user.first_name+" "+cm.profile.user.last_name),
-            'phone_number':cm.profile.mobile_number,
-            'email':cm.profile.user.email,
-            'comittee':comittee.name,
-            'id':cm.id,
-        
+        'name':str(cm.profile.user.first_name+" "+cm.profile.user.last_name),
+        'phone_number':cm.profile.mobile_number,
+        'email':cm.profile.user.email,
+        'comittee':cm.comittee.name,
+        'id':cm.id,
         }
         if cm.is_manager:
             cm_obj['status']="مدير"
         else:
             cm_obj['status']="عضو"
-            
         cm_list.append(cm_obj)
+
+    elif 'comittee' in query and query['comittee'] not in [None,""]:
+        comittee=Comittee.objects.get(id=int(query['comittee']))
+        qs = ComitteeMember.objects.all().filter(comittee=comittee)
+        for cm in qs:
+            
+            cm_obj={
+                'name':str(cm.profile.user.first_name+" "+cm.profile.user.last_name),
+                'phone_number':cm.profile.mobile_number,
+                'email':cm.profile.user.email,
+                'comittee':cm.comittee.name,
+                'id':cm.id,
+            
+            }
+            if cm.is_manager:
+                cm_obj['status']="مدير"
+            else:
+                cm_obj['status']="عضو"
+                
+            cm_list.append(cm_obj)
+    # print(cm_list)
+    # return JsonResponse(cm_list, safe=False)
     
+    
+    # print(qs)
     return JsonResponse(cm_list, safe=False)
+    
+    
+   
+
+
+
+
 def get_identifier(request):
     term=request.GET.get("term")
     qs = Voter.objects.filter(Q(profile__user__first_name__icontains=term)|

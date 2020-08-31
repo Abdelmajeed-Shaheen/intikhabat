@@ -238,7 +238,7 @@
                       <label class="form-check-label" for="exampleRadios1">
                         فعالة
                       </label>
-                      <input class="form-check-input" type="radio" name="exampleRadios" id="acom" value="option1" checked>
+                      <input class="form-check-input" type="radio" name="exampleRadios" id="acom" value="option1" >
                     </div>
                   </div>
                   <div class="col-md-2">
@@ -332,6 +332,7 @@
                 </div>
                 <div class="col-md-5">
                   <select name="" id="cmo_search" class="form-control">
+                  <option value="">اختر اللجنة</option>
                     {% for comittee in comittees_list %}
                     <option value="{{comittee.id}}">{{comittee.name}}</option>
                     {% endfor %}
@@ -1033,13 +1034,14 @@ $('#comitteeQuery').on('change',function(e){
     query=new Object()
     query.comittee_name=comittee_name
     console.log(query)
+    queryjson=JSON.stringify(query)
 
     $.ajax({
       url:'{% url "search-comittee" %}',
       type:'GET',
       dataType:"JSON",
       data:{
-        query:query
+        query:queryjson
       },
 
       success:function(result){
@@ -1086,13 +1088,15 @@ $('#acom').on('change',function(e){
   e.preventDefault()
 
     is_active=true
-
+    query=new Object()
+    query.is_active=is_active
+    queryjson=JSON.stringify(query)
     $.ajax({
       url:'{% url "search-comittee" %}',
       type:'GET',
       dataType:"JSON",
       data:{
-        is_active:is_active
+        query:queryjson
       },
 
       success:function(result){
@@ -1143,12 +1147,15 @@ $('#incom').on('change',function(e){
   e.preventDefault()
 
     is_active=false
+    query=new Object()
+    query.is_active=is_active
+    queryjson=JSON.stringify(query)
     $.ajax({
       url:'{% url "search-comittee" %}',
       type:'GET',
       dataType:"JSON",
       data:{
-        is_active:is_active
+        query:queryjson
       },
 
       success:function(result){
@@ -1198,15 +1205,17 @@ $('#incom').on('change',function(e){
 
 $("#search_cm").on('click',function(e){
   e.preventDefault()
-  console.log($("#hidden_cm").val())
-  console.log($("#cmo_search option:selected").val())
-
+  cm_id=$("#hidden_cm").val(),
+  comittee=$("#cmo_search option:selected").val()
+  query=new Object()
+  query.comittee=comittee
+  query.cm_id=cm_id
+  queryjson=JSON.stringify(query)
   $.ajax({
     url:"{% url 'get-cm-comittee' %}",
     type:"GET",
     data:{
-      cm_id:$("#hidden_cm").val(),
-      comittee:$("#cmo_search option:selected").val()
+      query:queryjson
     },
     success:function(result){
     table=$("#cmt")

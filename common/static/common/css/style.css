@@ -13,11 +13,13 @@ body {
 }
 
 a {
-  color: #03C4EB;
+  color: #03c4eb;
   transition: 0.5s;
 }
 
-a:hover, a:active, a:focus {
+a:hover,
+a:active,
+a:focus {
   color: #03c5ec;
   outline: none;
   text-decoration: none;
@@ -28,16 +30,20 @@ p {
   margin: 0 0 30px 0;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: "Raleway", sans-serif;
   font-weight: 400;
   margin: 0 0 20px 0;
   padding: 0;
 }
 
-
 .date-input {
-  width:80px !important
+  width: 80px !important;
 }
 /* Prelaoder */
 #preloader {
@@ -78,7 +84,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .back-to-top:hover {
-  background: #03C4EB;
+  background: #03c4eb;
   color: #fff;
 }
 
@@ -89,7 +95,7 @@ h1, h2, h3, h4, h5, h6 {
   display: table;
   width: 100%;
   height: 100vh;
-  background: url('/static/common/img/hero-bg.jpg') center;
+  background: url("/static/common/img/hero-bg.jpg") center;
   background-size: cover;
 }
 
@@ -123,14 +129,14 @@ h1, h2, h3, h4, h5, h6 {
   color: #fff;
 }
 
-#hero button{
+#hero button {
   background-color: transparent;
-border-color: gold;
-color: gold;
-border-radius: 50px;
-font-size: 18px;
-font-weight: bolder;
-width: 100px;
+  border-color: gold;
+  color: gold;
+  border-radius: 50px;
+  font-size: 18px;
+  font-weight: bolder;
+  width: 100px;
 }
 
 @media (max-width: 768px) {
@@ -148,7 +154,7 @@ width: 100px;
 #hero h2 span {
   color: #fff;
   transition: 0.3s;
-  border-bottom: 2px solid #03C4EB;
+  border-bottom: 2px solid #03c4eb;
 }
 
 @media (max-width: 768px) {
@@ -180,8 +186,8 @@ width: 100px;
 }
 
 #hero .btn-get-started {
-  background: #03C4EB;
-  border: 2px solid #03C4EB;
+  background: #03c4eb;
+  border: 2px solid #03c4eb;
   color: #fff;
 }
 
@@ -197,8 +203,8 @@ width: 100px;
 }
 
 #hero .btn-services:hover {
-  background: #03C4EB;
-  border: 2px solid #03C4EB;
+  background: #03c4eb;
+  border: 2px solid #03c4eb;
 }
 
 /*--------------------------------------------------------------
@@ -268,8 +274,10 @@ width: 100px;
   font-family: "Raleway", sans-serif;
 }
 
-.nav-menu a:hover, .nav-menu .active > a, .nav-menu li:hover > a {
-  color: #03C4EB;
+.nav-menu a:hover,
+.nav-menu .active > a,
+.nav-menu li:hover > a {
+  color: #03c4eb;
 }
 
 .nav-menu .drop-down ul {
@@ -305,8 +313,10 @@ width: 100px;
   color: #333333;
 }
 
-.nav-menu .drop-down ul a:hover, .nav-menu .drop-down ul .active > a, .nav-menu .drop-down ul li:hover > a {
-  color: #03C4EB;
+.nav-menu .drop-down ul a:hover,
+.nav-menu .drop-down ul .active > a,
+.nav-menu .drop-down ul li:hover > a {
+  color: #03c4eb;
 }
 
 .nav-menu .drop-down > a:after {
@@ -400,8 +410,10 @@ width: 100px;
   outline: none;
 }
 
-.mobile-nav a:hover, .mobile-nav .active > a, .mobile-nav li:hover > a {
-  color: #03C4EB;
+.mobile-nav a:hover,
+.mobile-nav .active > a,
+.mobile-nav li:hover > a {
+  color: #03c4eb;
   text-decoration: none;
 }
 
@@ -477,7 +489,7 @@ width: 100px;
 .section-title-divider {
   width: 50px;
   height: 3px;
-  background: #03C4EB;
+  background: #03c4eb;
   margin: 0 auto;
   margin-bottom: 20px;
 }
@@ -529,7 +541,11 @@ width: 100px;
 /* Services Section
 --------------------------------*/
 #services {
-  background: linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)), url("../img/services-bg.jpg") fixed center center;
+  background: linear-gradient(
+      rgba(255, 255, 255, 0.9),
+      rgba(255, 255, 255, 0.9)
+    ),
+    url("../img/services-bg.jpg") fixed center center;
   background-size: cover;
   padding: 80px 0 60px 0;
 }
@@ -540,11 +556,11 @@ width: 100px;
 
 #services .service-icon {
   float: left;
-  background: #03C4EB;
+  background: #03c4eb;
   padding: 16px;
   border-radius: 50%;
   transition: 0.5s;
-  border: 1px solid #03C4EB;
+  border: 1px solid #03c4eb;
 }
 
 #services .service-icon i {
@@ -557,7 +573,7 @@ width: 100px;
 }
 
 #services .service-item:hover .service-icon i {
-  color: #03C4EB;
+  color: #03c4eb;
 }
 
 #services .service-title {
@@ -579,7 +595,8 @@ width: 100px;
 /* Subscribe Section
 --------------------------------*/
 #subscribe {
-  background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url(../img/subscribe-bg.jpg) fixed center center;
+  background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+    url(../img/subscribe-bg.jpg) fixed center center;
   background-size: cover;
   padding: 80px 0;
 }
@@ -615,8 +632,8 @@ width: 100px;
 }
 
 #subscribe .subscribe-btn:hover {
-  background: #03C4EB;
-  border: 2px solid #03C4EB;
+  background: #03c4eb;
+  border: 2px solid #03c4eb;
 }
 
 /* Portfolio Section
@@ -645,8 +662,9 @@ width: 100px;
   transition: all 0.3s ease-in-out;
 }
 
-#portfolio #portfolio-flters li:hover, #portfolio #portfolio-flters li.filter-active {
-  color: #03C4EB;
+#portfolio #portfolio-flters li:hover,
+#portfolio #portfolio-flters li.filter-active {
+  color: #03c4eb;
 }
 
 #portfolio #portfolio-flters li:last-child {
@@ -683,7 +701,8 @@ width: 100px;
   margin-bottom: 0;
 }
 
-#portfolio .portfolio-item .portfolio-info .preview-link, #portfolio .portfolio-item .portfolio-info .details-link {
+#portfolio .portfolio-item .portfolio-info .preview-link,
+#portfolio .portfolio-item .portfolio-info .details-link {
   position: absolute;
   right: 48px;
   font-size: 20px;
@@ -691,8 +710,9 @@ width: 100px;
   color: #4d4d4d;
 }
 
-#portfolio .portfolio-item .portfolio-info .preview-link:hover, #portfolio .portfolio-item .portfolio-info .details-link:hover {
-  color: #03C4EB;
+#portfolio .portfolio-item .portfolio-info .preview-link:hover,
+#portfolio .portfolio-item .portfolio-info .details-link:hover {
+  color: #03c4eb;
 }
 
 #portfolio .portfolio-item .portfolio-info .details-link {
@@ -751,7 +771,7 @@ width: 100px;
 
 #testimonials .profile h4 {
   font-weight: 700;
-  color: #03C4EB;
+  color: #03c4eb;
   margin-bottom: 5px;
 }
 
@@ -826,7 +846,7 @@ width: 100px;
 }
 
 #team .member .social a:hover {
-  color: #03C4EB;
+  color: #03c4eb;
 }
 
 #team .member .social i {
@@ -846,7 +866,7 @@ width: 100px;
 
 #contact .info i {
   font-size: 32px;
-  color: #03C4EB;
+  color: #03c4eb;
   float: left;
 }
 
@@ -905,17 +925,19 @@ width: 100px;
   animation: animate-loading 1s linear infinite;
 }
 
-#contact .php-email-form input, #contact .php-email-form textarea {
+#contact .php-email-form input,
+#contact .php-email-form textarea {
   border-radius: 0;
   box-shadow: none;
 }
 
-#contact .php-email-form input::focus, #contact .php-email-form textarea::focus {
-  background-color: #03C4EB;
+#contact .php-email-form input::focus,
+#contact .php-email-form textarea::focus {
+  background-color: #03c4eb;
 }
 
 #contact .php-email-form button[type="submit"] {
-  background: #03C4EB;
+  background: #03c4eb;
   border: 0;
   padding: 10px 24px;
   color: #fff;
@@ -1004,7 +1026,8 @@ width: 100px;
   z-index: 1;
 }
 
-.portfolio-details .portfolio-details-carousel .owl-nav, .portfolio-details .portfolio-details-carousel .owl-dots {
+.portfolio-details .portfolio-details-carousel .owl-nav,
+.portfolio-details .portfolio-details-carousel .owl-dots {
   margin-top: 5px;
   text-align: left;
 }
@@ -1019,7 +1042,7 @@ width: 100px;
 }
 
 .portfolio-details .portfolio-details-carousel .owl-dot.active {
-  background-color: #03C4EB !important;
+  background-color: #03c4eb !important;
 }
 
 .portfolio-details .portfolio-info {
@@ -1095,15 +1118,53 @@ width: 100px;
   color: #ccc;
 }
 
-.text-aligner{
+.text-aligner {
   text-align: right;
 }
 
-.star-icon{
-  color: goldenrod
+.star-icon {
+  color: goldenrod;
 }
 
-.login-link{
+.login-link {
   font-weight: bolder;
-  color:white
+  color: white;
 }
+
+/* utilities */
+.fa-chevron-down {
+  font-size: 9px;
+}
+/* utilities */
+
+/* overriding select2 styles */
+
+.select2-selection__rendered {
+  line-height: 16px !important;
+  padding-right: 12px;
+  padding-left: 5px;
+  padding-top: 10px;
+  padding-bottom: 6px;
+  text-align: right;
+  height: 100% !important;
+  color: #495057 !important;
+}
+
+.select2-selection--single {
+  background-clip: padding-box;
+  border: 1px solid #ced4da !important;
+  border-radius: 0.25rem !important;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out !important;
+  height: 38px !important;
+  width: 100% !important;
+}
+
+.select2-container {
+  width: 100% !important;
+}
+
+.form-control {
+  transition: all 0.5s ease-in;
+}
+
+/* select2 styles */
