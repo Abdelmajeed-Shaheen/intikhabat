@@ -1,4 +1,5 @@
 
+
 {% extends 'candidate_base.html' %}
 {% load staticfiles %}
 
@@ -14,7 +15,7 @@
     <ul class="navbar-nav mr-auto">
       <li class="nav-item text-right">
         <p class="nav-link mb-0"><span class="text-light">
-            المستخدم: {{request.user.username}}
+            المستخدم : {{request.user.username}}
           </span></p>
       </li>
       <li class="nav-item text-right"><a href="{% url 'logout' %}"><span class="btn btn-danger">
@@ -44,18 +45,18 @@
         <div class="col-md-5 pr-md-0">
           <div class="card shadow-sm">
             <div class="card-header text-aligner">
-              <h5>اسم المستخدم:
-                <span class="text-info">
+              <h5>اسم المستخدم :
+                <span class="text-info" style= "font-family: Open Sans, sans-serif;">
                   {{request.user.username}}</h5>
               </span>
-              <h6 class="text-warning"> ملاحظة: يستخدم كأسم مستخدم عند تسجيل الدخول, يرجى عدم مشاركته مع الاخرين</h6>
+              <h6 class="text-warning"> ملاحظة : يستخدم كأسم مستخدم عند تسجيل الدخول, يرجى عدم مشاركته مع الاخرين</h6>
 
             </div>
 
-            <div class="card-body" style="background-color:rgba(0,0,0,.03)">
+            <div class="card-body" style="background-color :rgba(0,0,0,.03)">
               <div class="row">
                 {% if voter.voter.identiefier %}
-                <div class="col-3 col-md-6 col-lg-3">
+                <div class="col-6 my-1">
                   <p class="about-title text-right text-md-center mb-0">اسم المعرف<br /> <span
                       class="text-info">{{voter.voter.identiefier.profile.user.first_name}}
                       {{voter.voter.identiefier.profile.last_name}}</span></p>
@@ -64,7 +65,7 @@
 
                 {% if voter.voter.vote_status == "Voting"  and voter.voter.candidate %}
 
-                <div class="col-3 col-md-6 col-lg-3">
+                <div class="col-12 col-md-6 my-1">
                   <p class="about-title text-right text-md-center mb-0">
                     المرشح<br />
                     <span class="text-info">
@@ -75,7 +76,7 @@
                 </div>
                 {% if voter.voter.voting_id %}
 
-                <div class="col-3 col-md-6 col-lg-3">
+                <div class="col-6 my-1">
                   <p class="about-title text-right text-md-center mb-0">
                     الرقم الانتخابي<br />
                     <span class="text-info">{{voter.voter.voting_id}}</span>
@@ -87,7 +88,7 @@
 
                 {% if voter.voter.vote_status == "Voting"  and voter.voter.candidate %}
                 {% if voter.voter.related_comittee_member %}
-                <div class="col-3 col-md-6 col-lg-3">
+                <div class="col-6 my-1">
                   <p class="about-title text-right text-md-center mb-0">
                     عضو الارتباط<br />
                     <span class="text-info">{{voter.voter.related_comittee_member.profile.user.first_name}}
@@ -108,13 +109,13 @@
           <div class="card mt-1 mt-md-0 shadow-sm">
             <div class="card-header text-center">
               <h5 class="about-title text-aligner mb-0">
-                الحالة الانتخابية:
+                الحالة الانتخابية :
                 {% if voter.voter.vote_status == "Not_sure" %}
-                <span style="color:#bf931b">متردد</span>
+                <span style="color :#bf931b">متردد</span>
                 {% elif voter.voter.vote_status == "Not_voting"%}
-                <span style="color:red">لا ارغب</span>
+                <span style="color :red">لا ارغب</span>
                 {% elif not voter.voter.vote_status %}
-                <span style="color:gray">غير محدد</span>
+                <span style="color :gray">غير محدد</span>
                 {% else %}
                 <span class="text-info">مؤيد</span>
                 {% endif %}
@@ -124,13 +125,13 @@
 
               <div class="row">
 
-                <h5 class="text-aligner mb-0 w-100 px-3">
-                  تعديل الحالة الانتخابية:
+                <h5 class="text-aligner mt-1 mb-2 w-100 px-3">
+                  تعديل الحالة الانتخابية :
                 </h5>
 
-                <div class="col-lg-4">
+                <div class="col-lg-4 pl-0">
                   <form id="voteStatusForm"
-                    class="d-flex h-100 justify-content-around justify-content-md-between align-content-center mt-1 mt-md-0">
+                    class="d-flex h-100 justify-content-between justify-content-md-between align-content-center mt-1 mt-md-0">
                     <div class="form-check p-1">
                       <input class="form-check-input" type="radio" id="v" value="Voting"
                         {% if voter.voter.vote_status == "Voting" %}checked{% endif %}>
@@ -142,7 +143,7 @@
                       <label class="form-check-label pr-3">متردد</label>
                     </div>
                     <div class="form-check p-1">
-                      <input class="form-check-input" type="radio" id="nv" value="Not_voting"
+                      <input class="form-check-input ml-3 " type="radio" id="nv" value="Not_voting"
                         {% if voter.voter.vote_status == "Not_voting" %}checked{% endif %}>
                       <label class="form-check-label pr-3">لا ارغب</label>
                     </div>
@@ -150,27 +151,25 @@
                     <input type="hidden" name="" id="candidate_choice">
                   </form>
                 </div>
-                {% if voter.voter.vote_status == "Voting" or not voter.voter.candidate %}
+                
                 <div class="col-lg-4">
-                  <select id='elecList' class="form-control mt-3 mt-md-0" style="display: none;">
+                  <select id='elecList' class="form-control mt-3 mt-md-0" >
                     <option selected disabled>اختر القائمة الانتخابية</option>
                     {% for eleclist in election_lists %}
                     <option value="{{eleclist.id}}">{{eleclist.name}}</option>
                     {% endfor %}
                   </select>
                 </div>
-                {% endif %}
-                {% if voter.voter.vote_status == "Voting" or not voter.voter.candidate%}
+      
+                
                 <div class="col-lg-4 mt-3 mt-lg-0" id="candidates_div">
                   <select id='candis' class="d-none">
                   </select>
                 </div>
-                {% endif %}
+              
               </div>
-              <div class="mt-4 text-left">
-                <button id="updateprofile" class="btn btn-info col-12 col-md-5">اضغط
-                  هنا بعد تعديل
-                  الميول الانتخابي</button>
+              <div class="mt-5 text-left">
+                <button id="updateprofile" class="btn btn-info col-12 col-md-5">اضغط هنا بعد تحديد تعديل الميول</button>
               </div>
             </div>
           </div>
@@ -287,10 +286,10 @@
               {% endif %}
             </form>
             <div class="row mt-2">
-              <div class="col-10">
+              <div class="col-9">
                 <a href="{% url 'password-change' %}" class="btn btn-info">تغيير الرقم السري</a>
               </div>
-              <div class="col-2"><button id=" updateprofile2" class="btn btn-primary d-inline-block w-100">
+              <div class="col-3 col-md-2"><button id="updateprofile2" class="btn btn-primary d-inline-block w-100">
                   حفظ</button>
               </div>
             </div>
@@ -334,27 +333,27 @@
     candidate = $('#candis option:selected').val()
     voter_id = $("#voterId").val()
     $.ajax({
-      url: "{% url 'edit-voting-status' %}",
-      type: "POST",
-      data: {
-        status: status,
-        voter_id: voter_id,
-        candidate: candidate,
-        csrfmiddlewaretoken: "{{csrf_token}}",
-        success: function (reslut) {
+      url : "{% url 'edit-voting-status' %}",
+      type : "POST",
+      data : {
+        status : status,
+        voter_id : voter_id,
+        candidate : candidate,
+        csrfmiddlewaretoken : "{{csrf_token}}",
+        success : function (reslut) {
           $("#succesModal").modal('show')
         }
       }
     })
     $.ajax({
-      url: "{% url 'update-profile' %}",
-      type: "POST",
+      url : "{% url 'update-profile' %}",
+      type : "POST",
 
-      data: {
-        user: userjson,
-        csrfmiddlewaretoken: "{{csrf_token}}"
+      data : {
+        user : userjson,
+        csrfmiddlewaretoken : "{{csrf_token}}"
       },
-      success: function (result) {
+      success : function (result) {
         console.log(result)
         location.reload()
       }
@@ -364,28 +363,28 @@
   })
 
   $("#v").change(function () {
-    $("#elecList").css("display", "block");
-    $("#elecCard").show()
-    $("#elecCardLable").show()
-    $(".select2-container").css("display", "inline-block")
+    $("#elecList").css("visibility","visible");
+    $("#elecCard").css("visibility","visible");
+    $("#elecCardLable").css("visibility","visible")
+    $(".select2-container").css("visibility","visible");
     $("#ns").prop("checked", false);
     $("#nv").prop("checked", false);
   });
 
   $("#ns").change(function () {
-    $("#elecList").hide()
-    $("#elecCard").hide()
-    $(".select2-container").css("display", "none")
-    $("#elecCardLable").hide()
+    $("#elecList").css("visibility","hidden")
+    $("#elecCard").css("visibility","hidden");
+    $(".select2-container").css("visibility","hidden")
+    $("#elecCardLable").css("visibility","hidden")
     $("#nv").prop("checked", false);
     $("#v").prop("checked", false);
   });
 
   $("#nv").change(function () {
-    $("#elecList").hide()
-    $("#elecCard").hide()
-    $("#elecCardLable").hide()
-    $(".select2-container").css('display', 'none')
+    $("#elecList").css("visibility","hidden")
+    $("#elecCard").css("visibility","hidden");
+    $(".select2-container").css("visibility","hidden")
+    $("#elecCardLable").css("visibility","hidden")
     $("#ns").prop("checked", false);
     $("#v").prop("checked", false);
   });
@@ -410,12 +409,12 @@
   $('#elecList').on('change', function () {
     election_list = $('#elecList option:selected').val()
     $.ajax({
-      url: '{% url "get_candidates" %}',
-      type: 'GET',
-      data: {
-        election_list: election_list
+      url : '{% url "get_candidates" %}',
+      type : 'GET',
+      data : {
+        election_list : election_list
       },
-      success: function (result) {
+      success : function (result) {
         $("#candidates_div").show()
         console.log(result)
         $(result).each(function (index, value) {
@@ -430,19 +429,22 @@
 
   $(document).ready(function () {
     if ($("#v").is(":checked")) {
-      $("#elecList").css("display", "block");
-      $(".select2-container").css("display", "inline-block")
+    $("#elecList").css("visibility","visible")
+    $("#elecCard").css("visibility","visible");
+    $(".select2-container").css("visibility","visible")
+    $("#elecCardLable").css("visibility","visible")
     }
     if ($("#nv").is(":checked") || $("#ns").is(':checked')) {
-      $("#elecCard").hide()
-      $("#elecCardLable").hide()
-      $(".select2-container").css("display", "none")
+    $("#elecList").css("visibility","hidden")
+    $("#elecCard").css("visibility","hidden");
+    $(".select2-container").css("visibility","hidden")
+    $("#elecCardLable").css("visibility","hidden")
 
     }
-    $("#candidates_div").hide()
+    $("#candidates_div").css("display", "none")
     // Initialize select2
     $("#candis").select2({
-      dir: "rtl"
+      dir : "rtl"
     });
     $('.select2-selection__arrow').empty();
     $('.select2-selection__arrow').append('<i class="fa fa-chevron-down"></i>');
@@ -450,23 +452,23 @@
 
     // Read selected option
     $('#but_read').click(function () {
-      var username = $('#candis option:selected').text();
+      var username = $('#candis option :selected').text();
 
     });
   });
 
 
   $(document).on('change', '#area', function () {
-    element = $('#area option:selected').val();
+    element = $('#area option :selected').val();
     $.ajax(
       {
-        type: "GET",
-        url: "{% url 'get_district' %}",
-        data: {
-          area_id: element
+        type : "GET",
+        url : "{% url 'get_district' %}",
+        data : {
+          area_id : element
         },
-        dataType: 'JSON',
-        success: function (result) {
+        dataType : 'JSON',
+        success : function (result) {
           $("#district").empty();
           $("#district").append('<option value=""> الحي</option>');
           $(result).each(function (index, value) {
@@ -503,24 +505,24 @@
     console.log(userprofile.whatsapp_number)
     $('#addresses option').each(function () {
       if (this.selected)
-        userprofile.address = $('#addresses option:selected').val()
+        userprofile.address = $('#addresses option :selected').val()
       else
         userprofile.address = "";
     });
     identifier = ""
-    if ($("#has_identifier_t").is(":checked")) {
+    if ($("#has_identifier_t").is(" :checked")) {
       identifier = $("#identifier").val()
       has_identifier = true
     }
-    else if (($("#has_identifier_f").is(":checked"))) {
+    else if (($("#has_identifier_f").is(" :checked"))) {
 
       has_identifier = false
     }
     else {
       has_identifier = undefined
     }
-    userprofile.gender = $("#gender option:selected").val()
-    userprofile.district = $("#district option:selected").val()
+    userprofile.gender = $("#gender option :selected").val()
+    userprofile.district = $("#district option :selected").val()
     userprofile.dob = $("#dob").val()
     userprofile.id = "{{voter.id}}"
     userjson = JSON.stringify(userprofile)
@@ -535,29 +537,29 @@
 
     voter_id = $("#voterId").val()
     $.ajax({
-      url: "{% url 'edit-voting-status' %}",
-      type: "POST",
-      data: {
-        voter_id: voter_id,
-        ec: ec,
-        identifier: identifier,
-        has_identifier: has_identifier,
+      url : "{% url 'edit-voting-status' %}",
+      type : "POST",
+      data : {
+        voter_id : voter_id,
+        ec : ec,
+        identifier : identifier,
+        has_identifier : has_identifier,
 
-        csrfmiddlewaretoken: "{{csrf_token}}",
-        success: function (reslut) {
+        csrfmiddlewaretoken : "{{csrf_token}}",
+        success : function (reslut) {
           $("#succesModal").modal('show')
         }
       }
     })
     $.ajax({
-      url: "{% url 'update-profile' %}",
-      type: "POST",
+      url : "{% url 'update-profile' %}",
+      type : "POST",
 
-      data: {
-        user: userjson,
-        csrfmiddlewaretoken: "{{csrf_token}}"
+      data : {
+        user : userjson,
+        csrfmiddlewaretoken : "{{csrf_token}}"
       },
-      success: function (result) {
+      success : function (result) {
         console.log(result)
         $("#succesModal").modal('show')
       }
