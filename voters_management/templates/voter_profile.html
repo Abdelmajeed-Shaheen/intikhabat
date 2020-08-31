@@ -154,7 +154,11 @@
                 
                 <div class="col-lg-4">
                   <select id='elecList' class="form-control mt-3 mt-md-0" >
+                    {% if voter.voter.candidate %}
+                    <option selected disabled>{{voter.voter.candidate.election_list.name}}</option>
+                    {% else %}
                     <option selected disabled>اختر القائمة الانتخابية</option>
+                    {% endif %}
                     {% for eleclist in election_lists %}
                     <option value="{{eleclist.id}}">{{eleclist.name}}</option>
                     {% endfor %}
@@ -333,7 +337,7 @@
     candidate = $('#candis option:selected').val()
     voter_id = $("#voterId").val()
     $.ajax({
-      url : "{% url 'edit-voting-status' %}",
+      url : "{% url 'change-voting-status' %}",
       type : "POST",
       data : {
         status : status,
