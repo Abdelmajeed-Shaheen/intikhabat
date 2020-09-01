@@ -37,6 +37,10 @@
   <li class="nav-item">
     <a class="nav-link " id="stats-tab" data-toggle="tab" href="#stats" role="tab" aria-controls="stats" aria-selected="true">احصائيات الحملة</a>
   </li>
+
+  <li class="nav-item">
+    <a class="nav-link " id="tasks-tab" data-toggle="tab" href="#tasks" role="tab" aria-controls="tasks" aria-selected="true">المهام</a>
+  </li>
 </ul>
 
   <div class="tab-content" id= "myTabContent">
@@ -668,6 +672,42 @@
       </div>
     </div>
       </div>
+
+      <div class="tab-pane fade " id="tasks" role="tabpanel" aria-labelledby="tasks-tab">
+        <div class="container mt-3 text-aligner">
+          <a type="button" class="btn btn-info my-3" href="{% url 'create-task' %}">
+            انشاء مهمة
+          </a>
+          <div>
+            <div>
+                  <h2 class="about-title text-aligner">مهام اللجان</h2>
+                  <div class="row">
+                  <div class="col-md-8">
+                  <select  id="comitteeTaskQuery" class="form-control my-2">
+                    {% for comittee in comittees_list %}
+                    <option value="{{comittee.id}}">{{comittee.name}}</option>
+                    {% endfor %}
+                  </select>
+                  </div>
+ 
+                  </div>
+                  <table class="table table-striped table-dark">
+                    <thead id="tasks_table">
+                      <tr>
+                        <th scope="col">عنوان المهمة</th>
+                        <th scope="col">اللجنة</th>
+                        <th scope="col">الحالة</th>
+                        <th scope="col">التفاصيل</th>
+                      </tr>
+                    </thead>
+                    <tbody id="comittee_task_table_tbody">
+                      
+                    </tbody>
+                  </table>
+                </div>
+                </div>
+              </div>
+      </div>
   </div>
 
 
@@ -1279,6 +1319,67 @@ $( "#cm_search" ).autocomplete({
         .append( "<div>" + item.lable + "</div>" )
         .appendTo( ul );
     };
+
+
+
+    $('#comitteeTaskQuery').on('change',function(e){
+  e.preventDefault()
+    comittee_id=$('#comitteeTaskQuery option:selected').val()
+    query=new Object()
+    query.comittee_id=comittee_id
+    queryjson=JSON.stringify(query)
+    $.ajax({
+      url:'{% url "get-tasks-list" %}',
+      type:'GET',
+      dataType:"JSON",
+      data:{
+        query:queryjson
+      },
+
+      success:function(result){
+        console.log(result)
+
+        table=$('#comittee_task_table_tbody')
+        table.empty()
+        if (!result.error){
+        $(result.response).each(function(index,value){
+        row=$("<tr></tr>");
+        title=("<td>"+value.title+"</td>");
+        comittee=("<td>"+value.comittee+"</td>");
+        status=$("<td>"+value.is_complete+"</td>");
+        editdata=$("<td></td>")
+        edit=$("<a>", { "class": "btn btn-danger","href":'/campaign-management/task-detail/'+value.id });
+        edit.text("تفاصيل")
+        editdata.append(edit)
+        row.append(title)
+        row.append(comittee)
+        row.append(status)
+        row.append(editdata)
+        table.append(row)
+        })
+
+        }
+        else{
+        row=$("<tr></tr>");
+        title=("<td>"+result.response.title+"</td>");
+        comittee=("<td>"+result.response.comittee+"</td>");
+        status=$("<td>"+result.response.is_complete+"</td>");
+        editdata=$("<td></td>")
+        edit=$("<a>", { "class": "btn btn-danger","href":'/campaign-management/task-detail/'+result.response.id });
+        edit.text("تفاصيل")
+        editdata.append(edit)
+        row.append(title)
+        row.append(comittee)
+        row.append(status)
+        row.append(editdata)
+        table.append(row)
+        }
+
+
+      }
+
+})
+    })
 </script>
 
 

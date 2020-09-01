@@ -135,13 +135,9 @@
           <div class="card-body">
             <h4>مهام اللجنة:</h4>
             <ul>
-              <li> task 1</li>
-              <li> task 2</li>
-              <li> task 3</li>
-              <li> task 4</li>
-              <li> task 5</li>
-              <li> task 6</li>
-              <li> task 7</li>
+            {% for task in tasks_list %}
+              <li>{{task.title}}  {% if task.is_complete %}<span class="badge badge-success">منجزة</span>{% else %}<span class="badge badge-danger">غير منجزة</span>{% endif %}  <a href="{% url 'task-detail' task.id %}" class="btn btn-sm btn-info">التفاصيل</a></li>
+            {% endfor %}
             </ul>
           </div>
             </div>
@@ -592,9 +588,6 @@ $(document).on("click", ".grant", function () {
       userPerm.create=createUser;
       userJson=JSON.stringify(userPerm)
       comitteeJson=JSON.stringify(comitteePerm)
-
-      console.log(userJson)
-      console.log(comitteeJson)
 
      $.ajax({
        url:"{% url 'grant-permession' %}",

@@ -15,8 +15,9 @@ from common.models import ( Address,
                             Governorate,
                             District, 
                             Area)
+from tasks.models import ComitteeTask
 
-from .forms import CreateComitteeForm,UpdateCmForm
+from .forms import CreateComitteeForm,UpdateCmForm,ComitteeTaskForm
 from users_management.forms import SignUpForm,CampaignAdminCreateForm
 import json
 # testing purpose
@@ -77,7 +78,7 @@ class ComitteeMemberView(View):
         reports_permissions=CustomReportsPermissions.objects.get(user=user)
         comittees_permissions=CustomComitteePermission.objects.get(user=user)
         memebrs_permissions=CustomMembersPermissions.objects.get(user=user)
-        
+        tasks_list=ComitteeTask.objects.filter(comittee=comittee)
         if user.comitteemember.is_manager:
             new_voters_list=Voter.objects.all().filter(candidate=candidate,followed_up=False)
         else:
@@ -89,6 +90,7 @@ class ComitteeMemberView(View):
             "campaign_manager":campaign_manager,
             "comittees_members":comittees_members,
             "user":user,
+            "tasks_list":tasks_list,
             "comittee":comittee,
             "new_voters_list":new_voters_list,
             "voters_permissions":voters_permissions,
@@ -97,6 +99,57 @@ class ComitteeMemberView(View):
             "comittees_permissions":comittees_permissions
         }
         return render(request,"adminstration_cm.html",context)
+
+
+def task_details(request,task_id=None):
+   
+    task=ComitteeTask.objects.get(id=task_id)
+    form=ComitteeTaskForm(instance=task)
+    
+    context={
+        'task':task,
+        'form':form
+    }
+    return render(request,"task_detail.html",context)
+
+
+def update_task(request,id):
+    data=request.POST.get('data')
+    data=json.loads(data)
+    task=ComitteeTask.objects.get(id=id)
+    task.is_complete=data['is_complete']
+    task.notes=data['notes']
+    task.save()
+    return JsonResponse({'message':'success'})
+
+def create_task(request):
+    user=request.user.userprofile
+    if hasattr(user,"candidate"):
+        candidate=user.candidate
+    elif hasattr(user,'campaignadminstrator'):
+        candidate=user.campaignadminstrator.candidate
+    elif hasattr(user,'comitteemember'):
+        candidate=user.comitteemember.candidate
+    created_by=request.user.userprofile
+   
+    form=ComitteeTaskForm(candidate.id,request.POST or None)
+    print(type(created_by))
+    if form.is_valid():
+        task=form.save(commit=False)
+        task.is_complete=False
+        task.created_by=created_by
+        task.save()
+    else:
+        print(form.errors)
+        print(form.data.get("created_by"))
+        
+    context={
+        'form':form
+    }
+    return render(request,"create_task.html",context)
+
+
+
 
 class CreateComitteeView(View):
 
@@ -789,7 +842,6 @@ def get_cm(request):
 
 def get_cm_by_comittee(request):
     query=json.loads(request.GET.get("query"))
-    print(query)
     cm_list = []
     # return JsonResponse({"message":"success"})
     if "cm_id" in query and query["cm_id"] not in [None,""]:
@@ -904,3 +956,31 @@ class GetDistrict(View):
             response.append(item)
         
         return JsonResponse(response,safe=False)
+
+def get_tasks_list(request):
+    query=request.GET.get('query')
+    query=json.loads(query)
+    comittee=Comittee.objects.get(id=query['comittee_id'])
+    tasks_list=ComitteeTask.objects.filter(comittee=comittee)
+    response=[]
+    if tasks_list is not None:
+        for task in tasks_list:
+            taskobject={}
+            taskobject["id"]=task.id
+            taskobject["title"]=task.title
+            if task.is_complete==True:
+                taskobject["is_complete"]="منجزة"
+            else:
+                taskobject["is_complete"]="غير منجزة"
+            taskobject["comittee"]=task.comittee.name
+            response.append(taskobject)
+    else:
+        taskobject={}
+        taskobject["id"]="لا يوجد نتائج"
+        taskobject["title"]=task.title
+        taskobject["is_complete"]="لا يوجد نتائج"
+        taskobject["comittee"]=comittee.name
+        response.append(taskobject)
+
+
+    return JsonResponse({"response":response},safe=False)
