@@ -144,17 +144,9 @@
       <div class="card mt-3">
         <div class="card-body" style="background-color :rgba(0,0,0,.03)">
           <div class="row">
-            {% if voter.voter.identiefier %}
-            <div class="col-6 my-1">
-              <p class="about-title text-right text-md-center mb-0">اسم المعرف<br /> <span
-                  class="text-info">{{voter.voter.identiefier.profile.user.first_name}}
-                  {{voter.voter.identiefier.profile.last_name}}</span></p>
-            </div>
-            {% endif %}
-
             {% if voter.voter.vote_status == "Voting"  and voter.voter.candidate %}
 
-            <div class="col-12 col-md-6 my-1">
+            <div class="col-md-4 my-1">
               <p class="about-title text-right text-md-center mb-0">
                 المرشح<br />
                 <span class="text-info">
@@ -165,11 +157,9 @@
             </div>
 
             {% endif %}
-
-
             {% if voter.voter.vote_status == "Voting"  and voter.voter.candidate %}
             {% if voter.voter.related_comittee_member %}
-            <div class="col-6 my-1">
+            <div class="col-6 col-md-4 my-1">
               <p class="about-title text-right text-md-center mb-0">
                 عضو الارتباط<br />
                 <span class="text-info">{{voter.voter.related_comittee_member.profile.user.first_name}}
@@ -178,6 +168,17 @@
             </div>
             {% endif %}
             {% endif %}
+            {% if voter.voter.identiefier %}
+            <div class="col-6 col-md-4 my-1">
+              <p class="about-title text-right text-md-center mb-0">اسم المعرف<br /> <span
+                  class="text-info">{{voter.voter.identiefier.profile.user.first_name}}
+                  {{voter.voter.identiefier.profile.last_name}}</span></p>
+            </div>
+            {% endif %}
+
+
+
+
           </div>
         </div>
       </div>
