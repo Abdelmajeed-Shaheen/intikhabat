@@ -25,7 +25,7 @@ from django.core.files.storage import FileSystemStorage
 from django.urls import reverse
 from django.template.loader import render_to_string
 from django.shortcuts import get_object_or_404
-from weasyprint import HTML
+# from weasyprint import HTML
 
 import json
 
@@ -33,36 +33,30 @@ import json
 class CampaignManagementMainView(View):    
     model=Comittee
     def get(self,request):
+        context={}
         if hasattr(request.user.userprofile,'campaignadminstrator'):
             candidate=request.user.userprofile.campaignadminstrator.candidate
         else:
             candidate=request.user.userprofile.candidate
+        context["candidate"]=candidate
+        context["user"]=request.user.userprofile
 
-        user=request.user.userprofile
-        comittees_list=Comittee.objects.filter(candidate=candidate)
-        campaign_manager=candidate.campaignadminstrator
-        comittees_members=candidate.comitteemember_set.all()
-        govenorate_list=Governorate.objects.all()
-        departments_list=Department.objects.all()
-        areas_list=Area.objects.all()
-        districts_list=District.objects.all()
-        new_voters_list=Voter.objects.all().filter(followed_up=False,candidate=candidate).order_by("-id")
-            
-        context={
-            "form":CreateComitteeForm,
-            "comittee_member_form":SignUpForm,
-            "campadmin_form":CampaignAdminCreateForm,
-            "comittees_list":comittees_list,
-            "campaign_manager":campaign_manager,
-            "comittees_members":comittees_members,
-            "user":user,
-            "govenorate_list":govenorate_list,
-            "candidate":candidate,
-            "departments_list":departments_list,
-            "areas_list":areas_list,
-            "districts_list":districts_list,
-            "new_voters_list":new_voters_list
-        }
+        context["comittees_list"]=Comittee.objects.filter(candidate=candidate)
+        try:
+            context['campaign_manager']=candidate.campaignadminstrator
+        except:
+            pass
+        context['comittees_members']=candidate.comitteemember_set.all()
+        context['govenorate_list']=Governorate.objects.all()
+        context['departments_list']=Department.objects.all()
+        context['areas_list']=Area.objects.all()
+        context['districts_list']=District.objects.all()
+        context['new_voters_list']=Voter.objects.all().filter(followed_up=False,candidate=candidate).order_by("-id")
+        context["campadmin_form"]=CampaignAdminCreateForm()
+        context["comittee_member_form"]=SignUpForm()
+        context["form"]=CreateComitteeForm()
+        context["comittees_list"]=Comittee.objects.all().filter(candidate=candidate)
+
         return render(request,"adminstration.html",context)
 
 class ComitteeMemberView(View):    
@@ -133,7 +127,7 @@ def create_task(request):
     created_by=request.user.userprofile
    
     form=ComitteeTaskForm(candidate.id,request.POST or None)
-    print(type(created_by))
+
     if form.is_valid():
         task=form.save(commit=False)
         task.is_complete=False
