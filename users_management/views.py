@@ -320,7 +320,7 @@ def change_password(request):
             update_session_auth_hash(request, user)  # Important!
             messages.success(request, 'تم نغيير كلمة السر بنجاح')
             
-            return redirect(reverse('change_password'))
+            return redirect(reverse('password-change'))
         else:
             messages.error(request, 'يرجى مراعاة كلمة السر ان تتضمن ٨ خانات على الاقل و ارقام واحرف')
     else:
