@@ -15,7 +15,7 @@ from common.models import ( Address,
                             Governorate,
                             District, 
                             Area)
-from tasks.models import ComitteeTask
+from tasks.models import ComitteeTask,Comment
 
 from .forms import CreateComitteeForm,UpdateCmForm,ComitteeTaskForm
 from users_management.forms import SignUpForm,CampaignAdminCreateForm
@@ -99,10 +99,12 @@ def task_details(request,task_id=None):
    
     task=ComitteeTask.objects.get(id=task_id)
     form=ComitteeTaskForm(instance=task)
+    comments=task.comment_set.all().filter(deleted=False)
     
     context={
         'task':task,
-        'form':form
+        'form':form,
+        'comments':comments
     }
     return render(request,"task_detail.html",context)
 
@@ -978,3 +980,54 @@ def get_tasks_list(request):
 
 
     return JsonResponse({"response":response},safe=False)
+
+
+def get_comments(request):
+    data=request.GET.get("comment")
+    data=json.loads(data)
+    task_id=data['task_id']
+    user=data['user_id']
+    task=ComitteeTask.objects.get(id=task_id)
+    comments=Comment.objects.filter(task=task)
+    response=[]
+
+    for comment in comments:
+        comment_object={}
+        comment_object["comment"]=comment.comment_body
+        comment_object["user"]=str(comment.user.user.first_name+" "+comment.user.user.last_name)
+        comment_object["date"]=comment.timestamp.date()
+        comment_object["time"]=comment.timestamp.time()
+
+        response.append(comment_object)
+    
+    return JsonResponse(response,safe=False)
+
+def create_comment(request):
+    comment=request.POST.get("comment")
+    comment=json.loads(comment)
+    user=request.user.userprofile
+    text=comment["comment_text"]
+    task=ComitteeTask.objects.get(id=comment["comment_task"])
+    new_comment=Comment(user=user,comment_body=text,task=task,deleted=False)
+    new_comment.save()
+
+    return JsonResponse({"success":"success"})
+
+
+def update_comment(request):
+
+    comment = request.POST.get("comment")
+    comment=json.loads(comment)
+    comment = Comment.objects.get(id=comment["id"])
+    comment.deleted=True
+    comment.save()
+
+    return JsonResponse({"updated":"succefully update"})
+
+
+
+
+
+
+
+

@@ -10,7 +10,7 @@ from .views import (
                     update_comittee,update_comittee_member,get_cm,
                     get_identifier,update_voter,
                     GetDistrict,get_cm_by_comittee,task_details,update_task,
-                    create_task,get_tasks_list
+                    create_task,get_tasks_list,get_comments,create_comment,update_comment
                                                                                                                                                                     
                     )
 urlpatterns = [
@@ -44,6 +44,9 @@ urlpatterns = [
     path("update-task/<id>/",update_task,name="update-task"),
     path("create-task/",create_task,name="create-task"),
     path("get-tasks-list/",get_tasks_list,name="get-tasks-list"),
+    path("get-comments/",get_comments,name="get-comments"),
+    path("create-comment/",create_comment,name="create-comment"),
+    path("update-comment/",update_comment,name="update-comment"),
 
 
-]
+    ]

@@ -1,94 +1,166 @@
-{% extends 'candidate_base.html' %}
+{% extends 'candidate_base.html' %} {% block extra_content %}
 
-
-{% block extra_content %}
-  <header id="header">
-    <div class="container-ar d-flex align-items-center" >
-      <nav class="nav-menu d-none d-lg-block">
-        <ul>
-          <li><a href="{% url 'logout' %}">تسحيل خروج</a></li>
-          {% if request.user.userprofile.candidate or request.user.userprofile.campaignadminstrator %}
-          <li><a href="{% url 'main' %}">عودة</a></li>
-          {% else %}
-    <li><a href="{% url 'comittee-member' %}">عودة</a></li>
-          {% endif %}
-        </ul>
-      </nav>
-      <!-- .nav-menu -->
+<header id="header">
+    <div class="container-ar d-flex align-items-center">
+        <nav class="nav-menu d-none d-lg-block">
+            <ul>
+                <li><a href="{% url 'logout' %}">تسحيل خروج</a></li>
+                {% if request.user.userprofile.candidate or request.user.userprofile.campaignadminstrator %}
+                <li><a href="{% url 'main' %}">عودة</a></li>
+                {% else %}
+                <li><a href="{% url 'comittee-member' %}">عودة</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+        <!-- .nav-menu -->
 
     </div>
-  </header>
-{% endblock %}
-{% block main %}
+</header>
+{% endblock %} {% block main %}
 
 <div class="container mt-3 text-aligner">
-<div class="row">
-    <h1 class="about-title text-aligner">{{task.title}}</h1>
-</div>
-<div class="row">
+    <div class="row">
+        <h1 class="about-title text-aligner">{{task.title}}</h1>
+    </div>
+    <div class="row">
         <div class="col-lg-6">
-          <label >وصف المهمة</label>
-          <p>{{task.description}}</p>
+            <h3>وصف المهمة</h3>
+            <p>{{task.description}}</p>
+            <label>  اضافة ملاحظات  </label> {{form.notes}}
         </div>
-        <div class="col-lg-6">
-          <label >  اضافة ملاحظات  </label>
-          {{form.notes}}
+
+
+        <div class="col-lg-6 float-lg-left">
+            <h3>التعليقات</h3>
+            <input type="text" class="form-control" placeholder="اكتب تعليق" id="commentText">
+            <button class="btn btn-info btn-sm m-3" id="makeComment">اضف تعليق</button> {% for comment in comments %}
+            <div class="card">
+                <div class="card-body">
+                    <lable>{{comment.user.user.first_name}} {{comment.user.user.last_name}}: <span>{{comment.timestamp.date}} - {{comment.timestamp.time}}</span></lable>
+                    <br>
+                    <lable>{{comment.comment_body}} <a class="btn btn-sm btn-danger" id="deleteComment" data-comment-id="{{comment.id}}">حذف التعليق</a></lable>
+                </div>
+            </div>
+            <br> {% endfor %}
         </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-lg-3">
+            <label>اللجنة</label>
+            <h4>{{task.comittee}}</h4>
+
+        </div>
+
+        <div class="col-lg-3">
+            <label>انشئ بواسطة</label>
+            <h4> {{task.created_by.user.first_name}} {{task.created_by.user.last_name}} </h4>
+
+        </div>
+        <div class="col-lg-3">
+            <label>تم انجازها ؟</label>
+            <h4> {{form.is_complete}} </h4>
+
+        </div>
+        <div class="col-lg-3 mt-2 text-left">
+            <button class="btn  btn-info" id="updateTask">حفظ</button>
+        </div>
+    </div>
 </div>
 
-<div class="row">
-  <div class="col-lg-3">
-    <label >اللجنة</label>
-    <h4>{{task.comittee}}</h4>
-    
-  </div>
-
-  <div class="col-lg-3">
-    <label >انشئ بواسطة</label>
-    <h4> {{task.created_by.user.first_name}} {{task.created_by.user.last_name}} </h4>
-
-  </div>
-  <div class="col-lg-3">
-    <label >تم انجازها ؟</label>
-    <h4> {{form.is_complete}} </h4>
-
-  </div>
-  <div class="col-lg-3 mt-2 text-left">
-    <button class="btn  btn-info" id ="updateTask">حفظ</button>
-  </div>
-</div>
-</div>
-
-{% endblock %}
-
-{% block js %}
+{% endblock %} {% block js %}
 <script>
-  $("#updateTask").on("click",function(){
-    notes=$("#id_notes").val()
-    if ($("#id_is_complete").is(":checked")){
-      is_complete=true
-    }
-    else{
-      is_complete=false
-    }
-    data=new Object()
-    data.is_complete=is_complete
-    data.notes=notes
-    data.task_id='{{task.id}}'
-    datajson=JSON.stringify(data)
-    $.ajax({
-      url:"{% url 'update-task' task.id %}",
-      type:'POST',
-      data:{
-        data:datajson,
-        csrfmiddlewaretoken:'{{ csrf_token }}'
-      },
+    $("#updateTask").on("click", function() {
+        notes = $("#id_notes").val()
+        if ($("#id_is_complete").is(":checked")) {
+            is_complete = true
+        } else {
+            is_complete = false
+        }
+        data = new Object()
+        data.is_complete = is_complete
+        data.notes = notes
+        data.task_id = '{{task.id}}'
+        datajson = JSON.stringify(data)
+        $.ajax({
+            url: "{% url 'update-task' task.id %}",
+            type: 'POST',
+            data: {
+                data: datajson,
+                csrfmiddlewaretoken: '{{ csrf_token }}'
+            },
 
-      success:function(result){
-        console.log(result)
-      }
+            success: function(result) {
+                console.log(result)
+            }
 
+        })
     })
-  })
+
+    $(document).ready(function() {
+        task_id = '{{task.id}}'
+        user_id = '{{request.user.userprofile.id}}'
+        comment = new Object()
+        comment.task_id = parseInt(task_id)
+        comment.user_id = parseInt(user_id)
+        commentJson = JSON.stringify(comment)
+
+        $.ajax({
+            url: '{% url "get-comments" %}',
+            type: "GET",
+            data: {
+                comment: commentJson
+            },
+
+            success: function(result) {
+                console.log(result)
+            }
+
+        })
+    })
+
+    $("#makeComment").on("click", function() {
+        comment = new Object()
+        comment_text = $("#commentText").val()
+        comment_task = parseInt("{{task.id}}")
+        comment_user = parseInt('{{request.user.userprofile.id}}')
+        comment.comment_text = comment_text
+        comment.comment_task = comment_task
+        comment.user = comment_user
+        commentJson = JSON.stringify(comment)
+
+        $.ajax({
+            url: "{% url 'create-comment' %}",
+            type: "POST",
+            data: {
+                csrfmiddlewaretoken: "{{csrf_token}}",
+                comment: commentJson
+            },
+            success: function(result) {
+
+                location.reload();
+            }
+        })
+    })
+
+    $("#deleteComment").on("click", function() {
+        comment_id = $(this).data("comment-id")
+        comment = new Object()
+        comment.id = comment_id
+        commentJson = JSON.stringify(comment)
+        $.ajax({
+
+            url: "{% url 'update-comment' %}",
+            type: "POST",
+            data: {
+                comment: commentJson,
+                csrfmiddlewaretoken: "{{csrf_token}}"
+            },
+            success: function() {
+                location.reload()
+            }
+        })
+    })
 </script>
 {% endblock js %}
