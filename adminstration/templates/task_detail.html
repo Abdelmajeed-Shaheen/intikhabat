@@ -24,14 +24,14 @@
     </div>
     <div class="row">
         <div class="col-lg-6">
-            <h3>وصف المهمة</h3>
+            <h3>موضوع المهمة</h3>
             <p>{{task.description}}</p>
-            <label>  اضافة ملاحظات  </label> {{form.notes}}
+            <label>التوصيات</label> {{form.notes}}
         </div>
 
 
         <div class="col-lg-6 float-lg-left">
-            <h3>التعليقات</h3>
+            <h3>التعليقات و الردود</h3>
             <input type="text" class="form-control" placeholder="اكتب تعليق" id="commentText">
             <button class="btn btn-info btn-sm m-3" id="makeComment">اضف تعليق</button> {% for comment in comments %}
             <div class="card">

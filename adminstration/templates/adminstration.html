@@ -21,30 +21,26 @@
         <a class="nav-link" id="members-tab" data-toggle="tab" href="#createcomittee" role="tab" aria-controls="home" aria-selected="false">ادارة اللجان</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">ادارة المستخدمين</a>
+        <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">اعضاء اللجان</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link " id="tasks-tab" data-toggle="tab" href="#tasks" role="tab" aria-controls="tasks" aria-selected="true">مهام اللجان</a>
     </li>
     <li class="nav-item">
         <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">التقارير</a>
     </li>
-
     <li class="nav-item">
         <a class="nav-link" id="newVoters-tab" data-toggle="tab" href="#newVoters" role="tab" aria-controls="newVoters" aria-selected="false">الناخبين الجدد</a>
     </li>
     <li class="nav-item">
         <a class="nav-link " id="stats-tab" data-toggle="tab" href="#stats" role="tab" aria-controls="stats" aria-selected="true">احصائيات الحملة</a>
     </li>
-
-    <li class="nav-item">
-        <a class="nav-link " id="tasks-tab" data-toggle="tab" href="#tasks" role="tab" aria-controls="tasks" aria-selected="true">المهام</a>
-    </li>
 </ul>
 
 <div class="tab-content" id="myTabContent">
     <div class="tab-pane fade " id="stats" role="tabpanel" aria-labelledby="account-tab">
         <div class="container mt-5">
-
             <h2 class="about-title text-aligner">عدد الناخبين المؤيدين للمرشح</h2>
-
             <div class="row text-aligner">
                 <div class="table-responsive">
                     <table class="table">
@@ -202,18 +198,20 @@
                         </form>
                     </div>
                     <div class="row">
-                        <div class="col-9"><a href="{% url 'password-change' %}" class="btn btn-danger btn-sm">تغيير الرقم السري</a></div>
-                        <div class="col-3"><button id="updateprofile" class="btn btn-danger">حفظ</button></div>
+                        <div class="col-9"><a href="{% url 'password-change' %}" class="btn btn-info btn-sm">تغيير الرقم السري</a></div>
+                        <div class="col-3"><button id="updateprofile" class="btn btn-info">حفظ</button></div>
                     </div>
                 </div>
 
             </div>
+            {% if not user.candidate %}
             <div class="row my-3" style="margin-left:50%">
                 <div class="alert alert-warning" role="alert">
                     اذا لم تجد الحي يرجى اضافته
                     <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#addDist"> اضافة حي +</button>
                 </div>
             </div>
+            {% endif %}
         </div>
     </div>
 
@@ -256,7 +254,7 @@
                                 <th scope="col">اسم اللجنة</th>
                                 <th scope="col">الحالة</th>
                                 <th scope="col">مدير اللجنة</th>
-                                <th scope="col">تعديل</th>
+                                <th scope="col">تعديل البيانات</th>
                             </tr>
                         </thead>
                         <tbody id="comittee_table_tbody">
@@ -269,9 +267,9 @@
                                 <td>غير فعالة</td>
                                 {% endif %}
                                 <td>
-                                    {{comittee.manager}}
+                                    {{comittee.manager.profile.user.first_name}} {{comittee.manager.profile.user.last_name}}
                                 </td>
-                                <td><a class="btn btn-danger" href="{% url 'update-committee' comittee.id %}">تعديل</a></td>
+                                <td><a class="btn btn-info" href="{% url 'update-committee' comittee.id %}">تعديل البيانات</a></td>
                             </tr>
                             {% endfor %}
                         </tbody>
@@ -288,13 +286,13 @@
                     {% if request.user.userprofile.candidate %}
                     <div class="col-md-2">
                         <div class='form-group text-aligner'>
-                            <button id='camp' class="btn btn-danger mb-2" data-toggle="modal" data-target="#createCampaignAdmin">انشاء مدير حملة</button>
+                            <button id='camp' class="btn btn-info mb-2" data-toggle="modal" data-target="#createCampaignAdmin">انشاء مدير حملة</button>
                         </div>
                     </div>
                     {% endif %}
                     <div class="col-md-2">
                         <div class='form-group text-aligner'>
-                            <button id='cm' class="btn btn-danger mb-2" data-toggle="modal" data-target="#createComitteeMember">انشاء عضو لجنة </button>
+                            <button id='cm' class="btn btn-info mb-2" data-toggle="modal" data-target="#createComitteeMember">انشاء عضو لجنة </button>
                         </div>
                     </div>
                 </div>
@@ -307,15 +305,15 @@
                                     <th scope="col">اسم المدير</th>
                                     <th scope="col">رقم الهاتف</th>
                                     <th scope="col">البريد الالكتروني</th>
-                                    <th scope="col">حفظ</th>
+                                    <th scope="col">تعديل البيانات</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
                                     <th scope="row">{{campaign_manager.profile.user.first_name}} {{campaign_manager.profile.user.last_name}}</th>
                                     <td>{{campaign_manager.profile.mobile_number}}</td>
-                                    <td>{{campaign_manager.profile.user.email}}</td>
-                                    <td><button class="btn btn-danger">حفظ</button></td>
+                                    <td><a href="mailto:{{campaign_manager.profile.user.email}}">{{campaign_manager.profile.user.email}}</a></td>
+                                    <td><button class="btn btn-info">تعديل البيانات</button></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -352,8 +350,8 @@
                                         <th scope="col">البريد الالكتروني</th>
                                         <th scope="col">اللجنة</th>
                                         <th scope="col">الحالة الادارية</th>
-                                        <th scope="col">تعديل</th>
-                                        <th scope="col">صلاحيات</th>
+                                        <th scope="col">تعديل البيانات</th>
+                                        <th scope="col">تعديل الصلاحيات</th>
                                     </tr>
                                 </thead>
                                 <tbody id="cmt">
@@ -361,15 +359,15 @@
                                     <tr>
                                         <th scope="row">{{comittee_member.profile.user.first_name}} {{comittee_member.profile.user.last_name}}</th>
                                         <td>{{comittee_member.profile.mobile_number}}</td>
-                                        <td>{{comittee_member.profile.user.email}}</td>
+                                        <td><a href="mailto:{{comittee_member.profile.user.email}}">{{comittee_member.profile.user.email}}</a></td>
                                         <td>{{comittee_member.comittee}}</td>
                                         {% if comittee_member.is_manager %}
                                         <td>مدير</td>
                                         {% else %}
                                         <td>عضو</td>
                                         {% endif %}
-                                        <td><a href="{% url 'update-cm' comittee_member.id %}" class="btn btn-success">حفظ</a></td>
-                                        <td><button class="btn btn-danger" data-toggle="modal" data-target="#modal_{{comittee_member.id}}">صلاحيات</button></td>
+                                        <td><a href="{% url 'update-cm' comittee_member.id %}" class="btn btn-info">تعديل البيانات</a></td>
+                                        <td><button class="btn btn-info" data-toggle="modal" data-target="#modal_{{comittee_member.id}}">تعديل الصلاحيات</button></td>
                                     </tr>
                                     <div class="modal fade" id="modal_{{comittee_member.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                         <div class="modal-dialog" role="document">
@@ -467,7 +465,7 @@
 
                                                             <div class="col-sm-3">
                                                                 <div class="form-check">
-                                                                    <label class="form-check-label" for="defaultCheck1"></label> عرض
+                                                                    <label class="form-check-label" for="defaultCheck1"> عرض
                                                                     </label>
                                                                     {% if comittee_member.profile.customreportspermissions_set.first.can_view_report %}
                                                                     <input class="form-check-input" type="checkbox" value="" id="showRep_{{comittee_member.id}}" checked> {% else %}
@@ -476,7 +474,7 @@
                                                             </div>
                                                             <div class="col-sm-3">
                                                                 <div class="form-check">
-                                                                    <label class="form-check-label" for="defaultCheck1"></label> حفظ
+                                                                    <label class="form-check-label" for="defaultCheck1"> حفظ
                                                                     </label>
                                                                     {% if comittee_member.profile.customreportspermissions_set.first.can_update_report %}
                                                                     <input class="form-check-input" type="checkbox" value="" id="editRep_{{comittee_member.id}}" checked> {% else %}
@@ -485,7 +483,7 @@
                                                             </div>
                                                             <div class="col-sm-3">
                                                                 <div class="form-check">
-                                                                    <label class="form-check-label" for="defaultCheck1"></label> حذف
+                                                                    <label class="form-check-label" for="defaultCheck1"> حذف
                                                                     </label>
                                                                     {% if comittee_member.profile.customreportspermissions_set.first.can_remove_report %}
                                                                     <input class="form-check-input" type="checkbox" value="" id="deleteRep_{{comittee_member.id}}" checked> {% else %}
@@ -494,7 +492,7 @@
                                                             </div>
                                                             <div class="col-sm-3">
                                                                 <div class="form-check">
-                                                                    <label class="form-check-label" for="defaultCheck1"></label> انشاء
+                                                                    <label class="form-check-label" for="defaultCheck1"> انشاء
                                                                     </label>
                                                                     {% if comittee_member.profile.customreportspermissions_set.first.can_create_report %}
                                                                     <input class="form-check-input" type="checkbox" value="" id="createRep_{{comittee_member.id}}" checked> {% else %}
@@ -613,7 +611,7 @@
                                 <td>{{voter.related_comittee_member.profile.user.first_name}} {{voter.related_comittee_member.profile.middle_name}} {{voter.related_comittee_member.profile.user.last_name}}</td>
                                 <td>{{voter.profile.mobile_number}}</td>
                                 <td>لا</td>
-                                <td><a class="btn btn-danger" href="{% url 'update-voter' voter.id %}"> عرض التفاصيل</a></td>
+                                <td><a class="btn btn-info" href="{% url 'update-voter' voter.id %}"> عرض التفاصيل</a></td>
                             </tr>
                             {% endfor %}
                         </tbody>
@@ -685,7 +683,7 @@
                     <div class='row px-3'>
                         <div class='form-check text-aligner'>
                             <label class="form-check-label " for="id_is_active">
-                   نشط؟
+                   فعالة؟
                 </label> {{form.is_active}}
                         </div>
                     </div>
@@ -697,7 +695,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">اغلاق</button>
                 <button class="btn btn-success mb-2" id="comitteform">انشاء</button>
             </div>
         </div>
@@ -1040,10 +1038,10 @@
                     manager = $("<td>" + result.comittee.manager + "</td>");
                     editdata = $("<td></td>")
                     edit = $("<a>", {
-                        "class": "btn btn-danger",
+                        "class": "btn btn-info",
                         "href": '/campaign-management/update-committee/' + result.comittee.id
                     });
-                    edit.text("تعديل")
+                    edit.text("تعديل البيانات")
                     editdata.append(edit)
                     row.append(name)
                     row.append(status)
@@ -1060,7 +1058,7 @@
                         "class": "btn btn-secondary",
                         "href": ''
                     });
-                    edit.text("تعديل")
+                    edit.text("تعديل البيانات")
                     editdata.append(edit)
                     row.append(name)
                     row.append(status)
@@ -1102,10 +1100,10 @@
                         manager = $("<td>" + item.manager + "</td>");
                         editdata = $("<td></td>")
                         edit = $("<a>", {
-                            "class": "btn btn-danger",
+                            "class": "btn btn-info",
                             "href": '/campaign-management/update-committee/' + item.id
                         });
-                        edit.text("تعديل")
+                        edit.text("تعديل البيانات")
                         editdata.append(edit)
                         row.append(name)
                         row.append(status)
@@ -1167,7 +1165,7 @@
                         manager = $("<td>" + item.manager + "</td>");
                         editdata = $("<td></td>")
                         edit = $("<a>", {
-                            "class": "btn btn-danger",
+                            "class": "btn btn-info",
                             "href": '/campaign-management/update-committee/' + item.id
                         });
                         edit.text("تعديل")
@@ -1237,7 +1235,7 @@
                     edit.text("تعديل")
                     editdata.append(edit)
                     perms = $("<button></button>", {
-                        "class": "btn btn-danger",
+                        "class": "btn btn-info",
                         "data-toggle": "modal",
                         "data-target": "#modal_" + value.id,
 
@@ -1311,7 +1309,7 @@
                         status = ("<td>" + value.is_complete + "</td>");
                         editdata = $("<td></td>")
                         edit = $("<a>", {
-                            "class": "btn btn-danger",
+                            "class": "btn btn-info",
                             "href": '/campaign-management/task-detail/' + value.id
                         });
                         edit.text("تفاصيل")
@@ -1330,7 +1328,7 @@
                     status = $("<td>" + result.response.is_complete + "</td>");
                     editdata = $("<td></td>")
                     edit = $("<a>", {
-                        "class": "btn btn-danger",
+                        "class": "btn btn-info",
                         "href": '/campaign-management/task-detail/' + result.response.id
                     });
                     edit.text("تفاصيل")
