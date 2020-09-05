@@ -7,11 +7,11 @@
       <nav class="nav-menu d-none d-lg-block">
         <ul>
           <li><a href="{% url 'logout' %}">تسحيل خروج</a></li>
-          {% if request.user.userprofile.committeemember %}
-          <li><a href="{% url 'main' %}">عودة</a></li>
-          {% else %}
+          {% if request.user.userprofile.comitteemember %}
           <li><a href="{% url 'comittee-member' %}#newVoters">عودة</a></li>
+          {% else %}
 
+          <li><a href="{% url 'main' %}">عودة</a></li>
           {% endif %}
         </ul>
       </nav>
@@ -25,7 +25,7 @@
 <div class="row">
     <div class="col-sm-4">
         <h5 class="about-title">
-            تعديل الناخب: 
+            تعديل الناخب:
             {{voter.profile.first_name}} {{voter.profile.last_name}}
         </h5>
     </div>
@@ -54,14 +54,14 @@
         {% csrf_token %}
         {% if request.user.userprofile.campaignadminstrator or request.user.userprofile.comitteemember.is_manager or request.user.userprofile.candidate %}
         <div class="form-row">
-                <label for="">اعضاء اللجان</label>
+                <label for="">عضو لجنة الارتباط</label>
                 <select class="form-control" name="cm">
-                   
+
                     {% for cm in cm_list %}
                     <option value="{{cm.id}}">{{cm.profile.user.first_name}} {{cm.profile.user.first_name}}</option>
                     {% endfor %}
                   </select>
-            
+
         </div>
         {% endif %}
 
@@ -71,8 +71,11 @@
             {% else %}
             <input type="checkbox" name="is_followed">
             {% endif%}
-            <label for="">تمت متابعته</label>
-            
+            <label for="">
+
+            تمت متابعته
+            </label>
+
         </div>
         <div class="form-row mt-2">
             <input type="submit" class="btn btn-danger" value="حفظ">

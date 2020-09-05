@@ -12,12 +12,12 @@ class Comittee(models.Model):
     name=models.CharField(max_length=255)
     candidate=models.ForeignKey(to='users_management.Candidate',on_delete=models.CASCADE,related_name='comittee_candidate')
     description=models.TextField()
-    address=models.ForeignKey(Address,on_delete=models.CASCADE)
+    address=models.ForeignKey(Address,on_delete=models.CASCADE,null=True,blank=True)
     is_active=models.BooleanField(default=False)
     timestamp=models.DateTimeField(auto_now=True, auto_now_add=False)
     updated=models.DateTimeField(auto_now=False, auto_now_add=True)
     manager=models.ForeignKey(ComitteeMember,on_delete=models.CASCADE,null=True,blank=True,related_name='comittee_manager')
-
+    address_description=models.TextField(null=True,blank=True)
     def __str__(self):
         return self.name
 

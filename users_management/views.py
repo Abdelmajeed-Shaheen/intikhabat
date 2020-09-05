@@ -1,8 +1,10 @@
 from django.shortcuts import render,redirect
+from django.contrib import messages
 from django.urls import reverse
 from django.views.generic import View,DetailView
-from django.contrib.auth import authenticate, login,logout
+from django.contrib.auth import authenticate, login,logout,update_session_auth_hash
 from django.contrib.auth.models import User
+from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib import messages
 from django.http import HttpResponseRedirect,HttpResponse,JsonResponse
 from django.db.utils import IntegrityError
@@ -22,7 +24,18 @@ from users_management.forms import SignUpForm
 from adminstration.models import Comittee
 from voters_management.views import UpdateVoter
 import json
+import re
 from datetime import date
+
+
+
+def hasNumbers(inputString):
+    return bool(re.search(r'\d', inputString))
+
+def hasLetters(inputString):
+  
+    return bool(re.search(r'[a-zA-Z]', inputString))
+
 
 class LoginView(View):
     """
@@ -104,11 +117,16 @@ class CreateUser(View):
         third_name=form.data.get('third_name')
         middle_name=form.data.get('middle_name')
         last_name=form.data.get('last_name')
+        name_string=(first_name+middle_name+third_name+last_name)
+        if hasNumbers(name_string):
+            return JsonResponse({"error":"لا يمكن للاسماء ان تحتوي ارقام"})
         mobile_number=form.data.get('mobile_number')
         whatsapp_number=form.data.get('whatsapp_number')
+        if hasLetters(mobile_number) or hasLetters(whatsapp_number):
+            return JsonResponse({"error":"لا يمكن للارقام ان تحتوي احرف"})
         email=form.data.get('email')
         is_manager=form.data.get('is_manager')
-        if is_manager =="on":
+        if is_manager == "on" :
             is_manager=True
         else:
             is_manager=False
@@ -117,27 +135,30 @@ class CreateUser(View):
         comittee=""
         if request.POST.get('comittee'):
             comittee=Comittee.objects.get(id=request.POST.get('comittee'))
-      
-        user_instance={
-            'username':mobile_number,
-            'first_name':first_name,
-            'last_name':last_name,
-            'email':email
-        }
-        user=User(**user_instance)
-        user.set_password(password)
-        user.save()
-       
-        profile_instance={
-            'middle_name':middle_name,
-            'last_name':third_name,
-            'user':user,
-            'mobile_number':mobile_number,
-            'whatsapp_number':whatsapp_number,
-            'date_of_birth':date.today()
-            
-        }
+
         try:
+            
+            user_instance={
+                'username':mobile_number,
+                'first_name':first_name,
+                'last_name':last_name,
+                'email':email
+            }
+            user=User(**user_instance)
+            user.set_password(password)
+            user.save()
+        
+            profile_instance={
+                'middle_name':middle_name,
+                'last_name':third_name,
+                'user':user,
+                'mobile_number':mobile_number,
+                'whatsapp_number':whatsapp_number,
+                'date_of_birth':date.today(),
+                'name_string':name_string
+                
+            }            
+ 
             user_profile=UserProfile(**profile_instance)
             user_profile.save()
 
@@ -181,13 +202,13 @@ class CreateUser(View):
             report_permissions.save()
             comittee_permissions.save()
 
-            print(member_permissions)
-            print(voter_permissions)
-            print(report_permissions)
-            print(comittee_permissions)
-
         except (IntegrityError):
-            return JsonResponse({'error':'رقم هاتف مكرر'})
+            if User.objects.all().filter(username=user_instance["username"]).exists():
+                return JsonResponse({'error':'هذا المستخدم مسجل مسبقا'})
+
+            elif UserProfile.objects.all().filter(name_string=name_string).exists():
+                return JsonResponse({'error':'هذا الاسم مكرر'})
+
         
         if hasattr(request.user.userprofile,'candidate') :
             candidate=request.user.userprofile.candidate
@@ -215,7 +236,7 @@ class CreateUser(View):
             comittee.save()
         
         if user_type == "cmo":
-            print("hi")
+          
             comittee_member_object={
                 'profile':user_profile,
                 'candidate':candidate,
@@ -229,8 +250,13 @@ class CreateUser(View):
             comittee.save()
 
         elif user_type =="camp":
-            campaign_manager=CampaignAdminstrator(profile=user_profile,candidate=candidate)
-            campaign_manager.save()
+            try:
+                campaign_manager=CampaignAdminstrator(profile=user_profile,candidate=candidate)
+                campaign_manager.save()
+            except IntegrityError:
+                camp_admin=CampaignAdminstrator.objects.get(candidate=candidate)
+                camp_admin.profile=user_profile
+                camp_admin.save()
 
 
         return JsonResponse({'message':'تم التسجيل بنجاح'})
@@ -238,21 +264,27 @@ class CreateUser(View):
 
       
 class UpdateProfile(View):
-
+ 
     def post(self,request):
         userprofile=request.POST.get("user")
         userprofile=json.loads(userprofile)
         User.objects.filter(id=request.user.id).update(first_name=userprofile["first_name"],last_name=userprofile["last_name"])
         profile=UserProfile.objects.get(id=int(userprofile['id']))
+        name_string=(userprofile['first_name']+userprofile['second_name']+userprofile['third_name']+userprofile['last_name'])
+        if hasNumbers(name_string):
+            return JsonResponse({"error":"الاسماء لا يمكن ان تحتوي على ارقام"})
+        if hasLetters(userprofile["mobile_number"]) or hasLetters(userprofile["whatsapp_number"]):
+            return JsonResponse({"error":"ارقام الهواتف لا يمكن ان تحتوي على احرف"})
         user_object={}
         empty=[None,""]
-
+      
         if 'second_name' in userprofile and userprofile['second_name'] not in empty:
             user_object['middle_name']=userprofile['second_name']
-        
+            profile.middle_name=user_object['middle_name']
 
         if 'third_name' in userprofile and userprofile['third_name'] not in empty:
             user_object['last_name']=userprofile['third_name']
+            profile.last_name=user_object['last_name']
         
         if 'mobile_number' in userprofile and userprofile['mobile_number'] not in empty:
             user_object['mobile_number']=userprofile['mobile_number']
@@ -261,26 +293,44 @@ class UpdateProfile(View):
         if 'whatsapp_number' in userprofile and userprofile['whatsapp_number'] not in empty:
             user_object['whatsapp_number']=userprofile['whatsapp_number']
             profile.whatsapp_number=user_object['whatsapp_number']
-            profile.save()
-
 
         if 'district' in userprofile and userprofile['district'] not in empty:
             district=District.objects.get(id=int(userprofile['district']))
-            area=district.area
-
-            userprofile['address__district']=district
-            userprofile['address__area']=area
-
-
+            address=profile.address
+            address.district=district
+            address.save()
+           
         if 'title' in userprofile and userprofile['title'] is not None:
-            candidate=request.user.userprofile.candidate
-            candidate.title=userprofile['title']
-            candidate.save()        
+            if hasNumbers(userprofile['title']):
+                return JsonResponse({"error":"لا يمكن للاسماء ان تحتوي ارقام"})
+            else:
+                candidate=request.user.userprofile.candidate
+                candidate.title=userprofile['title']
+                candidate.save()
 
-        profile.save()
-        
+        profile.save()        
         return JsonResponse({"user":"success"})
-        
+
+
+def change_password(request):
+    if request.method == 'POST':
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)  # Important!
+            messages.success(request, 'تم نغيير كلمة السر بنجاح')
+            
+            return redirect(reverse('password-change'))
+        else:
+            messages.error(request, 'يرجى مراعاة كلمة السر ان تتضمن ٨ خانات على الاقل و ارقام واحرف')
+    else:
+        form = PasswordChangeForm(request.user)
+    return render(request, 'change_password.html', {
+        'form': form
+    })
+   
+
+                
 
 
 

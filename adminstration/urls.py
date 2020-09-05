@@ -9,7 +9,9 @@ from .views import (
                     by_address_report,GetVotersByStatusReport,by_status_report,
                     update_comittee,update_comittee_member,get_cm,
                     get_identifier,update_voter,
-                    GetDistrict,get_cm_by_comittee                                                                                                                                                
+                    GetDistrict,get_cm_by_comittee,task_details,update_task,
+                    create_task,get_tasks_list,get_comments,create_comment,update_comment
+                                                                                                                                                                    
                     )
 urlpatterns = [
     path("main",CampaignManagementMainView.as_view(),name="main"),
@@ -24,7 +26,6 @@ urlpatterns = [
     path("get_gover_dept",GetGovernorateDepartment.as_view(),name="get_gover_dept"),
     path("get_dept_area",GetDepartmentArea.as_view(),name="get_dept_area"),
     path("get_district",GetDistrict.as_view(),name="get_district"),
-
     path("get_voters",GetVotersList.as_view(),name="get_voters"),
     path("by-cm-report",by_committee_member_report,name="by-cm-report"),
     path("identifier-report",GetReportByIdentifier.as_view(),name="identifier-report"),
@@ -35,21 +36,17 @@ urlpatterns = [
     path("by-status-report",by_status_report,name="by-status-report"),
     path("update-committee/<id>/",update_comittee,name="update-committee"),
     path("update-cm/<id>/",update_comittee_member,name="update-cm"),
+    path("task-detail/<task_id>/",task_details,name="task-detail"),
     path("get-cm",get_cm,name="get-cm"),
     path("get-identifier",get_identifier,name="get-identifier"),
     path("update-voter/<id>/",update_voter,name="update-voter"),
     path("get-cm-comittee",get_cm_by_comittee,name="get-cm-comittee"),
+    path("update-task/<id>/",update_task,name="update-task"),
+    path("create-task/",create_task,name="create-task"),
+    path("get-tasks-list/",get_tasks_list,name="get-tasks-list"),
+    path("get-comments/",get_comments,name="get-comments"),
+    path("create-comment/",create_comment,name="create-comment"),
+    path("update-comment/",update_comment,name="update-comment"),
 
 
-
-
-
-
-
-
-
-
-
-
-
-]
+    ]
