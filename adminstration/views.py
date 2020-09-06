@@ -381,11 +381,17 @@ class SearchComitteeView(View):
 
     def get(self,request): 
         query=json.loads(request.GET.get('query'))
-        print(request.GET)
-        print(query)
+
+        if hasattr(request.user.userprofile,"candidate"):
+            candidate=request.user.userprofile.candidate
+        elif hasattr(request.user.userprofile,"campaignadminstrator"):
+            candidate=request.user.userprofile.campaignadminstrator.candidate
+        elif hasattr(request.user.userprofile,"comitteemanager"):
+            candidate=request.user.userprofile.committeemember.candidate
+
         response=[]
         if 'comittee_name' in query:
-            comittee=Comittee.objects.get(name=query['comittee_name'])         
+            comittee=Comittee.objects.get(name=query['comittee_name'],candidate=candidate)         
             if comittee.is_active:
                 status="فعالة"
             else:
@@ -407,15 +413,16 @@ class SearchComitteeView(View):
         elif 'is_active' in query:
 
             if query['is_active']==True:
-                comittees_list=Comittee.objects.all().filter(is_active=True)
+                comittees_list=Comittee.objects.all().filter(is_active=True,candidate=candidate)
                 status="فعالة"
             else:
-                comittees_list=Comittee.objects.all().filter(is_active=False)
+                comittees_list=Comittee.objects.all().filter(is_active=False,candidate=candidate)
                 status="غير فعالة"
             
             for comittee in comittees_list:
 
                 if comittee.manager is not None:
+                    
                     manager=str(comittee.manager.profile.user.first_name+" " +comittee.manager.profile.user.last_name)
                 else:
                     manager="لا يوجد مدير"
@@ -917,6 +924,7 @@ def update_voter(request,id):
 
     if request.POST:
         cm=request.POST.get('cm')
+        ebo=request.POST.get('ebo')
         followed_up=request.POST.get('is_followed')
         if followed_up == 'on':
             followed_up=True
@@ -924,8 +932,11 @@ def update_voter(request,id):
             followed_up=False
             
         cm=ComitteeMember.objects.get(id=int(cm))
+        ebo=ComitteeMember.objects.get(id=int(ebo))
         voter.related_comittee_member=cm
         voter.followed_up=followed_up
+        voter.election_box_officer=ebo
+        
     voter.save()
 
     context={

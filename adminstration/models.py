@@ -17,7 +17,10 @@ class Comittee(models.Model):
     timestamp=models.DateTimeField(auto_now=True, auto_now_add=False)
     updated=models.DateTimeField(auto_now=False, auto_now_add=True)
     manager=models.ForeignKey(ComitteeMember,on_delete=models.CASCADE,null=True,blank=True,related_name='comittee_manager')
+    communication_comittee=models.BooleanField(default=False)
+    election_box_comittee=models.BooleanField(default=False)
     address_description=models.TextField(null=True,blank=True)
+    
     def __str__(self):
         return self.name
 

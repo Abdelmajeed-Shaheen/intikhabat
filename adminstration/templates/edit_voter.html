@@ -11,7 +11,7 @@
           <li><a href="{% url 'comittee-member' %}#newVoters">عودة</a></li>
           {% else %}
 
-          <li><a href="{% url 'main' %}">عودة</a></li>
+          <li><a href="{% url 'main' %}#newVoters">عودة</a></li>
           {% endif %}
         </ul>
       </nav>
@@ -29,16 +29,27 @@
             {{voter.profile.first_name}} {{voter.profile.last_name}}
         </h5>
     </div>
-    {% if voter.related_comittee_memebr %}
-    <div class="col-sm-6">
-        <h5 class="about-title">عضو اللجنة: {{voter.related_comittee_memebr.profile.user.first_name}} {{voter.related_comittee_memebr.profile.user.first_name}}/{{voter.related_comittee_memebr.profile.mobile_number}}</h5>
+    {% if voter.related_comittee_member %}
+    <div class="col-sm-3">
+        <h5 class="about-title">عضو اللجنة: {{voter.related_comittee_member.profile.user.first_name}} {{voter.related_comittee_member.profile.user.last_name}}/{{voter.related_comittee_member.profile.mobile_number}}</h5>
     </div>
     {% else %}
-        <div class="col-sm-6">
+        <div class="col-sm-3">
         <h5 class="about-title">عضو اللجنة: غير محدد</h5>
     </div>
     {% endif %}
 
+
+
+    {% if voter.election_box_officer %}
+    <div class="col-sm-3">
+        <h5 class="about-title">عضو الصندوق: {{voter.election_box_officer.profile.user.first_name}} {{voter.election_box_officer.profile.user.last_name}}/{{voter.election_box_officer.profile.mobile_number}}</h5>
+    </div>
+    {% else %}
+        <div class="col-sm-3">
+        <h5 class="about-title">عضو الصندوق: غير محدد</h5>
+    </div>
+    {% endif %}
 </div>
 
 <div class="row">
@@ -56,14 +67,40 @@
         <div class="form-row">
                 <label for="">عضو لجنة الارتباط</label>
                 <select class="form-control" name="cm">
-
+                {% if voter.related_comittee_member %}
+                    <option value="" disabled>{{voter.related_comittee_member.profile.user.first_name}} {{voter.related_comittee_member.profile.user.last_name}}</option>
+                    {% endif %}
                     {% for cm in cm_list %}
-                    <option value="{{cm.id}}">{{cm.profile.user.first_name}} {{cm.profile.user.first_name}}</option>
+                    {% if cm.comittee.communication_comittee %}
+                    <option value="{{cm.id}}">{{cm.profile.user.first_name}} {{cm.profile.user.last_name}}</option>
+                    {% endif %}
                     {% endfor %}
                   </select>
 
         </div>
         {% endif %}
+
+
+
+        {% if request.user.userprofile.campaignadminstrator or request.user.userprofile.comitteemember.is_manager or request.user.userprofile.candidate %}
+        <div class="form-row">
+                <label for="">عضو لجنة الصندوق</label>
+
+                <select class="form-control" name="ebo">
+                {% if voter.election_box_officer %}
+                <option value="" disabled>{{voter.election_box_officer.profile.user.first_name}} {{voter.election_box_officer.profile.user.last_name}}</option>
+                {% endif %}
+                    {% for cm in cm_list %}
+                    {% if cm.comittee.election_box_comittee %}
+                    <option value="{{cm.id}}">{{cm.profile.user.first_name}} {{cm.profile.user.last_name}}</option>
+                    {% endif %}
+                    {% endfor %}
+                  </select>
+
+        </div>
+        {% endif %}
+
+
 
         <div class="form-row mt-3 ml-3">
             {% if voter.followed_up %}
@@ -71,8 +108,7 @@
             {% else %}
             <input type="checkbox" name="is_followed">
             {% endif%}
-            <label for="">
-
+            <label >
             تمت متابعته
             </label>
 

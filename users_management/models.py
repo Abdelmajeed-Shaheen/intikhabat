@@ -55,6 +55,8 @@ class Voter(models.Model):
     election_address=models.ForeignKey(ElectionAddress,on_delete=models.CASCADE,null=True,blank=True)
     has_identifier=models.BooleanField(null=True, blank=True)
     first_login=models.BooleanField(default=True)
+    election_box_officer=models.ForeignKey("ComitteeMember",on_delete=models.CASCADE,related_name="election_box_officer",null=True,blank=True)
+
     def __str__(self):
         return (self.profile.user.first_name +" "+self.profile.user.last_name)
 

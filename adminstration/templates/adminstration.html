@@ -330,7 +330,7 @@
                                 </div>
                                 <div class="col-md-5">
                                     <select name="" id="cmo_search" class="form-control">
-                  <option value="">اختر اللجنة</option>
+                  <option value="" disabled>اختر اللجنة</option>
                     {% for comittee in comittees_list %}
                     <option value="{{comittee.id}}">{{comittee.name}}</option>
                     {% endfor %}
