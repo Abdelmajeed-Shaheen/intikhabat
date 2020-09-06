@@ -103,14 +103,13 @@ WSGI_APPLICATION = 'campaign_manager.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
-
 DATABASES = {
       'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'jpems',
+        'NAME': 'postgres',
         'USER': 'postgres',
-        'PASSWORD': 'postgres',
-        'HOST': '*',
+        'PASSWORD': 'test1234',
+        'HOST': '',
         'PORT': '5432',
     }
 }

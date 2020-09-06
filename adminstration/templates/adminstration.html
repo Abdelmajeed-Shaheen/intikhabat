@@ -354,205 +354,185 @@
                                         <th scope="col">تعديل الصلاحيات</th>
                                     </tr>
                                 </thead>
-                                <tbody id="cmt">
-                                    {% for comittee_member in comittees_members %}
-                                    <tr>
-                                        <th scope="row">{{comittee_member.profile.user.first_name}} {{comittee_member.profile.user.last_name}}</th>
-                                        <td>{{comittee_member.profile.mobile_number}}</td>
-                                        <td><a href="mailto:{{comittee_member.profile.user.email}}">{{comittee_member.profile.user.email}}</a></td>
-                                        <td>{{comittee_member.comittee}}</td>
-                                        {% if comittee_member.is_manager %}
-                                        <td>مدير</td>
-                                        {% else %}
-                                        <td>عضو</td>
-                                        {% endif %}
-                                        <td><a href="{% url 'update-cm' comittee_member.id %}" class="btn btn-info">تعديل البيانات</a></td>
-                                        <td><button class="btn btn-info" data-toggle="modal" data-target="#modal_{{comittee_member.id}}">تعديل الصلاحيات</button></td>
-                                    </tr>
-                                    <div class="modal fade" id="modal_{{comittee_member.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                        <div class="modal-dialog" role="document">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="exampleModalLabel"> صلاحيات المستخدم: {{comittee_member.profile.user.first_name}} {{comittee_member.profile.user.last_name}}</h5>
-                                                </div>
-                                                <div class="modal-body text-aligner">
-                                                    <form>
-                                                        <h4> المستخدمين:</h4>
-                                                        <div class="row mt-2">
-                                                            <div class="col-sm-3">
-                                                                <div class="form-check">
-                                                                    <label class="form-check-label" for="defaultCheck1">
-                                عرض
-                              </label> {% if comittee_member.profile.custommemberspermissions_set.first.can_view_member %}
-                                                                    <input class="form-check-input" type="checkbox" value="" id="showUser_{{comittee_member.id}}" checked> {% else %}
-                                                                    <input class="form-check-input" type="checkbox" value="" id="showUser_{{comittee_member.id}}"> {% endif %}
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-sm-3">
-                                                                <div class="form-check">
-                                                                    <label class="form-check-label" for="defaultCheck1">
-                                حفظ
-                              </label> {% if comittee_member.profile.custommemberspermissions_set.first.can_update_member %}
-                                                                    <input class="form-check-input" type="checkbox" id="editUser_{{comittee_member.id}}" checked> {% else %}
-                                                                    <input class="form-check-input" type="checkbox" id="editUser_{{comittee_member.id}}"> {% endif %}
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-sm-3">
-                                                                <div class="form-check">
-                                                                    <label class="form-check-label" for="defaultCheck1">
-                                حذف
-                              </label> {% if comittee_member.profile.custommemberspermissions_set.first.can_remove_member %}
-                                                                    <input class="form-check-input" type="checkbox" id="deleteUser_{{comittee_member.id}}" checked> {% else %}
-                                                                    <input class="form-check-input" type="checkbox" id="deleteUser_{{comittee_member.id}}"> {% endif %}
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-sm-3">
-                                                                <div class="form-check">
-                                                                    <label class="form-check-label" for="defaultCheck1">
-                                انشاء
-                              </label> {% if comittee_member.profile.custommemberspermissions_set.first.can_create_member %}
-                                                                    <input class="form-check-input" type="checkbox" id="createUser_{{comittee_member.id}}" checked> {% else %}
-                                                                    <input class="form-check-input" type="checkbox" id="createUser_{{comittee_member.id}}"> {% endif %}
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <h4> اللجان:</h4>
-                                                        <div class="row mt-2">
 
 
-                                                            <div class="col-sm-3">
-                                                                <div class="form-check">
-                                                                    <label class="form-check-label" for="defaultCheck1">
-                                عرض
-                              </label> {% if comittee_member.profile.customcomitteepermission_set.first.can_view_comittee %}
-                                                                    <input class="form-check-input" type="checkbox" value="" id="showComm_{{comittee_member.id}}" checked> {% else %}
-                                                                    <input class="form-check-input" type="checkbox" value="" id="showComm_{{comittee_member.id}}"> {% endif %}
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-sm-3">
-                                                                <div class="form-check">
-                                                                    <label class="form-check-label" for="defaultCheck1">
-                                حفظ
-                              </label> {% if comittee_member.profile.customcomitteepermission_set.first.can_update_comittee %}
-
-                                                                    <input class="form-check-input" type="checkbox" value="" id="editComm_{{comittee_member.id}}" checked> {% else %}
-                                                                    <input class="form-check-input" type="checkbox" value="" id="editComm_{{comittee_member.id}}"> {% endif %}
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-sm-3">
-                                                                <div class="form-check">
-                                                                    <label class="form-check-label" for="defaultCheck1">
-                                حذف
-                              </label> {% if comittee_member.profile.customcomitteepermission_set.first.can_remove_comittee %}
-                                                                    <input class="form-check-input" type="checkbox" value="" id="deleteComm_{{comittee_member.id}}" checked> {% else %}
-                                                                    <input class="form-check-input" type="checkbox" value="" id="deleteComm_{{comittee_member.id}}"> {% endif %}
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-sm-3">
-                                                                <div class="form-check">
-                                                                    <label class="form-check-label" for="defaultCheck1">
-                                انشاء
-                              </label> {% if comittee_member.profile.customcomitteepermission_set.first.can_create_comittee %}
-                                                                    <input class="form-check-input" type="checkbox" value="" id="createComm_{{comittee_member.id}}" checked> {% else %}
-                                                                    <input class="form-check-input" type="checkbox" value="" id="createComm_{{comittee_member.id}}"> {% endif %}
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-                                                        <h4> التقارير:</h4>
-                                                        <div class="row mt-2">
-
-
-                                                            <div class="col-sm-3">
-                                                                <div class="form-check">
-                                                                    <label class="form-check-label" for="defaultCheck1"> عرض
-                                                                    </label>
-                                                                    {% if comittee_member.profile.customreportspermissions_set.first.can_view_report %}
-                                                                    <input class="form-check-input" type="checkbox" value="" id="showRep_{{comittee_member.id}}" checked> {% else %}
-                                                                    <input class="form-check-input" type="checkbox" value="" id="showRep_{{comittee_member.id}}"> {% endif %}
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-sm-3">
-                                                                <div class="form-check">
-                                                                    <label class="form-check-label" for="defaultCheck1"> حفظ
-                                                                    </label>
-                                                                    {% if comittee_member.profile.customreportspermissions_set.first.can_update_report %}
-                                                                    <input class="form-check-input" type="checkbox" value="" id="editRep_{{comittee_member.id}}" checked> {% else %}
-                                                                    <input class="form-check-input" type="checkbox" value="" id="editRep_{{comittee_member.id}}"> {% endif %}
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-sm-3">
-                                                                <div class="form-check">
-                                                                    <label class="form-check-label" for="defaultCheck1"> حذف
-                                                                    </label>
-                                                                    {% if comittee_member.profile.customreportspermissions_set.first.can_remove_report %}
-                                                                    <input class="form-check-input" type="checkbox" value="" id="deleteRep_{{comittee_member.id}}" checked> {% else %}
-                                                                    <input class="form-check-input" type="checkbox" value="" id="deleteRep_{{comittee_member.id}}"> {% endif %}
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-sm-3">
-                                                                <div class="form-check">
-                                                                    <label class="form-check-label" for="defaultCheck1"> انشاء
-                                                                    </label>
-                                                                    {% if comittee_member.profile.customreportspermissions_set.first.can_create_report %}
-                                                                    <input class="form-check-input" type="checkbox" value="" id="createRep_{{comittee_member.id}}" checked> {% else %}
-                                                                    <input class="form-check-input" type="checkbox" value="" id="createRep_{{comittee_member.id}}"> {% endif %}
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-                                                        <h4> الناخبين:</h4>
-                                                        <div class="row mt-2">
-                                                            <div class="col-sm-3">
-                                                                <div class="form-check">
-                                                                    <label class="form-check-label" for="defaultCheck1">
-                                عرض
-                              </label> {% if comittee_member.profile.customvotersspermissions_set.first.can_view_voter %}
-                                                                    <input class="form-check-input" type="checkbox" value="" id="showVoter_{{comittee_member.id}}" checked> {% else %}
-                                                                    <input class="form-check-input" type="checkbox" value="" id="showVoter_{{comittee_member.id}}"> {% endif %}
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-sm-3">
-                                                                <div class="form-check">
-                                                                    <label class="form-check-label" for="defaultCheck1">
-                                حفظ
-                              </label> {% if comittee_member.profile.customvotersspermissions_set.first.can_update_voter %}
-                                                                    <input class="form-check-input" type="checkbox" value="" id="editVoter_{{comittee_member.id}}" checked> {% else %}
-                                                                    <input class="form-check-input" type="checkbox" value="" id="editVoter_{{comittee_member.id}}"> {% endif %}
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-sm-3">
-                                                                <div class="form-check">
-                                                                    <label class="form-check-label" for="defaultCheck1">
-                                حذف
-                              </label> {% if comittee_member.profile.customvotersspermissions_set.first.can_remove_voter %}
-                                                                    <input class="form-check-input" type="checkbox" value="" id="deleteVoter_{{comittee_member.id}}" checked> {% else %}
-                                                                    <input class="form-check-input" type="checkbox" value="" id="deleteVoter_{{comittee_member.id}}"> {% endif%}
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-sm-3">
-                                                                <div class="form-check">
-                                                                    <label class="form-check-label" for="defaultCheck1">
-                                انشاء
-                              </label> {% if comittee_member.profile.customvotersspermissions_set.first.can_create_voter %}
-                                                                    <input class="form-check-input" type="checkbox" value="" id="createVoter_{{comittee_member.id}}" checked> {% else %}
-                                                                    <input class="form-check-input" type="checkbox" value="" id="createVoter_{{comittee_member.id}}"> {% endif %}
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </form>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-danger" data-dismiss="modal">اغلاق</button>
-                                                    <button type="button" class="btn btn-success grant" id='grantPermit' data-user="{{comittee_member.id}}">حفظ</button>
-                                                </div>
-                                            </div>
-                                        </div>
+                                
+                      
+                <tbody id="cmt">
+                    {% for comittee_member in comittees_members %}
+                    <tr>
+                        <th scope="row">{{comittee_member.profile.user.first_name}} {{comittee_member.profile.user.last_name}}</th>
+                        <td>{{comittee_member.profile.mobile_number}}</td>
+                        <td>{{comittee_member.profile.user.email}}</td>
+                        <td>{{comittee_member.comittee}}</td>
+                        {% if comittee_member.is_manager %}
+                        <td>مدير</td>
+                        {% else %}
+                        <td>عضو</td>
+                        {% endif %}
+                        <td><a href="{% url 'update-cm' comittee_member.id %}" class="btn" style="background: #138496; color: #FFF">تعديل الصلاحيات</a></td>
+                        <td><button class="btn" style="background: #138496; color: #FFF" data-toggle="modal" data-target="#modal_{{comittee_member.id}}">صلاحيات</button></td>
+                    </tr>
+                    <div class="modal fade  " id="modal_{{comittee_member.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel"> صلاحيات المستخدم: <strong>{{comittee_member.profile.user.first_name}} {{comittee_member.profile.user.last_name}} </strong> </h5>
+                                </div>
+                                <div class="modal-body text-aligner">
+                                 <form>
+                            <h4> اعضاء اللجان:</h4> 
+                            <div class="row mb-3"> 
+                                <div class="col-sm-3">
+                                    <div class="form-check">
+                                        <label class="form-check-label ml-2" for="defaultCheck1" > عرض</label> {% if comittee_member.profile.custommemberspermissions_set.first.can_view_member %}
+                                        <input class="form-check-input" type="checkbox" value="" id="showUser_{{comittee_member.id}}" checked> {% else %}
+                                        <input class="form-check-input" type="checkbox" value="" id="showUser_{{comittee_member.id}}"> {% endif %}
                                     </div>
+                                </div>                                
+                                <div class="col-sm-3">
+                                    <div class="form-check">
+                                        <label class="form-check-label ml-2" for="defaultCheck1"> تعديل  </label> {% if comittee_member.profile.custommemberspermissions_set.first.can_update_member %}
+                                        <input class="form-check-input" type="checkbox" id="editUser_{{comittee_member.id}}" checked> {% else %}
+                                        <input class="form-check-input" type="checkbox" id="editUser_{{comittee_member.id}}"> {% endif %}
+                                    </div>
+                                </div>
+                                {% comment %} <div class="col-sm-3">
+                                    <div class="form-check">
+                                        <label class="form-check-label ml-2" for="defaultCheck1">  حذف</label> {% if comittee_member.profile.custommemberspermissions_set.first.can_remove_member %}
+                                        <input class="form-check-input" type="checkbox" id="deleteUser_{{comittee_member.id}}" checked> {% else %}
+                                        <input class="form-check-input" type="checkbox" id="deleteUser_{{comittee_member.id}}"> {% endif %}
+                                    </div>
+                                </div> {% endcomment %}
+                                <div class="col-sm-3">
+                                    <div class="form-check">
+                                        <label class="form-check-label ml-2" for="defaultCheck1"> انشاء </label> {% if comittee_member.profile.custommemberspermissions_set.first.can_create_member %}
+                                        <input class="form-check-input" type="checkbox" id="createUser_{{comittee_member.id}}" checked> {% else %}
+                                        <input class="form-check-input" type="checkbox" id="createUser_{{comittee_member.id}}"> {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            <hr />
+                           <h4> اللجان:</h4>
+                           
+                            <div class="row mb-3">
 
-                                    {% endfor %}
 
-                                </tbody>
+                                <div class="col-sm-3">
+                                    <div class="form-check">
+                                        <label class="form-check-label ml-2" for="defaultCheck1">  عرض </label> {% if comittee_member.profile.customcomitteepermission_set.first.can_view_comittee %}
+                                        <input class="form-check-input" type="checkbox" value="" id="showComm_{{comittee_member.id}}" checked> {% else %}
+                                        <input class="form-check-input" type="checkbox" value="" id="showComm_{{comittee_member.id}}"> {% endif %}
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-check">
+                                        <label class="form-check-label ml-2" for="defaultCheck1"> تعديل </label> {% if comittee_member.profile.customcomitteepermission_set.first.can_update_comittee %}
+                                        <input class="form-check-input" type="checkbox" value="" id="editComm_{{comittee_member.id}}" checked> {% else %}
+                                        <input class="form-check-input" type="checkbox" value="" id="editComm_{{comittee_member.id}}"> {% endif %}
+                                    </div>
+                                </div>
+                                {% comment %} <div class="col-sm-3">
+                                    <div class="form-check">
+                                        <label class="form-check-label ml-2" for="defaultCheck1" > حذف </label> {% if comittee_member.profile.customcomitteepermission_set.first.can_remove_comittee %}
+                                        <input class="form-check-input" type="checkbox" value="" id="deleteComm_{{comittee_member.id}}" checked> {% else %}
+                                        <input class="form-check-input" type="checkbox" value="" id="deleteComm_{{comittee_member.id}}"> {% endif %}
+                                    </div>
+                                </div> {% endcomment %}
+                                <div class="col-sm-3">
+                                    <div class="form-check">
+                                        <label class="form-check-label ml-2" for="defaultCheck1"> انشاء </label> {% if comittee_member.profile.customcomitteepermission_set.first.can_create_comittee %}
+                                        <input class="form-check-input" type="checkbox" value="" id="createComm_{{comittee_member.id}}" checked> {% else %}
+                                        <input class="form-check-input" type="checkbox" value="" id="createComm_{{comittee_member.id}}"> {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                              <hr />
+                            <h4> التقارير:</h4>
+                            <div class="row mb-3">
+
+
+                                <div class="col-sm-3">
+                                    <div class="form-check">
+                                        <label class="form-check-label ml-2" for="defaultCheck1"> عرض</label>
+                                        {% if comittee_member.profile.customreportspermissions_set.first.can_view_report %}
+                                        <input class="form-check-input" type="checkbox" value="" id="showRep_{{comittee_member.id}}" checked> {% else %}
+                                        <input class="form-check-input" type="checkbox" value="" id="showRep_{{comittee_member.id}}"> {% endif %}
+                                    </div>
+                                </div>
+                                {% comment %} <div class="col-sm-3">
+                                    <div class="form-check">
+                                        <label class="form-check-label ml-2" for="defaultCheck1"> حفظ </label>
+                                        {% if comittee_member.profile.customreportspermissions_set.first.can_update_report %}
+                                        <input class="form-check-input" type="checkbox" value="" id="editRep_{{comittee_member.id}}" checked> {% else %}
+                                        <input class="form-check-input" type="checkbox" value="" id="editRep_{{comittee_member.id}}"> {% endif %}
+                                    </div>
+                                </div> {% endcomment %}
+                                {% comment %} <div class="col-sm-3">
+                                    <div class="form-check">
+                                        <label class="form-check-label  ml-2" for="defaultCheck1"> حذف</label>
+                                        {% if comittee_member.profile.customreportspermissions_set.first.can_remove_report %}
+                                        <input class="form-check-input" type="checkbox" value="" id="deleteRep_{{comittee_member.id}}" checked> {% else %}
+                                        <input class="form-check-input" type="checkbox" value="" id="deleteRep_{{comittee_member.id}}"> {% endif %}
+                                    </div>
+                                </div> {% endcomment %}
+                                {% comment %} <div class="col-sm-3">
+                                    <div class="form-check">
+                                        <label class="form-check-label ml-2" for="defaultCheck1"> انشاء </label>
+                                        {% if comittee_member.profile.customreportspermissions_set.first.can_create_report %}
+                                        <input class="form-check-input" type="checkbox" value="" id="createRep_{{comittee_member.id}}" checked> {% else %}
+                                        <input class="form-check-input" type="checkbox" value="" id="createRep_{{comittee_member.id}}"> {% endif %}
+                                    </div>
+                                </div> {% endcomment %}
+                            </div>
+                            <hr />
+                            <h4> الناخبين:</h4>
+                            <div class="row mb-3">
+                                <div class="col-sm-3">
+                                    <div class="form-check">
+                                        <label class="form-check-label ml-2" for="defaultCheck1"> عرض </label> {% if comittee_member.profile.customvotersspermissions_set.first.can_view_voter %}
+                                        <input class="form-check-input" type="checkbox" value="" id="showVoter_{{comittee_member.id}}" checked> {% else %}
+                                        <input class="form-check-input" type="checkbox" value="" id="showVoter_{{comittee_member.id}}"> {% endif %}
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-check">
+                                        <label class="form-check-label ml-2" for="defaultCheck1">  تعديل  </label> {% if comittee_member.profile.customvotersspermissions_set.first.can_update_voter %}
+                                        <input class="form-check-input" type="checkbox" value="" id="editVoter_{{comittee_member.id}}" checked> {% else %}
+                                        <input class="form-check-input" type="checkbox" value="" id="editVoter_{{comittee_member.id}}"> {% endif %}
+                                    </div>
+                                </div>
+                                {% comment %} <div class="col-sm-3">
+                                    <div class="form-check">
+                                        <label class="form-check-label ml-2" for="defaultCheck1"> حذف</label> {% if comittee_member.profile.customvotersspermissions_set.first.can_remove_voter %}
+                                        <input class="form-check-input" type="checkbox" value="" id="deleteVoter_{{comittee_member.id}}" checked> {% else %}
+                                        <input class="form-check-input" type="checkbox" value="" id="deleteVoter_{{comittee_member.id}}"> {% endif%}
+                                    </div>
+                                </div> {% endcomment %}
+                                <div class="col-sm-3">
+                                    <div class="form-check">
+                                        <label class="form-check-label ml-2" for="defaultCheck1"> انشاء </label> {% if comittee_member.profile.customvotersspermissions_set.first.can_create_voter %}
+                                        <input class="form-check-input" type="checkbox" value="" id="createVoter_{{comittee_member.id}}" checked> {% else %}
+                                        <input class="form-check-input" type="checkbox" value="" id="createVoter_{{comittee_member.id}}"> {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button  type="button" class="btn btn-danger"  data-dismiss="modal">اغلاق</button>
+                        <button type="button" class="btn btn-success grant" id='grantPermit' data-user="{{comittee_member.id}}">تعديل</button>
+                    </div> 
+                            </div>
+                        </div>
+                    </div>
+
+                    {% endfor %}
+
+                </tbody>
+
+
+
                             </table>
                         </div>
 
