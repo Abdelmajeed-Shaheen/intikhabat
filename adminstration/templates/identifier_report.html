@@ -145,7 +145,6 @@ $('#search').on('click',function(e){
             query:JSON.stringify(query)
         },
         success:function(result){
-            console.log(result)
         table=$('tbody')
         table.empty()
         $(result.data).each(function(index,value){
@@ -206,7 +205,6 @@ $( "#cm" ).autocomplete({
         return false;
       },
       select: function( event, ui ) {
-          console.log(ui.item['lable'])
         $( "#cm" ).val(ui.item['lable'] );
         $( "#cm_id" ).val( ui.item['id']); 
         return false;
@@ -230,7 +228,6 @@ $( "#idn_name" ).autocomplete({
     return false;
     },
     select: function( event, ui ) {
-        console.log(ui.item['lable'])
     $( "#idn_name" ).val(ui.item['lable'] );
     $( "#idn_id" ).val( ui.item['id']); 
     return false;

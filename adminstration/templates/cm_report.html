@@ -127,10 +127,6 @@
 
 $('#search').on('click',function(e){
     e.preventDefault()
-
-    console.log($('input[name="male"]:checked'))
-
-
     gender=""
     if($('input[name="male"]:checked').val()){
           gender=$('input[name="male"]:checked').val()
@@ -153,7 +149,6 @@ $('#search').on('click',function(e){
     query.phone_number=phone_number
     query.whatsapp_number=whatsapp_number
     cm_id=$('#cm_id').val()
-    console.log(cm_id)
     query.cm_id=cm_id
     query.gender=gender
 
@@ -165,7 +160,6 @@ $('#search').on('click',function(e){
             query:JSON.stringify(query)
         },
         success:function(result){
-            console.log(result)
         table=$('tbody')
         table.empty()
         $(result.data).each(function(index,value){
@@ -229,10 +223,8 @@ $("#print").on("click",function(){
         return false;
       },
       select: function( event, ui ) {
-          console.log(ui.item['lable'])
         $( "#cm" ).val(ui.item['lable'] );
         $( "#cm_id" ).val( ui.item['id']); 
-        console.log(ui.item['id'])
         return false;
       }
     })

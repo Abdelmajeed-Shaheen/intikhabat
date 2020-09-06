@@ -695,7 +695,6 @@
         inputFields.each(function() {
             field = $(this)
             if (!field.val()) {
-                console.log("empty fields are here")
                 $("#message").empty()
                 $("#message").append("<span>" + field.data("field-name") + " مطلوب" + "</span> <br>");
                 $("#errorMessage").modal("show");
@@ -710,7 +709,6 @@
 
         selectFields.each(function() {
             option = $(this)
-            console.log(option.val())
             if (!option.val() || option.val() == "") {
                 $("#message").empty()
                 $("#message").append("<span>" + option.data("field-name") + " مطلوب" + "</span> <br>");
@@ -788,7 +786,6 @@
                 csrfmiddlewaretoken: csrftoken,
                 usertype: $('#ca').val(),
             }
-            console.log(data)
             $.ajax({
                 url: "{% url 'create-user' %}",
                 type: "POST",
@@ -887,7 +884,6 @@
         userprofile.last_name = $("#foname").val()
         userprofile.mobile_number = $("#phno").val()
         userprofile.whatsapp_number = $("#wano").val()
-        console.log($('#gov').find("option:selected").val())
         userprofile.governorate = $('#gov').find("option:selected").val()
         userprofile.dept = $('#dept').find("option:selected").val()
         userprofile.district = $('#district').find("option:selected").val()
@@ -898,7 +894,7 @@
             userprofile.title = $("#title").val()
         }
         userjson = JSON.stringify(userprofile)
-        console.log(userprofile.district)
+      
         $.ajax({
             url: "{% url 'update-profile' %}",
             type: "POST",
@@ -995,7 +991,6 @@
         comittee_name = $('#comitteeQuery option:selected').val()
         query = new Object()
         query.comittee_name = comittee_name
-        console.log(query)
         queryjson = JSON.stringify(query)
 
         $.ajax({
@@ -1067,7 +1062,6 @@
             },
 
             success: function(result) {
-                console.log(result)
                 table = $('#comittee_table_tbody')
                 table.empty()
                 if (!result.error) {
@@ -1197,7 +1191,6 @@
             success: function(result) {
                 table = $("#cmt")
                 table.empty()
-                console.log(result)
                 $(result).each(function(index, value) {
 
                     row = $("<tr></tr>");
@@ -1248,7 +1241,6 @@
                 return false;
             },
             select: function(event, ui) {
-                console.log(ui.item['lable'])
                 $("#cm_search").val(ui.item['lable']);
                 $("#hidden_cm").val(ui.item['id']);
                 return false;
@@ -1277,7 +1269,6 @@
             },
 
             success: function(result) {
-                console.log(result)
 
                 table = $('#comittee_task_table_tbody')
                 table.empty()
