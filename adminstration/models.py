@@ -23,6 +23,10 @@ class Comittee(models.Model):
     
     def __str__(self):
         return self.name
+        
+    class Meta:
+        ordering = ('timestamp',)
+
 
 class ElectionList(models.Model):
     name=models.CharField(max_length=255)
@@ -33,6 +37,9 @@ class ElectionList(models.Model):
 
     def __str__(self):
         return self.name
+
+    class Meta:
+        ordering = ('timestamp',)
 
 class ElectionCard(models.Model):
     voter=models.OneToOneField(to='users_management.Voter',on_delete=models.CASCADE)
