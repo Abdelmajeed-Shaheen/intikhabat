@@ -272,6 +272,7 @@
         csrfmiddlewaretoken: '{{ csrf_token }}'
       },
       success:function (result) {
+        $("#message").empty()
         if (result.error){
           $("#message").text(result.error)
           $("#errorMessage").modal('show')
@@ -296,7 +297,7 @@
         csrfmiddlewaretoken: '{{ csrf_token }}'
       },
       success:function (result) {
-
+        $("#message").empty()
         if (result.error){
           $("#message").text(result.error)
           $("#errorMessage").modal('show')
@@ -318,6 +319,7 @@
 
   inputFields.each(function(){
     field=$(this)
+    
       if (!field.val()){
         $("#message").append("<span>"+field.data("field-name")+" مطلوب"+"</span> <br>");
         $("#errorMessage").modal("show");
@@ -334,9 +336,11 @@
 
   selectFields.each(function(){
     option=$(this)
-      if (!option.val() || option.val()==""){
+       if (!option.val() || option.val()==""){ 
         $("#message").append("<span>"+option.data("field-name")+" مطلوب"+"</span> <br>");
+        
         $("#errorMessage").modal("show");
+        
 
         checker=false
 
@@ -355,9 +359,11 @@
 
 $('#register').on('click',function(){
 
+  $("#message").empty()
+
+
   formFields=$('#createProfileForm').find('input')
   selectFields=$('#createProfileForm').find('select option:selected')
-
   fieldChecker=checkField(formFields,selectFields)
 
   if (fieldChecker){
@@ -388,6 +394,7 @@ $('#register').on('click',function(){
       },
       success:function(result){
         if (result.error){
+          $("#message").empty()
             $("#message").text(result.error)
             $("#errorMessage").modal('show')
 
