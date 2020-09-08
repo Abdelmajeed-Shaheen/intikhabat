@@ -7,13 +7,11 @@
       <nav class="nav-menu d-none d-lg-block">
         <ul>
           <li><a href="{% url 'logout' %}">تسحيل خروج</a></li>
-
           {% if request.user.userprofile.candidate or request.user.userprofile.campaignadminstrator %}
           <li><a href="{% url 'main' %}#createcomittee">عودة</a></li>
           {% else %}
     <li><a href="{% url 'comittee-member' %}">عودة</a></li>
           {% endif %}
-
         </ul>
       </nav>
       <!-- .nav-menu -->
