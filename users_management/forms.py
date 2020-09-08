@@ -10,7 +10,7 @@ GENDER_CHOICES=[
 
 class LoginForm(forms.Form):
     username = forms.CharField(
-                    max_length=10,
+                    max_length=15,
     				widget=forms.TextInput(
                     attrs={
                         "class": "form-control",
@@ -169,6 +169,11 @@ class CampaignAdminCreateForm(forms.Form):
     
     )
     ca_whatsapp_number=forms.CharField(
+
+
+
+
+        
                                      widget=forms.TextInput(
                                         attrs={
                                             "class": "form-control",
