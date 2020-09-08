@@ -334,7 +334,6 @@
 
   selectFields.each(function(){
     option=$(this)
-    console.log(option.val())
       if (!option.val() || option.val()==""){
         $("#message").append("<span>"+option.data("field-name")+" مطلوب"+"</span> <br>");
         $("#errorMessage").modal("show");
