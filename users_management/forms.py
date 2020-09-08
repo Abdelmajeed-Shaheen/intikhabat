@@ -108,7 +108,7 @@ class SignUpForm(forms.Form):
                                             }
                                         )
     )
-    email=forms.EmailField( widget=forms.TextInput(
+    email=forms.EmailField( widget=forms.EmailInput(
                                         attrs={
                                             "class": "form-control",
                                             "placeholder": "البريد الالكتروني",
