@@ -14,7 +14,9 @@ from common.models import ( Address,
                             Department,
                             Governorate,
                             District, 
-                            Area)
+                            Area,
+                            Sector
+                            )
 from tasks.models import ComitteeTask,Comment
 
 from .forms import CreateComitteeForm,UpdateCmForm,ComitteeTaskForm
@@ -963,6 +965,44 @@ class GetDistrict(View):
             response.append(item)
         
         return JsonResponse(response,safe=False)
+
+class GetSecotrs(View):
+
+    def get(self,request):
+        response=[]
+        gover_id=request.GET.get('governorate_id')
+        governorate=Governorate.objects.get(id=int(gover_id))
+        sectors=Sector.objects.filter(governorate=int(gover_id))
+        for sector in sectors:
+            item={}
+            item['name']=sector.name
+            item['id']=sector.id
+            response.append(item)
+        
+        return JsonResponse(response,safe=False)
+
+
+
+class GetAreas(View):
+
+    def get(self,request):
+        response=[]
+        sector_id=request.GET.get('sector_id')
+        sector=Sector.objects.get(id=int(sector_id))
+        areas=Area.objects.filter(sector=sector)
+        for area in areas:
+            item={}
+            item['name']=area.name
+            item['id']=area.id
+            response.append(item)
+        
+        return JsonResponse(response,safe=False)
+
+
+
+
+
+
 
 def get_tasks_list(request):
     query=request.GET.get('query')

@@ -6,7 +6,9 @@ from .models import (
                         Governorate,
                         Department,
                         Area,
-                        ElectionAddress
+                        ElectionAddress,
+                        Sector,
+                        Residence
                     )
 # Register your models here.
 
@@ -41,3 +43,12 @@ class AdminDistrict(admin.ModelAdmin):
 @admin.register(Governorate)
 class AdminGovernorate(admin.ModelAdmin):
     list_display=['name']
+
+
+@admin.register(Sector)
+class AdminSector(admin.ModelAdmin):
+    list_display=['name']
+
+@admin.register(Residence)
+class AdminResidence(admin.ModelAdmin):
+    list_display=["governorate","sector","area","district"]

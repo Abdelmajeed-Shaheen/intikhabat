@@ -8,7 +8,7 @@ from django.contrib.auth.hashers import make_password
 from django.db import IntegrityError
 from users_management.models import Voter,UserProfile,Candidate,WorkField
 from adminstration.models import ElectionCard,ElectionAddress,ElectionList
-from common.models import Address,Governorate,Department,Area
+from common.models import Address,Governorate,Department,Area,Residence,Sector,District
 import json
 import re
 import datetime
@@ -120,6 +120,7 @@ class VoterProfile(DetailView):
         ea=voter.voter.election_address
         election_lists=ElectionList.objects.all().filter(election_address__department=ea.department)
         areas_list=Area.objects.all().filter(department=voter.voter.election_address.department)
+        governorates_list=Governorate.objects.all()
         if voter.voter.candidate is not None:
 
             candidates_list=candidates_list.exclude(id=voter.voter.candidate.id)
@@ -129,7 +130,8 @@ class VoterProfile(DetailView):
             "addresses_list":addresses_list,
             "candidates_list":candidates_list,
             "election_lists":election_lists,
-            "areas_list":areas_list
+            "areas_list":areas_list,
+            "governorates_list":governorates_list
            
         }
         if str(self.request.user.id) == str(voter.user.id):
@@ -141,11 +143,50 @@ class UpdateVoter(View):
 
     def post(self,request):
         voter_object={}
+        residence_object={}
+        if request.POST.get("area") and request.POST.get("area") not in [None,""]:
+            area=Area.objects.get(id=int(request.POST.get("area")))
+            residence_object["area"]=area
+
+        if request.POST.get("gover") and request.POST.get("gover") not in [None,""]:
+            gover=Governorate.objects.get(id=int(request.POST.get("area")))
+            residence_object["governorate"]=gover     
+
+        if request.POST.get("sector") and request.POST.get("sector") not in [None,""]:
+            sector=Sector.objects.get(id=int(request.POST.get("area")))
+            residence_object["sector"]=sector
+
+        if request.POST.get("district") and request.POST.get("district") not in [None,""]:
+            district=District.objects.get(id=int(request.POST.get("district")))
+            residence_object["district"]=district
+
+
+
         if request.POST.get('voter_id'):
             voter_id=request.POST.get('voter_id')
             voter=Voter.objects.get(id=int(voter_id))
             voter_id=voter.id
 
+
+        if not voter.residence_address:
+            residence=Residence(**residence_object)
+            residence.save()
+            voter.residence_address=residence
+
+        else:
+            if "governorate" in residence_object:
+                voter.residence_address.governorate=residence_object["governorate"]
+            if "sector" in residence_object:
+                voter.residence_address.sector=residence_object["sector"]
+            if "area" in residence_object:
+                voter.residence_address.area=residence_object["area"]
+            if "district" in residence_object:
+                voter.residence_address.district=residence_object["district"]
+        
+        voter.residence_address.save()
+
+
+        print(voter.residence_address)
         if request.POST.get('ec'):
             if request.POST.get('ec')=='true':
                 voter_object['has_elc_card']=True
