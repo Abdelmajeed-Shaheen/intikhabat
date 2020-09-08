@@ -1,119 +1,105 @@
-{% extends 'candidate_base.html' %}
-{% load staticfiles %}
-
-{% block extra_content %}
+{% extends 'candidate_base.html' %} {% load staticfiles %} {% block extra_content %}
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <a class="navbar-brand" href="#">الصفحة الشخصية</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <a class="navbar-brand" href="#">الصفحة الشخصية</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="fa fa-user"></span>
   </button>
 
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item text-right">
-        <p class="nav-link mb-0"><span class="text-light">
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item text-right">
+                <p class="nav-link mb-0"><span class="text-light">
             المستخدم : {{request.user.username}}
           </span></p>
-      </li>
-      <li class="nav-item text-right"><a href="{% url 'logout' %}"><span class="btn btn-danger">
+            </li>
+            <li class="nav-item text-right"><a href="{% url 'logout' %}"><span class="btn btn-danger">
             تسجيل خروج
           </span>
         </a></li>
-    </ul>
-  </div>
+        </ul>
+    </div>
 </nav>
 
-{% endblock %}
-{% block main %}
+{% endblock %} {% block main %}
 
 
 <div class="tab-content" id="myTabContent">
-  <div class="tab-pane fade show active" id="details" role="tabpanel" aria-labelledby="details-tab">
-    <div class="container mt-3">
+    <div class="tab-pane fade show active" id="details" role="tabpanel" aria-labelledby="details-tab">
+        <div class="container mt-3">
 
 
-      <div class="row">
-        <div class="col-md-12">
-          <div class="card shadow-sm">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card shadow-sm">
 
-            <div class="card-header text-aligner">
-              <div class="row">
+                        <div class="card-header text-aligner">
+                            <div class="row">
 
-                <div class="col-md-6">
-                  <h5>اسم المستخدم :
-                    <span class="text-info" style="font-family: Open Sans, sans-serif;">
+                                <div class="col-md-6">
+                                    <h5>اسم المستخدم :
+                                        <span class="text-info" style="font-family: Open Sans, sans-serif;">
                       {{request.user.username}}</h5>
                   </span>
-                  <h6 class="text-warning"> ملاحظة : يستخدم كأسم مستخدم عند تسجيل الدخول, يرجى عدم مشاركته مع الاخرين
-                  </h6>
-                </div>
-                <div class="col-md-6 d-flex justify-content-center align-items-center">
-                  {% if voter.voter.voting_id %}
-                  <p class="about-title text-center mb-0">
-                    الرقم الانتخابي<br />
-                    <span class="text-info" id="electionNumber">{{voter.voter.voting_id}}</span>
-                    <!-- <span class="text-info" id="electionNumber">22/7/8/671</span> -->
-                  </p>
-                  {% endif %}
-                </div>
-              </div>
+                                        <h6 class="text-warning"> ملاحظة : يستخدم كأسم مستخدم عند تسجيل الدخول, يرجى عدم مشاركته مع الاخرين
+                                        </h6>
+                                </div>
+                                <div class="col-md-6 d-flex justify-content-center align-items-center">
+                                    {% if voter.voter.voting_id %}
+                                    <p class="about-title text-center mb-0">
+                                        الرقم الانتخابي<br />
+                                        <span class="text-info" id="electionNumber">{{voter.voter.voting_id}}</span>
+                                        <!-- <span class="text-info" id="electionNumber">22/7/8/671</span> -->
+                                    </p>
+                                    {% endif %}
+                                </div>
+                            </div>
 
-            </div>
+                        </div>
 
-          </div>
-        </div>
-
-
-        <div class="col-md-12 mt-3">
-
-          <div class="card mt-md-0 shadow-sm">
-            <div class="card-header text-center">
-              <h5 class="about-title text-center mb-0">
-                الحالة الانتخابية :
-                {% if voter.voter.vote_status == "Not_sure" %}
-                <span style="color :#bf931b">متردد</span>
-                {% elif voter.voter.vote_status == "Not_voting"%}
-                <span style="color :red">لا ارغب</span>
-                {% elif not voter.voter.vote_status %}
-                <span style="color :gray">غير محدد</span>
-                {% else %}
-                <span class="text-info">مؤيد</span>
-                {% endif %}
-              </h5>
-            </div>
-            <div class="card-body">
-
-              <div class="row">
-                <h5 class="text-aligner mt-1 mb-2 w-100 px-3">
-                  تعديل الحالة الانتخابية :
-                </h5>
-
-                <div class="col-lg-3 pl-0">
-                  <form id="voteStatusForm"
-                    class="d-flex h-100 justify-content-around justify-content-md-between align-content-center mt-1 mt-md-0">
-                    <div class="form-check p-1">
-                      <input class="form-check-input" type="radio" id="v" value="Voting"
-                        {% if voter.voter.vote_status == "Voting" %}checked{% endif %}>
-                      <label class="form-check-label pr-3">مؤيد</label>
                     </div>
-                    <div class="form-check p-1">
-                      <input class="form-check-input" type="radio" id="ns" value="Not_sure"
-                        {% if voter.voter.vote_status == "Not_sure" %}checked{% endif %}>
-                      <label class="form-check-label pr-3">متردد</label>
-                    </div>
-                    <div class="form-check p-1">
-                      <input class="form-check-input ml-3 " type="radio" id="nv" value="Not_voting"
-                        {% if voter.voter.vote_status == "Not_voting" %}checked{% endif %}>
-                      <label class="form-check-label pr-3">لا ارغب</label>
-                    </div>
-                    <input type="hidden" id="voterId" value="{{voter.voter.id}}">
-                    <input type="hidden" name="" id="candidate_choice">
-                  </form>
                 </div>
 
-                <div class="col-lg-3">
-                  <select id='elecList' class="form-control mt-3 mt-md-0">
+
+                <div class="col-md-12 mt-3">
+
+                    <div class="card mt-md-0 shadow-sm">
+                        <div class="card-header text-center">
+                            <h5 class="about-title text-center mb-0">
+                                الحالة الانتخابية : {% if voter.voter.vote_status == "Not_sure" %}
+                                <span style="color :#bf931b">متردد</span> {% elif voter.voter.vote_status == "Not_voting"%}
+                                <span style="color :red">لا ارغب</span> {% elif not voter.voter.vote_status %}
+                                <span style="color :gray">غير محدد</span> {% else %}
+                                <span class="text-info">مؤيد</span> {% endif %}
+                            </h5>
+                        </div>
+                        <div class="card-body">
+
+                            <div class="row">
+                                <h5 class="text-aligner mt-1 mb-2 w-100 px-3">
+                                    تعديل الحالة الانتخابية :
+                                </h5>
+
+                                <div class="col-lg-3 pl-0">
+                                    <form id="voteStatusForm" class="d-flex h-100 justify-content-around justify-content-md-between align-content-center mt-1 mt-md-0">
+                                        <div class="form-check p-1">
+                                            <input class="form-check-input" type="radio" id="v" value="Voting" {% if voter.voter.vote_status == "Voting" %}checked{% endif %}>
+                                            <label class="form-check-label pr-3">مؤيد</label>
+                                        </div>
+                                        <div class="form-check p-1">
+                                            <input class="form-check-input" type="radio" id="ns" value="Not_sure" {% if voter.voter.vote_status == "Not_sure" %}checked{% endif %}>
+                                            <label class="form-check-label pr-3">متردد</label>
+                                        </div>
+                                        <div class="form-check p-1">
+                                            <input class="form-check-input ml-3 " type="radio" id="nv" value="Not_voting" {% if voter.voter.vote_status == "Not_voting" %}checked{% endif %}>
+                                            <label class="form-check-label pr-3">لا ارغب</label>
+                                        </div>
+                                        <input type="hidden" id="voterId" value="{{voter.voter.id}}">
+                                        <input type="hidden" name="" id="candidate_choice">
+                                    </form>
+                                </div>
+
+                                <div class="col-lg-3">
+                                    <select id='elecList' class="form-control mt-3 mt-md-0">
                     {% if voter.voter.candidate %}
                     <option selected disabled>{{voter.voter.candidate.election_list.name}}</option>
                     {% else %}
@@ -123,226 +109,232 @@
                     <option value="{{eleclist.id}}">{{eleclist.name}}</option>
                     {% endfor %}
                   </select>
-                </div>
+                                </div>
 
 
-                <div class="col-lg-3 mt-3 mt-lg-0" id="candidates_div">
-                  <select id='candis' class="d-none">
+                                <div class="col-lg-3 mt-3 mt-lg-0" id="candidates_div">
+                                    <select id='candis' class="d-none">
                   </select>
-                </div>
+                                </div>
 
-                <div class="col-lg-3 mt-3 mt-lg-0">
-                  <button id="updateprofile" class="btn btn-info w-100">اضغط هنا بعد تحديد أو تعديل
+                                <div class="col-lg-3 mt-3 mt-lg-0">
+                                    <button id="updateprofile" class="btn btn-info w-100">اضغط هنا بعد تحديد أو تعديل
                     الميول</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-              </div>
             </div>
-          </div>
-        </div>
-      </div>
 
-      <div class="card mt-3">
-        <div class="card-body" style="background-color :rgba(0,0,0,.03)">
-          <div class="row">
-            {% if voter.voter.vote_status == "Voting"  and voter.voter.candidate %}
+            <div class="card mt-3">
+                <div class="card-body" style="background-color :rgba(0,0,0,.03)">
+                    <div class="row">
+                        {% if voter.voter.vote_status == "Voting" and voter.voter.candidate %}
 
-            <div class="col-md-4 my-1">
-              <p class="about-title text-right text-md-center mb-0">
-                المرشح<br />
-                <span class="text-info">
+                        <div class="col-md-4 my-1">
+                            <p class="about-title text-right text-md-center mb-0">
+                                المرشح<br />
+                                <span class="text-info">
                   {{voter.voter.candidate.profile.user.first_name}}
                   {{voter.voter.candidate.profile.user.last_name}} {% if voter.voter.candidate.title != None %}
                   {{voter.voter.candidate.title}}{% endif %} </span>
-              </p>
-            </div>
+                            </p>
+                        </div>
 
-            {% endif %}
-            {% if voter.voter.vote_status == "Voting"  and voter.voter.candidate %}
-            {% if voter.voter.related_comittee_member %}
-            <div class="col-6 col-md-4 my-1">
-              <p class="about-title text-right text-md-center mb-0">
-                عضو الارتباط<br />
-                <span class="text-info">{{voter.voter.related_comittee_member.profile.user.first_name}}
+                        {% endif %} {% if voter.voter.vote_status == "Voting" and voter.voter.candidate %} {% if voter.voter.related_comittee_member %}
+                        <div class="col-6 col-md-4 my-1">
+                            <p class="about-title text-right text-md-center mb-0">
+                                عضو الارتباط<br />
+                                <span class="text-info">{{voter.voter.related_comittee_member.profile.user.first_name}}
                   {{voter.voter.related_comittee_member.profile.user.last_name}}</span>
-              </p>
-            </div>
-            {% endif %}
-
-            {% if voter.voter.election_box_officer %}
-            <div class="col-6 col-md-4 my-1">
-              <p class="about-title text-right text-md-center mb-0">
-                عضو الصندوق<br />
-                <span class="text-info">{{voter.voter.election_box_officer.profile.user.first_name}}
+                            </p>
+                        </div>
+                        {% endif %} {% if voter.voter.election_box_officer %}
+                        <div class="col-6 col-md-4 my-1">
+                            <p class="about-title text-right text-md-center mb-0">
+                                عضو الصندوق<br />
+                                <span class="text-info">{{voter.voter.election_box_officer.profile.user.first_name}}
                   {{voter.voter.election_box_officer.profile.user.last_name}}</span>
-              </p>
-            </div>
-            {% endif %}
-            {% endif %}
-            {% if voter.voter.identiefier %}
-            <div class="col-6 col-md-4 my-1">
-              <p class="about-title text-right text-md-center mb-0">اسم المعرف<br /> <span
-                  class="text-info">{{voter.voter.identiefier.profile.user.first_name}}
+                            </p>
+                        </div>
+                        {% endif %} {% endif %} {% if voter.voter.identiefier %}
+                        <div class="col-6 col-md-4 my-1">
+                            <p class="about-title text-right text-md-center mb-0">اسم المعرف<br /> <span class="text-info">{{voter.voter.identiefier.profile.user.first_name}}
                   {{voter.voter.identiefier.profile.last_name}}</span></p>
-            </div>
-            {% endif %}
-
-
-
-
-          </div>
-        </div>
-      </div>
-
-
-      <div class="row">
-        <div class="col-md-12">
-          <h2 class="mb-0 mt-3 text-right">تفاصيل الحساب</h2>
-
-          <div class="card mb-1 w-100 shadow-sm">
-            <div class="card-body text-aligner">
-              <form>
-                <div class="form-row mt-2">
-                  <div class="col-md-3">
-                    <div class="form-group">
-                      <label> الاسم الاول</label>
-                      <input type="text" class="form-control" id="fname" placeholder="الاسم الاول"
-                        value="{{voter.user.first_name}}">
-                    </div>
-                  </div>
-
-                  <div class="col-md-3">
-                    <div class="form-group">
-                      <label>اسم الاب</label>
-                      <input type="text" class="form-control" id="sname" placeholder="اسم الاب"
-                        value="{{voter.middle_name}}">
-                    </div>
-                  </div>
-                  <div class="col-md-3">
-                    <div class="form-group">
-                      <label>اسم الجد</label>
-                      <input type="text" class="form-control" id="tname" placeholder="الاسم الجد"
-                        value="{{voter.last_name}}">
-                    </div>
-                  </div>
-                  <div class="col-md-3">
-                    <div class="form-group">
-                      <label>اسم العائلة</label>
-                      <input type="text" class="form-control" id="foname" placeholder="اسم العائلة"
-                        value="{{voter.user.last_name}}">
-                    </div>
-                  </div>
-                </div>
-                <div class="form-row mt-2">
-                  <div class="col-md-3">
-                    <div class="form-group">
-                      <label>رقم الهاتف</label>
-                      <input type="text" class="form-control" id="phno" placeholder="رقم الهاتف"
-                        value="{{voter.mobile_number}}">
-                    </div>
-                  </div>
-
-                  <div class="col-md-3">
-                    <div class="form-group">
-                      <label>رقم الواتساب</label>
-                      <input type="text" class="form-control" id="wano" placeholder="رقم الواتساب"
-                        value="{% if voter.whatsapp_number %}{{voter.whatsapp_number}}{% endif %}">
-                    </div>
-                  </div>
-                  <div class="col-lg-6">
-                    <div class="form-group">
-                      <label>عنوان السكن</label>
-                      <div class="row">
-                        <div class="col-lg-6">
-                          <select name="" id="area" class="form-control">
-                            {% if voter.address.area %}
-                            <option value="{{voter.address.area.id}}">{{voter.address.area}}</option>
-                            {% endif %}
-                            <option value="">اختر المنطقة</option>
-                            {% for area in areas_list %}
-                            <option value="{{area.id}}">{{area.name}}</option>
-                            {% endfor %}
-                          </select>
                         </div>
-                        <div class="col-lg-6">
+                        {% endif %}
 
-                          <select name="" id="district" class="form-control mt-3 mt-lg-0">
-                            {% if voter.address.district %}
-                            <option value="{{voter.address.district.id}}">{{voter.address.district}}</option>
-                            {% endif %}
-                            <option value="">اختر الحي</option>
-                          </select>
-                        </div>
-                      </div>
+
+
+
                     </div>
-                  </div>
                 </div>
             </div>
 
-            <div class="form-row mt-1 mt-md-5">
-              <div class="col-sm-5 text-right">
-                <div class="form-check form-check-inline">
-                  {% if voter.voter.has_elc_card %}
-                  <input class="form-check-input ml-2" type="checkbox" id="elecCard" checked>
-                  {% else %}
-                  <input class="form-check-input ml-2" type="checkbox" id="elecCard">
-                  {% endif %}
-                  <label class="form-check-label" id="elecCardLable">هل ترغب بالحصول على بطاقة انتخابية؟</label>
 
-                </div>
-              </div>
-            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <h2 class="mb-0 mt-3 text-right">تفاصيل الحساب</h2>
 
-            {% if not voter.voter.identiefier and  voter.voter.first_login %}
-            <div class="form-row">
-              <label for="">هل لديك معرف؟</label>
-              <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" id="has_identifier_t" value="true">
-                <label class="form-check-label">نعم</label>
-              </div>
-              <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" id="has_identifier_f" value="false">
-                <label class="form-check-label">لا</label>
-              </div>
-              <div class="col-sm-4">
-                <input type="text" placeholder="ادخل رقم المعرف ان وجد" class="form-control" id="identifier">
+                    <div class="card mb-1 w-100 shadow-sm">
+                        <div class="card-body text-aligner">
+                            <form>
+                                <div class="form-row mt-2">
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label> الاسم الاول</label>
+                                            <input type="text" class="form-control" id="fname" placeholder="الاسم الاول" value="{{voter.user.first_name}}">
+                                        </div>
+                                    </div>
 
-              </div>
-            </div>
-            {% endif %}
-            </form>
-            <div class="row mt-2 mb-3">
-              <div class="col-7 col-md-9">
-                <a href="{% url 'password-change' %}" class="btn btn-info">تغيير الرقم السري</a>
-              </div>
-              <div class="col-4 col-md-1"><button id="updateprofile2" class="btn btn-primary d-inline-block w-100 ml-2">
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label>اسم الاب</label>
+                                            <input type="text" class="form-control" id="sname" placeholder="اسم الاب" value="{{voter.middle_name}}">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label>اسم الجد</label>
+                                            <input type="text" class="form-control" id="tname" placeholder="الاسم الجد" value="{{voter.last_name}}">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label>اسم العائلة</label>
+                                            <input type="text" class="form-control" id="foname" placeholder="اسم العائلة" value="{{voter.user.last_name}}">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-row mt-2">
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label>رقم الهاتف</label>
+                                            <input type="text" class="form-control" id="phno" placeholder="رقم الهاتف" value="{{voter.mobile_number}}">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label>رقم الواتساب</label>
+                                            <input type="text" class="form-control" id="wano" placeholder="رقم الواتساب" value="{% if voter.whatsapp_number %}{{voter.whatsapp_number}}{% endif %}">
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                    <br>
+                                     <label>عنوان السكن</label>
+                                <div class="form-row mt-2" >
+
+                                                <div class="col-lg-3">
+                                                    <select  id="gover" class="form-control">
+                                                    {% if voter.voter.residence_address.governorate %}
+                                                    <option value="{{voter.voter.residence_address.governorate.id}}">{{voter.voter.residence_address.governorate.name}}</option>
+                                                    {% endif %}
+                                                    <option value="">اختر المحافظة</option>
+                                                    {% for gover in governorates_list %}
+                                                    <option value="{{gover.id}}">{{gover.name}}</option>
+                                                    {% endfor %}
+                                                  </select>
+                                                </div>
+
+                                                <div class="col-lg-3 ">
+                                                    <select  id="sec" class="form-control">
+                                                    {% if voter.voter.residence_address.sector %}
+                                                    <option value="" >{{voter.voter.residence_address.sector}}</option>
+                                                    {% endif %}
+                                                    <option value="" >اختر اللواء/القطاع</option>
+      
+                                                  </select>
+                                                </div>
+
+
+                                                 <div class="col-lg-3 ">
+                                                    <select  id="area" class="form-control">
+                                                    {% if voter.voter.residence_address.area %}
+                                                    <option value="" >{{voter.voter.residence_address.area}}</option>
+                                                    {% endif %}
+                                                    <option value="" >اختر المنطقة</option>
+      
+                                                  </select>
+                                                </div>
+
+                                                <div class="col-lg-3">
+                                                    <select name="" id="district" class="form-control">
+                                                    {% if voter.voter.residence_address.district %}
+                                                    <option value="{{voter.voter.residence_address.district.id}}">{{voter.voter.residence_address.district}}</option>
+                                                    {% endif %}
+                                                    <option value="">اختر الحي</option>
+
+                                                  </select>
+                                                </div>
+                                </div>
+                        </div>
+
+                        <div class="form-row mt-1 mt-md-5">
+                            <div class="col-sm-5 text-right">
+                                <div class="form-check form-check-inline">
+                                    {% if voter.voter.has_elc_card %}
+                                    <input class="form-check-input ml-2" type="checkbox" id="elecCard" checked> {% else %}
+                                    <input class="form-check-input ml-2" type="checkbox" id="elecCard"> {% endif %}
+                                    <label class="form-check-label" id="elecCardLable">هل ترغب بالحصول على بطاقة انتخابية؟</label>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        {% if not voter.voter.identiefier and voter.voter.first_login %}
+                        <div class="form-row">
+                            <label for="">هل لديك معرف؟</label>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" id="has_identifier_t" value="true">
+                                <label class="form-check-label">نعم</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" id="has_identifier_f" value="false">
+                                <label class="form-check-label">لا</label>
+                            </div>
+                            <div class="col-sm-4">
+                                <input type="text" placeholder="ادخل رقم المعرف ان وجد" class="form-control" id="identifier">
+
+                            </div>
+                        </div>
+                        {% endif %}
+                        </form>
+                        <div class="row mt-2 mb-3">
+                            <div class="col-7 col-md-9">
+                                <a href="{% url 'password-change' %}" class="btn btn-info">تغيير الرقم السري</a>
+                            </div>
+                            <div class="col-4 col-md-1"><button id="updateprofile2" class="btn btn-primary d-inline-block w-100 ml-2">
                   حفظ</button>
-              </div>
-              <div class="col-1"></div>
+                            </div>
+                            <div class="col-1"></div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
-          </div>
         </div>
 
-      </div>
     </div>
-
-  </div>
 </div>
 
-<div class="modal fade" id="succesModal" tabindex="-1" role="dialog" aria-labelledby="successModalTitle"
-  aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
+<div class="modal fade" id="succesModal" tabindex="-1" role="dialog" aria-labelledby="successModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
 
-      <div class="modal-body">
-        <div class="alert alert-success" role="alert">
-          <h4 class="alert-heading text-right">تمت العملية بنجاح</h4>
+            <div class="modal-body">
+                <div class="alert alert-success" role="alert">
+                    <h4 class="alert-heading text-right">تمت العملية بنجاح</h4>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" id="reload">اغلاق</button>
+            </div>
         </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-danger" id="reload">اغلاق</button>
-      </div>
     </div>
-  </div>
 </div>
 <!-- select candidate Modal -->
 
@@ -351,263 +343,315 @@
 </div>
 
 
-{% endblock %}
-
-{% block js %}
+{% endblock %} {% block js %}
 <script>
+    $("#updateprofile").on('click', function() {
 
-  $("#updateprofile").on('click', function () {
+        status = $("#voteStatusForm").find('input:radio:checked').val()
+        candidate = $('#candis option:selected').val()
+        voter_id = $("#voterId").val()
+        $.ajax({
+            url: "{% url 'change-voting-status' %}",
+            type: "POST",
+            data: {
+                status: status,
+                voter_id: voter_id,
+                candidate: candidate,
+                csrfmiddlewaretoken: "{{csrf_token}}",
+                success: function(reslut) {
+                    $("#succesModal").modal('show')
+                }
+            }
+        })
+        $.ajax({
+            url: "{% url 'update-profile' %}",
+            type: "POST",
 
-    status = $("#voteStatusForm").find('input:radio:checked').val()
-    candidate = $('#candis option:selected').val()
-    voter_id = $("#voterId").val()
-    $.ajax({
-      url: "{% url 'change-voting-status' %}",
-      type: "POST",
-      data: {
-        status: status,
-        voter_id: voter_id,
-        candidate: candidate,
-        csrfmiddlewaretoken: "{{csrf_token}}",
-        success: function (reslut) {
-          $("#succesModal").modal('show')
-        }
-      }
-    })
-    $.ajax({
-      url: "{% url 'update-profile' %}",
-      type: "POST",
-
-      data: {
-        user: userjson,
-        csrfmiddlewaretoken: "{{csrf_token}}"
-      },
-      success: function (result) {
-        console.log(result)
-        location.reload()
-      }
-    })
-
-
-  })
-
-  $("#v").change(function () {
-    $("#elecList").css("visibility", "visible");
-    $("#elecCard").css("visibility", "visible");
-    $("#elecCardLable").css("visibility", "visible")
-    $(".select2-container").css("visibility", "visible");
-    $("#ns").prop("checked", false);
-    $("#nv").prop("checked", false);
-  });
-
-  $("#ns").change(function () {
-    $("#elecList").css("visibility", "hidden")
-    $("#elecCard").css("visibility", "hidden");
-    $(".select2-container").css("visibility", "hidden")
-    $("#elecCardLable").css("visibility", "hidden")
-    $("#nv").prop("checked", false);
-    $("#v").prop("checked", false);
-  });
-
-  $("#nv").change(function () {
-    $("#elecList").css("visibility", "hidden")
-    $("#elecCard").css("visibility", "hidden");
-    $(".select2-container").css("visibility", "hidden")
-    $("#elecCardLable").css("visibility", "hidden")
-    $("#ns").prop("checked", false);
-    $("#v").prop("checked", false);
-  });
-
-
-
-  $(".select-candidate").on("click", function () {
-    candidate_id = $(this).attr('data-candidate-id')
-
-    candidate_name = $(this).attr('data-candidate-name')
-
-    cid = $("#candidate_choice").val(candidate_id)
-    $("#selectedCandidate").text(candidate_name)
-    $("#candidate_" + candidate_id).modal("hide")
-  })
-
-
-  $("#reload").on("click", function () {
-    location.reload()
-  })
-
-  $('#elecList').on('change', function () {
-    election_list = $('#elecList option:selected').val()
-    $.ajax({
-      url: '{% url "get_candidates" %}',
-      type: 'GET',
-      data: {
-        election_list: election_list
-      },
-      success: function (result) {
-        $("#candidates_div").show()
-        console.log(result)
-        $(result).each(function (index, value) {
-          $('#candis').append('<option' + ' value=' + value.id + '>' + value.name + '</option>')
-
+            data: {
+                user: userjson,
+                csrfmiddlewaretoken: "{{csrf_token}}"
+            },
+            success: function(result) {
+                console.log(result)
+                location.reload()
+            }
         })
 
 
-      }
     })
-  })
 
-  $(document).ready(function () {
-    if ($("#v").is(":checked")) {
-      $("#elecList").css("visibility", "visible")
-      $("#elecCard").css("visibility", "visible");
-      $(".select2-container").css("visibility", "visible")
-      $("#elecCardLable").css("visibility", "visible")
-    }
-    if ($("#nv").is(":checked") || $("#ns").is(':checked')) {
-      $("#elecList").css("visibility", "hidden")
-      $("#elecCard").css("visibility", "hidden");
-      $(".select2-container").css("visibility", "hidden")
-      $("#elecCardLable").css("visibility", "hidden")
-
-    }
-    $("#candidates_div").css("display", "none")
-    // Initialize select2
-    $("#candis").select2({
-      dir: "rtl"
+    $("#v").change(function() {
+        $("#elecList").css("visibility", "visible");
+        $("#elecCard").css("visibility", "visible");
+        $("#elecCardLable").css("visibility", "visible")
+        $(".select2-container").css("visibility", "visible");
+        $("#ns").prop("checked", false);
+        $("#nv").prop("checked", false);
     });
-    $('.select2-selection__arrow').empty();
-    $('.select2-selection__arrow').append('<i class="fa fa-chevron-down"></i>');
-    $('.select2-selection__arrow').addClass('d-flex justify-content-center align-items-center mt-1');
 
-    // Read selected option
-    $('#but_read').click(function () {
-      var username = $('#candis option :selected').text();
+    $("#ns").change(function() {
+        $("#elecList").css("visibility", "hidden")
+        $("#elecCard").css("visibility", "hidden");
+        $(".select2-container").css("visibility", "hidden")
+        $("#elecCardLable").css("visibility", "hidden")
+        $("#nv").prop("checked", false);
+        $("#v").prop("checked", false);
+    });
 
+    $("#nv").change(function() {
+        $("#elecList").css("visibility", "hidden")
+        $("#elecCard").css("visibility", "hidden");
+        $(".select2-container").css("visibility", "hidden")
+        $("#elecCardLable").css("visibility", "hidden")
+        $("#ns").prop("checked", false);
+        $("#v").prop("checked", false);
     });
 
 
-    var electionNumbers = $('#electionNumber').html().split('/');
-    var electionNumberLast = electionNumbers[4];
-    console.log(electionNumberLast);
 
-    var electionNumber =
-      electionNumbers[0] + '/' + electionNumbers[1] + '/' + electionNumbers[2] + '/' + electionNumbers[3]
+    $(".select-candidate").on("click", function() {
+        candidate_id = $(this).attr('data-candidate-id')
 
-    $('#electionNumber').html(electionNumber + '<br/>' + electionNumberLast)
-  });
+        candidate_name = $(this).attr('data-candidate-name')
+
+        cid = $("#candidate_choice").val(candidate_id)
+        $("#selectedCandidate").text(candidate_name)
+        $("#candidate_" + candidate_id).modal("hide")
+    })
 
 
-  $(document).on('change', '#area', function () {
-    element = $('#area option :selected').val();
-    $.ajax(
-      {
-        type: "GET",
-        url: "{% url 'get_district' %}",
-        data: {
-          area_id: element
-        },
-        dataType: 'JSON',
-        success: function (result) {
-          $("#district").empty();
-          $("#district").append('<option value=""> الحي</option>');
-          $(result).each(function (index, value) {
-            $("#district").append('<option value="' + value.id + '">' + value.name + '</option>');
-          });
+    $("#reload").on("click", function() {
+        location.reload()
+    })
+
+    $('#elecList').on('change', function() {
+        election_list = $('#elecList option:selected').val()
+        $.ajax({
+            url: '{% url "get_candidates" %}',
+            type: 'GET',
+            data: {
+                election_list: election_list
+            },
+            success: function(result) {
+                $("#candidates_div").show()
+                console.log(result)
+                $(result).each(function(index, value) {
+                    $('#candis').append('<option' + ' value=' + value.id + '>' + value.name + '</option>')
+
+                })
+
+
+            }
+        })
+    })
+
+    $(document).ready(function() {
+        if ($("#v").is(":checked")) {
+            $("#elecList").css("visibility", "visible")
+            $("#elecCard").css("visibility", "visible");
+            $(".select2-container").css("visibility", "visible")
+            $("#elecCardLable").css("visibility", "visible")
+        }
+        if ($("#nv").is(":checked") || $("#ns").is(':checked')) {
+            $("#elecList").css("visibility", "hidden")
+            $("#elecCard").css("visibility", "hidden");
+            $(".select2-container").css("visibility", "hidden")
+            $("#elecCardLable").css("visibility", "hidden")
 
         }
-      }
-    );
-  });
+        $("#candidates_div").css("display", "none")
+            // Initialize select2
+        $("#candis").select2({
+            dir: "rtl"
+        });
+        $('.select2-selection__arrow').empty();
+        $('.select2-selection__arrow').append('<i class="fa fa-chevron-down"></i>');
+        $('.select2-selection__arrow').addClass('d-flex justify-content-center align-items-center mt-1');
 
-  $("#identifier").hide()
-  $("#has_identifier_t").on('change', function () {
-    $("#identifier").show()
-    $("#has_identifier_f").prop('checked', false)
-  })
+        // Read selected option
+        $('#but_read').click(function() {
+            var username = $('#candis option :selected').text();
 
-  $("#has_identifier_f").change(function () {
+        });
+
+
+        var electionNumbers = $('#electionNumber').html().split('/');
+        var electionNumberLast = electionNumbers[4];
+       
+
+        var electionNumber =
+            electionNumbers[0] + '/' + electionNumbers[1] + '/' + electionNumbers[2] + '/' + electionNumbers[3]
+
+        $('#electionNumber').html(electionNumber + '<br/>' + electionNumberLast)
+    });
+
+
+
+
+    $(document).on('change', '#gover', function() {
+        element = $('#gover option:selected').val();
+        
+        $.ajax({
+            type: "GET",
+            url: "{% url 'get_sector' %}",
+            data: {
+                governorate_id: element
+            },
+            dataType: 'JSON',
+            success: function(result) {
+                $("#sec").empty();
+                $("#sec").append('<option value="">اختر القطاع/اللواء</option>');
+                $(result).each(function(index, value) {
+                    $("#sec").append('<option value="' + value.id + '">' + value.name + '</option>');
+                });
+
+            }
+        });
+    });
+
+
+     $(document).on('change', "#sec", function() {
+       
+        element = $('#sec option:selected').val();
+        $.ajax({
+            type: "GET",
+            url: "{% url 'get_area' %}",
+            data: {
+                sector_id: element
+            },
+            dataType: 'JSON',
+            success: function(result) {
+                $("#area").empty();
+                $("#area").append('<option value="" >اختر المنطقة</option>');
+                $(result).each(function(index, value) {
+                    $("#area").append('<option value="' + value.id + '">' + value.name + '</option>');
+                });
+
+            }
+        });
+    });
+
+     $(document).on('change', "#area", function() {
+       
+        element = $('#area option:selected').val();
+        console.log("area: "+element)
+        $.ajax({
+            type: "GET",
+            url: "{% url 'get_district' %}",
+            data: {
+                area_id: element
+            },
+            dataType: 'JSON',
+            success: function(result) {
+                $("#district").empty();
+                $("#district").append('<option value="" >اختر المنطقة</option>');
+                $(result).each(function(index, value) {
+                    $("#district").append('<option value="' + value.id + '">' + value.name + '</option>');
+                });
+
+            }
+        });
+    });
+
+
+
     $("#identifier").hide()
-    $("#has_identifier_t").prop('checked', false)
+    $("#has_identifier_t").on('change', function() {
+        $("#identifier").show()
+        $("#has_identifier_f").prop('checked', false)
+    })
 
-  })
+    $("#has_identifier_f").change(function() {
+        $("#identifier").hide()
+        $("#has_identifier_t").prop('checked', false)
 
-  $("#updateprofile2").on('click', function () {
+    })
 
-    userprofile = new Object()
-    userprofile.first_name = $("#fname").val()
-    userprofile.second_name = $("#sname").val()
-    userprofile.third_name = $("#tname").val()
-    userprofile.last_name = $("#foname").val()
-    userprofile.mobile_number = $("#phno").val()
-    console.log(userprofile.mobile_number)
-    userprofile.whatsapp_number = $("#wano").val()
-    console.log(userprofile.whatsapp_number)
-    $('#addresses option').each(function () {
-      if (this.selected)
-        userprofile.address = $('#addresses option :selected').val()
-      else
-        userprofile.address = "";
-    });
-    identifier = ""
-    if ($("#has_identifier_t").is(" :checked")) {
-      identifier = $("#identifier").val()
-      has_identifier = true
-    }
-    else if (($("#has_identifier_f").is(" :checked"))) {
 
-      has_identifier = false
-    }
-    else {
-      has_identifier = undefined
-    }
-    userprofile.gender = $("#gender option :selected").val()
-    userprofile.district = $("#district option :selected").val()
-    userprofile.dob = $("#dob").val()
-    userprofile.id = "{{voter.id}}"
-    userjson = JSON.stringify(userprofile)
+    function getResidence(){
+        governorate=$("#gover option:selected").val()
+        sector=$("#sec option:selected").val()
+        area=$("#area option:selected").val()
+        district=$("#district option:selected").val()
+        residence=new Object()
+        residence.governorate=governorate
+        residence.sector=sector
+        residence.area=area
+        residence.district=district
+        return residence
 
-    elect_card = $('#elecCard')
-    if (elect_card.prop('checked')) {
-      ec = true
-    }
-    else {
-      ec = false
     }
 
-    voter_id = $("#voterId").val()
-    $.ajax({
-      url: "{% url 'edit-voting-status' %}",
-      type: "POST",
-      data: {
-        voter_id: voter_id,
-        ec: ec,
-        identifier: identifier,
-        has_identifier: has_identifier,
+    $("#updateprofile2").on('click', function() {
 
-        csrfmiddlewaretoken: "{{csrf_token}}",
-        success: function (reslut) {
-          $("#succesModal").modal('show')
+        userprofile = new Object()
+        userprofile.first_name = $("#fname").val()
+        userprofile.second_name = $("#sname").val()
+        userprofile.third_name = $("#tname").val()
+        userprofile.last_name = $("#foname").val()
+        userprofile.mobile_number = $("#phno").val()
+        console.log(userprofile.mobile_number)
+        userprofile.whatsapp_number = $("#wano").val()
+        residence=getResidence()
+        
+        identifier = ""
+        if ($("#has_identifier_t").is(" :checked")) {
+            identifier = $("#identifier").val()
+            has_identifier = true
+        } else if (($("#has_identifier_f").is(" :checked"))) {
+
+            has_identifier = false
+        } else {
+            has_identifier = undefined
         }
-      }
+        userprofile.gender = $("#gender option :selected").val()
+        userprofile.district = $("#district option :selected").val()
+        userprofile.dob = $("#dob").val()
+        userprofile.id = "{{voter.id}}"
+        userjson = JSON.stringify(userprofile)
+
+        elect_card = $('#elecCard')
+        if (elect_card.prop('checked')) {
+            ec = true
+        } else {
+            ec = false
+        }
+
+        voter_id = $("#voterId").val()
+        $.ajax({
+            url: "{% url 'edit-voting-status' %}",
+            type: "POST",
+            data: {
+                voter_id: voter_id,
+                ec: ec,
+                identifier: identifier,
+                has_identifier: has_identifier,
+                gover:residence.governorate,
+                sector:residence.sector,
+                area:residence.area,
+                district:residence.district,
+                csrfmiddlewaretoken: "{{csrf_token}}",
+                success: function(reslut) {
+                    $("#succesModal").modal('show')
+                }
+            }
+        })
+        $.ajax({
+            url: "{% url 'update-profile' %}",
+            type: "POST",
+
+            data: {
+                user: userjson,
+                csrfmiddlewaretoken: "{{csrf_token}}"
+            },
+            success: function(result) {
+                console.log(result)
+                $("#succesModal").modal('show')
+            }
+        })
+
+
+
     })
-    $.ajax({
-      url: "{% url 'update-profile' %}",
-      type: "POST",
-
-      data: {
-        user: userjson,
-        csrfmiddlewaretoken: "{{csrf_token}}"
-      },
-      success: function (result) {
-        console.log(result)
-        $("#succesModal").modal('show')
-      }
-    })
-
-
-
-  })
-
-
 </script>
 {% endblock %}

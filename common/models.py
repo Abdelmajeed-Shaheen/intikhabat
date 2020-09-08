@@ -21,6 +21,7 @@ class Department(models.Model):
 class Area(models.Model):
     name=models.CharField(max_length=50)
     department=models.ForeignKey(Department,on_delete=models.CASCADE)
+    sector=models.ForeignKey("Sector", on_delete=models.SET_NULL,null=True,blank=True)
     timestamp=models.DateTimeField(auto_now=True, auto_now_add=False)
     updated=models.DateTimeField(auto_now=False, auto_now_add=True)
 
@@ -57,6 +58,7 @@ class Address(models.Model):
     area=models.ForeignKey(Area,on_delete=models.CASCADE,null=True,blank=True)
     district=models.ForeignKey(District,on_delete=models.CASCADE,null=True,blank=True)
     street=models.ForeignKey(Street,on_delete=models.CASCADE,null=True,blank=True)
+
     def __str__(self):
         return (self.governorate.name+"/"+self.department.name)
 
@@ -67,3 +69,21 @@ class ElectionAddress(models.Model):
 
     def __str__(self):
         return str(self.governorate.name+"/"+self.department.name)
+
+
+class Sector(models.Model):
+    governorate=models.ForeignKey(Governorate, on_delete=models.CASCADE)
+    name=models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.name
+
+
+class Residence(models.Model):
+    governorate=models.ForeignKey(Governorate,on_delete=models.CASCADE)
+    area=models.ForeignKey(Area, on_delete=models.CASCADE)
+    district=models.ForeignKey(District, on_delete=models.CASCADE)
+    sector=models.ForeignKey(Sector, on_delete=models.CASCADE)
+
+
+    
