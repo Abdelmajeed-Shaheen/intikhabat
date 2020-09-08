@@ -10,12 +10,14 @@ GENDER_CHOICES=[
 
 class LoginForm(forms.Form):
     username = forms.CharField(
+                    max_length=10,
     				widget=forms.TextInput(
                     attrs={
                         "class": "form-control",
                         "placeholder": "رقم الهاتف"
                     	}
                     )
+
     	)
     password = forms.CharField(
     				widget=forms.PasswordInput(
@@ -26,8 +28,10 @@ class LoginForm(forms.Form):
                     )
     	)
 
+
 class CandidateLoginForm(forms.Form):
     candidate_username = forms.CharField(
+                     max_length=10,
     				widget=forms.TextInput(
                     attrs={
                         "class": "form-control",
