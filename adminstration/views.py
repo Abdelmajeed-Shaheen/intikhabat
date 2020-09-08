@@ -15,7 +15,7 @@ from common.models import ( Address,
                             Governorate,
                             District, 
                             Area)
-from tasks.models import ComitteeTask
+from tasks.models import ComitteeTask,Comment
 
 from .forms import CreateComitteeForm,UpdateCmForm,ComitteeTaskForm
 from users_management.forms import SignUpForm,CampaignAdminCreateForm
@@ -25,7 +25,7 @@ from django.core.files.storage import FileSystemStorage
 from django.urls import reverse
 from django.template.loader import render_to_string
 from django.shortcuts import get_object_or_404
-from weasyprint import HTML
+# from weasyprint import HTML
 
 import json
 
@@ -33,36 +33,30 @@ import json
 class CampaignManagementMainView(View):    
     model=Comittee
     def get(self,request):
+        context={}
         if hasattr(request.user.userprofile,'campaignadminstrator'):
             candidate=request.user.userprofile.campaignadminstrator.candidate
         else:
             candidate=request.user.userprofile.candidate
+        context["candidate"]=candidate
+        context["user"]=request.user.userprofile
 
-        user=request.user.userprofile
-        comittees_list=Comittee.objects.filter(candidate=candidate)
-        campaign_manager=candidate.campaignadminstrator
-        comittees_members=candidate.comitteemember_set.all()
-        govenorate_list=Governorate.objects.all()
-        departments_list=Department.objects.all()
-        areas_list=Area.objects.all()
-        districts_list=District.objects.all()
-        new_voters_list=Voter.objects.all().filter(followed_up=False,candidate=candidate).order_by("-id")
-            
-        context={
-            "form":CreateComitteeForm,
-            "comittee_member_form":SignUpForm,
-            "campadmin_form":CampaignAdminCreateForm,
-            "comittees_list":comittees_list,
-            "campaign_manager":campaign_manager,
-            "comittees_members":comittees_members,
-            "user":user,
-            "govenorate_list":govenorate_list,
-            "candidate":candidate,
-            "departments_list":departments_list,
-            "areas_list":areas_list,
-            "districts_list":districts_list,
-            "new_voters_list":new_voters_list
-        }
+        context["comittees_list"]=Comittee.objects.filter(candidate=candidate)
+        try:
+            context['campaign_manager']=candidate.campaignadminstrator
+        except:
+            pass
+        context['comittees_members']=candidate.comitteemember_set.all()
+        context['govenorate_list']=Governorate.objects.all()
+        context['departments_list']=Department.objects.all()
+        context['areas_list']=Area.objects.all()
+        context['districts_list']=District.objects.all()
+        context['new_voters_list']=Voter.objects.all().filter(followed_up=False,candidate=candidate).order_by("-id")
+        context["campadmin_form"]=CampaignAdminCreateForm()
+        context["comittee_member_form"]=SignUpForm()
+        context["form"]=CreateComitteeForm()
+        context["comittees_list"]=Comittee.objects.all().filter(candidate=candidate)
+
         return render(request,"adminstration.html",context)
 
 class ComitteeMemberView(View):    
@@ -105,10 +99,12 @@ def task_details(request,task_id=None):
    
     task=ComitteeTask.objects.get(id=task_id)
     form=ComitteeTaskForm(instance=task)
+    comments=task.comment_set.all().filter(deleted=False)
     
     context={
         'task':task,
-        'form':form
+        'form':form,
+        'comments':comments
     }
     return render(request,"task_detail.html",context)
 
@@ -133,7 +129,7 @@ def create_task(request):
     created_by=request.user.userprofile
    
     form=ComitteeTaskForm(candidate.id,request.POST or None)
-    print(type(created_by))
+
     if form.is_valid():
         task=form.save(commit=False)
         task.is_complete=False
@@ -385,11 +381,17 @@ class SearchComitteeView(View):
 
     def get(self,request): 
         query=json.loads(request.GET.get('query'))
-        print(request.GET)
-        print(query)
+
+        if hasattr(request.user.userprofile,"candidate"):
+            candidate=request.user.userprofile.candidate
+        elif hasattr(request.user.userprofile,"campaignadminstrator"):
+            candidate=request.user.userprofile.campaignadminstrator.candidate
+        elif hasattr(request.user.userprofile,"comitteemanager"):
+            candidate=request.user.userprofile.committeemember.candidate
+
         response=[]
         if 'comittee_name' in query:
-            comittee=Comittee.objects.get(name=query['comittee_name'])         
+            comittee=Comittee.objects.get(name=query['comittee_name'],candidate=candidate)         
             if comittee.is_active:
                 status="فعالة"
             else:
@@ -411,15 +413,16 @@ class SearchComitteeView(View):
         elif 'is_active' in query:
 
             if query['is_active']==True:
-                comittees_list=Comittee.objects.all().filter(is_active=True)
+                comittees_list=Comittee.objects.all().filter(is_active=True,candidate=candidate)
                 status="فعالة"
             else:
-                comittees_list=Comittee.objects.all().filter(is_active=False)
+                comittees_list=Comittee.objects.all().filter(is_active=False,candidate=candidate)
                 status="غير فعالة"
             
             for comittee in comittees_list:
 
                 if comittee.manager is not None:
+                    
                     manager=str(comittee.manager.profile.user.first_name+" " +comittee.manager.profile.user.last_name)
                 else:
                     manager="لا يوجد مدير"
@@ -921,6 +924,7 @@ def update_voter(request,id):
 
     if request.POST:
         cm=request.POST.get('cm')
+        ebo=request.POST.get('ebo')
         followed_up=request.POST.get('is_followed')
         if followed_up == 'on':
             followed_up=True
@@ -928,8 +932,11 @@ def update_voter(request,id):
             followed_up=False
             
         cm=ComitteeMember.objects.get(id=int(cm))
+        ebo=ComitteeMember.objects.get(id=int(ebo))
         voter.related_comittee_member=cm
         voter.followed_up=followed_up
+        voter.election_box_officer=ebo
+        
     voter.save()
 
     context={
@@ -984,3 +991,54 @@ def get_tasks_list(request):
 
 
     return JsonResponse({"response":response},safe=False)
+
+
+def get_comments(request):
+    data=request.GET.get("comment")
+    data=json.loads(data)
+    task_id=data['task_id']
+    user=data['user_id']
+    task=ComitteeTask.objects.get(id=task_id)
+    comments=Comment.objects.filter(task=task)
+    response=[]
+
+    for comment in comments:
+        comment_object={}
+        comment_object["comment"]=comment.comment_body
+        comment_object["user"]=str(comment.user.user.first_name+" "+comment.user.user.last_name)
+        comment_object["date"]=comment.timestamp.date()
+        comment_object["time"]=comment.timestamp.time()
+
+        response.append(comment_object)
+    
+    return JsonResponse(response,safe=False)
+
+def create_comment(request):
+    comment=request.POST.get("comment")
+    comment=json.loads(comment)
+    user=request.user.userprofile
+    text=comment["comment_text"]
+    task=ComitteeTask.objects.get(id=comment["comment_task"])
+    new_comment=Comment(user=user,comment_body=text,task=task,deleted=False)
+    new_comment.save()
+
+    return JsonResponse({"success":"success"})
+
+
+def update_comment(request):
+
+    comment = request.POST.get("comment")
+    comment=json.loads(comment)
+    comment = Comment.objects.get(id=comment["id"])
+    comment.deleted=True
+    comment.save()
+
+    return JsonResponse({"updated":"succefully update"})
+
+
+
+
+
+
+
+

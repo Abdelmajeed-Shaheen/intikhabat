@@ -167,6 +167,16 @@
               </p>
             </div>
             {% endif %}
+
+            {% if voter.voter.election_box_officer %}
+            <div class="col-6 col-md-4 my-1">
+              <p class="about-title text-right text-md-center mb-0">
+                عضو الصندوق<br />
+                <span class="text-info">{{voter.voter.election_box_officer.profile.user.first_name}}
+                  {{voter.voter.election_box_officer.profile.user.last_name}}</span>
+              </p>
+            </div>
+            {% endif %}
             {% endif %}
             {% if voter.voter.identiefier %}
             <div class="col-6 col-md-4 my-1">

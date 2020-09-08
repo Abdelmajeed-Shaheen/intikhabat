@@ -1,198 +1,190 @@
-{% extends 'candidate_base.html' %}
-
-
-{% block extra_content %}
-  <header id="header">
-    <div class="container-ar d-flex align-items-center" >
-      <nav class="nav-menu d-none d-lg-block">
-        <ul>
-          <li><a href="{% url 'logout' %}">تسحيل خروج</a></li>
-          <li><a href="#services">اتصل بنا</a></li>
-        </ul>
-      </nav>
-      <!-- .nav-menu -->
+{% extends 'candidate_base.html' %} {% block extra_content %}
+<header id="header">
+    <div class="container-ar d-flex align-items-center">
+        <nav class="nav-menu d-none d-lg-block">
+            <ul>
+                <li><a href="{% url 'logout' %}">تسحيل خروج</a></li>
+                <li><a href="#services">اتصل بنا</a></li>
+            </ul>
+        </nav>
+        <!-- .nav-menu -->
 
     </div>
-  </header>
-{% endblock %}
-{% block main %}
+</header>
+{% endblock %} {% block main %}
 
 <ul class="nav nav-tabs" id="myTab" role="tablist">
-  <li class="nav-item">
-    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#account" role="tab" aria-controls="account" aria-selected="false">الصفحة الشخصية</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" id="members-tab" data-toggle="tab" href="#createcomittee" role="tab" aria-controls="home" aria-selected="false">ادارة اللجان</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">ادارة المستخدمين</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">التقارير</a>
-  </li>
-
-  <li class="nav-item">
-    <a class="nav-link" id="newVoters-tab" data-toggle="tab" href="#newVoters" role="tab" aria-controls="newVoters" aria-selected="false">الناخبين الجدد</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link " id="stats-tab" data-toggle="tab" href="#stats" role="tab" aria-controls="stats" aria-selected="true">احصائيات الحملة</a>
-  </li>
-
-  <li class="nav-item">
-    <a class="nav-link " id="tasks-tab" data-toggle="tab" href="#tasks" role="tab" aria-controls="tasks" aria-selected="true">المهام</a>
-  </li>
+    <li class="nav-item">
+        <a class="nav-link active" id="home-tab" data-toggle="tab" href="#account" role="tab" aria-controls="account" aria-selected="false">الصفحة الشخصية</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" id="members-tab" data-toggle="tab" href="#createcomittee" role="tab" aria-controls="home" aria-selected="false">ادارة اللجان</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">اعضاء اللجان</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link " id="tasks-tab" data-toggle="tab" href="#tasks" role="tab" aria-controls="tasks" aria-selected="true">مهام اللجان</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">التقارير</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" id="newVoters-tab" data-toggle="tab" href="#newVoters" role="tab" aria-controls="newVoters" aria-selected="false">الناخبين الجدد</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link " id="stats-tab" data-toggle="tab" href="#stats" role="tab" aria-controls="stats" aria-selected="true">احصائيات الحملة</a>
+    </li>
 </ul>
 
-  <div class="tab-content" id= "myTabContent">
-      <div class="tab-pane fade " id="stats" role="tabpanel" aria-labelledby="account-tab">
-      <div class="container mt-5">
-
-          <h2 class="about-title text-aligner">عدد الناخبين المؤيدين للمرشح</h2>
-
-        <div class="row text-aligner">
-            <div class="table-responsive">
-              <table class="table">
-                <thead>
-                  <tr>
-                    <th>منطقة ١</th>
-                    <th>منطقة ٢</th>
-                    <th>منطقة ٣</th>
-                    <th>المجموع الكلي</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>56393</td>
-                    <td>3023</td>
-                    <td>1232</td>
-                    <td>60300</td>
-                  </tr>
-                </tbody>
-              </table>
+<div class="tab-content" id="myTabContent">
+    <div class="tab-pane fade " id="stats" role="tabpanel" aria-labelledby="account-tab">
+        <div class="container mt-5">
+            <h2 class="about-title text-aligner">عدد الناخبين المؤيدين للمرشح</h2>
+            <div class="row text-aligner">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>منطقة ١</th>
+                                <th>منطقة ٢</th>
+                                <th>منطقة ٣</th>
+                                <th>المجموع الكلي</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>56393</td>
+                                <td>3023</td>
+                                <td>1232</td>
+                                <td>60300</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
-        </div>
-        <h2 class="about-title text-aligner">عدد الناخبين حسب القائمة</h2>
+            <h2 class="about-title text-aligner">عدد الناخبين حسب القائمة</h2>
 
-          <div class="row text-aligner">
-            <div class="table-responsive">
-              <table class="table">
-                <thead>
-                  <tr>
-                    <th>منطقة ١</th>
-                    <th>منطقة ٢</th>
-                    <th>منطقة ٣</th>
-                    <th>المجموع الكلي</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>56393</td>
-                    <td>3023</td>
-                    <td>1232</td>
-                    <td>60300</td>
-                  </tr>
-                </tbody>
-              </table>
+            <div class="row text-aligner">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>منطقة ١</th>
+                                <th>منطقة ٢</th>
+                                <th>منطقة ٣</th>
+                                <th>المجموع الكلي</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>56393</td>
+                                <td>3023</td>
+                                <td>1232</td>
+                                <td>60300</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
-        </div>
 
-        <h2 class="about-title text-aligner">عدد ناخبين الدائرة</h2>
-        <div class="row text-aligner">
-          <div class="table-responsive">
-            <table class="table">
-              <thead>
-                <tr>
-                  <th>منطقة ١</th>
-                  <th>منطقة ٢</th>
-                  <th>منطقة ٣</th>
-                  <th>المجموع الكلي</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>56393</td>
-                  <td>3023</td>
-                  <td>1232</td>
-                  <td>60300</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
+            <h2 class="about-title text-aligner">عدد ناخبين الدائرة</h2>
+            <div class="row text-aligner">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>منطقة ١</th>
+                                <th>منطقة ٢</th>
+                                <th>منطقة ٣</th>
+                                <th>المجموع الكلي</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>56393</td>
+                                <td>3023</td>
+                                <td>1232</td>
+                                <td>60300</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
 
+        </div>
     </div>
-      </div>
 
-      <div class="tab-pane fade show active" id="account" role="tabpanel" aria-labelledby="account-tab">
-      <div class="container mt-5">
-        <div class="card text-aligner">
-          <div class="card-header">
-            <div class="row">
-              <div class="col-md-6">
-                <h2 class="about-title text-aligner">المرشح: {{candidate.profile.user.first_name}} {{candidate.profile.user.last_name}}</h2>
-              </div>
-              <div class="col-md-6">
-                <h2 class="about-title text-aligner">القائمة الانتخابية: {{candidate.election_list}} </h2>
-              </div>
-            </div>
-          </div>
-          <div class="card-body">
-            <div class="row">
-              <form>
-                <div class="form-row">
-                  <div class="col-md-3">
-                      <div class="form-group">
-                        <label> الاسم الاول</label>
-                        <input type="text" class="form-control" id="fname" placeholder="الاسم الاول" value="{{user.user.first_name}}">
-                      </div>
-                  </div>
-                  <div class="col-md-3">
-                      <div class="form-group">
-                        <label>اسم الاب</label>
-                        <input type="text" class="form-control" id="sname" placeholder="اسم الاب" value="{{user.middle_name}}">
-                      </div>
-                  </div>
-                  <div class="col-md-3">
-                    <div class="form-group">
-                      <label>اسم الجد</label>
-                      <input type="text" class="form-control" id="tname" placeholder="الاسم الجد" value="{{user.last_name}}">
+    <div class="tab-pane fade show active" id="account" role="tabpanel" aria-labelledby="account-tab">
+        <div class="container mt-5">
+            <div class="card text-aligner">
+                <div class="card-header">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h2 class="about-title text-aligner">المرشح: {{candidate.profile.user.first_name}} {{candidate.profile.user.last_name}}</h2>
+                        </div>
+                        <div class="col-md-6">
+                            <h2 class="about-title text-aligner">القائمة الانتخابية: {{candidate.election_list}} </h2>
+                        </div>
                     </div>
                 </div>
-                <div class="col-md-3">
-                  <div class="form-group">
-                    <label>اسم العائلة</label>
-                    <input type="text" class="form-control" id="foname" placeholder="اسم العائلة" value="{{user.user.last_name}}">
-                  </div>
-              </div>
-              </div>
-              <div class="form-row">
-                <div class="col-sm-3">
-                  <div class="form-group">
-                    <label>رقم الهاتف</label>
-                    <input type="text" class="form-control" id="phno" placeholder="رقم الهاتف" value="{{user.mobile_number}}">
-                  </div>
-                </div>
-                <div class="col-sm-3">
-                  <div class="form-group">
-                    <label>رقم الواتساب</label>
-                    <input type="text" class="form-control" id="wano" placeholder="رقم الواتساب" value="{{user.mobile_number}}">
-                  </div>
-                </div>
-                {% if user.candidate %}
-                <div class="col-sm-3">
-                  <div class="form-group">
-                    <label>اسم الشهرة</label>
-                    <input type="text" class="form-control" id="title" placeholder="اسم الشهرة" value="{{user.candidate.title}}">
-                  </div>
-                </div>
-              {% endif %}
-              </div>
-              <div class="form-row">
-                <div class="col-sm-3">
-                  <div class="form-group">
-                    <label > اختيار الحي الذي تسكن فيه</label>
+                <div class="card-body">
+                    <div class="row">
+                        <form>
+                            <div class="form-row">
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label> الاسم الاول</label>
+                                        <input type="text" class="form-control" id="fname" placeholder="الاسم الاول" value="{{user.user.first_name}}">
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>اسم الاب</label>
+                                        <input type="text" class="form-control" id="sname" placeholder="اسم الاب" value="{{user.middle_name}}">
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>اسم الجد</label>
+                                        <input type="text" class="form-control" id="tname" placeholder="الاسم الجد" value="{{user.last_name}}">
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>اسم العائلة</label>
+                                        <input type="text" class="form-control" id="foname" placeholder="اسم العائلة" value="{{user.user.last_name}}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label>رقم الهاتف</label>
+                                        <input type="text" class="form-control" id="phno" placeholder="رقم الهاتف" value="{{user.mobile_number}}">
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label>رقم الواتساب</label>
+                                        <input type="text" class="form-control" id="wano" placeholder="رقم الواتساب" value="{{user.mobile_number}}">
+                                    </div>
+                                </div>
+                                {% if user.candidate %}
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label>اسم الشهرة</label>
+                                        <input type="text" class="form-control" id="title" placeholder="اسم الشهرة" value="{{user.candidate.title}}">
+                                    </div>
+                                </div>
+                                {% endif %}
+                            </div>
+                            <div class="form-row">
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label> اختيار الحي الذي تسكن فيه</label>
 
-                    <select  class="form-control" id="district">
+                                        <select class="form-control" id="district">
 
                     <option value="{{request.user.userprofile.address.district.id}}">{{request.user.userprofile.address.district.name}}</option>
 
@@ -200,1185 +192,1138 @@
                       <option value="{{district.id}}">{{district.name}}</option>
                       {% endfor %}
                     </select>
-                  </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="row">
+                        <div class="col-9"><a href="{% url 'password-change' %}" class="btn btn-info btn-sm">تغيير الرقم السري</a></div>
+                        <div class="col-3"><button id="updateprofile" class="btn btn-info">حفظ</button></div>
+                    </div>
                 </div>
-                </div>
-              </form>
-            </div>
-            <div class="row">
-              <div class="col-9"><a href="{% url 'password-change' %}" class="btn btn-danger btn-sm" >تغيير الرقم السري</a></div>
-              <div class="col-3"><button id="updateprofile" class="btn btn-danger" >حفظ</button></div>
-            </div>
-          </div>
 
-      </div>
-      <div class="row my-3" style="margin-left:50%">
-        <div class="alert alert-warning" role="alert">
-          اذا لم تجد الحي يرجى اضافته
-            <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#addDist"> اضافة حي +</button>
-          </div>
-      </div>
+            </div>
+            {% if not user.candidate %}
+            <div class="row my-3" style="margin-left:50%">
+                <div class="alert alert-warning" role="alert">
+                    اذا لم تجد الحي يرجى اضافته
+                    <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#addDist"> اضافة حي +</button>
+                </div>
+            </div>
+            {% endif %}
         </div>
-      </div>
+    </div>
 
-      <div class="tab-pane fade " id="createcomittee" role="tabpanel" aria-labelledby="home-tab">
+    <div class="tab-pane fade " id="createcomittee" role="tabpanel" aria-labelledby="home-tab">
         <div class="container mt-3 text-aligner">
-          <button type="button" class="btn btn-info my-3" data-toggle="modal" data-target="#exampleModalCenter">
+            <button type="button" class="btn btn-info my-3" data-toggle="modal" data-target="#exampleModalCenter">
             انشاء لجنة
           </button>
-          <div>
             <div>
-                  <h2 class="about-title text-aligner">قائمة اللجان</h2>
-                  <div class="row">
-                  <div class="col-md-8">
-                  <select  id="comitteeQuery" class="form-control my-2">
+                <div>
+                    <h2 class="about-title text-aligner">قائمة اللجان</h2>
+                    <div class="row">
+                        <div class="col-md-8">
+                            <select id="comitteeQuery" class="form-control my-2">
                     {% for comittee in comittees_list %}
                     <option value="{{comittee.name}}">{{comittee.name}}</option>
                     {% endfor %}
                   </select>
-                  </div>
-                  <div class="col-md-2">
-                    <div class="form-check">
-                      <label class="form-check-label" for="exampleRadios1">
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-check">
+                                <label class="form-check-label" for="exampleRadios1">
                         فعالة
                       </label>
-                      <input class="form-check-input" type="radio" name="exampleRadios" id="acom" value="option1" >
-                    </div>
-                  </div>
-                  <div class="col-md-2">
-                    <div class="form-check">
-                      <label class="form-check-label" for="incom">
+                                <input class="form-check-input" type="radio" name="exampleRadios" id="acom" value="option1" checked>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-check">
+                                <label class="form-check-label" for="incom">
                         غير فعالة
                       </label>
-                      <input class="form-check-input" type="radio" name="exampleRadios" id="incom" value="option1" >
+                                <input class="form-check-input" type="radio" name="exampleRadios" id="incom" value="option1">
+                            </div>
+                        </div>
                     </div>
-                  </div>
-                  </div>
-                  <table class="table table-striped table-dark">
-                    <thead id="comittee_table">
-                      <tr>
-                        <th scope="col">اسم اللجنة</th>
-                        <th scope="col">الحالة</th>
-                        <th scope="col">مدير اللجنة</th>
-                        <th scope="col">تعديل</th>
-                      </tr>
-                    </thead>
-                    <tbody id="comittee_table_tbody">
-                      {% for comittee in comittees_list %}
-                      <tr>
-                        <th scope="row">{{comittee.name}}</th>
-                        {% if comittee.is_active %}
-                        <td>فعالة</td>
-                        {% else %}
-                        <td>غير فعالة</td>
-                        {% endif %}
-                        <td>
-                          {{comittee.manager}}
-                        </td>
-                        <td><a class="btn btn-danger" href="{% url 'update-committee' comittee.id %}">تعديل</a></td>
-                      </tr>
-                      {% endfor %}
-                    </tbody>
-                  </table>
+                    <table class="table table-striped table-dark">
+                        <thead id="comittee_table">
+                            <tr>
+                                <th scope="col">اسم اللجنة</th>
+                                <th scope="col">الحالة</th>
+                                <th scope="col">مدير اللجنة</th>
+                                <th scope="col">تعديل البيانات</th>
+                            </tr>
+                        </thead>
+                        <tbody id="comittee_table_tbody">
+                            {% for comittee in comittees_list %}
+                            <tr>
+                                <th scope="row">{{comittee.name}}</th>
+                                {% if comittee.is_active %}
+                                <td>فعالة</td>
+                                {% else %}
+                                <td>غير فعالة</td>
+                                {% endif %}
+                                <td>
+                                    {{comittee.manager.profile.user.first_name}} {{comittee.manager.profile.user.last_name}}
+                                </td>
+                                <td><a class="btn btn-info" href="{% url 'update-committee' comittee.id %}">تعديل البيانات</a></td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
                 </div>
-                </div>
-              </div>
-      </div>
-
-      <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-        <div class="container mt-5">
-          <div class="text-aligner">
-          <div class="row">
-            {% if request.user.userprofile.candidate %}
-                  <div class="col-md-2">
-                    <div class='form-group text-aligner'>
-                      <button id='camp' class="btn btn-danger mb-2" data-toggle="modal" data-target="#createCampaignAdmin">انشاء مدير حملة</button>
-                    </div>
-                  </div>
-                  {% endif %}
-                  <div class="col-md-2">
-                    <div class='form-group text-aligner'>
-                      <button  id='cm' class="btn btn-danger mb-2"  data-toggle="modal" data-target="#createComitteeMember">انشاء عضو لجنة </button>
-                    </div>
-                  </div>
-                </div>
-          <div class="row">
-          <div class="col-md-12">
-            <h2 class="about-title text-aligner">مدير الحملة</h2>
-            <table class="table table-striped table-dark">
-              <thead>
-                <tr>
-                  <th scope="col">اسم المدير</th>
-                  <th scope="col">رقم الهاتف</th>
-                  <th scope="col">البريد الالكتروني</th>
-                  <th scope="col">حفظ</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <th scope="row">{{campaign_manager.profile.user.first_name}}  {{campaign_manager.profile.user.last_name}}</th>
-                  <td>{{campaign_manager.profile.mobile_number}}</td>
-                  <td>{{campaign_manager.profile.user.email}}</td>
-                  <td><button class="btn btn-danger">حفظ</button></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+            </div>
         </div>
-        <div class="row">
-          <div class="col-md-12">
-            <h2 class="about-title text-aligner">اعضاء اللجان</h2>
-            <form>
-              <div class="form-row">
-                <div class="col-md-5">
-                  <input type="text" class="form-control" name="" id="cm_search" placeholder="ابحث عن اسم عضو لجنة">
-                  <input type="hidden" name="" id="hidden_cm">
+    </div>
+
+    <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+        <div class="container mt-5">
+            <div class="text-aligner">
+                <div class="row">
+                    {% if request.user.userprofile.candidate %}
+                    <div class="col-md-2">
+                        <div class='form-group text-aligner'>
+                            <button id='camp' class="btn btn-info mb-2" data-toggle="modal" data-target="#createCampaignAdmin">انشاء مدير حملة</button>
+                        </div>
+                    </div>
+                    {% endif %}
+                    <div class="col-md-2">
+                        <div class='form-group text-aligner'>
+                            <button id='cm' class="btn btn-info mb-2" data-toggle="modal" data-target="#createComitteeMember">انشاء عضو لجنة </button>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-md-5">
-                  <select name="" id="cmo_search" class="form-control">
-                  <option value="">اختر اللجنة</option>
+                <div class="row">
+                    <div class="col-md-12">
+                        <h2 class="about-title text-aligner">مدير الحملة</h2>
+                        <table class="table table-striped table-dark">
+                            <thead>
+                                <tr>
+                                    <th scope="col">اسم المدير</th>
+                                    <th scope="col">رقم الهاتف</th>
+                                    <th scope="col">البريد الالكتروني</th>
+                                    <th scope="col">تعديل البيانات</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th scope="row">{{campaign_manager.profile.user.first_name}} {{campaign_manager.profile.user.last_name}}</th>
+                                    <td>{{campaign_manager.profile.mobile_number}}</td>
+                                    <td><a href="mailto:{{campaign_manager.profile.user.email}}">{{campaign_manager.profile.user.email}}</a></td>
+                                    <td><button class="btn btn-info">تعديل البيانات</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <h2 class="about-title text-aligner">اعضاء اللجان</h2>
+                        <form>
+                            <div class="form-row">
+                                <div class="col-md-5">
+                                    <input type="text" class="form-control" name="" id="cm_search" placeholder="ابحث عن اسم عضو لجنة">
+                                    <input type="hidden" name="" id="hidden_cm">
+                                </div>
+                                <div class="col-md-5">
+                                    <select name="" id="cmo_search" class="form-control">
+                  <option value="" disabled>اختر اللجنة</option>
                     {% for comittee in comittees_list %}
                     <option value="{{comittee.id}}">{{comittee.name}}</option>
                     {% endfor %}
                   </select>
-                </div>
-              <div class="col-md-2">
-                <button class="btn btn-success" id="search_cm" type="submit">بحث</button>
-              </div>
-              </div>
-            </form>
-            <div class="table-responsive mt-3">
-              <table class="table table-striped table-dark">
-                <thead>
-                  <tr>
-                    <th scope="col">اسم العضو</th>
-                    <th scope="col">رقم الهاتف</th>
-                    <th scope="col">البريد الالكتروني</th>
-                    <th scope="col">اللجنة</th>
-                    <th scope="col">الحالة الادارية</th>
-                    <th scope="col">تعديل</th>
-                    <th scope="col">صلاحيات</th>
-                  </tr>
-                </thead>
+                                </div>
+                                <div class="col-md-2">
+                                    <button class="btn btn-success" id="search_cm" type="submit">بحث</button>
+                                </div>
+                            </div>
+                        </form>
+                        <div class="table-responsive mt-3">
+                            <table class="table table-striped table-dark">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">اسم العضو</th>
+                                        <th scope="col">رقم الهاتف</th>
+                                        <th scope="col">البريد الالكتروني</th>
+                                        <th scope="col">اللجنة</th>
+                                        <th scope="col">الحالة الادارية</th>
+                                        <th scope="col">تعديل البيانات</th>
+                                        <th scope="col">تعديل الصلاحيات</th>
+                                    </tr>
+                                </thead>
+
+
+                                
+                      
                 <tbody id="cmt">
-                  {% for comittee_member in comittees_members %}
-                  <tr>
-                    <th scope="row">{{comittee_member.profile.user.first_name}}  {{comittee_member.profile.user.last_name}}</th>
-                    <td>{{comittee_member.profile.mobile_number}}</td>
-                    <td>{{comittee_member.profile.user.email}}</td>
-                    <td>{{comittee_member.comittee}}</td>
-                    <td>{{comittee_member.is_manager}}</td>
-                    <td><a href="{% url 'update-cm' comittee_member.id %}" class="btn btn-success">حفظ</a></td>
-                    <td><button class="btn btn-danger" data-toggle="modal" data-target="#modal_{{comittee_member.id}}">صلاحيات</button></td>
-                  </tr>
-                  <div class="modal fade" id="modal_{{comittee_member.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                      <div class="modal-content">
-                        <div class="modal-header">
-                          <h5 class="modal-title" id="exampleModalLabel"> صلاحيات المستخدم: {{comittee_member.profile.user.first_name}}  {{comittee_member.profile.user.last_name}}</h5>
-                        </div>
-                        <div class="modal-body text-aligner">
-                          <form>
-                            <h4> المستخدمين:</h4>
-                            <div class="row mt-2">
-                            <div class="col-sm-3">
-                              <div class="form-check">
-                                <label class="form-check-label" for="defaultCheck1">
-                                عرض
-                              </label>
-                              {% if comittee_member.profile.custommemberspermissions_set.first.can_view_member %}
-                                <input class="form-check-input" type="checkbox" value="" id="showUser_{{comittee_member.id}}" checked>
-                              {% else %}
-                              <input class="form-check-input" type="checkbox" value="" id="showUser_{{comittee_member.id}}">
-                              {% endif %}
-                              </div>
+                    {% for comittee_member in comittees_members %}
+                    <tr>
+                        <th scope="row">{{comittee_member.profile.user.first_name}} {{comittee_member.profile.user.last_name}}</th>
+                        <td>{{comittee_member.profile.mobile_number}}</td>
+                        <td>{{comittee_member.profile.user.email}}</td>
+                        <td>{{comittee_member.comittee}}</td>
+                        {% if comittee_member.is_manager %}
+                        <td>مدير</td>
+                        {% else %}
+                        <td>عضو</td>
+                        {% endif %}
+                        <td><a href="{% url 'update-cm' comittee_member.id %}" class="btn" style="background: #138496; color: #FFF">تعديل الصلاحيات</a></td>
+                        <td><button class="btn" style="background: #138496; color: #FFF" data-toggle="modal" data-target="#modal_{{comittee_member.id}}">صلاحيات</button></td>
+                    </tr>
+                    <div class="modal fade  " id="modal_{{comittee_member.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel"> صلاحيات المستخدم: <strong>{{comittee_member.profile.user.first_name}} {{comittee_member.profile.user.last_name}} </strong> </h5>
+                                </div>
+                                <div class="modal-body text-aligner">
+                                 <form>
+                            <h4> اعضاء اللجان:</h4> 
+                            <div class="row mb-3"> 
+                                <div class="col-sm-3">
+                                    <div class="form-check">
+                                        <label class="form-check-label ml-2" for="defaultCheck1" > عرض</label> {% if comittee_member.profile.custommemberspermissions_set.first.can_view_member %}
+                                        <input class="form-check-input" type="checkbox" value="" id="showUser_{{comittee_member.id}}" checked> {% else %}
+                                        <input class="form-check-input" type="checkbox" value="" id="showUser_{{comittee_member.id}}"> {% endif %}
+                                    </div>
+                                </div>                                
+                                <div class="col-sm-3">
+                                    <div class="form-check">
+                                        <label class="form-check-label ml-2" for="defaultCheck1"> تعديل  </label> {% if comittee_member.profile.custommemberspermissions_set.first.can_update_member %}
+                                        <input class="form-check-input" type="checkbox" id="editUser_{{comittee_member.id}}" checked> {% else %}
+                                        <input class="form-check-input" type="checkbox" id="editUser_{{comittee_member.id}}"> {% endif %}
+                                    </div>
+                                </div>
+                                {% comment %} <div class="col-sm-3">
+                                    <div class="form-check">
+                                        <label class="form-check-label ml-2" for="defaultCheck1">  حذف</label> {% if comittee_member.profile.custommemberspermissions_set.first.can_remove_member %}
+                                        <input class="form-check-input" type="checkbox" id="deleteUser_{{comittee_member.id}}" checked> {% else %}
+                                        <input class="form-check-input" type="checkbox" id="deleteUser_{{comittee_member.id}}"> {% endif %}
+                                    </div>
+                                </div> {% endcomment %}
+                                <div class="col-sm-3">
+                                    <div class="form-check">
+                                        <label class="form-check-label ml-2" for="defaultCheck1"> انشاء </label> {% if comittee_member.profile.custommemberspermissions_set.first.can_create_member %}
+                                        <input class="form-check-input" type="checkbox" id="createUser_{{comittee_member.id}}" checked> {% else %}
+                                        <input class="form-check-input" type="checkbox" id="createUser_{{comittee_member.id}}"> {% endif %}
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-sm-3">
-                              <div class="form-check">
-                                <label class="form-check-label" for="defaultCheck1">
-                                حفظ
-                              </label>
-                              {% if comittee_member.profile.custommemberspermissions_set.first.can_update_member %}
-                                <input class="form-check-input" type="checkbox" id="editUser_{{comittee_member.id}}" checked>
-                                {% else %}
-                                <input class="form-check-input" type="checkbox" id="editUser_{{comittee_member.id}}">
-                                {% endif %}
-                              </div>
-                            </div>
-                            <div class="col-sm-3">
-                              <div class="form-check">
-                                <label class="form-check-label" for="defaultCheck1">
-                                حذف
-                              </label>
-                              {% if comittee_member.profile.custommemberspermissions_set.first.can_remove_member %}
-                                <input class="form-check-input" type="checkbox"id="deleteUser_{{comittee_member.id}}" checked>
-                              {% else %}
-                              <input class="form-check-input" type="checkbox"id="deleteUser_{{comittee_member.id}}">
-                              {% endif %}
-                              </div>
-                            </div>
-                            <div class="col-sm-3">
-                              <div class="form-check">
-                                <label class="form-check-label" for="defaultCheck1">
-                                انشاء
-                              </label>
-                              {% if comittee_member.profile.custommemberspermissions_set.first.can_create_member %}
-                                <input class="form-check-input" type="checkbox"  id="createUser_{{comittee_member.id}}" checked>
-                              {% else %}
-                              <input class="form-check-input" type="checkbox"  id="createUser_{{comittee_member.id}}">
-                              {% endif %}
-                              </div>
-                            </div>
-                            </div>
-                            <h4> اللجان:</h4>
-                            <div class="row mt-2">
+                            <hr />
+                           <h4> اللجان:</h4>
+                           
+                            <div class="row mb-3">
 
 
-                            <div class="col-sm-3">
-                              <div class="form-check">
-                                <label class="form-check-label" for="defaultCheck1">
-                                عرض
-                              </label>
-                              {% if comittee_member.profile.customcomitteepermission_set.first.can_view_comittee %}
-                              <input class="form-check-input" type="checkbox" value="" id="showComm_{{comittee_member.id}}" checked>
-                              {% else %}
-                              <input class="form-check-input" type="checkbox" value="" id="showComm_{{comittee_member.id}}">
-
-                              {% endif %}
-                              </div>
+                                <div class="col-sm-3">
+                                    <div class="form-check">
+                                        <label class="form-check-label ml-2" for="defaultCheck1">  عرض </label> {% if comittee_member.profile.customcomitteepermission_set.first.can_view_comittee %}
+                                        <input class="form-check-input" type="checkbox" value="" id="showComm_{{comittee_member.id}}" checked> {% else %}
+                                        <input class="form-check-input" type="checkbox" value="" id="showComm_{{comittee_member.id}}"> {% endif %}
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-check">
+                                        <label class="form-check-label ml-2" for="defaultCheck1"> تعديل </label> {% if comittee_member.profile.customcomitteepermission_set.first.can_update_comittee %}
+                                        <input class="form-check-input" type="checkbox" value="" id="editComm_{{comittee_member.id}}" checked> {% else %}
+                                        <input class="form-check-input" type="checkbox" value="" id="editComm_{{comittee_member.id}}"> {% endif %}
+                                    </div>
+                                </div>
+                                {% comment %} <div class="col-sm-3">
+                                    <div class="form-check">
+                                        <label class="form-check-label ml-2" for="defaultCheck1" > حذف </label> {% if comittee_member.profile.customcomitteepermission_set.first.can_remove_comittee %}
+                                        <input class="form-check-input" type="checkbox" value="" id="deleteComm_{{comittee_member.id}}" checked> {% else %}
+                                        <input class="form-check-input" type="checkbox" value="" id="deleteComm_{{comittee_member.id}}"> {% endif %}
+                                    </div>
+                                </div> {% endcomment %}
+                                <div class="col-sm-3">
+                                    <div class="form-check">
+                                        <label class="form-check-label ml-2" for="defaultCheck1"> انشاء </label> {% if comittee_member.profile.customcomitteepermission_set.first.can_create_comittee %}
+                                        <input class="form-check-input" type="checkbox" value="" id="createComm_{{comittee_member.id}}" checked> {% else %}
+                                        <input class="form-check-input" type="checkbox" value="" id="createComm_{{comittee_member.id}}"> {% endif %}
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-sm-3">
-                              <div class="form-check">
-                                <label class="form-check-label" for="defaultCheck1">
-                                حفظ
-                              </label>
-                              {% if comittee_member.profile.customcomitteepermission_set.first.can_update_comittee %}
-
-                                <input class="form-check-input" type="checkbox" value="" id="editComm_{{comittee_member.id}}" checked>
-                              {% else %}
-                              <input class="form-check-input" type="checkbox" value="" id="editComm_{{comittee_member.id}}">
-                              {% endif %}
-                              </div>
-                            </div>
-                            <div class="col-sm-3">
-                              <div class="form-check">
-                                <label class="form-check-label" for="defaultCheck1">
-                                حذف
-                              </label>
-                              {% if comittee_member.profile.customcomitteepermission_set.first.can_remove_comittee %}
-                              <input class="form-check-input" type="checkbox" value="" id="deleteComm_{{comittee_member.id}}" checked>
-                              {% else %}
-                              <input class="form-check-input" type="checkbox" value="" id="deleteComm_{{comittee_member.id}}">
-
-                              {% endif %}
-                              </div>
-                            </div>
-                            <div class="col-sm-3">
-                              <div class="form-check">
-                                <label class="form-check-label" for="defaultCheck1">
-                                انشاء
-                              </label>
-                              {% if comittee_member.profile.customcomitteepermission_set.first.can_create_comittee %}
-                                <input class="form-check-input" type="checkbox" value="" id="createComm_{{comittee_member.id}}" checked>
-                              {% else %}
-                                <input class="form-check-input" type="checkbox" value="" id="createComm_{{comittee_member.id}}">
-                              {% endif %}
-                              </div>
-                            </div>
-                            </div>
-
+                              <hr />
                             <h4> التقارير:</h4>
-                            <div class="row mt-2">
+                            <div class="row mb-3">
 
 
-                            <div class="col-sm-3">
-                              <div class="form-check">
-                                <label class="form-check-label" for="defaultCheck1"></label>
-                                عرض
-                              </label>
-                              {% if comittee_member.profile.customreportspermissions_set.first.can_view_report %}
-                                <input class="form-check-input" type="checkbox" value="" id="showRep_{{comittee_member.id}}" checked>
-                              {% else %}
-                              <input class="form-check-input" type="checkbox" value="" id="showRep_{{comittee_member.id}}">
-                              {% endif %}
-                              </div>
+                                <div class="col-sm-3">
+                                    <div class="form-check">
+                                        <label class="form-check-label ml-2" for="defaultCheck1"> عرض</label>
+                                        {% if comittee_member.profile.customreportspermissions_set.first.can_view_report %}
+                                        <input class="form-check-input" type="checkbox" value="" id="showRep_{{comittee_member.id}}" checked> {% else %}
+                                        <input class="form-check-input" type="checkbox" value="" id="showRep_{{comittee_member.id}}"> {% endif %}
+                                    </div>
+                                </div>
+                                {% comment %} <div class="col-sm-3">
+                                    <div class="form-check">
+                                        <label class="form-check-label ml-2" for="defaultCheck1"> حفظ </label>
+                                        {% if comittee_member.profile.customreportspermissions_set.first.can_update_report %}
+                                        <input class="form-check-input" type="checkbox" value="" id="editRep_{{comittee_member.id}}" checked> {% else %}
+                                        <input class="form-check-input" type="checkbox" value="" id="editRep_{{comittee_member.id}}"> {% endif %}
+                                    </div>
+                                </div> {% endcomment %}
+                                {% comment %} <div class="col-sm-3">
+                                    <div class="form-check">
+                                        <label class="form-check-label  ml-2" for="defaultCheck1"> حذف</label>
+                                        {% if comittee_member.profile.customreportspermissions_set.first.can_remove_report %}
+                                        <input class="form-check-input" type="checkbox" value="" id="deleteRep_{{comittee_member.id}}" checked> {% else %}
+                                        <input class="form-check-input" type="checkbox" value="" id="deleteRep_{{comittee_member.id}}"> {% endif %}
+                                    </div>
+                                </div> {% endcomment %}
+                                {% comment %} <div class="col-sm-3">
+                                    <div class="form-check">
+                                        <label class="form-check-label ml-2" for="defaultCheck1"> انشاء </label>
+                                        {% if comittee_member.profile.customreportspermissions_set.first.can_create_report %}
+                                        <input class="form-check-input" type="checkbox" value="" id="createRep_{{comittee_member.id}}" checked> {% else %}
+                                        <input class="form-check-input" type="checkbox" value="" id="createRep_{{comittee_member.id}}"> {% endif %}
+                                    </div>
+                                </div> {% endcomment %}
                             </div>
-                            <div class="col-sm-3">
-                              <div class="form-check">
-                                <label class="form-check-label" for="defaultCheck1"></label>
-                                حفظ
-                              </label>
-                              {% if comittee_member.profile.customreportspermissions_set.first.can_update_report %}
-                                <input class="form-check-input" type="checkbox" value="" id="editRep_{{comittee_member.id}}" checked>
-                              {% else %}
-                              <input class="form-check-input" type="checkbox" value="" id="editRep_{{comittee_member.id}}">
-                              {% endif %}
-                              </div>
-                            </div>
-                            <div class="col-sm-3">
-                              <div class="form-check">
-                                <label class="form-check-label" for="defaultCheck1"></label>
-                                حذف
-                              </label>
-                              {% if comittee_member.profile.customreportspermissions_set.first.can_remove_report %}
-                                <input class="form-check-input" type="checkbox" value="" id="deleteRep_{{comittee_member.id}}" checked>
-                              {% else %}
-                              <input class="form-check-input" type="checkbox" value="" id="deleteRep_{{comittee_member.id}}">
-                              {% endif %}
-                              </div>
-                            </div>
-                            <div class="col-sm-3">
-                              <div class="form-check">
-                                <label class="form-check-label" for="defaultCheck1"></label>
-                                انشاء
-                              </label>
-                              {% if comittee_member.profile.customreportspermissions_set.first.can_create_report %}
-                                <input class="form-check-input" type="checkbox" value="" id="createRep_{{comittee_member.id}}" checked>
-                              {% else %}
-                              <input class="form-check-input" type="checkbox" value="" id="createRep_{{comittee_member.id}}">
-                               {% endif %}
-                              </div>
-                            </div>
-                            </div>
-
+                            <hr />
                             <h4> الناخبين:</h4>
-                            <div class="row mt-2">
-                            <div class="col-sm-3">
-                              <div class="form-check">
-                                <label class="form-check-label" for="defaultCheck1">
-                                عرض
-                              </label>
-                              {% if comittee_member.profile.customvotersspermissions_set.first.can_view_voter %}
-                                <input class="form-check-input" type="checkbox" value="" id="showVoter_{{comittee_member.id}}" checked>
-                              {% else %}
-                              <input class="form-check-input" type="checkbox" value="" id="showVoter_{{comittee_member.id}}">
-                              {% endif %}
-                              </div>
+                            <div class="row mb-3">
+                                <div class="col-sm-3">
+                                    <div class="form-check">
+                                        <label class="form-check-label ml-2" for="defaultCheck1"> عرض </label> {% if comittee_member.profile.customvotersspermissions_set.first.can_view_voter %}
+                                        <input class="form-check-input" type="checkbox" value="" id="showVoter_{{comittee_member.id}}" checked> {% else %}
+                                        <input class="form-check-input" type="checkbox" value="" id="showVoter_{{comittee_member.id}}"> {% endif %}
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-check">
+                                        <label class="form-check-label ml-2" for="defaultCheck1">  تعديل  </label> {% if comittee_member.profile.customvotersspermissions_set.first.can_update_voter %}
+                                        <input class="form-check-input" type="checkbox" value="" id="editVoter_{{comittee_member.id}}" checked> {% else %}
+                                        <input class="form-check-input" type="checkbox" value="" id="editVoter_{{comittee_member.id}}"> {% endif %}
+                                    </div>
+                                </div>
+                                {% comment %} <div class="col-sm-3">
+                                    <div class="form-check">
+                                        <label class="form-check-label ml-2" for="defaultCheck1"> حذف</label> {% if comittee_member.profile.customvotersspermissions_set.first.can_remove_voter %}
+                                        <input class="form-check-input" type="checkbox" value="" id="deleteVoter_{{comittee_member.id}}" checked> {% else %}
+                                        <input class="form-check-input" type="checkbox" value="" id="deleteVoter_{{comittee_member.id}}"> {% endif%}
+                                    </div>
+                                </div> {% endcomment %}
+                                <div class="col-sm-3">
+                                    <div class="form-check">
+                                        <label class="form-check-label ml-2" for="defaultCheck1"> انشاء </label> {% if comittee_member.profile.customvotersspermissions_set.first.can_create_voter %}
+                                        <input class="form-check-input" type="checkbox" value="" id="createVoter_{{comittee_member.id}}" checked> {% else %}
+                                        <input class="form-check-input" type="checkbox" value="" id="createVoter_{{comittee_member.id}}"> {% endif %}
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-sm-3">
-                              <div class="form-check">
-                                <label class="form-check-label" for="defaultCheck1">
-                                حفظ
-                              </label>
-                              {% if comittee_member.profile.customvotersspermissions_set.first.can_update_voter %}
-                                <input class="form-check-input" type="checkbox" value="" id="editVoter_{{comittee_member.id}}" checked>
-                              {% else %}
-                              <input class="form-check-input" type="checkbox" value="" id="editVoter_{{comittee_member.id}}" >
-                              {% endif %}
-                              </div>
-                            </div>
-                            <div class="col-sm-3">
-                              <div class="form-check">
-                                <label class="form-check-label" for="defaultCheck1">
-                                حذف
-                              </label>
-                              {% if comittee_member.profile.customvotersspermissions_set.first.can_remove_voter %}
-                                <input class="form-check-input" type="checkbox" value="" id="deleteVoter_{{comittee_member.id}}" checked>
-                              {% else %}
-                              <input class="form-check-input" type="checkbox" value="" id="deleteVoter_{{comittee_member.id}}">
-                              {% endif%}
-                              </div>
-                            </div>
-                            <div class="col-sm-3">
-                              <div class="form-check">
-                                <label class="form-check-label" for="defaultCheck1">
-                                انشاء
-                              </label>
-                              {% if comittee_member.profile.customvotersspermissions_set.first.can_create_voter %}
-                                <input class="form-check-input" type="checkbox" value="" id="createVoter_{{comittee_member.id}}" checked>
-                              {% else %}
-                              <input class="form-check-input" type="checkbox" value="" id="createVoter_{{comittee_member.id}}">
-                               {% endif %}
-                              </div>
-                            </div>
-                            </div>
-                          </form>
-                        </div>
-                        <div class="modal-footer">
-                          <button type="button" class="btn btn-danger" data-dismiss="modal">اغلاق</button>
-                          <button type="button" class="btn btn-success grant" id='grantPermit' data-user="{{comittee_member.id}}">حفظ</button>
-                        </div>
-                      </div>
+                        </form>
                     </div>
-                  </div>
+                    <div class="modal-footer">
+                        <button  type="button" class="btn btn-danger"  data-dismiss="modal">اغلاق</button>
+                        <button type="button" class="btn btn-success grant" id='grantPermit' data-user="{{comittee_member.id}}">تعديل</button>
+                    </div> 
+                            </div>
+                        </div>
+                    </div>
 
-                  {% endfor %}
+                    {% endfor %}
 
                 </tbody>
-              </table>
+
+
+
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+        <div class="container text-aligner">
+            <div class="row">
+                <div class="col-md-4 my-2">
+                    <a class="btn btn-info btn-block" id="v-pills-home-tab" href="{% url 'cm-report' %}" role="tab" aria-controls="v-pills-home" aria-selected="true">الاستعلام عن الناخبين حسب عضو الارتباط</a>
+                </div>
+                <div class="col-md-4 my-2">
+                    <a class="btn btn-info btn-block" id="v-pills-profile-tab" href="{% url 'identifier-report' %}" role="tab" aria-controls="v-pills-profile" aria-selected="false">الاستعلام عن ناخبين حسب المعرفين</a>
+                </div>
+                <div class="col-md-4 my-2">
+                    <a class="btn btn-info btn-block" id="v-pills-messages-tab" href="{% url 'address-report' %}" role="tab" aria-controls="v-pills-messages" aria-selected="false">الاستعلام عن الناخبين حسب العناوين</a>
+                </div>
+                <div class="col-md-4 my-2">
+                    <a class="btn btn-info btn-block" id="v-pills-settings-tab" href="{% url 'status-report' %}" role="tab" aria-controls="v-pills-settings" aria-selected="false">الاستعلام عن الناخبين المترددين</a>
+                </div>
+                <div class="col-md-4 my-2">
+                    <a class="btn btn-info btn-block" id="v-pills-settings-tab" href="{% url 'pdf-report' %}" id="elcCards" role="tab" aria-controls="v-pills-settings" aria-selected="false">البطاقات الانتخابية</a>
+                </div>
             </div>
 
-          </div>
         </div>
-      </div>
-        </div>
-      </div>
-
-
-      <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
-      <div class="container text-aligner">
-        <div class="row">
-          <div class="col-md-4 my-2">
-              <a class="btn btn-info btn-block" id="v-pills-home-tab"  href="{% url 'cm-report' %}" role="tab" aria-controls="v-pills-home" aria-selected="true">الاستعلام عن الناخبين حسب عضو الارتباط</a>
-          </div>
-          <div class="col-md-4 my-2">
-            <a class="btn btn-info btn-block" id="v-pills-profile-tab"  href="{% url 'identifier-report' %}" role="tab" aria-controls="v-pills-profile" aria-selected="false">الاستعلام عن ناخبين حسب المعرفين</a>
-          </div>
-          <div class="col-md-4 my-2">
-            <a class="btn btn-info btn-block" id="v-pills-messages-tab"  href="{% url 'address-report' %}" role="tab" aria-controls="v-pills-messages" aria-selected="false">الاستعلام عن الناخبين حسب العناوين</a>
-          </div>
-          <div class="col-md-4 my-2">
-            <a class="btn btn-info btn-block" id="v-pills-settings-tab" href="{% url 'status-report' %}" role="tab" aria-controls="v-pills-settings" aria-selected="false">الاستعلام عن الناخبين المترددين</a>
-          </div>
-          <div class="col-md-4 my-2">
-            <a class="btn btn-info btn-block" id="v-pills-settings-tab" href="{% url 'pdf-report' %}" id="elcCards" role="tab" aria-controls="v-pills-settings" aria-selected="false">البطاقات الانتخابية</a>
-          </div>
-        </div>
-
-      </div>
-      </div>
-
-      <div class="tab-pane fade" id="newVoters" role="tabpanel" aria-labelledby="contact-tab">
-
-    <div class="container text-aligner mt-5">
-      <div class="row">
-        <h4>الناخبين الجدد</h4>
-      </div>
-      <div class="row">
-        <div class="table-responsive">
-          <table class="table">
-            <thead>
-              <tr>
-                <th scope="col">الاسم الكامل</th>
-                <th scope="col">عضو الارتباط</th>
-                <th scope="col">رقم الهاتف</th>
-                <th scope="col">تم المتابعة</th>
-                <th scope="col">التفاصيل</th>
-              </tr>
-            </thead>
-            <tbody>
-              {%  for voter in new_voters_list%}
-              <tr>
-                <td >{{voter.profile.user.first_name}} {{voter.profile.middle_name}} {{voter.profile.last_name}} {{voter.profile.user.last_name}}</td>
-                <td >{{voter.related_comittee_member.profile.user.first_name}} {{voter.related_comittee_member.profile.middle_name}} {{voter.related_comittee_member.profile.user.last_name}}</td>
-                <td >{{voter.profile.mobile_number}}</td>
-                <td >لا</td>
-                <td><a class="btn btn-danger" href="{% url 'update-voter' voter.id %}"> عرض التفاصيل</a></td>
-              </tr>
-              {% endfor %}
-            </tbody>
-          </table>
-        </div>
-      </div>
     </div>
-      </div>
 
-      <div class="tab-pane fade " id="tasks" role="tabpanel" aria-labelledby="tasks-tab">
+    <div class="tab-pane fade" id="newVoters" role="tabpanel" aria-labelledby="contact-tab">
+
+        <div class="container text-aligner mt-5">
+            <div class="row">
+                <h4>الناخبين الجدد</h4>
+            </div>
+            <div class="row">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">الاسم الكامل</th>
+                                <th scope="col">عضو الارتباط</th>
+                                <th scope="col">رقم الهاتف</th>
+                                <th scope="col">تم المتابعة</th>
+                                <th scope="col">التفاصيل</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for voter in new_voters_list%}
+                            <tr>
+                                <td>{{voter.profile.user.first_name}} {{voter.profile.middle_name}} {{voter.profile.last_name}} {{voter.profile.user.last_name}}</td>
+                                <td>{{voter.related_comittee_member.profile.user.first_name}} {{voter.related_comittee_member.profile.middle_name}} {{voter.related_comittee_member.profile.user.last_name}}</td>
+                                <td>{{voter.profile.mobile_number}}</td>
+                                <td>لا</td>
+                                <td><a class="btn btn-info" href="{% url 'update-voter' voter.id %}"> عرض التفاصيل</a></td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="tab-pane fade " id="tasks" role="tabpanel" aria-labelledby="tasks-tab">
         <div class="container mt-3 text-aligner">
-          <a type="button" class="btn btn-info my-3" href="{% url 'create-task' %}">
+            <a type="button" class="btn btn-info my-3" href="{% url 'create-task' %}">
             انشاء مهمة
           </a>
-          <div>
             <div>
-                  <h2 class="about-title text-aligner">مهام اللجان</h2>
-                  <div class="row">
-                  <div class="col-md-8">
-                  <select  id="comitteeTaskQuery" class="form-control my-2">
+                <div>
+                    <h2 class="about-title text-aligner">مهام اللجان</h2>
+                    <div class="row">
+                        <div class="col-md-8">
+                            <select id="comitteeTaskQuery" class="form-control my-2">
+                              <option value="" >اختر اللجنة</option>
                     {% for comittee in comittees_list %}
                     <option value="{{comittee.id}}">{{comittee.name}}</option>
                     {% endfor %}
                   </select>
-                  </div>
- 
-                  </div>
-                  <table class="table table-striped table-dark">
-                    <thead id="tasks_table">
-                      <tr>
-                        <th scope="col">عنوان المهمة</th>
-                        <th scope="col">اللجنة</th>
-                        <th scope="col">الحالة</th>
-                        <th scope="col">التفاصيل</th>
-                      </tr>
-                    </thead>
-                    <tbody id="comittee_task_table_tbody">
-                      
-                    </tbody>
-                  </table>
-                </div>
-                </div>
-              </div>
-      </div>
-  </div>
+                        </div>
 
+                    </div>
+                    <table class="table table-striped table-dark">
+                        <thead id="tasks_table">
+                            <tr>
+                                <th scope="col">عنوان المهمة</th>
+                                <th scope="col">اللجنة</th>
+                                <th scope="col">الحالة</th>
+                                <th scope="col">التفاصيل</th>
+                            </tr>
+                        </thead>
+                        <tbody id="comittee_task_table_tbody">
 
-  <div class="modal fade text-aligner" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h2 class="about-title text-aligner">انشاء لجنة</h2>
-      </div>
-      <div class="modal-body">
-        <form>
-          {% csrf_token %}
-          <input type="hidden" value="{{request.user.userprofile.candidate.id}}" id="candidate_id" name="candidate">
-          <div class="row px-3">
-              <div class='form-group text-aligner'>
-                <label for="formGroupExampleInput">اسم اللجنة</label>
-                {{form.name}}
-              </div>
-          </div>
-          <div class="row px-3">
-              <div class='form-group text-aligner'>
-                <label for="formGroupExampleInput">عن اللجنة:</label>
-                 {{form.description}}
-              </div>
-          </div>
-          <div class='row px-3'>
-              <div class='form-check text-aligner'>
-                <label class="form-check-label " for="id_is_active">
-                   نشط؟
-                </label>
-                {{form.is_active}}
+                        </tbody>
+                    </table>
+                </div>
             </div>
-          </div>
-          <div class="row px-3">
-              <div class='form-group text-aligner'>
-                <label for="formGroupExampleInput">عنوان موقع اللجنة:</label>
-                {{form.address_description}}
-              </div>
-          </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button  class="btn btn-success mb-2" id="comitteform">انشاء</button>
-      </div>
+        </div>
     </div>
-  </div>
 </div>
 
-{% include 'modals.html' %}
-{% endblock %}
 
-{% block js %}
+<div class="modal fade text-aligner" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="about-title text-aligner">انشاء لجنة</h2>
+            </div>
+            <div class="modal-body">
+                <form>
+                    {% csrf_token %}
+                    <input type="hidden" value="{{request.user.userprofile.candidate.id}}" id="candidate_id" name="candidate">
+                    <div class="row px-3">
+                        <div class='form-group text-aligner'>
+                            <label for="formGroupExampleInput">اسم اللجنة</label> {{form.name}}
+                        </div>
+                    </div>
+                    <div class="row px-3">
+                        <div class='form-group text-aligner'>
+                            <label for="formGroupExampleInput">عن اللجنة:</label> {{form.description}}
+                        </div>
+                    </div>
+                    <div class='row px-3'>
+                        <div class='form-check text-aligner'>
+                            <label class="form-check-label " for="id_is_active">
+                   فعالة؟
+                </label> {{form.is_active}}
+                        </div>
+                    </div>
+                    <div class="row px-3">
+                        <div class='form-group text-aligner'>
+                            <label for="formGroupExampleInput">عنوان موقع اللجنة:</label> {{form.address_description}}
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">اغلاق</button>
+                <button class="btn btn-success mb-2" id="comitteform">انشاء</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% include 'modals.html' %} {% endblock %} {% block js %}
 <script>
-  var csrftoken='{{ csrf_token }}'
+    var csrftoken = '{{ csrf_token }}'
 
 
-  var checker=false
-  function checkField(formFields,selecFields){
-  inputFields=formFields
-  selectFields=selecFields
-  inputFields.each(function(){
-    field=$(this)
-      if (!field.val()){
-        console.log("empty fields are here")
-        $("#message").empty()
-        $("#message").append("<span>"+field.data("field-name")+" مطلوب"+"</span> <br>");
-        $("#errorMessage").modal("show");
+    var checker = false
 
-        checker=false
-      }
+    function checkField(formFields, selecFields) {
+        inputFields = formFields
+        selectFields = selecFields
+        inputFields.each(function() {
+            field = $(this)
+            if (!field.val()) {
+                console.log("empty fields are here")
+                $("#message").empty()
+                $("#message").append("<span>" + field.data("field-name") + " مطلوب" + "</span> <br>");
+                $("#errorMessage").modal("show");
 
-      else{
-        checker=true
+                checker = false
+            } else {
+                checker = true
 
-      }
+            }
 
-  })
+        })
 
-  selectFields.each(function(){
-    option=$(this)
-    console.log(option.val())
-      if (!option.val() || option.val()==""){
-        $("#message").empty()
-        $("#message").append("<span>"+option.data("field-name")+" مطلوب"+"</span> <br>");
-        $("#errorMessage").modal("show");
+        selectFields.each(function() {
+            option = $(this)
+            console.log(option.val())
+            if (!option.val() || option.val() == "") {
+                $("#message").empty()
+                $("#message").append("<span>" + option.data("field-name") + " مطلوب" + "</span> <br>");
+                $("#errorMessage").modal("show");
 
-        checker=false
+                checker = false
 
-      }
+            } else {
+                checker = true
 
-      else{
-        checker=true
+            }
 
-      }
+        })
 
-  })
-
-  return checker
-}
-
-$('#createmember').on('click',function(){
-  formFields=$('#createCmForm').find('input')
-  selectFields=$('#createCmForm').find('select option:selected')
-  fieldChecker=checkField(formFields,selectFields)
-  if(fieldChecker){
-    data={
-      first_name:$('#id_first_name').val(),
-      mobile_number:$('#id_mobile_number').val(),
-      whatsapp_number:$('#id_whatsapp_number').val(),
-      email:$('#id_email').val(),
-      last_name:$('#id_last_name').val(),
-      third_name:$('#id_last_name').val(),
-      middle_name:$('#id_middle_name').val(),
-      csrfmiddlewaretoken:csrftoken,
-      usertype:$('#cmm').val(),
-      comittee:$('#assign_comittee option:selected').val(),
-      is_manager:$('#id_is_manager').val()
+        return checker
     }
-  
-  $.ajax({
-    url:"{% url 'create-user' %}",
-    type:"POST",
-    data:data,
-    success:function(result){
-      if (!result.error){
-        $("#succesModal").modal('show')
-      }
-      else{
-        $("#message").empty()
-        $("#message").text(result.error)
-        $("#errorMessage").modal("show")
-      }
-    }
-  })
-  }
 
-})
+    $('#createmember').on('click', function() {
+        formFields = $('#createCmForm').find('input')
+        selectFields = $('#createCmForm').find('select option:selected')
+        fieldChecker = checkField(formFields, selectFields)
+        if ($('#id_is_manager').is(":checked")) {
+            is_manager = true
+        } else {
+            is_manager = false
+        }
+        if (fieldChecker) {
+            data = {
+                first_name: $('#id_first_name').val(),
+                mobile_number: $('#id_mobile_number').val(),
+                whatsapp_number: $('#id_whatsapp_number').val(),
+                email: $('#id_email').val(),
+                last_name: $('#id_last_name').val(),
+                third_name: $('#id_last_name').val(),
+                middle_name: $('#id_middle_name').val(),
+                csrfmiddlewaretoken: csrftoken,
+                usertype: $('#cmm').val(),
+                comittee: $('#assign_comittee option:selected').val(),
+                is_manager: is_manager
+            }
 
-
-$('#createca').on('click',function(){
-  formFields=$('#creatAdminForm').find('input')
-  selectFields=$('#creatAdminForm').find('select option:selected')
-  fieldChecker=checkField(formFields,selectFields)
-  if(fieldChecker){
-    data={
-      first_name:$('#id_ca_first_name').val(),
-      mobile_number:$('#id_ca_mobile_number').val(),
-      whatsapp_number:$('#id_ca_whatsapp_number').val(),
-      email:$('#id_ca_email').val(),
-      last_name:$('#id_ca_last_name').val(),
-      third_name:$('#id_ca_last_name').val(),
-      middle_name:$('#id_ca_middle_name').val(),
-      csrfmiddlewaretoken:csrftoken,
-      usertype:$('#ca').val(),
-    }
-    console.log(data)
-  $.ajax({
-    url:"{% url 'create-user' %}",
-    type:"POST",
-    data:data,
-    success:function(result){
-      if (!result.error){
-        $("#succesModal").modal('show')
-      }
-      else{
-        $("#message").empty()
-        $("#message").text(result.error)
-        $("#errorMessage").modal("show")
-      }
-      
-    }
-  })
-  }
-  
-})
+            $.ajax({
+                url: "{% url 'create-user' %}",
+                type: "POST",
+                data: data,
+                success: function(result) {
+                    if (!result.error) {
+                        $("#succesModal").modal('show')
+                    } else {
+                        $("#message").empty()
+                        $("#message").text(result.error)
+                        $("#errorMessage").modal("show")
+                    }
+                }
+            })
+        }
 
 
-$(document).on("click", ".grant", function () {
-     var user=$(this).attr('data-user')
-     var showComm=$('#showComm_'+user).is(":checked")
-     var editComm=$('#editComm_'+user).is(":checked")
-     var deleteComm=$('#deleteComm_'+user).is(":checked")
-     var createComm=$('#createComm_'+user).is(":checked")
+    })
 
-     var showUser=$('#showUser_'+user).is(":checked")
-     var editUser=$('#editUser_'+user).is(":checked")
-     var deleteUser=$('#deleteUser_'+user).is(":checked")
-     var createUser=$('#createUser_'+user).is(":checked")
 
-     var showReport=$('#showRep_'+user).is(":checked")
-     var editReport=$('#editRep_'+user).is(":checked")
-     var deleteReport=$('#deleteRep_'+user).is(":checked")
-     var createReport=$('#createRep_'+user).is(":checked")
+    $('#createca').on('click', function() {
+        formFields = $('#creatAdminForm').find('input')
+        selectFields = $('#creatAdminForm').find('select option:selected')
+        fieldChecker = checkField(formFields, selectFields)
+        if (fieldChecker) {
+            data = {
+                first_name: $('#id_ca_first_name').val(),
+                mobile_number: $('#id_ca_mobile_number').val(),
+                whatsapp_number: $('#id_ca_whatsapp_number').val(),
+                email: $('#id_ca_email').val(),
+                last_name: $('#id_ca_last_name').val(),
+                third_name: $('#id_ca_last_name').val(),
+                middle_name: $('#id_ca_middle_name').val(),
+                csrfmiddlewaretoken: csrftoken,
+                usertype: $('#ca').val(),
+            }
+            console.log(data)
+            $.ajax({
+                url: "{% url 'create-user' %}",
+                type: "POST",
+                data: data,
+                success: function(result) {
+                    if (!result.error) {
+                        $("#succesModal").modal('show')
+                    } else {
+                        $("#message").empty()
+                        $("#message").text(result.error)
+                        $("#errorMessage").modal("show")
+                    }
 
-     var reportPerm= new Object();
-      reportPerm.show=showReport;
-      reportPerm.edit=editReport;
-      reportPerm.delete=deleteReport;
-      reportPerm.create=createReport;
+                }
+            })
+        }
 
-     var showVoter=$('#showVoter_'+user).is(":checked")
-     var editVoter=$('#editVoter_'+user).is(":checked")
-     var deleteVoter=$('#deleteVoter_'+user).is(":checked")
-     var createVoter=$('#createVoter_'+user).is(":checked")
+    })
 
-     var voterPerm= new Object();
-      voterPerm.show=showVoter;
-      voterPerm.edit=editVoter;
-      voterPerm.delete=deleteVoter;
-      voterPerm.create=createVoter;
 
-      var comitteePerm=new Object();
-      comitteePerm.show=showComm
-      comitteePerm.edit=editComm
-      comitteePerm.delete=deleteComm
-      comitteePerm.create=createComm
+    $(document).on("click", ".grant", function() {
+        var user = $(this).attr('data-user')
+        var showComm = $('#showComm_' + user).is(":checked")
+        var editComm = $('#editComm_' + user).is(":checked")
+        var deleteComm = $('#deleteComm_' + user).is(":checked")
+        var createComm = $('#createComm_' + user).is(":checked")
 
-      var memberPerm = new Object();
-      memberPerm.show = showUser;
-      memberPerm.edit = editUser;
-      memberPerm.delete = deleteUser;
-      memberPerm.create=createUser;
+        var showUser = $('#showUser_' + user).is(":checked")
+        var editUser = $('#editUser_' + user).is(":checked")
+        var deleteUser = $('#deleteUser_' + user).is(":checked")
+        var createUser = $('#createUser_' + user).is(":checked")
 
-      memberJson=JSON.stringify(memberPerm)
-      comitteeJson=JSON.stringify(comitteePerm)
-      reportJson=JSON.stringify(reportPerm)
-      voterJson=JSON.stringify(voterPerm)
+        var showReport = $('#showRep_' + user).is(":checked")
+        var editReport = $('#editRep_' + user).is(":checked")
+        var deleteReport = $('#deleteRep_' + user).is(":checked")
+        var createReport = $('#createRep_' + user).is(":checked")
 
-     $.ajax({
-       url:"{% url 'grant-permession' %}",
-       type:"POST",
-       data:{
-         memberPerm:memberJson,
-         commPerm:comitteeJson,
-         reportPerm:reportJson,
-         voterPerm:voterJson,
-         userId:user,
-         csrfmiddlewaretoken: csrftoken
-       },
-       success:function(result){
-        $("#succesModal").modal('show')
-       }
-     })
+        var reportPerm = new Object();
+        reportPerm.show = showReport;
+        reportPerm.edit = editReport;
+        reportPerm.delete = deleteReport;
+        reportPerm.create = createReport;
 
-});
+        var showVoter = $('#showVoter_' + user).is(":checked")
+        var editVoter = $('#editVoter_' + user).is(":checked")
+        var deleteVoter = $('#deleteVoter_' + user).is(":checked")
+        var createVoter = $('#createVoter_' + user).is(":checked")
 
-$("#updateprofile").on('click',function(){
+        var voterPerm = new Object();
+        voterPerm.show = showVoter;
+        voterPerm.edit = editVoter;
+        voterPerm.delete = deleteVoter;
+        voterPerm.create = createVoter;
 
-  userprofile= new Object()
-  userprofile.first_name=$("#fname").val()
-  userprofile.second_name=$("#sname").val()
-  userprofile.third_name=$("#tname").val()
-  userprofile.last_name=$("#foname").val()
-  userprofile.mobile_number=$("#phno").val()
-  userprofile.whatsapp_number=$("#wano").val()
-  console.log($('#gov').find("option:selected").val())
-  userprofile.governorate=$('#gov').find("option:selected").val()
-  userprofile.dept=$('#dept').find("option:selected").val()
-  userprofile.district=$('#district').find("option:selected").val()
-  userprofile.id="{{user.id}}"
-  userprofile.area=$("#area").find("option:selected").val()
+        var comitteePerm = new Object();
+        comitteePerm.show = showComm
+        comitteePerm.edit = editComm
+        comitteePerm.delete = deleteComm
+        comitteePerm.create = createComm
 
-  if ($('#title').length){
-    userprofile.title=$("#title").val()
-  }
-  userjson=JSON.stringify(userprofile)
-  console.log(userprofile.district)
-  $.ajax({
-    url:"{% url 'update-profile' %}",
-    type:"POST",
+        var memberPerm = new Object();
+        memberPerm.show = showUser;
+        memberPerm.edit = editUser;
+        memberPerm.delete = deleteUser;
+        memberPerm.create = createUser;
 
-    data:{
-      user:userjson,
-      csrfmiddlewaretoken: csrftoken
-      },
-    success:function(result){
-      if(!result.error){
-        $("#succesModal").modal('show')
-      }
-      else{
-          $("#message").empty()
-          $("#message").text(result.error)
-          $("#errorMessage").modal("show")
-      }
-    }
-  })
-})
+        memberJson = JSON.stringify(memberPerm)
+        comitteeJson = JSON.stringify(comitteePerm)
+        reportJson = JSON.stringify(reportPerm)
+        voterJson = JSON.stringify(voterPerm)
 
-$("#reload").on("click",function(){
-  location.reload()
-})
+        $.ajax({
+            url: "{% url 'grant-permession' %}",
+            type: "POST",
+            data: {
+                memberPerm: memberJson,
+                commPerm: comitteeJson,
+                reportPerm: reportJson,
+                voterPerm: voterJson,
+                userId: user,
+                csrfmiddlewaretoken: csrftoken
+            },
+            success: function(result) {
+                $("#succesModal").modal('show')
+            }
+        })
 
-$("#creatArea").on('click',function(){
-  area_name=$("#areaName").val()
-  dept=$("#deptArea option:selected").val()
-  $.ajax({
-    url:"{% url 'create-area' %}",
-    type:"POST",
-    data:{
-      area_name:area_name,
-      dept:dept,
-      csrfmiddlewaretoken:"{{csrf_token}}"
-    },
-    success:function(){
+    });
 
-      location.reload()
+    $("#updateprofile").on('click', function() {
 
-    }
-  })
-})
+        userprofile = new Object()
+        userprofile.first_name = $("#fname").val()
+        userprofile.second_name = $("#sname").val()
+        userprofile.third_name = $("#tname").val()
+        userprofile.last_name = $("#foname").val()
+        userprofile.mobile_number = $("#phno").val()
+        userprofile.whatsapp_number = $("#wano").val()
+        console.log($('#gov').find("option:selected").val())
+        userprofile.governorate = $('#gov').find("option:selected").val()
+        userprofile.dept = $('#dept').find("option:selected").val()
+        userprofile.district = $('#district').find("option:selected").val()
+        userprofile.id = "{{user.id}}"
+        userprofile.area = $("#area").find("option:selected").val()
 
-$("#creatDist").on('click',function(){
-  dist_name=$("#distName").val()
-  area=$("#areaDist option:selected").val()
-  $.ajax({
-    url:"{% url 'create-district' %}",
-    type:"POST",
-    data:{
-      dist_name:dist_name,
-      area:area,
-      csrfmiddlewaretoken:"{{csrf_token}}"
-    },
-    success:function(){
-      location.reload()
-    }
-  })
-})
+        if ($('#title').length) {
+            userprofile.title = $("#title").val()
+        }
+        userjson = JSON.stringify(userprofile)
+        console.log(userprofile.district)
+        $.ajax({
+            url: "{% url 'update-profile' %}",
+            type: "POST",
 
-$("ul.nav-tabs > li > a").on("shown.bs.tab", function(e) {
-  var id = $(e.target).attr("href").substr(1);
-  window.location.hash = id;
-});
+            data: {
+                user: userjson,
+                csrfmiddlewaretoken: csrftoken
+            },
+            success: function(result) {
+                if (!result.error) {
+                    $("#succesModal").modal('show')
+                } else {
+                    $("#message").empty()
+                    $("#message").text(result.error)
+                    $("#errorMessage").modal("show")
+                }
+            }
+        })
+    })
 
-// on load of the page: switch to the currently selected tab
-var hash = window.location.hash;
-$('#myTab a[href="' + hash + '"]').tab('show');
-
-$('#comitteform').on('click',function(){
-  comittee_name=$('#id_name').val()
-  comittee_discription=$('#id_description').val()
-  comittee_status=$('#id_is_active').val()
-  comittee_address=$('#id_address_description').val()
-
-  $.ajax({
-    url:"{% url 'create-comittee' %}",
-    type:'POST',
-    data:{
-      name:comittee_name,
-      description:comittee_discription,
-      status:comittee_status,
-      address:comittee_address,
-      csrfmiddlewaretoken:"{{csrf_token}}",
-      success:function(){
+    $("#reload").on("click", function() {
         location.reload()
-      }
-    }
-  })
-})
-
-$('#comitteeQuery').on('change',function(e){
-  e.preventDefault()
-    comittee_name=$('#comitteeQuery option:selected').val()
-    query=new Object()
-    query.comittee_name=comittee_name
-    console.log(query)
-    queryjson=JSON.stringify(query)
-
-    $.ajax({
-      url:'{% url "search-comittee" %}',
-      type:'GET',
-      dataType:"JSON",
-      data:{
-        query:queryjson
-      },
-
-      success:function(result){
-
-        table=$('#comittee_table_tbody')
-        table.empty()
-        if (!result.error){
-
-        row=$("<tr></tr>");
-        name=("<td>"+result.comittee.comittee_name+"</td>");
-        status=("<td>"+result.comittee.status+"</td>");
-        manager=$("<td>"+result.comittee.manager+"</td>");
-        editdata=$("<td></td>")
-        edit=$("<a>", { "class": "btn btn-danger","href":'/campaign-management/update-committee/'+result.comittee.id });
-        edit.text("تعديل")
-        editdata.append(edit)
-        row.append(name)
-        row.append(status)
-        row.append(manager)
-        row.append(editdata)
-        table.append(row)
-        }
-        else{
-        row=$("<tr></tr>");
-        name=("<td>"+result.error+"</td>");
-        status=("<td>"+result.error+"</td>");
-        editdata=$("<td></td>")
-        manager=$("<td>"+result.error+"</td>");
-        edit=$("<a>", { "class": "btn btn-secondary","href":'' });
-        edit.text("تعديل")
-        editdata.append(edit)
-        row.append(name)
-        row.append(status)
-        row.append(manager)
-        row.append(editdata)
-        table.append(row)
-        }
-
-      }
     })
-})
 
-$('#acom').on('change',function(e){
-  e.preventDefault()
+    $("#creatArea").on('click', function() {
+        area_name = $("#areaName").val()
+        dept = $("#deptArea option:selected").val()
+        $.ajax({
+            url: "{% url 'create-area' %}",
+            type: "POST",
+            data: {
+                area_name: area_name,
+                dept: dept,
+                csrfmiddlewaretoken: "{{csrf_token}}"
+            },
+            success: function() {
 
-    is_active=true
-    query=new Object()
-    query.is_active=is_active
-    queryjson=JSON.stringify(query)
-    $.ajax({
-      url:'{% url "search-comittee" %}',
-      type:'GET',
-      dataType:"JSON",
-      data:{
-        query:queryjson
-      },
+                location.reload()
 
-      success:function(result){
-        console.log(result)
-        table=$('#comittee_table_tbody')
-        table.empty()
-        if (!result.error){
+            }
+        })
+    })
 
-          $(result.comittee_list).each(function(index,value){
-          item=result.comittee_list[index]
-          row=$("<tr></tr>");
-          name=("<td>"+item.comittee_name+"</td>");
-          status=("<td>"+item.status+"</td>");
-          manager=$("<td>"+item.manager+"</td>");
-          editdata=$("<td></td>")
-          edit=$("<a>", { "class": "btn btn-danger","href":'/campaign-management/update-committee/'+item.id });
-          edit.text("تعديل")
-          editdata.append(edit)
-          row.append(name)
-          row.append(status)
-          row.append(manager)
-          row.append(editdata)
-          table.append(row)
+    $("#creatDist").on('click', function() {
+        dist_name = $("#distName").val()
+        area = $("#areaDist option:selected").val()
+        $.ajax({
+            url: "{% url 'create-district' %}",
+            type: "POST",
+            data: {
+                dist_name: dist_name,
+                area: area,
+                csrfmiddlewaretoken: "{{csrf_token}}"
+            },
+            success: function() {
+                location.reload()
+            }
+        })
+    })
+
+    $("ul.nav-tabs > li > a").on("shown.bs.tab", function(e) {
+        var id = $(e.target).attr("href").substr(1);
+        window.location.hash = id;
+    });
+
+    // on load of the page: switch to the currently selected tab
+    var hash = window.location.hash;
+    $('#myTab a[href="' + hash + '"]').tab('show');
+
+    $('#comitteform').on('click', function() {
+        comittee_name = $('#id_name').val()
+        comittee_discription = $('#id_description').val()
+        comittee_status = $('#id_is_active').val()
+        comittee_address = $('#id_address_description').val()
+
+        $.ajax({
+            url: "{% url 'create-comittee' %}",
+            type: 'POST',
+            data: {
+                name: comittee_name,
+                description: comittee_discription,
+                status: comittee_status,
+                address: comittee_address,
+                csrfmiddlewaretoken: "{{csrf_token}}",
+                success: function() {
+                    location.reload()
+                }
+            }
+        })
+    })
+
+    $('#comitteeQuery').on('change', function(e) {
+        e.preventDefault()
+        comittee_name = $('#comitteeQuery option:selected').val()
+        query = new Object()
+        query.comittee_name = comittee_name
+        console.log(query)
+        queryjson = JSON.stringify(query)
+
+        $.ajax({
+            url: '{% url "search-comittee" %}',
+            type: 'GET',
+            dataType: "JSON",
+            data: {
+                query: queryjson
+            },
+
+            success: function(result) {
+
+                table = $('#comittee_table_tbody')
+                table.empty()
+                if (!result.error) {
+
+                    row = $("<tr></tr>");
+                    name = ("<td>" + result.comittee.comittee_name + "</td>");
+                    status = ("<td>" + result.comittee.status + "</td>");
+                    manager = $("<td>" + result.comittee.manager + "</td>");
+                    editdata = $("<td></td>")
+                    edit = $("<a>", {
+                        "class": "btn btn-info",
+                        "href": '/campaign-management/update-committee/' + result.comittee.id
+                    });
+                    edit.text("تعديل البيانات")
+                    editdata.append(edit)
+                    row.append(name)
+                    row.append(status)
+                    row.append(manager)
+                    row.append(editdata)
+                    table.append(row)
+                } else {
+                    row = $("<tr></tr>");
+                    name = ("<td>" + result.error + "</td>");
+                    status = ("<td>" + result.error + "</td>");
+                    editdata = $("<td></td>")
+                    manager = $("<td>" + result.error + "</td>");
+                    edit = $("<a>", {
+                        "class": "btn btn-secondary",
+                        "href": ''
+                    });
+                    edit.text("تعديل البيانات")
+                    editdata.append(edit)
+                    row.append(name)
+                    row.append(status)
+                    row.append(manager)
+                    row.append(editdata)
+                    table.append(row)
+                }
+
+            }
+        })
+    })
+
+    $('#acom').on('change', function(e) {
+        e.preventDefault()
+
+        is_active = true
+        query = new Object()
+        query.is_active = is_active
+        queryjson = JSON.stringify(query)
+        $.ajax({
+            url: '{% url "search-comittee" %}',
+            type: 'GET',
+            dataType: "JSON",
+            data: {
+                query: queryjson
+            },
+
+            success: function(result) {
+                console.log(result)
+                table = $('#comittee_table_tbody')
+                table.empty()
+                if (!result.error) {
+
+                    $(result.comittee_list).each(function(index, value) {
+                        item = result.comittee_list[index]
+                        row = $("<tr></tr>");
+                        name = ("<td>" + item.comittee_name + "</td>");
+                        status = ("<td>" + item.status + "</td>");
+                        manager = $("<td>" + item.manager + "</td>");
+                        editdata = $("<td></td>")
+                        edit = $("<a>", {
+                            "class": "btn btn-info",
+                            "href": '/campaign-management/update-committee/' + item.id
+                        });
+                        edit.text("تعديل البيانات")
+                        editdata.append(edit)
+                        row.append(name)
+                        row.append(status)
+                        row.append(manager)
+                        row.append(editdata)
+                        table.append(row)
+                    })
+
+
+                } else {
+                    row = $("<tr></tr>");
+                    name = ("<td>" + result.error + "</td>");
+                    status = ("<td>" + result.error + "</td>");
+                    editdata = $("<td></td>")
+                    manager = $("<td>" + result.error + "</td>");
+                    edit = $("<a>", {
+                        "class": "btn btn-secondary",
+                        "href": ''
+                    });
+                    edit.text("تعديل")
+                    editdata.append(edit)
+                    row.append(name)
+                    row.append(status)
+                    row.append(manager)
+                    row.append(editdata)
+                    table.append(row)
+                }
+
+            }
+        })
+    })
+    $('#incom').on('change', function(e) {
+        e.preventDefault()
+
+        is_active = false
+        query = new Object()
+        query.is_active = is_active
+        queryjson = JSON.stringify(query)
+        $.ajax({
+            url: '{% url "search-comittee" %}',
+            type: 'GET',
+            dataType: "JSON",
+            data: {
+                query: queryjson
+            },
+
+            success: function(result) {
+
+                table = $('#comittee_table_tbody')
+                table.empty()
+                if (!result.error) {
+
+                    $(result.comittee_list).each(function(index, value) {
+                        item = result.comittee_list[index]
+
+                        row = $("<tr></tr>");
+                        name = ("<td>" + item.comittee_name + "</td>");
+                        status = ("<td>" + item.status + "</td>");
+                        manager = $("<td>" + item.manager + "</td>");
+                        editdata = $("<td></td>")
+                        edit = $("<a>", {
+                            "class": "btn btn-info",
+                            "href": '/campaign-management/update-committee/' + item.id
+                        });
+                        edit.text("تعديل")
+                        editdata.append(edit)
+                        row.append(name)
+                        row.append(status)
+                        row.append(manager)
+                        row.append(editdata)
+                        table.append(row)
+                    })
+
+                } else {
+                    row = $("<tr></tr>");
+                    name = ("<td>" + result.error + "</td>");
+                    status = ("<td>" + result.error + "</td>");
+                    editdata = $("<td></td>")
+                    manager = $("<td>" + result.error + "</td>");
+                    edit = $("<a>", {
+                        "class": "btn btn-secondary",
+                        "href": ''
+                    });
+                    edit.text("تعديل")
+                    editdata.append(edit)
+                    row.append(name)
+                    row.append(status)
+                    row.append(manager)
+                    row.append(editdata)
+                    table.append(row)
+                }
+
+            }
+        })
+    })
+
+    $("#search_cm").on('click', function(e) {
+        e.preventDefault()
+        cm_id = $("#hidden_cm").val(),
+            comittee = $("#cmo_search option:selected").val()
+        query = new Object()
+        query.comittee = comittee
+        query.cm_id = cm_id
+        queryjson = JSON.stringify(query)
+        $.ajax({
+            url: "{% url 'get-cm-comittee' %}",
+            type: "GET",
+            data: {
+                query: queryjson
+            },
+            success: function(result) {
+                table = $("#cmt")
+                table.empty()
+                console.log(result)
+                $(result).each(function(index, value) {
+
+                    row = $("<tr></tr>");
+
+                    phone = $("<td></td>").text(value.phone_number);
+                    email = $("<td></td>").text(value.email);
+                    comittee = $("<td></td>").text(value.comittee);
+                    manage_status = $("<td></td>").text(value.status);
+                    cm_name = $("<td></td>").text(value.name);
+                    editdata = $("<td></td>")
+                    edit = $("<a>", {
+                        "class": "btn btn-success",
+                        "href": '/campaign-management/update-cm/' + value.id
+                    });
+                    edit.text("تعديل")
+                    editdata.append(edit)
+                    perms = $("<button></button>", {
+                        "class": "btn btn-info",
+                        "data-toggle": "modal",
+                        "data-target": "#modal_" + value.id,
+
+                    })
+                    permsButton = $("<td></td>")
+                    permsButton.append(perms)
+                    perms.text("صلاحيات")
+                    row.append(cm_name)
+                    row.append(phone)
+                    row.append(email)
+                    row.append(comittee)
+                    row.append(manage_status)
+                    row.append(editdata)
+                    row.append(permsButton)
+                    table.append(row)
+
+                })
+            }
         })
 
-
-        }
-        else{
-        row=$("<tr></tr>");
-        name=("<td>"+result.error+"</td>");
-        status=("<td>"+result.error+"</td>");
-        editdata=$("<td></td>")
-        manager=$("<td>"+result.error+"</td>");
-        edit=$("<a>", { "class": "btn btn-secondary","href":'' });
-        edit.text("تعديل")
-        editdata.append(edit)
-        row.append(name)
-        row.append(status)
-        row.append(manager)
-        row.append(editdata)
-        table.append(row)
-        }
-
-      }
     })
-})
-$('#incom').on('change',function(e){
-  e.preventDefault()
 
-    is_active=false
-    query=new Object()
-    query.is_active=is_active
-    queryjson=JSON.stringify(query)
-    $.ajax({
-      url:'{% url "search-comittee" %}',
-      type:'GET',
-      dataType:"JSON",
-      data:{
-        query:queryjson
-      },
+    $("#cm_search").autocomplete({
+            minLength: 2,
+            source: "{% url 'get-cm' %}",
 
-      success:function(result){
+            focus: function(event, ui) {
 
-        table=$('#comittee_table_tbody')
-        table.empty()
-        if (!result.error){
-
-        $(result.comittee_list).each(function(index,value){
-          item=result.comittee_list[index]
-
-          row=$("<tr></tr>");
-          name=("<td>"+item.comittee_name+"</td>");
-          status=("<td>"+item.status+"</td>");
-          manager=$("<td>"+item.manager+"</td>");
-          editdata=$("<td></td>")
-          edit=$("<a>", { "class": "btn btn-danger","href":'/campaign-management/update-committee/'+item.id });
-          edit.text("تعديل")
-          editdata.append(edit)
-          row.append(name)
-          row.append(status)
-          row.append(manager)
-          row.append(editdata)
-          table.append(row)
+                $("#cm").val(ui.item['lable']);
+                return false;
+            },
+            select: function(event, ui) {
+                console.log(ui.item['lable'])
+                $("#cm_search").val(ui.item['lable']);
+                $("#hidden_cm").val(ui.item['id']);
+                return false;
+            }
         })
+        .autocomplete("instance")._renderItem = function(ul, item) {
+            return $("<li>")
+                .append("<div>" + item.lable + "</div>")
+                .appendTo(ul);
+        };
 
-        }
-        else{
-        row=$("<tr></tr>");
-        name=("<td>"+result.error+"</td>");
-        status=("<td>"+result.error+"</td>");
-        editdata=$("<td></td>")
-        manager=$("<td>"+result.error+"</td>");
-        edit=$("<a>", { "class": "btn btn-secondary","href":'' });
-        edit.text("تعديل")
-        editdata.append(edit)
-        row.append(name)
-        row.append(status)
-        row.append(manager)
-        row.append(editdata)
-        table.append(row)
-        }
 
-      }
-    })
-})
 
-$("#search_cm").on('click',function(e){
-  e.preventDefault()
-  cm_id=$("#hidden_cm").val(),
-  comittee=$("#cmo_search option:selected").val()
-  query=new Object()
-  query.comittee=comittee
-  query.cm_id=cm_id
-  queryjson=JSON.stringify(query)
-  $.ajax({
-    url:"{% url 'get-cm-comittee' %}",
-    type:"GET",
-    data:{
-      query:queryjson
-    },
-    success:function(result){
-    table=$("#cmt")
-    table.empty()
-      console.log(result)
-      $(result).each(function(index,value){
+    $('#comitteeTaskQuery').on('change', function(e) {
+        e.preventDefault()
+        comittee_id = $('#comitteeTaskQuery option:selected').val()
+        query = new Object()
+        query.comittee_id = comittee_id
+        queryjson = JSON.stringify(query)
+        $.ajax({
+            url: '{% url "get-tasks-list" %}',
+            type: 'GET',
+            dataType: "JSON",
+            data: {
+                query: queryjson
+            },
 
-        row=$("<tr></tr>");
+            success: function(result) {
+                console.log(result)
 
-        phone=$("<td></td>").text(value.phone_number);
-        email=$("<td></td>").text(value.email);
-        comittee=$("<td></td>").text(value.comittee);
-        manage_status=$("<td></td>").text(value.status);
-        cm_name=$("<td></td>").text(value.name);
-        editdata=$("<td></td>")
-        edit=$("<a>", { "class": "btn btn-success","href":'/campaign-management/update-cm/'+value.id });
-        edit.text("تعديل")
-        editdata.append(edit)
-        perms=$("<button></button>",{
-          "class":"btn btn-danger",
-          "data-toggle":"modal",
-          "data-target":"#modal_"+value.id,
+                table = $('#comittee_task_table_tbody')
+                table.empty()
+                if (!result.error) {
+                    $(result.response).each(function(index, value) {
+                        row = $("<tr></tr>");
+                        title = ("<td>" + value.title + "</td>");
+                        comittee = ("<td>" + value.comittee + "</td>");
+                        status = ("<td>" + value.is_complete + "</td>");
+                        editdata = $("<td></td>")
+                        edit = $("<a>", {
+                            "class": "btn btn-info",
+                            "href": '/campaign-management/task-detail/' + value.id
+                        });
+                        edit.text("تفاصيل")
+                        editdata.append(edit)
+                        row.append(title)
+                        row.append(comittee)
+                        row.append(status)
+                        row.append(editdata)
+                        table.append(row)
+                    })
+
+                } else {
+                    row = $("<tr></tr>");
+                    title = ("<td>" + result.response.title + "</td>");
+                    comittee = ("<td>" + result.response.comittee + "</td>");
+                    status = $("<td>" + result.response.is_complete + "</td>");
+                    editdata = $("<td></td>")
+                    edit = $("<a>", {
+                        "class": "btn btn-info",
+                        "href": '/campaign-management/task-detail/' + result.response.id
+                    });
+                    edit.text("تفاصيل")
+                    editdata.append(edit)
+                    row.append(title)
+                    row.append(comittee)
+                    row.append(status)
+                    row.append(editdata)
+                    table.append(row)
+                }
+
+
+            }
 
         })
-        permsButton=$("<td></td>")
-        permsButton.append(perms)
-        perms.text("صلاحيات")
-        row.append(cm_name)
-        row.append(phone)
-        row.append(email)
-        row.append(comittee)
-        row.append(manage_status)
-        row.append(editdata)
-        row.append(permsButton)
-        table.append(row)
-
-      })
-    }
-  })
-
-})
-
-$( "#cm_search" ).autocomplete({
-      minLength:2 ,
-      source: "{% url 'get-cm' %}",
-
-      focus: function( event, ui ) {
-
-        $( "#cm" ).val( ui.item['lable']);
-        return false;
-      },
-      select: function( event, ui ) {
-          console.log(ui.item['lable'])
-        $( "#cm_search" ).val(ui.item['lable'] );
-        $( "#hidden_cm" ).val( ui.item['id']);
-        return false;
-      }
-    })
-    .autocomplete( "instance" )._renderItem = function( ul, item ) {
-      return $( "<li>" )
-        .append( "<div>" + item.lable + "</div>" )
-        .appendTo( ul );
-    };
-
-
-
-    $('#comitteeTaskQuery').on('change',function(e){
-  e.preventDefault()
-    comittee_id=$('#comitteeTaskQuery option:selected').val()
-    query=new Object()
-    query.comittee_id=comittee_id
-    queryjson=JSON.stringify(query)
-    $.ajax({
-      url:'{% url "get-tasks-list" %}',
-      type:'GET',
-      dataType:"JSON",
-      data:{
-        query:queryjson
-      },
-
-      success:function(result){
-        console.log(result)
-
-        table=$('#comittee_task_table_tbody')
-        table.empty()
-        if (!result.error){
-        $(result.response).each(function(index,value){
-        row=$("<tr></tr>");
-        title=("<td>"+value.title+"</td>");
-        comittee=("<td>"+value.comittee+"</td>");
-        status=$("<td>"+value.is_complete+"</td>");
-        editdata=$("<td></td>")
-        edit=$("<a>", { "class": "btn btn-danger","href":'/campaign-management/task-detail/'+value.id });
-        edit.text("تفاصيل")
-        editdata.append(edit)
-        row.append(title)
-        row.append(comittee)
-        row.append(status)
-        row.append(editdata)
-        table.append(row)
-        })
-
-        }
-        else{
-        row=$("<tr></tr>");
-        title=("<td>"+result.response.title+"</td>");
-        comittee=("<td>"+result.response.comittee+"</td>");
-        status=$("<td>"+result.response.is_complete+"</td>");
-        editdata=$("<td></td>")
-        edit=$("<a>", { "class": "btn btn-danger","href":'/campaign-management/task-detail/'+result.response.id });
-        edit.text("تفاصيل")
-        editdata.append(edit)
-        row.append(title)
-        row.append(comittee)
-        row.append(status)
-        row.append(editdata)
-        table.append(row)
-        }
-
-
-      }
-
-})
     })
 </script>
 
