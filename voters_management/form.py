@@ -46,7 +46,8 @@ class VoterRegForm(forms.Form):
                                                         
                                                     }
                                                     ))
-    whatsapp_number=forms.CharField(max_length=15,widget=forms.TextInput(
+    whatsapp_number=forms.CharField(max_length=10,widget=forms.TextInput(
+
                                                     attrs={
                                                         'class':'form-control',
                                                         'placeholder':'رقم الواتساب',
