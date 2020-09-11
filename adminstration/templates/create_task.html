@@ -8,9 +8,9 @@
         <ul>
           <li><a href="{% url 'logout' %}">تسحيل خروج</a></li>
           {% if request.user.userprofile.candidate or request.user.userprofile.campaignadminstrator %}
-          <li><a href="{% url 'main' %}">عودة</a></li>
+          <li><a href="{% url 'main' %}#tasks">عودة</a></li>
           {% else %}
-       <li><a href="{% url 'comittee-member' %}">عودة</a></li>
+       <li><a href="{% url 'comittee-member'%}#tasks ">عودة</a></li>
           {% endif %}
         </ul>
       </nav>
@@ -21,16 +21,19 @@
 {% endblock %}
 {% block main %}
 
-<div class="container mt-3 text-aligner">
+<div class="container mt-3 text-aligner" style="font-size:20px">
 <form method="POST">
     {% csrf_token %}
-    <div class="form-row">
+    <div class="card">
+  <h5 class="card-header text-center">انشاء مهمة </h5>
+  <div class="card-body">
+    <div class="form-row my-2">
         <div class="col-lg-3">
             <label>  عنوان المهمة </label>
             {{form.title}}
         </div>
-</div>
-<div class="form-row">
+      </div>
+<div class="form-row my-2">
     <div class="col-lg-6">
       <label >موضوع المهمة</label>
       {{form.description}}
@@ -42,15 +45,19 @@
     </div>
 </div>
 
-<div class="form-row">
-<div class="col-lg-3">
+<div class="form-row my-2">
+<div class="col-md-4">
 <label >اللجنة</label>
 {{form.comittee}}
 </div>
-
-
-<div class="col-lg-3 mt-2 text-left">
+</div>
+<div class="form-row my-2">
+<div class="col-md-9">
+</div>
+<div class="col-md-3 text-left">
 <button class="btn  btn-info" id ="updateTask" type="submit">انشاء</button>
+</div>
+</div>
 </div>
 </div>
 </form>

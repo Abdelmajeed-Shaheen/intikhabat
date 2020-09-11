@@ -488,5 +488,14 @@ $(document).on('change', '#dept', function () {
 
 $("#id_dob_month").before($("#id_dob_day"))
 
+$("#video1").on('hidden.bs.modal', function (e) {
+    $("#video1 iframe").attr("src", $("#video1 iframe").attr("src"));
+});
+$("#video2").on('hidden.bs.modal', function (e) {
+    $("#video2 iframe").attr("src", $("#video2 iframe").attr("src"));
+});
+$("#video3").on('hidden.bs.modal', function (e) {
+    $("#video3 iframe").attr("src", $("#video3 iframe").attr("src"));
+});
 </script>
 {% endblock %}
