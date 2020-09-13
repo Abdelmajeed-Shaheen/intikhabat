@@ -112,6 +112,7 @@ def task_details(request,task_id=None):
 
 
 def update_task(request,id):
+    
     data=request.POST.get('data')
     data=json.loads(data)
     task=ComitteeTask.objects.get(id=id)
@@ -1078,7 +1079,19 @@ def update_comment(request):
 
 
 
+def get_voter_to_cm(request):
+    candidate=Candidate.objects.get(id=int(request.GET.get("candidate_id")))
+    voters_list=Voter.objects.filter(candidate=candidate)
+    response=[]
 
+    for voter in voters_list:
+        voter_object={}
+        if not voter.profile.full_name  in [None,""] :
+            voter_object['name']=voter.profile.full_name
+            voter_object['id']=voter.id
+            response.append(voter_object)
+    
+    return JsonResponse(response,safe=False)
 
 
 

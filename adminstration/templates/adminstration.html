@@ -742,7 +742,12 @@
         } else {
             is_manager = false
         }
-        if (fieldChecker) {
+        if($("#voterCmList option").is(":selected").val()){
+            full_name=$("#voterCmList option:selected")
+            alert(full_name.val())
+        }
+        
+ if (fieldChecker) {
             data = {
                 first_name: $('#id_first_name').val(),
                 mobile_number: $('#id_mobile_number').val(),
@@ -1333,7 +1338,6 @@
 
 
 
-
 $("#chooseUser").on("click",function(e){
 
     '{% if request.user.userprofile.candidate  %}'
@@ -1350,17 +1354,17 @@ $("#chooseUser").on("click",function(e){
 
       $.ajax({
           
-
-
           url:'{% url "get-voter-to-cm" %}',
           type:'GET',
           data:{
               candidate_id:candidate
           },
           success:function(result){
+              $("#nameDivided").css("visibility","hidden")
               select=$("#voterCmList")
               $(result).each(function(index,item){
-                  select.append('<option></option>').attr({value:item.id}).text(item.name)
+                  
+                  select.append(`<option value="${item.id}"> ${item.name}</option>`); 
               })
           }
       })

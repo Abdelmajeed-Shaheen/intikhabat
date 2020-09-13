@@ -474,16 +474,28 @@ $("#id_dob_month").before($("#id_dob_day"))
 
 $("#elasticSearch").on("click",function(){
 
-  name=$("#elasticName").val()
+    name=$("#elasticName").val()
+    var spaceCount = (name.split(" ").length - 1)
+  
 
-    doAnAjax( name, function(myRtn) {
+    if(spaceCount>2){
+      doAnAjax( name, function(myRtn) {
       
         if (myRtn === "Success") {
           console.log( "success: "+myRtn)
         } else {
               console.log("Opps! Ajax Error");
         }
-    });
+    }); 
+
+    }
+    else{
+      $("#message").empty()
+      $("#message").text("يرجى التأكد ان يكون الاسم من اربع مقاطع على الاقل")
+      $("#errorMessage").modal("show")
+    }
+
+
 });
 
 // pass callback as third parameter to doAnAjax()
@@ -499,9 +511,9 @@ function doAnAjax( data, callBack) {
         },
         cache: false,
         success: function(data, textStatus, xhr) {
-            console.log(data[0].success)
+            
             result=data[0]
-            if (result.success==false){
+            if (!result.success){
               $("#message").empty()
               $("#message").text(result.message)
               $("#errorMessage").modal("show")

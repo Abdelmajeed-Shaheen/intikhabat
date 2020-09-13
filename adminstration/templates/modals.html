@@ -1,232 +1,211 @@
-
 <!-- Modal -->
 <div class="modal fade" id="createComitteeMember" tabindex="-1" role="dialog" aria-labelledby="createComitteeMemberTitle" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="createComitteeMemberTitle">انشاء عضو لجنة</h5>
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createComitteeMemberTitle">انشاء عضو لجنة</h5>
 
-      </div>
-      <div class="modal-body">
-      <form id="createCmForm">
-      <div class="row text-aligner">
- 
-      <div class="col-sm-3">
-        <div class="form-group">
-          <label >الاسم الاول:</label>
-          {{comittee_member_form.first_name}}
-        </div>
-      </div>
-      <div class="col-sm-3">
-        <div class="form-group">
-          <label >اسم الاب:</label>
-          {{comittee_member_form.middle_name}}
-        </div>
-      </div>
-      <div class="col-sm-3">
-        <div class="form-group">
-          <label >اسم الجد:</label>
-          {{comittee_member_form.third_name}}
-        </div>
-      </div>
-      <div class="col-sm-3">
-        <div class="form-group">
-          <label >اسم العائلة:</label>
-          {{comittee_member_form.last_name}}
-        </div>
-      </div>
-      </div>
-      <div class="row text-aligner">
- 
-        <div class="col-sm-6">
-          <div class="form-group">
-            <label >رقم الهاتف:</label>
-            {{comittee_member_form.mobile_number}}
-          </div>
-        </div>
-        <div class="col-sm-6">
-          <div class="form-group">
-            <label > الواتساب:</label>
-            {{comittee_member_form.whatsapp_number}}
-          </div>
-        </div>
-        <div class="col">
-          <div class="form-group">
-            <label > البريد الالكتروني:</label>
-            {{comittee_member_form.email}}
-          </div>
-        </div>
-      </div>
-      <div class="row text-aligner">
- 
-        <div class="col-sm-6">
-          <div class="form-group">
-            <label >تعيين مدير لجنة:</label>
-            {{comittee_member_form.is_manager}}
-          </div>
-        </div>
-        <div class="col-sm-6">
-        <select name="" id="assign_comittee" class="form-control">
+            </div>
+            <div class="modal-body">
+                <form id="createCmForm">
+                    <div class="form-row mb-2">
+                        <button class="btn btn-sm btn-info" id="chooseUser">اختيار من قائمة الناخبين</button>
+                    </div>
+                    <div class="form-row" id="chooseUserDiv" style="visibility:hidden;">
+
+                        <select class="form-control" id="voterCmList">
+                <option value="">اختر من قائمة الناخبين لاضافته كعضو لجنة</option>   
+              </select>
+
+                    </div>
+                    <div class="row text-aligner" id="nameDivided">
+
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label>الاسم الاول:</label> {{comittee_member_form.first_name}}
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label>اسم الاب:</label> {{comittee_member_form.middle_name}}
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label>اسم الجد:</label> {{comittee_member_form.third_name}}
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label>اسم العائلة:</label> {{comittee_member_form.last_name}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row text-aligner">
+
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>رقم الهاتف:</label> {{comittee_member_form.mobile_number}}
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label> الواتساب:</label> {{comittee_member_form.whatsapp_number}}
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <label> البريد الالكتروني:</label> {{comittee_member_form.email}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row text-aligner">
+
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>تعيين مدير لجنة:</label> {{comittee_member_form.is_manager}}
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <select name="" id="assign_comittee" class="form-control">
           {% for comittee in comittees_list%}
           <option value="{{comittee.id}}">{{comittee.name}}</option>
           {% endfor %}
         </select>
-        </div>
+                        </div>
 
+                    </div>
+                    <input type="hidden" value="cm" name="member_type" id='cmm'>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">اغلاق</button>
+                <button type="button" class="btn btn-success" id="createmember">حفظ</button>
+            </div>
         </div>
-        <input type="hidden" value="cm" name="member_type" id='cmm'>
-      </form>
-        
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-danger" data-dismiss="modal">اغلاق</button>
-        <button type="button" class="btn btn-success" id="createmember">حفظ</button>
-      </div>
     </div>
-  </div>
 </div>
 
 
 <!-- create campaign adminstrator -->
 <div class="modal fade" id="createCampaignAdmin" tabindex="-1" role="dialog" aria-labelledby="createComitteeMemberTitle" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="createCampaignAdmin">انشاء مدير حملة</h5>
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createCampaignAdmin">انشاء مدير حملة</h5>
 
-      </div>
-      <div class="modal-body">
-      <form id="creatAdminForm">
-      <div class="row text-aligner">
- 
-      <div class="col-sm-3">
-        <div class="form-group">
-          <label >الاسم الاول:</label>
-          {{campadmin_form.ca_first_name}}
+            </div>
+            <div class="modal-body">
+                <form id="creatAdminForm">
+                    <div class="row text-aligner">
+
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label>الاسم الاول:</label> {{campadmin_form.ca_first_name}}
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label>اسم الاب:</label> {{campadmin_form.ca_middle_name}}
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label>اسم الجد:</label> {{campadmin_form.ca_third_name}}
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label>اسم العائلة:</label> {{campadmin_form.ca_last_name}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row text-aligner">
+
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>رقم الهاتف:</label> {{campadmin_form.ca_mobile_number}}
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label> الواتساب:</label> {{campadmin_form.ca_whatsapp_number}}
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <label> البريد الالكتروني:</label> {{campadmin_form.ca_email}}
+                            </div>
+                        </div>
+                    </div>
+                    <input type="hidden" value="camp" name="member_type" id='ca'>
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">اغلاق</button>
+                <button type="button" class="btn btn-success" id="createca">حفظ</button>
+            </div>
         </div>
-      </div>
-      <div class="col-sm-3">
-        <div class="form-group">
-          <label >اسم الاب:</label>
-          {{campadmin_form.ca_middle_name}}
-        </div>
-      </div>
-      <div class="col-sm-3">
-        <div class="form-group">
-          <label >اسم الجد:</label>
-          {{campadmin_form.ca_third_name}}
-        </div>
-      </div>
-      <div class="col-sm-3">
-        <div class="form-group">
-          <label >اسم العائلة:</label>
-          {{campadmin_form.ca_last_name}}
-        </div>
-      </div>
-      </div>
-      <div class="row text-aligner">
- 
-        <div class="col-sm-6">
-          <div class="form-group">
-            <label >رقم الهاتف:</label>
-            {{campadmin_form.ca_mobile_number}}
-          </div>
-        </div>
-        <div class="col-sm-6">
-          <div class="form-group">
-            <label > الواتساب:</label>
-            {{campadmin_form.ca_whatsapp_number}}
-          </div>
-        </div>
-        <div class="col">
-          <div class="form-group">
-            <label > البريد الالكتروني:</label>
-            {{campadmin_form.ca_email}}
-          </div>
-        </div>
-      </div>
-        <input type="hidden" value="camp" name="member_type" id='ca'>
-      </form>
-        
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-danger" data-dismiss="modal">اغلاق</button>
-        <button type="button" class="btn btn-success" id="createca">حفظ</button>
-      </div>
     </div>
-  </div>
 </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- <div class="modal fade" id="succesModal" tabindex="-1" role="dialog" aria-labelledby="successModalTitle" aria-hidden="true">
+<div class="modal fade" id="succesModal" tabindex="-1" role="dialog" aria-labelledby="successModalTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-         
-  
+        <div class="modal-content">
+            <div class="modal-header">
+
+
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-success" role="alert">
+                    <h4 class="alert-heading">تمت العملية بنجاح</h4>
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" id="reload">اغلاق</button>
+            </div>
         </div>
-        <div class="modal-body">
-          <div class="alert alert-success" role="alert">
-            <h4 class="alert-heading">تمت العملية بنجاح</h4>
-           
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-danger" id="reload" >اغلاق</button>
-        </div>
-      </div>
     </div>
-    </div>
+</div>
 
 <!-- Create area modal -->
 
 <div class="modal fade" id="addArea" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered text-aligner" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">اضافة منطقة</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+    <div class="modal-dialog modal-dialog-centered text-aligner" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">اضافة منطقة</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
-      </div>
-      <div class="modal-body">
-      
-        <form >
-          <div class="form-group">
-            <label >اسم المنطقة</label>
-            <input type="text" name="area_name" id="areaName" class="form-control" placeholder="اسم المنطقة">
-          </div>
-        
-          <div class="form-group">
-            <label >الدائرة</label>
-            <select  class="form-control" id="deptArea">
+            </div>
+            <div class="modal-body">
+
+                <form>
+                    <div class="form-group">
+                        <label>اسم المنطقة</label>
+                        <input type="text" name="area_name" id="areaName" class="form-control" placeholder="اسم المنطقة">
+                    </div>
+
+                    <div class="form-group">
+                        <label>الدائرة</label>
+                        <select class="form-control" id="deptArea">
               {% for dept in departments_list %}
               <option value="{{dept.id}}">{{dept.name}}</option>
               {% endfor %}
 
             </select>
-          </div>
-        </form>
-       
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-danger" id="creatArea">اضافة</button>
-      </div>
+                    </div>
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" id="creatArea">اضافة</button>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
 
 
@@ -234,60 +213,60 @@
 <!-- create district modal -->
 
 <div class="modal fade" id="addDist" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered text-aligner" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">اضافة منطقة</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+    <div class="modal-dialog modal-dialog-centered text-aligner" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">اضافة منطقة</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
-      </div>
-      <div class="modal-body">
-      
-        <form >
-          <div class="form-group">
-            <label >اسم الحي</label>
-            <input type="text" name="dist_name" id="distName" class="form-control" placeholder="اسم المنطقة">
-          </div>
-        
-          <div class="form-group">
-            <label >المنطقة</label>
-            <select  class="form-control" id="areaDist">
+            </div>
+            <div class="modal-body">
+
+                <form>
+                    <div class="form-group">
+                        <label>اسم الحي</label>
+                        <input type="text" name="dist_name" id="distName" class="form-control" placeholder="اسم المنطقة">
+                    </div>
+
+                    <div class="form-group">
+                        <label>المنطقة</label>
+                        <select class="form-control" id="areaDist">
               {% for area in areas_list %}
               <option value="{{area.id}}">{{area.name}}</option>
               {% endfor %}
 
             </select>
-          </div>
-        </form>
-       
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-danger" id="creatDist">اضافة</button>
-      </div>
+                    </div>
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" id="creatDist">اضافة</button>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
 
 
 <!-- error modal -->
 <div class="modal fade" id="errorMessage" tabindex="-1" role="dialog" aria-labelledby="successModalTitle" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
 
 
-      </div>
-      <div class="modal-body">
-        <div class="alert alert-danger" role="alert">
-          <h4 class="alert-heading" id="message" ></h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger" role="alert">
+                    <h4 class="alert-heading" id="message"></h4>
 
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">اغلاق</button>
+
+            </div>
         </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-danger" data-dismiss="modal">اغلاق</button>
-
-      </div>
     </div>
-  </div>
-  </div>
+</div>
