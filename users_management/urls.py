@@ -1,7 +1,7 @@
 from django.urls import path,re_path
 from .views import (LoginView,UserProfileView,
                     CreateUser,UpdateProfile,
-                    LogoutView,change_password
+                    LogoutView,change_password,check_user_elastic
                     )
 
 urlpatterns = [
@@ -10,5 +10,7 @@ urlpatterns = [
     path("create-user/",CreateUser.as_view(),name="create-user"),
     path("update-profile/",UpdateProfile.as_view(),name="update-profile"),
     path("logout/",LogoutView.as_view(),name="logout"),
-    path("passowrd-change",change_password,name="password-change")
+    path("passowrd-change",change_password,name="password-change"),
+    path("check-user-elastic",check_user_elastic,name="check-user-elastic")
+
 ]

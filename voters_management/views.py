@@ -26,7 +26,7 @@ class CreateVoter(View):
 
     def post(self,request):
         voter=json.loads(request.POST.get("voter"))
-        name_string=(voter['first_name']+voter['second_name']+voter['third_name']+voter['last_name'])
+        name_string=(str(voter['full_name']).replace(" ",""))
         if hasNumbers(name_string):
             return JsonResponse({"error":"لايمكن للاسم ان يحتوي ارقام"})
 
@@ -34,8 +34,7 @@ class CreateVoter(View):
             return JsonResponse({'error':"لا يمكن لرقم الهاتف ان يحتوي احرف"})
         try:
             user_object={
-                "first_name":voter['first_name'],
-                "last_name":voter['last_name'],
+
                 "username":(voter['mobile_number']),
                 "email":voter['email'],
             }
@@ -57,9 +56,8 @@ class CreateVoter(View):
             voter_work=WorkField.objects.get(id=int(voter['work']))
 
             profile_object={
+                "full_name":voter["full_name"],
                 "mobile_number":voter['mobile_number'],
-                "middle_name":voter['second_name'],
-                "last_name":voter['third_name'],
                 "date_of_birth":voter['dob'],
                 "gender":voter["gender"],
                 "work_field":voter_work,
@@ -71,21 +69,19 @@ class CreateVoter(View):
             profile=UserProfile(**profile_object)
             profile.save()
 
-            print("success: ",user_object)
-
             election_address={}
-            if 'governorate' in voter and voter['governorate'] not in [None,""]:
-                governorate=Governorate.objects.get(id=int(voter['governorate']))
-                election_address['governorate']=governorate
+
+
 
             if 'dept' in voter and voter['dept'] not in [None,""]:
-                dept=Department.objects.get(id=int(voter['dept']))
+                dept=Department.objects.get(name=voter['dept'])
                 election_address['department']=dept
+                election_address['governorate']=dept.governorate
 
             if 'department' in election_address and 'governorate' in election_address:
                 ea=ElectionAddress(**election_address)
                 ea.save()
-            voter=Voter(profile=profile,election_address=ea)
+            voter=Voter(profile=profile,election_address=ea,election_place=voter["election_place"])
             voter.save()
             login(request,user)
             response['redirect_to']=reverse('voter-profile',kwargs={'pk':user.userprofile.id})

@@ -26,7 +26,8 @@ from voters_management.views import UpdateVoter
 import json
 import re
 from datetime import date
-
+from .documents import VoterDocument
+from elasticsearch_dsl import Q
 
 
 def hasNumbers(inputString):
@@ -49,6 +50,7 @@ class LoginView(View):
         response={}
         username=request.POST.get('username')
         password=request.POST.get('password')
+        login_to=request.POST.get('login_to')
 
         if UserProfile.objects.filter(mobile_number=username).exists():
             username=UserProfile.objects.get(mobile_number=username).user.username
@@ -58,16 +60,19 @@ class LoginView(View):
         if user is not None:
             
             if user.is_active:
-                if hasattr(user.userprofile, 'candidate') or hasattr(user.userprofile, 'campaignadminstrator'):
 
-                    response['redirect_to']=reverse('main')
-                
-                elif hasattr(user.userprofile,'comitteemember'):
-                    response['redirect_to']=reverse('comittee-member')
- 
-                elif hasattr(user.userprofile, 'voter'):
+                if login_to=="camp":
+                    if hasattr(user.userprofile, 'candidate') or hasattr(user.userprofile, 'campaignadminstrator'):
+
+                        response['redirect_to']=reverse('main')
                     
-                    response['redirect_to']=reverse('voter-profile',kwargs={'pk':user.userprofile.id})
+                    elif hasattr(user.userprofile,'comitteemember'):
+                        response['redirect_to']=reverse('comittee-member')
+                else:
+                    if hasattr(user.userprofile, 'voter'):
+                    
+                        response['redirect_to']=reverse('voter-profile',kwargs={'pk':user.userprofile.id})
+
                 login(request, user)
                 return JsonResponse(response)
 
@@ -330,6 +335,30 @@ def change_password(request):
     })
    
 
+def check_user_elastic(request):
+    if request.GET:
+        name=request.GET.get("name")
+        new_string='"'+name+'"'
+        name_format='{0}'
+        name_format=name_format.format(new_string)
+        s = VoterDocument.search()
+        s = s.query('query_string', query=name_format)
+        response=[]
+        
+        for hit in s:
+            hit=json.loads(hit.message)
+            voter_object={}
+            voter_object['name']=hit["elector_name"]
+            voter_object['circle_name']=hit["circle_name"]
+            voter_object['election_place_name']=hit["election_place_name"]
+            response.append(voter_object)
+    else:
+        voter_object={}
+        voter_object['error']="لا يمكن تنفيذ طلبك حاليا"
+        response.append(voter_object)
+
+    return JsonResponse(response,safe=False)
+    
                 
 
 

@@ -542,7 +542,12 @@
                         <tbody>
                             {% for voter in new_voters_list%}
                             <tr>
-                                <td>{{voter.profile.user.first_name}} {{voter.profile.middle_name}} {{voter.profile.last_name}} {{voter.profile.user.last_name}}</td>
+                            {% if voter.profile.full_name %}
+                            <td>{{voter.profile.full_name}}</td>
+                            {% else %}
+                            <td>{{voter.profile.user.first_name}} {{voter.profile.middle_name}} {{voter.profile.last_name}} {{voter.profile.user.last_name}}</td>
+                            {% endif %}
+                                
                                 <td>{{voter.related_comittee_member.profile.user.first_name}} {{voter.related_comittee_member.profile.middle_name}} {{voter.related_comittee_member.profile.user.last_name}}</td>
                                 <td>{{voter.profile.mobile_number}}</td>
                                 <td>لا</td>
@@ -1275,6 +1280,53 @@
 
         })
     })
+
+
+
+
+$("#chooseUser").on("click",function(e){
+
+    '{% if request.user.userprofile.candidate  %}'
+        candidate={{request.user.userprofile.candidate.id}}
+    '{% elif request.user.campaignadminstrator.id %}'
+        candidate={{request.user.userprofile.campaignadminstrator.id}}
+        
+    '{% else  %}'
+    candidate={{request.user.profile.comitteemember.candidate.id}}
+    '{% endif %}'
+
+    e.preventDefault()
+  if ( $('#chooseUserDiv').css('visibility') == 'hidden' ){
+
+      $.ajax({
+          
+
+
+          url:'{% url "get-voter-to-cm" %}',
+          type:'GET',
+          data:{
+              candidate_id:candidate
+          },
+          success:function(result){
+              select=$("#voterCmList")
+              $(result).each(function(index,item){
+                  select.append('<option></option>').attr({value:item.id}).text(item.name)
+              })
+          }
+      })
+       $("#chooseUserDiv").css("visibility","visible");
+       $("#chooseUser").text("اخفاء القائمة");
+  }
+    
+  else{
+
+        $("#chooseUserDiv").css("visibility","visible");
+        $("#chooseUserDiv").css("visibility","hidden");       
+        $("#chooseUser").text("اختيار من قائمة الناخبين");
+  }
+    
+})
+
 </script>
 
 

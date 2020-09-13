@@ -9,11 +9,14 @@ cssselect2==0.3.0
 defusedxml==0.6.0
 dj-database-url==0.5.0
 Django==2.2.14
+django-elasticsearch-dsl==7.1.4
 django-filter==2.3.0
 django-rest-swagger==2.2.0
 djangorestframework==3.11.1
 djangorestframework-jwt==1.11.0
 djangorestframework-simplejwt==4.4.0
+elasticsearch==7.9.1
+elasticsearch-dsl==7.2.1
 gunicorn==20.0.4
 html5lib==1.1
 idna==2.10
@@ -27,6 +30,7 @@ psycopg2-binary==2.8.5
 pycparser==2.20
 PyJWT==1.7.1
 Pyphen==0.9.5
+python-dateutil==2.8.1
 python-dotenv==0.14.0
 pytz==2020.1
 requests==2.24.0
