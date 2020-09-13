@@ -19,8 +19,8 @@
           <button  class="btn btn-success  mx-3 my-2" data-toggle="modal" data-target="#candidateLoginForm">ادارة الحملة</button>
           <button  class="btn btn-success  mx-3 my-2" data-toggle="modal" data-target="#doyouhave">ناخب</button>
           <button  class="btn btn-success  mx-3 my-2" data-toggle="modal" data-target="#video1">البث المباشر</button>
-          <button  class="btn btn-success  mx-3 my-2" data-toggle="modal" data-target="#video1">الاحصاء</button>
-          <button  class="btn btn-success  mx-3 my-2" data-toggle="modal" data-target="#video1">المرشحين</button>
+          <button  class="btn btn-success  mx-3 my-2" data-toggle="modal" data-target="#video2">الاحصاء</button>
+          <button  class="btn btn-success  mx-3 my-2" data-toggle="modal" data-target="#video3">المرشحين</button>
         </div>
         <div class="actions">
           <i class="fab fa-google-play fa-2x star-icon"></i>
@@ -255,12 +255,39 @@
         <div class="modal-content">
       <div class="modal-body">
         <div class="embed-responsive embed-responsive-16by9">
-  <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/v64KOxKVLVg" allowfullscreen></iframe>      </div>
+  <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/G4YdwH607j4" allowfullscreen></iframe></div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">اغلاق</button>
       </div>
     </div>
   </div>
+</div>
+</div>
+<div class="modal fade" id="video2" tabindex="-1" role="dialog" aria-labelledby="video2" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+  <div class="modal-body">
+    <div class="embed-responsive embed-responsive-16by9">
+<iframe class="embed-responsive-item" src="https://www.youtube.com/embed/5UaUmk2I0AM" allowfullscreen></iframe></div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-dismiss="modal">اغلاق</button>
+  </div>
+</div>
+</div>
+</div>
+</div><div class="modal fade" id="video3" tabindex="-1" role="dialog" aria-labelledby="video3" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+  <div class="modal-body">
+    <div class="embed-responsive embed-responsive-16by9">
+<iframe class="embed-responsive-item" src="https://www.youtube.com/embed/UjV3ZX2_e7A" allowfullscreen></iframe></div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-dismiss="modal">اغلاق</button>
+  </div>
+</div>
+</div>
+</div>
+</div>
 
 {% endblock  %}
 
@@ -472,6 +499,7 @@ $(document).on('change', '#dept', function () {
 $("#id_dob_month").before($("#id_dob_day"))
 
 
+
 $("#elasticSearch").on("click",function(){
 
   name=$("#elasticName").val()
@@ -526,9 +554,15 @@ function doAnAjax( data, callBack) {
 }
 
 
-
-
-
+$("#video1").on('hidden.bs.modal', function (e) {
+    $("#video1 iframe").attr("src", $("#video1 iframe").attr("src"));
+});
+$("#video2").on('hidden.bs.modal', function (e) {
+    $("#video2 iframe").attr("src", $("#video2 iframe").attr("src"));
+});
+$("#video3").on('hidden.bs.modal', function (e) {
+    $("#video3 iframe").attr("src", $("#video3 iframe").attr("src"));
+});
 
 </script>
 {% endblock %}
