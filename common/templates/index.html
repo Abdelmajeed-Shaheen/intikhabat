@@ -45,7 +45,9 @@
                 {{candidate_login_form.candidate_username}}
               </div>
               <div class="form-group text-aligner">
+              <input type="hidden" value="camp" id="login_to">
                 <label for="message-text" class="col-form-label">كلمة السر</label>
+
                 {{candidate_login_form.candidate_password}}
               </div>
 
@@ -98,7 +100,39 @@
         <div class="modal-body">
           <div class="row">
             <div class="col-md-6 "><button class="btn btn-info btn-block mx-2 my-2"data-toggle="modal" data-target="#voterLoginForm" data-dismiss="modal">نعم</button></div>
-            <div class="col-md-6 "><button class="btn btn-info btn-block mx-2 my-2"data-toggle="modal" data-target="#regModal" data-dismiss="modal">لا</button></div>
+            <div class="col-md-6 "><button class="btn btn-info btn-block mx-2 my-2"data-toggle="modal" data-target="#elastic" data-dismiss="modal">لا</button></div>
+          </div>
+        </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+<!-- elastic search modal -->
+
+
+<div class="modal fade" id="elastic" tabindex="-1" role="dialog" aria-labelledby="elasticlabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div calss="row">
+          <div class="text-center">
+          <h5>ادخل اسمك </h5>
+         
+          <label style="color:red; font-weight:bold;">يرجى ادخال الاسم حسب الهوية الشخصية</label>
+          </div>
+        </div>
+      </div>
+        <div class="modal-body">
+          <div class="row">
+          <div class="col-md-6 ">
+          <input  type="text" placeholder="يرجى ادخال الاسم من اربع مقاطع" id="elasticName" class="form-control">
+          
+          </div>
+            <div class="col-md-6 "><button class="btn btn-info btn-block mx-2 my-2" id="elasticSearch" >بحث</button></div>
+            
           </div>
         </div>
     </div>
@@ -114,17 +148,16 @@
       <div class="modal-body text-aligner">
         <form id="createProfileForm" class="needs-validation" novalidate>
           <div class="form-row">
-            <div class="col-md-3 mb-3">
-              {{voter_reg_form.first_name}}
+
+
+            <div class="col-md-6 mb-3">
+              <input type="text" disabled value="fullname" id="full_name" class="form-control">
             </div>
-            <div class="col-md-3 mb-3">
-              {{voter_reg_form.second_name}}
+              <div class="col-md-6 mb-3">
+              <input type="text" disabled value="fullname" id="department" class="form-control">
             </div>
-            <div class="col-md-3 mb-3">
-              {{voter_reg_form.third_name}}
-            </div>
-            <div class="col-md-3 mb-3">
-              {{voter_reg_form.last_name}}
+              <div class="col-md-6 mb-3">
+              <input type="text" disabled value="fullname" id="election_place" class="form-control">
             </div>
           </div>
           <div class="form-row">
@@ -150,29 +183,7 @@
               {{voter_reg_form.work}}
             </div>
           </div>
-          <div class="form-row mt-2">
-            <label >المحافظة و الدائرة الانتخابية</label>
-          </div>
-          <div class="form-row mt-2">
-              <div class="col-md-6 mt-1">
-              <select name="" id="gover" class="form-control"   >
-                <option value="" data-field-name="المحافظة">
-                  اختر المحافظة
-                </option>
-                {% for gover in governorates_list %}
-                <option value="{{gover.id}}">{{gover.name}}</option>
-                {% endfor %}
-              </select>
-            </div>
-            <div class="col-md-6 mt-1">
-              <select name="" id="dept" class="form-control">
-                <option value="" data-field-name="الدائرة">
-                  اختر الدائرة
-                </option>
 
-              </select>
-            </div>
-          </div>
           <div class="form-row mt-5">
             <div class="col-sm-8">
               <input type="password" id="pwd" required placeholder="كلمة السر" class="form-control" data-field-name="كلمة السر">
@@ -286,6 +297,7 @@
   $("#candidate-submit-form").on('click',function(){
     pwd=$("#id_candidate_password").val()
     user=$("#id_candidate_username").val()
+    login_to=$("#login_to").val()
     $.ajax({
       url:"{% url 'userlogin' %}",
       type:'POST',
@@ -293,6 +305,7 @@
       data:{
         username:user,
         password:pwd,
+        login_to:login_to,
         csrfmiddlewaretoken: '{{ csrf_token }}'
       },
       success:function (result) {
@@ -364,14 +377,11 @@ $('#register').on('click',function(){
   if (fieldChecker){
     userprofile= new Object()
     userprofile.pwd=$('#pwd').val()
-    userprofile.first_name=$("#id_first_name").val()
-    userprofile.second_name=$("#id_second_name").val()
-    userprofile.third_name=$("#id_third_name").val()
-    userprofile.last_name=$("#id_last_name").val()
+    userprofile.full_name=$("#full_name").val()
     userprofile.mobile_number=$("#id_mobile_number").val()
     userprofile.whatsapp_number=$("#id_whatsapp_number").val()
-    userprofile.governorate=$("#gover option:selected").val()
-    userprofile.dept=$("#dept option:selected").val()
+    userprofile.election_place=$("#election_place").val()
+    userprofile.dept=$("#department").val()
     userprofile.work=$("#id_work option:selected").val()
     userprofile.gender=$("#id_gender option:selected").val()
     day=$('#id_dob_day').val()
@@ -460,6 +470,65 @@ $(document).on('change', '#dept', function () {
 });
 
 $("#id_dob_month").before($("#id_dob_day"))
+
+
+$("#elasticSearch").on("click",function(){
+
+  name=$("#elasticName").val()
+
+    doAnAjax( name, function(myRtn) {
+      
+        if (myRtn === "Success") {
+          console.log( "success: "+myRtn)
+        } else {
+              console.log("Opps! Ajax Error");
+        }
+    });
+});
+
+// pass callback as third parameter to doAnAjax()
+
+function doAnAjax( data, callBack) {
+    $.ajax({
+        url: '{% url "check-user-elastic" %}',
+        async: true,
+        dataType: 'JSON',
+        type: "GET",
+        data: {
+          name:data
+        },
+        cache: false,
+        success: function(data, textStatus, xhr) {
+            console.log(data[0].success)
+            result=data[0]
+            if (result.success==false){
+              $("#message").empty()
+              $("#message").text(result.message)
+              $("#errorMessage").modal("show")
+            }
+            else{
+              $("#regModal").modal("show")
+              $("#elastic").modal("hide")
+              $("#full_name").val(result.name)
+              $("#department").val(result.circle_name)
+              $("#election_place").val(result.election_place_name)
+            }
+            myRtnA = "Success"
+            return callBack( myRtnA );  // return callBack() with myRtna
+        },
+        error: function(xhr, textStatus, errorThrown) {
+        
+            console.log("opps: " + textStatus + " : " + errorThrown)
+            myRtnA = "Error"
+            return callBack ( myRtnA ); // return callBack() with myRtna
+        }
+    });
+}
+
+
+
+
+
 
 </script>
 {% endblock %}

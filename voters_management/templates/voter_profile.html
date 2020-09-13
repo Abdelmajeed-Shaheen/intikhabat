@@ -77,11 +77,13 @@
                             <div class="row">
                                 <h5 class="text-aligner mt-1 mb-2 w-100 px-3">
                                     تعديل الحالة الانتخابية :
+                                    
                                 </h5>
 
                                 <div class="col-lg-3 pl-0">
                                     <form id="voteStatusForm" class="d-flex h-100 justify-content-around justify-content-md-between align-content-center mt-1 mt-md-0">
                                         <div class="form-check p-1">
+                                        
                                             <input class="form-check-input" type="radio" id="v" value="Voting" {% if voter.voter.vote_status == "Voting" %}checked{% endif %}>
                                             <label class="form-check-label pr-3">مؤيد</label>
                                         </div>
@@ -99,16 +101,16 @@
                                 </div>
 
                                 <div class="col-lg-3">
-                                    <select id='elecList' class="form-control mt-3 mt-md-0">
-                    {% if voter.voter.candidate %}
-                    <option selected disabled>{{voter.voter.candidate.election_list.name}}</option>
-                    {% else %}
-                    <option selected disabled>اختر القائمة الانتخابية</option>
-                    {% endif %}
-                    {% for eleclist in election_lists %}
-                    <option value="{{eleclist.id}}">{{eleclist.name}}</option>
-                    {% endfor %}
-                  </select>
+                                        <select id='elecList' class="form-control mt-3 mt-md-0" >
+                                            {% if voter.voter.candidate %}
+                                            <option selected disabled>{{voter.voter.candidate.election_list.name}}</option>
+                                            {% else %}
+                                            <option selected disabled>اختر القائمة الانتخابية</option>
+                                            {% endif %}
+                                            {% for eleclist in election_lists %}
+                                            <option value="{{eleclist.id}}">{{eleclist.name}}</option>
+                                            {% endfor %}
+                                        </select>
                                 </div>
 
 
@@ -137,12 +139,16 @@
                                 المرشح<br />
                                 <span class="text-info">
                   {{voter.voter.candidate.profile.user.first_name}}
-                  {{voter.voter.candidate.profile.user.last_name}} {% if voter.voter.candidate.title != None %}
-                  {{voter.voter.candidate.title}}{% endif %} </span>
+                  {{voter.voter.candidate.profile.user.last_name}}
+                   {% if voter.voter.candidate.title != None %}
+                  {{voter.voter.candidate.title}}
+                  {% endif %} 
+                  </span>
                             </p>
                         </div>
 
-                        {% endif %} {% if voter.voter.vote_status == "Voting" and voter.voter.candidate %} {% if voter.voter.related_comittee_member %}
+                        {% endif %} 
+                        {% if voter.voter.vote_status == "Voting" and voter.voter.candidate %} {% if voter.voter.related_comittee_member %}
                         <div class="col-6 col-md-4 my-1">
                             <p class="about-title text-right text-md-center mb-0">
                                 عضو الارتباط<br />
@@ -150,7 +156,8 @@
                   {{voter.voter.related_comittee_member.profile.user.last_name}}</span>
                             </p>
                         </div>
-                        {% endif %} {% if voter.voter.election_box_officer %}
+                        {% endif %}
+                        {% if voter.voter.election_box_officer %}
                         <div class="col-6 col-md-4 my-1">
                             <p class="about-title text-right text-md-center mb-0">
                                 عضو الصندوق<br />
@@ -158,7 +165,19 @@
                   {{voter.voter.election_box_officer.profile.user.last_name}}</span>
                             </p>
                         </div>
-                        {% endif %} {% endif %} {% if voter.voter.identiefier %}
+                        {% endif %} 
+                        
+
+
+                       {% if voter.voter.election_place %}
+                        <div class="col-6 col-md-4 my-1">
+                            <p class="about-title text-right text-md-center mb-0">صندوق الاقتراع<br /> <span class="text-info">{{voter.voter.election_place}}
+                  </span></p>
+                        </div>
+                        {% endif %}
+
+                        {% endif %}
+                        {% if voter.voter.identiefier %}
                         <div class="col-6 col-md-4 my-1">
                             <p class="about-title text-right text-md-center mb-0">اسم المعرف<br /> <span class="text-info">{{voter.voter.identiefier.profile.user.first_name}}
                   {{voter.voter.identiefier.profile.last_name}}</span></p>
@@ -180,30 +199,29 @@
                     <div class="card mb-1 w-100 shadow-sm">
                         <div class="card-body text-aligner">
                             <form>
-                                <div class="form-row mt-2">
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <label> الاسم الاول</label>
-                                            <input type="text" class="form-control" id="fname" placeholder="الاسم الاول" value="{{voter.user.first_name}}">
-                                        </div>
-                                    </div>
+                            
+                        {% if not voter.voter.identiefier and voter.voter.first_login %}
+                        <div class="form-row">
+                            <label for="">هل لديك معرف؟</label>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" id="has_identifier_t" value="true">
+                                <label class="form-check-label">نعم</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" id="has_identifier_f" value="false">
+                                <label class="form-check-label">لا</label>
+                            </div>
+                            <div class="col-sm-4">
+                                <input type="text" placeholder="ادخل رقم المعرف ان وجد" class="form-control" id="identifier">
 
-                                    <div class="col-md-3">
+                            </div>
+                        </div>
+                        {% endif %}
+                                <div class="form-row mt-2">
+                                    <div class="col-md-6">
                                         <div class="form-group">
-                                            <label>اسم الاب</label>
-                                            <input type="text" class="form-control" id="sname" placeholder="اسم الاب" value="{{voter.middle_name}}">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <label>اسم الجد</label>
-                                            <input type="text" class="form-control" id="tname" placeholder="الاسم الجد" value="{{voter.last_name}}">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <label>اسم العائلة</label>
-                                            <input type="text" class="form-control" id="foname" placeholder="اسم العائلة" value="{{voter.user.last_name}}">
+                                            <label> الاسم الكامل</label>
+                                            <input type="text" class="form-control" id="fname" placeholder="الاسم الاول" value="{{voter.full_name}}" disabled>
                                         </div>
                                     </div>
                                 </div>
@@ -245,7 +263,7 @@
                                                     {% if voter.voter.residence_address.sector %}
                                                     <option value="" >{{voter.voter.residence_address.sector}}</option>
                                                     {% endif %}
-                                                    <option value="" >اختر اللواء/القطاع</option>
+                                                    <option value="" >اختر اللواء/القضاء</option>
       
                                                   </select>
                                                 </div>
@@ -285,23 +303,6 @@
                             </div>
                         </div>
 
-                        {% if not voter.voter.identiefier and voter.voter.first_login %}
-                        <div class="form-row">
-                            <label for="">هل لديك معرف؟</label>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" id="has_identifier_t" value="true">
-                                <label class="form-check-label">نعم</label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" id="has_identifier_f" value="false">
-                                <label class="form-check-label">لا</label>
-                            </div>
-                            <div class="col-sm-4">
-                                <input type="text" placeholder="ادخل رقم المعرف ان وجد" class="form-control" id="identifier">
-
-                            </div>
-                        </div>
-                        {% endif %}
                         </form>
                         <div class="row mt-2 mb-3">
                             <div class="col-7 col-md-9">
@@ -446,6 +447,7 @@
     })
 
     $(document).ready(function() {
+        $("#elecList").css("visibility", "hidden")
         if ($("#v").is(":checked")) {
             $("#elecList").css("visibility", "visible")
             $("#elecCard").css("visibility", "visible");
