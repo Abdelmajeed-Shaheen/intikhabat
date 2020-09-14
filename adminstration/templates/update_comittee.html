@@ -7,7 +7,11 @@
       <nav class="nav-menu d-none d-lg-block">
         <ul>
           <li><a href="{% url 'logout' %}">تسحيل خروج</a></li>
+          {% if request.user.userprofile.candidate or request.user.userprofile.campaignadminstrator %}
           <li><a href="{% url 'main' %}#createcomittee">عودة</a></li>
+          {% else %}
+    <li><a href="{% url 'comittee-member' %}">عودة</a></li>
+          {% endif %}
         </ul>
       </nav>
       <!-- .nav-menu -->
@@ -18,43 +22,44 @@
 {% block main %}
 
 <div class="container mt-3">
-    <div class="row">
-        <h5 class="about-title text-aligner">تعديل لجنة : {{comittee.name}}</h5>
-    </div>
-<div class="row text-aligner">
+  <div class="row">
+    <div class="col-3"></div>
+    <div class="col-6">
+  <div class="card text-aligner">
+  <div class="card-header">
+    <h5 class="about-title text-aligner">تعديل لجنة : {{comittee.name}}</h5>
+  </div>
+  <div class="card-body">
     <form method="POST">
         {% csrf_token %}
-    <div class="col-sm-6 m-3">
-        <label for="">اسم اللجنة</label>
+     <div class="mx-2 my-2">
+         <label for="">اسم اللجنة</label>
         {{update_form.name}}
     </div>
-</div>
-<div class="row text-aligner">
-    <div class="col-sm-6 m-3">
-        <label for="">مهام اللجنة</label>
-        {{update_form.description}}
+    <div class="mx-2 my-2">
+         <label for="">مهام اللجنة</label>
+         {{update_form.description}}
+     </div>
+      <div class="mx-2 my-2">
+         <label for=""class="mx-2">فعالة   </label>
+       {{update_form.is_active}}
     </div>
-</div>
-<div class="row text-aligner">
-    <div class="col-sm-6 m-3">
-        <label for="">حالة اللجنة</label>
-        {{update_form.is_active}}
-    </div>
-</div>
-
-<div class="row text-aligner">
-    <div class="col-sm-6 m-3">
-        <label for="">عنوان اللجنة</label>
+     <div class="mx-2 my-2">
+         <label for="">عنوان اللجنة</label>
         {{update_form.address_description}}
+     </div>
+     <div class="mx-2 my-2">
+         <label for="">رقم هاتف اللجنة</label>
+        {{update_form.phone}}
     </div>
-</div>
-
-<div class="row text-aligner">
-    <div class="col-sm-6 m-3">
-        <input type="submit" value="تعديل" class="btn btn-danger">
-    </div>
-</div>
+     <div class="mx-2 my-2">
+         <input type="submit" value="تعديل" class="btn btn-info"/>
+     </div>
 </form>
+   </div>
+ </div>
+</div>
+</div>
 </div>
 
 

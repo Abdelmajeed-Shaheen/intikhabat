@@ -6,9 +6,9 @@
             <ul>
                 <li><a href="{% url 'logout' %}">تسحيل خروج</a></li>
                 {% if request.user.userprofile.candidate or request.user.userprofile.campaignadminstrator %}
-                <li><a href="{% url 'main' %}">عودة</a></li>
+                <li><a href="{% url 'main' %}#tasks">عودة</a></li>
                 {% else %}
-                <li><a href="{% url 'comittee-member' %}">عودة</a></li>
+                <li><a href="{% url 'comittee-member' %}#tasks">عودة</a></li>
                 {% endif %}
             </ul>
         </nav>
@@ -20,51 +20,61 @@
 
 <div class="container mt-3 text-aligner">
     <div class="row">
-        <h1 class="about-title text-aligner">{{task.title}}</h1>
-    </div>
-    <div class="row">
         <div class="col-lg-6">
+          <div class="card">
+        <h5 class="card-header text-center" style="background-color:#aff0ec">{{task.title}}</h5>
+        <div class="card-body">
             <h3>موضوع المهمة</h3>
             <p>{{task.description}}</p>
             <label>التوصيات</label> {{form.notes}}
-        </div>
-
-
-        <div class="col-lg-6 float-lg-left">
-            <h3>التعليقات و الردود</h3>
-            <input type="text" class="form-control" placeholder="اكتب تعليق" id="commentText">
-            <button class="btn btn-info btn-sm m-3" id="makeComment">اضف تعليق</button> {% for comment in comments %}
-            <div class="card">
-                <div class="card-body">
-                    <lable>{{comment.user.user.first_name}} {{comment.user.user.last_name}}: <span>{{comment.timestamp.date}} - {{comment.timestamp.time}}</span></lable>
-                    <br>
-                    <lable>{{comment.comment_body}} <a class="btn btn-sm btn-danger" id="deleteComment" data-comment-id="{{comment.id}}">حذف التعليق</a></lable>
+            <div class="row">
+                <div class="col-lg-3">
+                    <label>اللجنة</label>
+                    <h4>{{task.comittee}}</h4>
+                </div>
+                <div class="col-lg-3">
+                    <label>انشئ بواسطة</label>
+                    <h4> {{task.created_by.user.first_name}} {{task.created_by.user.last_name}} </h4>
+                </div>
+                <div class="col-lg-3">
+                    <label>تم انجازها ؟</label>
+                    <h4> {{form.is_complete}} </h4>
+                </div>
+                <div class="col-lg-3 mt-2 text-left">
+                    <button class="btn  btn-info" id="updateTask">حفظ</button>
                 </div>
             </div>
-            <br> {% endfor %}
+          </div>
         </div>
-    </div>
-
-
-    <div class="row">
-        <div class="col-lg-3">
-            <label>اللجنة</label>
-            <h4>{{task.comittee}}</h4>
-
         </div>
-
-        <div class="col-lg-3">
-            <label>انشئ بواسطة</label>
-            <h4> {{task.created_by.user.first_name}} {{task.created_by.user.last_name}} </h4>
-
+        <div class="col-md-6">
+          <div class="card h-100">
+        <h5 class="card-header text-center " style="background-color:#aff0ec">التعليقات و الردود</h5>
+        <div class="card-body">
+          <div class="row my-2">
+            <div class="col-9"><input type="text" class="form-control" placeholder="اكتب تعليق" id="commentText"></div>
+            <div class="col-3"><button class="btn btn-info btn-sm mr-1" id="makeComment">اضف تعليق</button></div>
+          </div>
+          <div class="p-3" style="height:450px; overflow:auto">
+          {% for comment in comments %}
+          <div class="card my-2">
+            <div class="card-header">
+                <lable>{{comment.comment_body}} </lable>
+            </div>
+            <div class="card-body">
+              <blockquote class="blockquote mb-0">
+                <footer class="blockquote-footer" style="font-size:12px">
+                  {{comment.user.user.first_name}} {{comment.user.user.last_name}}
+                  <span>{{comment.timestamp.date}}   {{comment.timestamp.time}}</span>
+                  <a class="btn btn-sm btn-danger float-left" id="deleteComment" data-comment-id="{{comment.id}}" style="color:Black">حذف التعليق</a>
+                  </footer>
+              </blockquote>
+            </div>
+          </div>
+           {% endfor %}
+         </div>
+          </div>
         </div>
-        <div class="col-lg-3">
-            <label>تم انجازها ؟</label>
-            <h4> {{form.is_complete}} </h4>
-
-        </div>
-        <div class="col-lg-3 mt-2 text-left">
-            <button class="btn  btn-info" id="updateTask">حفظ</button>
         </div>
     </div>
 </div>
