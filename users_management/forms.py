@@ -47,44 +47,16 @@ class CandidateLoginForm(forms.Form):
 
 
 class SignUpForm(forms.Form):
-    first_name = forms.CharField(
+    full_name = forms.CharField(
                                  widget=forms.TextInput(
                                         attrs={
                                             "class": "form-control",
-                                            "placeholder": "الاسم الاول",
-                                            "data-field-name":"الاسم الاول"
+                                            "placeholder": "الاسم الرباعي كاملا",
+                                            "data-field-name":"الاسم الرباعي كاملا"
                                             }
                                         )
     )
-    last_name = forms.CharField(
-                                widget=forms.TextInput(
-                                        attrs={
-                                                "class": "form-control",
-                                                "placeholder": "الاسم العائلة",
-                                                "data-field-name":"الاسم العائلة"
-                                                }
-                                            )
-                                
-    )
-
-    middle_name=forms.CharField(
-                                widget=forms.TextInput(
-                                        attrs={
-                                            "class": "form-control",
-                                            "placeholder": "اسم الاب",
-                                            "data-field-name":"اسم الاب"
-                                            }
-                                        )
-    )
-    third_name=forms.CharField(
-                                widget=forms.TextInput(
-                                        attrs={
-                                            "class": "form-control",
-                                            "placeholder": "اسم الجد",
-                                            "data-field-name":"اسم الجد"
-                                            }
-                                        )
-    )
+    
     mobile_number=forms.CharField(
                                    widget=forms.TextInput(
                                         attrs={
@@ -116,41 +88,12 @@ class SignUpForm(forms.Form):
 
 
 class CampaignAdminCreateForm(forms.Form):
-    ca_first_name = forms.CharField(
+    ca_full_name = forms.CharField(
                                  widget=forms.TextInput(
                                         attrs={
                                             "class": "form-control",
-                                            "placeholder": "الاسم الاول",
-                                            "data-field-name":"الاسم الاول"
-                                            }
-                                        )
-    )
-    ca_last_name = forms.CharField(
-                                widget=forms.TextInput(
-                                        attrs={
-                                                "class": "form-control",
-                                                "placeholder": "الاسم العائلة",
-                                                "data-field-name":"الاسم العائلة"
-                                                }
-                                            )
-                                
-    )
-
-    ca_middle_name=forms.CharField(
-                                widget=forms.TextInput(
-                                        attrs={
-                                            "class": "form-control",
-                                            "placeholder": "اسم الاب",
-                                            "data-field-name":"اسم الاب"
-                                            }
-                                        )
-    )
-    ca_third_name=forms.CharField(
-                                widget=forms.TextInput(
-                                        attrs={
-                                            "class": "form-control",
-                                            "placeholder": "اسم الجد",
-                                            "data-field-name":"اسم الجد"
+                                            "placeholder": "الاسم الرباعي كاملا",
+                                            "data-field-name":"الاسم الرباعي كاملا"
                                             }
                                         )
     )

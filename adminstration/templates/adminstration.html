@@ -121,7 +121,12 @@
                 <div class="card-header">
                     <div class="row">
                         <div class="col-md-6">
-                            <h2 class="about-title text-aligner">المرشح: {{candidate.profile.user.first_name}} {{candidate.profile.user.last_name}}</h2>
+                        {% if  candidate.profile.full_name %}
+                        <h2 class="about-title text-aligner">المرشح: {{candidate.profile.full_name}}</h2>
+                        {% else %}
+                        <h2 class="about-title text-aligner">المرشح: {{candidate.profile.user.first_name}} {{candidate.profile.user.last_name}}</h2>
+                        {% endif %}
+                            
                         </div>
                         <div class="col-md-6">
                             <h2 class="about-title text-aligner">القائمة الانتخابية: {{candidate.election_list}} </h2>
@@ -132,30 +137,13 @@
                     <div class="row">
                         <form>
                             <div class="form-row">
-                                <div class="col-md-3">
+                                <div class="col-md-9">
                                     <div class="form-group">
-                                        <label> الاسم الاول</label>
-                                        <input type="text" class="form-control" id="fname" placeholder="الاسم الاول" value="{{user.user.first_name}}">
+                                        <label> الاسم الكامل</label>
+                                        <input type="text" class="form-control" id="fname" placeholder="الاسم كامل من اربع مقاطع" value="{{user.full_name}}">
                                     </div>
                                 </div>
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label>اسم الاب</label>
-                                        <input type="text" class="form-control" id="sname" placeholder="اسم الاب" value="{{user.middle_name}}">
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label>اسم الجد</label>
-                                        <input type="text" class="form-control" id="tname" placeholder="الاسم الجد" value="{{user.last_name}}">
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label>اسم العائلة</label>
-                                        <input type="text" class="form-control" id="foname" placeholder="اسم العائلة" value="{{user.user.last_name}}">
-                                    </div>
-                                </div>
+
                             </div>
                             <div class="form-row">
                                 <div class="col-sm-3">
@@ -267,7 +255,12 @@
                                 <td>غير فعالة</td>
                                 {% endif %}
                                 <td>
+                                    {% if comittee.manager.profile.full_name %}
+                                    {{comittee.manager.profile.full_name }}
+                                    {% else %}
                                     {{comittee.manager.profile.user.first_name}} {{comittee.manager.profile.user.last_name}}
+                                    {% endif %}
+                                    
                                 </td>
                                 <td><a class="btn btn-info" href="{% url 'update-committee' comittee.id %}">تعديل البيانات</a></td>
                             </tr>
@@ -310,7 +303,7 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <th scope="row">{{campaign_manager.profile.user.first_name}} {{campaign_manager.profile.user.last_name}}</th>
+                                    <th scope="row">{{campaign_manager.profile.full_name}} </th>
                                     <td>{{campaign_manager.profile.mobile_number}}</td>
                                     <td><a href="mailto:{{campaign_manager.profile.user.email}}">{{campaign_manager.profile.user.email}}</a></td>
                                     <td><button class="btn btn-info">تعديل البيانات</button></td>
@@ -361,7 +354,12 @@
                 <tbody id="cmt">
                     {% for comittee_member in comittees_members %}
                     <tr>
+                    
+                        {% if comittee_member.profile.full_name %}
+                        <th scope="row">{{comittee_member.profile.full_name}}</th>
+                        {% else %}
                         <th scope="row">{{comittee_member.profile.user.first_name}} {{comittee_member.profile.user.last_name}}</th>
+                        {% endif %}
                         <td>{{comittee_member.profile.mobile_number}}</td>
                         <td>{{comittee_member.profile.user.email}}</td>
                         <td>{{comittee_member.comittee}}</td>
@@ -377,7 +375,14 @@
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel"> صلاحيات المستخدم: <strong>{{comittee_member.profile.user.first_name}} {{comittee_member.profile.user.last_name}} </strong> </h5>
+                                    <h5 class="modal-title" id="exampleModalLabel"> صلاحيات المستخدم: <strong>
+                                    {% if  comittee_member.profile.full_name %}
+                                    {{comittee_member.profile.full_name}}
+                                    {% else %}
+                                    {{comittee_member.profile.user.first_name}} {{comittee_member.profile.user.last_name}}
+                                    {% endif %}
+                                    
+                                     </strong> </h5>
                                 </div>
                                 <div class="modal-body text-aligner">
                                  <form>
@@ -593,7 +598,13 @@
                             <td>{{voter.profile.user.first_name}} {{voter.profile.middle_name}} {{voter.profile.last_name}} {{voter.profile.user.last_name}}</td>
                             {% endif %}
                                 
-                                <td>{{voter.related_comittee_member.profile.user.first_name}} {{voter.related_comittee_member.profile.middle_name}} {{voter.related_comittee_member.profile.user.last_name}}</td>
+                                <td>
+                                {% if  voter.related_comittee_member.profile.full_name %}
+                                {{voter.related_comittee_member.profile.full_name}}
+                                {% else %}
+                                {{voter.related_comittee_member.profile.user.first_name}} {{voter.related_comittee_member.profile.middle_name}} {{voter.related_comittee_member.profile.user.last_name}}
+                                {% endif %}
+                                </td>
                                 <td>{{voter.profile.mobile_number}}</td>
                                 <td>لا</td>
                                 <td><a class="btn btn-info" href="{% url 'update-voter' voter.id %}"> عرض التفاصيل</a></td>
@@ -732,7 +743,8 @@
 
         return checker
     }
-
+    full_name=""
+    exist=false
     $('#createmember').on('click', function() {
         formFields = $('#createCmForm').find('input')
         selectFields = $('#createCmForm').find('select option:selected')
@@ -742,24 +754,26 @@
         } else {
             is_manager = false
         }
-        if($("#voterCmList option").is(":selected").val()){
-            full_name=$("#voterCmList option:selected")
-            alert(full_name.val())
+        if($("#voterCmList option").is(":selected")){
+            full_name=$("#voterCmList option:selected").text()
+            console.log(full_name)
+            exist=true
+            
         }
-        
+        else{
+            full_name=$('#full_name').val()
+        }
  if (fieldChecker) {
             data = {
-                first_name: $('#id_first_name').val(),
+                full_name: full_name,
                 mobile_number: $('#id_mobile_number').val(),
                 whatsapp_number: $('#id_whatsapp_number').val(),
                 email: $('#id_email').val(),
-                last_name: $('#id_last_name').val(),
-                third_name: $('#id_last_name').val(),
-                middle_name: $('#id_middle_name').val(),
                 csrfmiddlewaretoken: csrftoken,
                 usertype: $('#cmm').val(),
                 comittee: $('#assign_comittee option:selected').val(),
-                is_manager: is_manager
+                is_manager: is_manager,
+                exist:exist
             }
 
             $.ajax({
@@ -786,17 +800,25 @@
         formFields = $('#creatAdminForm').find('input')
         selectFields = $('#creatAdminForm').find('select option:selected')
         fieldChecker = checkField(formFields, selectFields)
+
+        if($("#voterListCamp option").is(":selected")){
+            full_name=$("#voterListCamp option:selected").text()
+            console.log(full_name)
+            exist=true
+            
+        }
+        else{
+            full_name=$('#full_name').val()
+        }
         if (fieldChecker) {
             data = {
-                first_name: $('#id_ca_first_name').val(),
+                full_name: full_name,
                 mobile_number: $('#id_ca_mobile_number').val(),
                 whatsapp_number: $('#id_ca_whatsapp_number').val(),
                 email: $('#id_ca_email').val(),
-                last_name: $('#id_ca_last_name').val(),
-                third_name: $('#id_ca_last_name').val(),
-                middle_name: $('#id_ca_middle_name').val(),
                 csrfmiddlewaretoken: csrftoken,
                 usertype: $('#ca').val(),
+                exist:exist
             }
             console.log(data)
             $.ajax({
@@ -908,7 +930,7 @@
             userprofile.title = $("#title").val()
         }
         userjson = JSON.stringify(userprofile)
-        console.log(userprofile.district)
+       
         $.ajax({
             url: "{% url 'update-profile' %}",
             type: "POST",
@@ -1207,7 +1229,7 @@
             success: function(result) {
                 table = $("#cmt")
                 table.empty()
-                console.log(result)
+
                 $(result).each(function(index, value) {
 
                     row = $("<tr></tr>");
@@ -1258,7 +1280,6 @@
                 return false;
             },
             select: function(event, ui) {
-                console.log(ui.item['lable'])
                 $("#cm_search").val(ui.item['lable']);
                 $("#hidden_cm").val(ui.item['id']);
                 return false;
@@ -1339,6 +1360,16 @@
 
 
 $("#chooseUser").on("click",function(e){
+    
+    if ($("#nameDivided").css("visibility")=="hidden"){
+        $("#nameDivided").css("visibility","visible")
+    }
+
+    else if ( $("#nameDivided").css("visibility") =="visible"){
+        $("#nameDivided").css("visibility","hidden")
+    }
+
+
 
     '{% if request.user.userprofile.candidate  %}'
         candidate={{request.user.userprofile.candidate.id}}
@@ -1350,7 +1381,7 @@ $("#chooseUser").on("click",function(e){
     '{% endif %}'
 
     e.preventDefault()
-  if ( $('#chooseUserDiv').css('visibility') == 'hidden' ){
+    if ( $('#chooseUserDiv').css('visibility') == 'hidden' ){
 
       $.ajax({
           
@@ -1360,7 +1391,7 @@ $("#chooseUser").on("click",function(e){
               candidate_id:candidate
           },
           success:function(result){
-              $("#nameDivided").css("visibility","hidden")
+              
               select=$("#voterCmList")
               $(result).each(function(index,item){
                   
@@ -1381,6 +1412,62 @@ $("#chooseUser").on("click",function(e){
     
 })
 
+
+
+
+
+$("#chooseUserCamp").on("click",function(e){
+    
+    if ($("#nameDividedCamp").css("visibility")=="hidden"){
+        $("#nameDividedCamp").css("visibility","visible")
+    }
+
+    else if ( $("#nameDividedCamp").css("visibility") =="visible"){
+        $("#nameDividedCamp").css("visibility","hidden")
+    }
+
+
+
+    '{% if request.user.userprofile.candidate  %}'
+        candidate={{request.user.userprofile.candidate.id}}
+    '{% elif request.user.campaignadminstrator.id %}'
+        candidate={{request.user.userprofile.campaignadminstrator.id}}
+        
+    '{% else  %}'
+    candidate={{request.user.profile.comitteemember.candidate.id}}
+    '{% endif %}'
+
+    e.preventDefault()
+    if ( $('#chooseUserDivCamp').css('visibility') == 'hidden' ){
+
+      $.ajax({
+          
+          url:'{% url "get-voter-to-cm" %}',
+          type:'GET',
+          data:{
+              candidate_id:candidate
+          },
+          success:function(result){
+              
+              select=$("#voterListCamp")
+              $(result).each(function(index,item){
+                  
+                  select.append(`<option value="${item.id}"> ${item.name}</option>`); 
+              })
+          }
+      })
+       $("#chooseUserDivCamp").css("visibility","visible");
+       $("#chooseUserCamp").text("اخفاء القائمة");
+  }
+    
+  else{
+
+        $("#chooseUserDivCamp").css("visibility","visible");
+        $("#chooseUserDivCamp").css("visibility","hidden");       
+        $("#chooseUserCamp").text("اختيار من قائمة الناخبين");
+  }
+    
+})
 </script>
 
 

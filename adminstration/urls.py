@@ -50,7 +50,8 @@ urlpatterns = [
     path("update-comment/",update_comment,name="update-comment"),
     path("get_sector",GetSecotrs.as_view(),name="get_sector"),
     path("get_area",GetAreas.as_view(),name="get_area"),
-    path("get-voter-to-cm",get_voter_to_cm,name='get-voter-to-cm')
+    path("get-voter-to-cm",get_voter_to_cm,name='get-voter-to-cm'),
+
 
 
 

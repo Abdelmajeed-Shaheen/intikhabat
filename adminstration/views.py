@@ -401,7 +401,10 @@ class SearchComitteeView(View):
                 status="غير فعالة"
             
             if comittee.manager is not None:
-                manager=str(comittee.manager.profile.user.first_name+" " +comittee.manager.profile.user.last_name)
+                if comittee.manager.profile.full_name not in [None,""]: 
+                    manager=comittee.manager.profile.full_name
+                else:
+                    manager=str(comittee.manager.profile.user.first_name+" " +comittee.manager.profile.user.last_name)
             else:
                 manager="لا يوجد مدير"
             comittee={
@@ -838,8 +841,12 @@ def get_cm(request):
     
     cm_list = []
     for cm in qs:
+        if cm.profile.full_name not in [None,""]:
+            name=cm.profile.full_name
+        else:
+            name=str(cm.profile.user.first_name+" "+cm.profile.user.last_name)
         cm={
-            'lable':str(cm.profile.user.first_name+" "+cm.profile.user.last_name),
+            'lable':name,
             'id':cm.id
         }
         cm_list.append(cm)
@@ -869,9 +876,12 @@ def get_cm_by_comittee(request):
         comittee=Comittee.objects.get(id=int(query['comittee']))
         qs = ComitteeMember.objects.all().filter(comittee=comittee)
         for cm in qs:
-            
+            if cm.profile.full_name not in [None,""]:
+                name=cm.profile.full_name
+            else:
+                name=str(cm.profile.user.first_name+" "+cm.profile.user.last_name)            
             cm_obj={
-                'name':str(cm.profile.user.first_name+" "+cm.profile.user.last_name),
+                'name':name,
                 'phone_number':cm.profile.mobile_number,
                 'email':cm.profile.user.email,
                 'comittee':cm.comittee.name,
@@ -1089,9 +1099,14 @@ def get_voter_to_cm(request):
         if not voter.profile.full_name  in [None,""] :
             voter_object['name']=voter.profile.full_name
             voter_object['id']=voter.id
+            voter_object["mobile_number"]=voter.profile.mobile_number
+            voter_object["whatsapp_number"]=voter.profile.whatsapp_number
+            voter_object["email"]=voter.profile.user.email
+
             response.append(voter_object)
     
     return JsonResponse(response,safe=False)
+
 
 
 

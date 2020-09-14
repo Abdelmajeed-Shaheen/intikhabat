@@ -12,34 +12,18 @@
                         <button class="btn btn-sm btn-info" id="chooseUser">اختيار من قائمة الناخبين</button>
                     </div>
                     <div class="form-row" id="chooseUserDiv" style="visibility:hidden;">
-
                         <select class="form-control" id="voterCmList">
-                <option value="">اختر من قائمة الناخبين لاضافته كعضو لجنة</option>   
-              </select>
-
+                            <option value="">اختر من قائمة الناخبين لاضافته كعضو لجنة</option>   
+                        </select>
                     </div>
-                    <div class="row text-aligner" id="nameDivided">
 
-                        <div class="col-sm-3">
+                    <div class="row text-aligner" id="nameDivided">
+                        <div class="col-sm-12">
                             <div class="form-group">
-                                <label>الاسم الاول:</label> {{comittee_member_form.first_name}}
+                                <label>الاسم الرباعي كاملا:</label> {{comittee_member_form.full_name}}
                             </div>
                         </div>
-                        <div class="col-sm-3">
-                            <div class="form-group">
-                                <label>اسم الاب:</label> {{comittee_member_form.middle_name}}
-                            </div>
-                        </div>
-                        <div class="col-sm-3">
-                            <div class="form-group">
-                                <label>اسم الجد:</label> {{comittee_member_form.third_name}}
-                            </div>
-                        </div>
-                        <div class="col-sm-3">
-                            <div class="form-group">
-                                <label>اسم العائلة:</label> {{comittee_member_form.last_name}}
-                            </div>
-                        </div>
+
                     </div>
                     <div class="row text-aligner">
 
@@ -97,29 +81,23 @@
             </div>
             <div class="modal-body">
                 <form id="creatAdminForm">
-                    <div class="row text-aligner">
+                    <div class="form-row mb-2">
+                        <button class="btn btn-sm btn-info" id="chooseUserCamp">اختيار من قائمة الناخبين</button>
+                    </div>
+                    <div class="form-row" id="chooseUserDivCamp" style="visibility:hidden;">
+                        <select class="form-control" id="voterListCamp">
+                            <option value="">اختر من قائمة الناخبين لاضافته كمدير حملة</option>   
+                        </select>
+                    </div>
 
-                        <div class="col-sm-3">
+                    <div class="row text-aligner" id="nameDividedCamp">
+                        <div class="col-sm-12">
                             <div class="form-group">
-                                <label>الاسم الاول:</label> {{campadmin_form.ca_first_name}}
-                            </div>
-                        </div>
-                        <div class="col-sm-3">
-                            <div class="form-group">
-                                <label>اسم الاب:</label> {{campadmin_form.ca_middle_name}}
-                            </div>
-                        </div>
-                        <div class="col-sm-3">
-                            <div class="form-group">
-                                <label>اسم الجد:</label> {{campadmin_form.ca_third_name}}
-                            </div>
-                        </div>
-                        <div class="col-sm-3">
-                            <div class="form-group">
-                                <label>اسم العائلة:</label> {{campadmin_form.ca_last_name}}
+                                <label>الاسم الرباعي كاملا:</label> {{campadmin_form.ca_full_name}}
                             </div>
                         </div>
                     </div>
+
                     <div class="row text-aligner">
 
                         <div class="col-sm-6">
