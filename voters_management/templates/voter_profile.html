@@ -546,7 +546,7 @@
             dataType: 'JSON',
             success: function(result) {
                 $("#district").empty();
-                $("#district").append('<option value="" >اختر المنطقة</option>');
+                $("#district").append('<option value="" >اختر الحي</option>');
                 $(result).each(function(index, value) {
                     $("#district").append('<option value="' + value.id + '">' + value.name + '</option>');
                 });
