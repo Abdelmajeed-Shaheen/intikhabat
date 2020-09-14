@@ -57,30 +57,39 @@
             <div class="card-body">
               <form>
               <div class="form-row">
-                <div class="col-sm-3">
-                    <div class="form-group">
-                      <label> الاسم الاول</label>
-                      <input type="text" class="form-control" id="fname" placeholder="الاسم الاول" value="{{user.user.first_name}}">
-                    </div>
-                </div>
-                <div class="col-sm-3">
-                    <div class="form-group">
-                      <label>اسم الاب</label>
-                      <input type="text" class="form-control" id="sname" placeholder="اسم الاب" value="{{user.middle_name}}">
-                    </div>
-                </div>
-                <div class="col-sm-3">
-                  <div class="form-group">
-                    <label>اسم الجد</label>
-                    <input type="text" class="form-control" id="tname" placeholder="الاسم الجد" value="{{user.last_name}}">
+               {% if user.full_name is not None %}
+                  <div class="col-sm-3">
+                      <div class="form-group">
+                      <label> الاسم الكامل</label>
+                        <input type="text" class="form-control" id="fname" placeholder="الاسم الاول" value="{{user.full_name}} " disabled>
+                      </div>
                   </div>
-              </div>
-              <div class="col-sm-3">
-                <div class="form-group">
-                  <label>اسم العائلة</label>
-                  <input type="text" class="form-control" id="foname" placeholder="اسم العائلة" value="{{user.user.last_name}}">
-                </div>
-            </div>
+                {% else %}
+                  <div class="col-sm-3">
+                      <div class="form-group">
+                      <label> الاسم الاول</label>
+                        <input type="text" class="form-control" id="fname" placeholder="الاسم الاول" value="{{user.user.first_name}}">
+                      </div>
+                  </div>
+                  <div class="col-sm-3">
+                      <div class="form-group">
+                        <label>اسم الاب</label>
+                        <input type="text" class="form-control" id="sname" placeholder="اسم الاب" value="{{user.middle_name}}">
+                      </div>
+                  </div>
+                  <div class="col-sm-3">
+                    <div class="form-group">
+                      <label>اسم الجد</label>
+                      <input type="text" class="form-control" id="tname" placeholder="الاسم الجد" value="{{user.last_name}}">
+                    </div>
+                  </div>
+                  <div class="col-sm-3">
+                    <div class="form-group">
+                      <label>اسم العائلة</label>
+                      <input type="text" class="form-control" id="foname" placeholder="اسم العائلة" value="{{user.user.last_name}}">
+                    </div>
+                  </div>
+                  {% endif %}
               </div>
               <div class="form-row">
                 <div class="col-sm-3">

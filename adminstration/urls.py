@@ -11,7 +11,7 @@ from .views import (
                     get_identifier,update_voter,
                     GetDistrict,get_cm_by_comittee,task_details,update_task,
                     create_task,get_tasks_list,get_comments,create_comment,update_comment,
-                    GetSecotrs,GetAreas
+                    GetSecotrs,GetAreas,get_voter_to_cm
                                                                                                                                                                     
                     )
 urlpatterns = [
@@ -50,6 +50,8 @@ urlpatterns = [
     path("update-comment/",update_comment,name="update-comment"),
     path("get_sector",GetSecotrs.as_view(),name="get_sector"),
     path("get_area",GetAreas.as_view(),name="get_area"),
+    path("get-voter-to-cm",get_voter_to_cm,name='get-voter-to-cm'),
+
 
 
 

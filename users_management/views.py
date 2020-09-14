@@ -118,102 +118,107 @@ class CreateUser(View):
 
     def post(self,request):
         form=SignUpForm(request.POST)
-        first_name=form.data.get('first_name')
-        third_name=form.data.get('third_name')
-        middle_name=form.data.get('middle_name')
-        last_name=form.data.get('last_name')
-        name_string=(first_name+middle_name+third_name+last_name)
-        if hasNumbers(name_string):
+        exist=request.POST.get("exist")
+       
+        full_name=form.data.get('full_name')
+        if hasNumbers(full_name):
             return JsonResponse({"error":"لا يمكن للاسماء ان تحتوي ارقام"})
+
         mobile_number=form.data.get('mobile_number')
         whatsapp_number=form.data.get('whatsapp_number')
+
         if hasLetters(mobile_number) or hasLetters(whatsapp_number):
             return JsonResponse({"error":"لا يمكن للارقام ان تحتوي احرف"})
+
         email=form.data.get('email')
         is_manager=form.data.get('is_manager')
+
         if is_manager == "on" :
             is_manager=True
         else:
             is_manager=False
+
         password='changeme12'
         user_type=request.POST.get('usertype')
         comittee=""
         if request.POST.get('comittee'):
             comittee=Comittee.objects.get(id=request.POST.get('comittee'))
-
-        try:
-            
-            user_instance={
-                'username':mobile_number,
-                'first_name':first_name,
-                'last_name':last_name,
-                'email':email
-            }
-            user=User(**user_instance)
-            user.set_password(password)
-            user.save()
         
-            profile_instance={
-                'middle_name':middle_name,
-                'last_name':third_name,
-                'user':user,
-                'mobile_number':mobile_number,
-                'whatsapp_number':whatsapp_number,
-                'date_of_birth':date.today(),
-                'name_string':name_string
+        if not exist:
+
+            try:
                 
-            }            
- 
-            user_profile=UserProfile(**profile_instance)
-            user_profile.save()
+                user_instance={
+                    'username':mobile_number,
+                    'email':email
+                }
+                user=User(**user_instance)
+                user.set_password(password)
+                user.save()
 
-            vp={
-                'user':user_profile,
-                'can_view_voter':True,
-                'can_create_voter':True,
-                'can_update_voter':True,
-                'can_remove_voter':True
-            }
-            voter_permissions=CustomVoterssPermissions(**vp)
+                
+                profile_instance={
+                    'full_name':full_name,
+                    'user':user,
+                    'mobile_number':mobile_number,
+                    'whatsapp_number':whatsapp_number,
+                    'date_of_birth':date.today(),
+                    'name_string':full_name.replace(" ","")
+                    
+                }            
+    
+                user_profile=UserProfile(**profile_instance)
+                user_profile.save()
 
-            rp={
-                'user':user_profile,
-                'can_view_report':True,
-                'can_create_report':True,
-                'can_update_report':True,
-                'can_remove_report':True
-            }
-            report_permissions=CustomReportsPermissions(**rp)
+                vp={
+                    'user':user_profile,
+                    'can_view_voter':False,
+                    'can_create_voter':False,
+                    'can_update_voter':False,
+                    'can_remove_voter':False
+                }
+                voter_permissions=CustomVoterssPermissions(**vp)
 
-            cp={
-                'user':user_profile,
-                'can_view_comittee':True,
-                'can_create_comittee':True,
-                'can_update_comittee':True,
-                'can_remove_comittee':True
-            }
-            comittee_permissions=CustomComitteePermission(**cp)
+                rp={
+                    'user':user_profile,
+                    'can_view_report':False,
+                    'can_create_report':False,
+                    'can_update_report':False,
+                    'can_remove_report':False
+                }
+                report_permissions=CustomReportsPermissions(**rp)
 
-            mp={
-                'user':user_profile,
-                'can_view_member':True,
-                'can_create_member':True,
-                'can_update_member':True,
-                'can_remove_member':True
-            }
-            member_permissions=CustomMembersPermissions(**mp)
-            member_permissions.save()
-            voter_permissions.save()
-            report_permissions.save()
-            comittee_permissions.save()
+                cp={
+                    'user':user_profile,
+                    'can_view_comittee':False,
+                    'can_create_comittee':False,
+                    'can_update_comittee':False,
+                    'can_remove_comittee':False
+                }
+                comittee_permissions=CustomComitteePermission(**cp)
 
-        except (IntegrityError):
-            if User.objects.all().filter(username=user_instance["username"]).exists():
-                return JsonResponse({'error':'هذا المستخدم مسجل مسبقا'})
+                mp={
+                    'user':user_profile,
+                    'can_view_member':False,
+                    'can_create_member':False,
+                    'can_update_member':False,
+                    'can_remove_member':False
+                }
+                member_permissions=CustomMembersPermissions(**mp)
+                member_permissions.save()
+                voter_permissions.save()
+                report_permissions.save()
+                comittee_permissions.save()
 
-            elif UserProfile.objects.all().filter(name_string=name_string).exists():
-                return JsonResponse({'error':'هذا الاسم مكرر'})
+            except (IntegrityError):
+                if User.objects.all().filter(username=user_instance["username"]).exists():
+                    return JsonResponse({'error':'هذا المستخدم مسجل مسبقا'})
 
+                elif UserProfile.objects.all().filter(name_string=name_string).exists():
+                    return JsonResponse({'error':'هذا الاسم مكرر'})
+
+        else:
+            user_profile=UserProfile.objects.get(name_string=full_name.replace(" ",""))
         
         if hasattr(request.user.userprofile,'candidate') :
             candidate=request.user.userprofile.candidate
